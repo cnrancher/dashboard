@@ -1,0 +1,56 @@
+---
+kind: pipeline
+name: test
+
+trigger:
+  event:
+  - push
+  - pull_request
+  - tag
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: test
+  pull: default
+  image: node:12
+  commands:
+  - scripts/ci
+
+node:
+  instance: agent-amd64
+
+---
+kind: pipeline
+name: docker-tag
+
+depends_on:
+- test
+
+trigger:
+  event:
+  - tag
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: docker-image
+  image: plugins/docker
+  settings:
+    build_args:
+    - BRANCH=${DRONE_BRANCH}
+    - TAG=${DRONE_TAG}
+    dockerfile: image-scripts/Dockerfile
+    tag: ${DRONE_BRANCH}
+    repo: cnrancher/dashboard
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+node:
+  instance: agent-amd64
