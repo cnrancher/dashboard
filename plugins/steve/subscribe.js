@@ -12,6 +12,13 @@ export const NO_WATCH = 'NO_WATCH';
 export const TOO_OLD = 'TOO_OLD';
 export const NO_SCHEMA = 'NO_SCHEMA';
 
+function getBasePath() {
+  const baseUrl = document.querySelector('head > base').href;
+  const basePath = `${ baseUrl.slice(0, -'/dashboard/'.length).replace(window.location.origin, '') }`;
+
+  return basePath;
+}
+
 export const actions = {
   subscribe(ctx, opt) {
     const { state, commit, dispatch } = ctx;
@@ -24,13 +31,15 @@ export const actions = {
     }
 
     // console.info(`Subscribe [${ ctx.getters.storeName }]`); // eslint-disable-line no-console
+    // const url = `${ state.config.baseUrl }/subscribe`;
 
-    const url = `${ state.config.baseUrl }/subscribe`;
+    const url = `${ state.config.baseUrl.startsWith('/') ? `${ getBasePath() }${ state.config.baseUrl }` : state.config.baseUrl }/subscribe`;
 
     if ( socket ) {
       socket.setUrl(url);
     } else {
-      socket = new Socket(`${ state.config.baseUrl }/subscribe`);
+      // socket = new Socket(`${ state.config.baseUrl }/subscribe`);
+      socket = new Socket(`${ state.config.baseUrl.startsWith('/') ? `${ getBasePath() }${ state.config.baseUrl }` : state.config.baseUrl }/subscribe`);
 
       commit('setSocket', socket);
 
