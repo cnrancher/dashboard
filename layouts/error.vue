@@ -1,4 +1,5 @@
 <script>
+import { addParam } from '@/utils/url';
 import Brand from '@/mixins/brand';
 
 export default {
@@ -29,7 +30,10 @@ export default {
     // For clicking from manager -> explorer -> back, nuxt tries to load /g/clusters and doesn't
     // have a route for that.
     if (this.statusCode === 404 && !this.$route.path.startsWith(this.$router.options.base) && window._popStateDetected) {
-      window.location.href = this.$route.fullPath;
+      // window.location.href = this.$route.fullPath;
+      const base = this.$router.options.base;
+
+      window.location.href = `${ base.slice(0, base.lastIndexOf('/', base.length - 2)) }${ this.$route.fullPath }`;
 
       return;
     }
