@@ -4,8 +4,8 @@ RUN apk --update add git less openssh bash && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 
-ARG BRANCH=release-2.5.8
-ARG TAG=v2.5.6
+# ARG BRANCH=release-2.4
+# ARG TAG=
 
 # RUN mkdir /src
 
