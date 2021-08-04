@@ -1,21 +1,30 @@
-server {
-  listen       443 ssl;
-  server_name  localhost;
-  ssl_certificate /etc/nginx/ssl/nginx.crt;
-  ssl_certificate_key /etc/nginx/ssl/nginx.key;
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-  ssl_ciphers HIGH:!aNULL:!MD5;
-  location / {
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+user root;
+worker_processes 1;
 
-    add_header Access-Control-Allow-Origin ${ALLOW_ORIGIN};
-    add_header Access-Control-Allow-Headers X-Requested-With;
-    add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
-
-    root /usr/share/nginx/html;
-    index index.html;
-    try_files $uri $uri/ /index.html = 404;
-  }
+events {
+  worker_connections 1024;
 }
+
+http {
+  server {
+    listen 80;
+    root /usr/share/nginx/html;
+    charset utf-8;
+
+    location / {
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+     
+    }
+    error_page 404 /index.html;
+    location = /index.html {
+          root   /usr/share/nginx/html;  
+    }
+
+  }
+
+include /etc/nginx/mime.types;        
+default_type application/octet-stream;
+}
+
