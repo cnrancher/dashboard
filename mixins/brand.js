@@ -83,9 +83,19 @@ export default {
       this.$store.dispatch('prefs/setBrandStyle', this.theme === 'dark');
     }
 
+    let title = this.$store.getters['i18n/t']('nav.title');
+
+    if (process.client) {
+      const t = window.localStorage.getItem('dashboard_title');
+
+      if (t) {
+        title = t;
+      }
+    }
+
     return {
       bodyAttrs: { class: cssClass },
-      title:     this.$store.getters['i18n/t']('nav.title'),
+      title,
     };
   },
 
