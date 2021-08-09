@@ -70,9 +70,19 @@ export default {
     try {
       brandMeta = require(`~/assets/brand/${ this.brand }/metadata.json`);
     } catch {
+      let title = getVendor();
+
+      if (process.client) {
+        const t = window.localStorage.getItem('dashboard_title');
+
+        if (t) {
+          title = t;
+        }
+      }
+
       return {
         bodyAttrs: { class: `theme-${ this.theme } ${ cssClass }` },
-        title:     getVendor(),
+        title,
       };
     }
 
