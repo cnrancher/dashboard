@@ -225,10 +225,14 @@ export default {
     let title = this.$store.getters['i18n/t']('nav.title');
 
     if (process.client) {
-      const t = window.localStorage.getItem('dashbaord_title');
+      const m = window.location.pathname.match(/\/proxy\/explorer\/([^/]+)\//);
 
-      if (t) {
-        title = t;
+      if (m?.length === 2) {
+        const t = m[1]?.split('.')[0];
+
+        if (t) {
+          title = t;
+        }
       }
     }
 
