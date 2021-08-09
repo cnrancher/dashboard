@@ -4,13 +4,6 @@ import { getVersionInfo } from '@/utils/version';
 
 export default {
   middleware({ redirect, store, route } ) {
-    if (process.client) {
-      const title = route.query?.title;
-
-      if (title && title !== window.localStorage.getItem('dashboard_title')) {
-        window.localStorage.setItem('dashboard_title', title);
-      }
-    }
     const seenWhatsNew = store.getters['prefs/get'](SEEN_WHATS_NEW);
     const versionInfo = getVersionInfo(store);
 
