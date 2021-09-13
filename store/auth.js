@@ -33,6 +33,7 @@ export const state = function() {
     principalId: null,
     v3User:      null,
     initialPass: null,
+    isAdmin:     false,
   };
 };
 
@@ -99,6 +100,10 @@ export const mutations = {
 
   initialPass(state, pass) {
     state.initialPass = pass;
+  },
+
+  isAdmin(state, isAdmin) {
+    state.isAdmin = isAdmin;
   }
 };
 

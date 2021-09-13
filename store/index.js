@@ -486,6 +486,10 @@ export const actions = {
       promises['workspaces'] = dispatch('management/findAll', { type: FLEET.WORKSPACE });
     }
 
+    if ( getters['management/schemaFor'](MANAGEMENT.GLOBAL_ROLE_BINDING) ) {
+      promises['globalRoleBindings'] = dispatch('management/findAll', { type: MANAGEMENT.GLOBAL_ROLE_BINDING });
+    }
+
     res = await allHash(promises);
 
     let isMultiCluster = true;
@@ -516,6 +520,15 @@ export const actions = {
         value: getters['prefs/get'](WORKSPACE),
         all:   res.workspaces,
       });
+    }
+
+    if (res.globalRoleBindings && getters['auth/v3User']?.id) {
+      const id = getters['auth/v3User']?.id;
+      const b = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
+
+      if (b) {
+        commit('auth/isAdmin', true);
+      }
     }
 
     console.log(`Done loading management; isRancher=${ isRancher }; isMultiCluster=${ isMultiCluster }`); // eslint-disable-line no-console
