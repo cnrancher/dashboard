@@ -95,6 +95,7 @@ nav:
     storage: Storage
     workload: Workload
     monitoring: Monitoring
+    imageRepo: Image Repo
   ns:
     all: All Namespaces
     clusterLevel: Only Cluster Resources
@@ -127,6 +128,11 @@ nav:
   failWhale: 
     reload: Reload
     separator: or
+  imageRepo:
+    config: Configuration
+    #registries: Registries
+    projects: Image Management
+    logs: Logs
 
 product:
   apps: Apps & Marketplace

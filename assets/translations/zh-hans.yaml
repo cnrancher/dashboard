@@ -85,6 +85,7 @@ nav:
     storage: 存储
     workload: 工作负载
     monitoring: 监控
+    imageRepo: 镜像仓库
   ns:
     all: 全部命名空间
     clusterLevel: 集群资源
@@ -105,6 +106,11 @@ nav:
   resourceSearch:
     label: 资源搜索
     placeholder: 输入关键词，搜索资源
+  imageRepo:
+    config: Harbor 配置
+    #registries: 仓库管理
+    projects: 镜像管理
+    logs: 日志
 
 product:
   clusterGroup: 集群应用
