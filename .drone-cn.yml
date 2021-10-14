@@ -93,3 +93,44 @@ steps:
 
 node:
   instance: agent-amd64
+
+---
+kind: pipeline
+name: hosted-branch
+
+depends_on:
+- test
+
+trigger:
+  ref:
+  - "refs/heads/*-dev"
+  - "refs/heads/release-*"
+  event:
+  - push
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build
+  pull: default
+  image: node:12
+  commands:
+  - ./scripts/build-hosted
+- name: upload
+  pull: default
+  image: plugins/s3
+  settings:
+    bucket: rancher-dashboard-ui
+    region: ap-southeast-2
+    acl: public-read
+    access_key:
+      from_secret: aws_access_id
+    secret_key:
+      from_secret: aws_access_secret
+    source: dist/${DRONE_BRANCH}
+    target: rancher-dashboard-ui.s3.ap-southeast-2.amazonaws.com/dashboard/${DRONE_BRANCH}
+
+node:
+  instance: agent-amd64
