@@ -50,7 +50,8 @@ export const SETTING = {
   PRIMARY_COLOR:                    'ui-primary-color',
   LINK_COLOR:                       'ui-link-color',
   COMMUNITY_LINKS:                  'ui-community-links',
-  SYSTEM_NAMESPACES:                 'system-namespaces'
+  SYSTEM_NAMESPACES:                'system-namespaces',
+  DISABLE_PWD_ENCRYPT:              'disablePasswordEncrypt',
 };
 
 // These are the settings that are allowed to be edited via the UI

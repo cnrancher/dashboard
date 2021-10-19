@@ -8,6 +8,8 @@ import CruResource from '@/components/CruResource';
 import { exceptionToErrorsArray } from '@/utils/error';
 import { _CREATE, _EDIT } from '@/config/query-params';
 import Loading from '@/components/Loading';
+import { SETTING } from '@/config/settings';
+import AESEncrypt from '@/utils/aes-encrypt';
 
 export default {
   components: {
@@ -16,6 +18,11 @@ export default {
   mixins:     [
     CreateEditView
   ],
+  async asyncData({ store }) {
+    const disabledEncryption = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+
+    return { disabledEncryption };
+  },
 
   data() {
     const showGlobalRoles = !!this.$store.getters[`management/schemaFor`](MANAGEMENT.GLOBAL_ROLE);
@@ -129,7 +136,7 @@ export default {
         enabled:            true,
         mustChangePassword: this.form.password.userChangeOnLogin,
         name:               this.form.displayName,
-        password:           this.form.password.password,
+        password:           this.encryptPassword(this.form.password.password),
         username:           this.form.username
       });
 
@@ -170,6 +177,13 @@ export default {
       if (this.$refs.grb) {
         await this.$refs.grb.save(userId);
       }
+    },
+    encryptPassword(password) {
+      if (this.disabledEncryption === 'true') {
+        return password;
+      }
+
+      return AESEncrypt(password.trim());
     }
   }
 };

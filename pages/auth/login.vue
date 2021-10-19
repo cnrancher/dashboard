@@ -17,6 +17,8 @@ import { _ALL_IF_AUTHED, _MULTI } from '@/plugins/steve/actions';
 import { MANAGEMENT, NORMAN } from '@/config/types';
 import { SETTING } from '@/config/settings';
 import { LOGIN_ERRORS } from '@/store/auth';
+import AESEncrypt from '@/utils/aes-encrypt';
+
 import {
   getBrand,
   getVendor,
@@ -44,7 +46,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand;
+    let firstLoginSetting, plSetting, brand, disabledEncryption;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -60,6 +62,7 @@ export default {
       firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
+      disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -102,7 +105,8 @@ export default {
       hasLocal,
       showLocal:  !hasOthers || (route.query[LOCAL] === _FLAGGED),
       firstLogin: firstLoginSetting?.value === 'true',
-      singleProvider
+      singleProvider,
+      disabledEncryption
     };
   },
 
@@ -211,7 +215,7 @@ export default {
           provider: 'local',
           body:     {
             username: this.username,
-            password: this.password
+            password: this.encryptPassword(this.password)
           }
         });
 
@@ -246,6 +250,13 @@ export default {
         buttonCb(false);
       }
     },
+    encryptPassword(password) {
+      if (this.disabledEncryption === 'true') {
+        return password;
+      }
+
+      return AESEncrypt(password.trim());
+    }
   }
 };
 </script>

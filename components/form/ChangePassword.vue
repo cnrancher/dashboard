@@ -3,8 +3,10 @@ import { mapGetters } from 'vuex';
 import Banner from '@/components/Banner';
 import Checkbox from '@/components/form/Checkbox';
 import Password from '@/components/form/Password';
-import { NORMAN } from '@/config/types';
+import { NORMAN, MANAGEMENT } from '@/config/types';
 import { _CREATE, _EDIT } from '@/config/query-params';
+import AESEncrypt from '@/utils/aes-encrypt';
+import { SETTING } from '@/config/settings';
 
 // Component handles three use cases
 // 1) isChange - Current user is changing their own password
@@ -24,6 +26,13 @@ export default {
       default: false
     }
   },
+
+  async asyncData({ store }) {
+    const disabledEncryption = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+
+    return { disabledEncryption };
+  },
+
   async fetch() {
     if (this.isChange) {
       // Fetch the username for hidden input fields. The value itself is not needed if create or changing another user's password
@@ -236,7 +245,7 @@ export default {
         type:       NORMAN.USER,
         actionName: 'setpassword',
         resource:   user,
-        body:          { newPassword: this.isRandomGenerated ? this.form.genP : this.form.newP },
+        body:          { newPassword: this.isRandomGenerated ? this.encryptPassword(this.form.genP) : this.encryptPassword(this.form.newP) },
       });
     },
     async changePassword() {
@@ -246,7 +255,7 @@ export default {
           actionName: 'changepassword',
           body:          {
             currentPassword: this.form.currentP,
-            newPassword:     this.isRandomGenerated ? this.form.genP : this.form.newP
+            newPassword:     this.isRandomGenerated ? this.encryptPassword(this.form.genP) : this.encryptPassword(this.form.newP)
           },
         });
       } catch (err) {
@@ -282,6 +291,13 @@ export default {
         throw err;
       }
     },
+    encryptPassword(password) {
+      if (this.disabledEncryption === 'true') {
+        return password;
+      }
+
+      return AESEncrypt(password.trim());
+    }
   },
 };
 </script>
