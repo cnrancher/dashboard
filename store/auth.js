@@ -34,6 +34,8 @@ export const state = function() {
     v3User:      null,
     initialPass: null,
     isAdmin:     false,
+
+    loginCooldown: 0,
   };
 };
 
@@ -64,6 +66,10 @@ export const getters = {
 
   isGithub(state) {
     return state.principalId && state.principalId.startsWith('github_user://');
+  },
+
+  loginCooldown(state) {
+    return state.loginCooldown;
   }
 };
 
@@ -104,6 +110,10 @@ export const mutations = {
 
   isAdmin(state, isAdmin) {
     state.isAdmin = isAdmin;
+  },
+
+  setLoginCooldown(state, time) {
+    state.loginCooldown = time;
   }
 };
 
@@ -292,7 +302,7 @@ export const actions = {
     }
   },
 
-  async login({ dispatch }, { provider, body }) {
+  async login({ commit, dispatch }, { provider, body }) {
     const driver = await dispatch('getAuthProvider', provider);
 
     try {
@@ -302,9 +312,15 @@ export const actions = {
         ...body
       }, { redirectUnauthorized: false });
 
+      commit('setLoginCooldown', 0);
+
       return res;
     } catch (err) {
       if (err._status === 401) {
+        if (err.loginCooldown) {
+          commit('setLoginCooldown', parseInt(err.loginCooldown, 10));
+        }
+
         return Promise.reject(LOGIN_ERRORS.CLIENT_UNAUTHORIZED);
       } else if ( err._status >= 400 && err._status <= 499 ) {
         return Promise.reject(LOGIN_ERRORS.CLIENT);
