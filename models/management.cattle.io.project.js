@@ -1,7 +1,24 @@
 import { DEFAULT_PROJECT, SYSTEM_PROJECT } from '@/config/labels-annotations';
 import { MANAGEMENT, NAMESPACE, NORMAN } from '@/config/types';
+import { insertAt } from '@/utils/array';
+import { PROJECT_ID } from '@/config/query-params';
 
 export default {
+  _availableActions() {
+    const out = this._standardActions;
+
+    const auditLog = {
+      action:     'auditLog',
+      enabled:    true,
+      icon:       'icon icon-fw icon-globe',
+      label:      this.t('nav.auditLog'),
+    };
+
+    insertAt(out, 0, { divider: true });
+    insertAt(out, 0, auditLog);
+
+    return out;
+  },
   isSystem() {
     return this.metadata?.labels?.[SYSTEM_PROJECT] === 'true';
   },
@@ -95,5 +112,18 @@ export default {
     normanProject.resourceQuota = this.spec.resourceQuota;
 
     return normanProject;
-  }
+  },
+
+  auditLog() {
+    return () => {
+      this.currentRouter().push({
+        name:   'c-cluster-product-auditlog',
+        params: {
+          cluster:  this.$rootGetters['currentCluster'].id,
+          page:    'project-audit-log'
+        },
+        query: { [PROJECT_ID]: this.metadata.name }
+      });
+    };
+  },
 };

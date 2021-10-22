@@ -8,6 +8,7 @@ import {
 } from '@/config/types';
 import { MULTI_CLUSTER } from '@/store/features';
 import { DSL } from '@/store/type-map';
+import { SETTING } from '@/config/settings';
 
 export const NAME = 'manager';
 
@@ -153,6 +154,26 @@ export function init(store) {
     'image-repo-logs',
   ], 'imageRepo');
   // image repo end
+
+  // global audit log start
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL);
+    },
+    label:      'Audit Log',
+    labelKey:   'nav.auditLog',
+    name:       'global-audit-log',
+    group:      'Root',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'global-audit-log' } },
+    exact:      true
+  });
+
+  basicType([
+    'global-audit-log',
+  ]);
+  // global audit log end
 
   weightType(CAPI.MACHINE_DEPLOYMENT, 3, true);
   weightType(CAPI.MACHINE_SET, 2, true);

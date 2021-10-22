@@ -52,6 +52,7 @@ export const SETTING = {
   COMMUNITY_LINKS:                  'ui-community-links',
   SYSTEM_NAMESPACES:                'system-namespaces',
   DISABLE_PWD_ENCRYPT:              'disablePasswordEncrypt',
+  AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
 };
 
 // These are the settings that are allowed to be edited via the UI
@@ -86,6 +87,7 @@ export const ALLOWED_SETTINGS = {
     kind:    'enum',
     options: ['prompt', 'in', 'out']
   },
+  [SETTING.AUDIT_LOG_SERVER_URL]: { kind: 'url' },
 };
 
 // harvester Settings ID

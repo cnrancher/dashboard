@@ -136,6 +136,7 @@ nav:
     #registries: Registries
     projects: Image Management
     logs: Logs
+  auditLog: Audit Log
 
 product:
   apps: Apps & Marketplace

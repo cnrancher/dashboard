@@ -112,6 +112,7 @@ nav:
     #registries: 仓库管理
     projects: 镜像管理
     logs: 日志
+  auditLog: 审计日志
 
 product:
   clusterGroup: 集群应用
