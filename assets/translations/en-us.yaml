@@ -427,6 +427,34 @@ authConfig:
     key:
       label: Private Key
       placeholder: Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
+  cas:
+    cas: Configure Rancher to use CAS to authentication
+    enableTLS: Use a secure connection
+    hostUrl:
+      label: CAS Host
+      placeholder: e.g. cas-server.com
+    port:
+      label: Port
+      placeholder: e.g. 6379
+    callbackURL:
+      label: Service Callback URL
+      placeholder: Your CAS Service Callback URL
+    connectionTimeout:
+      label: Server Connection Timeout
+      placeholder: e.g. 5000
+    loginEndpoint:
+      label: Login Endpoint
+      placeholder: e.g. /cas/login
+    logoutEndpoint:
+      label: Logout Endpoint
+      placeholder: e.g. /cas/logout
+    usernameField:
+      label: User Name Field
+      placeholder: e.g. username
+    passwordField:
+      label: Password Field
+      placeholder: e.g. password
+
   stateBanner:
     disabled: 'The {provider} authentication provider is currently disabled.'
     enabled: 'The {provider} authentication provider is currently enabled.'
@@ -5325,6 +5353,7 @@ model:
       saml: SAML
       oauth: OAuth
       oidc: OIDC
+      cas: CAS
     name:
       keycloak: Keycloak (SAML)
       keycloakoidc: Keycloak (OIDC)
@@ -5346,6 +5375,7 @@ model:
       googleoauth: Google
       oidc: OIDC
       keycloakoidc: Keycloak
+      cas: CAS
 
   cluster:
     name: Cluster Name

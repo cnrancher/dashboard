@@ -260,6 +260,13 @@ export const actions = {
     });
   },
 
+  verifyCASAuth({ dispatch }, { ticket }) {
+    return dispatch('login', {
+      provider: 'cas',
+      body:     { ticket }
+    });
+  },
+
   async test({ dispatch }, { provider, body }) {
     const driver = await dispatch('getAuthConfig', provider);
 
