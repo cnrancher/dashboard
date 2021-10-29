@@ -14,6 +14,7 @@ import { NAME as HARVESTER_MANAGER } from '@/config/product/harvester-manager';
 import { HARVESTER as HARVESTER_FEATURE, mapFeature } from '@/store/features';
 import Labels from './Labels';
 import AgentEnv from './AgentEnv';
+import PrivateRegistry from './PrivateRegistry';
 import { addObject } from '~/utils/array';
 import { HIDE_DESC, mapPref } from '~/store/prefs';
 
@@ -29,7 +30,8 @@ export default {
     Tab,
     Tabbed,
     Labels,
-    AgentEnv
+    AgentEnv,
+    PrivateRegistry,
   },
 
   mixins: [CreateEditView],
@@ -169,6 +171,7 @@ export default {
       </Tab>
       <AgentEnv v-model="value" :mode="mode" />
       <Labels v-model="value" :mode="mode" />
+      <PrivateRegistry v-model="value" :mode="mode"></PrivateRegistry>
     </Tabbed>
   </CruResource>
 </template>
