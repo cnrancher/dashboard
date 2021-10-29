@@ -51,7 +51,7 @@ export const SETTING = {
   LINK_COLOR:                       'ui-link-color',
   COMMUNITY_LINKS:                  'ui-community-links',
   SYSTEM_NAMESPACES:                'system-namespaces',
-  DISABLE_PWD_ENCRYPT:              'disablePasswordEncrypt',
+  DISABLE_PWD_ENCRYPT:              'disable-password-encrypt',
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
 };
 

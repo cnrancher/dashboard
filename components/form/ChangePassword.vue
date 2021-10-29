@@ -292,7 +292,7 @@ export default {
       }
     },
     encryptPassword(password) {
-      if (this.disabledEncryption === 'true') {
+      if (this.disabledEncryption?.value === 'true') {
         return password;
       }
 

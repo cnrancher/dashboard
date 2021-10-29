@@ -252,7 +252,7 @@ export default {
       this.$router.replace('/');
     },
     encryptPassword(password) {
-      if (this.disabledEncryption === 'true') {
+      if (this.disabledEncryption?.value === 'true') {
         return password;
       }
 
