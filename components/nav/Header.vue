@@ -227,7 +227,11 @@ export default {
       <NamespaceFilter v-if="clusterReady && currentProduct && (currentProduct.showNamespaceFilter || isExplorer)" />
       <WorkspaceSwitcher v-else-if="clusterReady && currentProduct && currentProduct.showWorkspaceSwitcher" />
     </div>
-
+    <div class="manage-ui-link">
+      <a href="/g/clusters">
+        {{ t('nav.manageUI') }}
+      </a>
+    </div>
     <div v-if="currentCluster && !simple" class="header-buttons">
       <template v-if="currentProduct && currentProduct.showClusterSwitcher">
         <button
@@ -457,12 +461,12 @@ export default {
       }
     }
 
-    grid-template-areas:  "menu product top buttons header-actions cluster user";
-    grid-template-columns: var(--header-height) calc(var(--nav-width) - var(--header-height)) auto min-content min-content min-content var(--header-height);
+    grid-template-areas:  "menu product top manage-ui buttons header-actions cluster user";
+    grid-template-columns: var(--header-height) calc(var(--nav-width) - var(--header-height)) auto max-content min-content min-content min-content var(--header-height);
     grid-template-rows:    var(--header-height);
 
     &.simple {
-      grid-template-columns: var(--header-height) min-content auto min-content min-content min-content var(--header-height);
+      grid-template-columns: var(--header-height) min-content auto max-content min-content min-content min-content var(--header-height);
     }
 
     > .menu-spacer {
@@ -715,5 +719,10 @@ export default {
         height: 1px;
       }
     }
+  }
+  .manage-ui-link {
+    grid-area: manage-ui;
+    display: flex;
+    align-items: center;
   }
 </style>
