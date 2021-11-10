@@ -254,7 +254,7 @@ export default {
           type:       NORMAN.USER,
           actionName: 'changepassword',
           body:          {
-            currentPassword: this.form.currentP,
+            currentPassword: this.encryptPassword(this.form.currentP),
             newPassword:     this.isRandomGenerated ? this.encryptPassword(this.form.genP) : this.encryptPassword(this.form.newP)
           },
         });
