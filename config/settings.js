@@ -53,6 +53,8 @@ export const SETTING = {
   SYSTEM_NAMESPACES:                'system-namespaces',
   DISABLE_PWD_ENCRYPT:              'disable-password-encrypt',
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
+
+  SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
 };
 
 // These are the settings that are allowed to be edited via the UI

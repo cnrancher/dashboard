@@ -3,6 +3,7 @@ import omitBy from 'lodash/omitBy';
 import { cleanUp } from '@/utils/object';
 import {
   CONFIG_MAP, SECRET, WORKLOAD_TYPES, NODE, SERVICE, PVC
+  , MANAGEMENT
 } from '@/config/types';
 import Tab from '@/components/Tabbed/Tab';
 import CreateEditView from '@/mixins/create-edit-view';
@@ -20,6 +21,7 @@ import Job from '@/edit/workload/Job';
 import { _EDIT, _CREATE, _VIEW } from '@/config/query-params';
 import WorkloadPorts from '@/components/form/WorkloadPorts';
 import ContainerResourceLimit from '@/components/ContainerResourceLimit';
+import GpuResourceLimit from '@/components/GpuResourceLimit';
 import KeyValue from '@/components/form/KeyValue';
 import Tabbed from '@/components/Tabbed';
 import { mapGetters } from 'vuex';
@@ -34,6 +36,11 @@ import Labels from '@/components/form/Labels';
 import RadioGroup from '@/components/form/RadioGroup';
 import { UI_MANAGED } from '@/config/labels-annotations';
 import { removeObject } from '@/utils/array';
+import { SETTING } from '@/config/settings';
+
+const GPU_KEY = 'nvidia.com/gpu';
+const GPU_SHARED_KEY = 'rancher.io/gpu-mem';
+const VGPU_KEY = 'virtaitech.com/gpu';
 
 export default {
   name:       'CruWorkload',
@@ -52,6 +59,7 @@ export default {
     Security,
     WorkloadPorts,
     ContainerResourceLimit,
+    GpuResourceLimit,
     PodAffinity,
     NodeScheduling,
     Tolerations,
@@ -76,6 +84,12 @@ export default {
       type:    String,
       default: 'create'
     }
+  },
+
+  async asyncData({ store }) {
+    const systemGpuManagementSchedulerName = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME);
+
+    return { systemGpuManagementSchedulerName };
   },
 
   async fetch() {
@@ -278,18 +292,66 @@ export default {
           limitsCpu, limitsMemory, requestsCpu, requestsMemory
         } = neu;
 
+        const { limits = {}, requests = {} } = this.container.resources || {};
+
         const out = {
           requests: {
-            cpu:    requestsCpu,
-            memory: requestsMemory
+            ...requests,
+            cpu:              requestsCpu,
+            memory:           requestsMemory,
           },
           limits: {
-            cpu:    limitsCpu,
-            memory: limitsMemory
+            ...limits,
+            cpu:              limitsCpu,
+            memory:           limitsMemory,
           }
         };
 
         this.$set(this.container, 'resources', cleanUp(out));
+      }
+    },
+
+    flatGpuResources: {
+      get() {
+        const { limits = {}, requests = {} } = this.container.resources || {};
+        const { GPU_SHARED_KEY: limitsGpuShared, GPU_KEY: limitsGpu, VGPU_KEY: limitsVgpu } = limits;
+        const { GPU_SHARED_KEY: requestsGpuShared, GPU_KEY: requestsGpu } = requests;
+
+        return {
+          limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu
+        };
+      },
+      set(neu) {
+        const {
+          limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu
+        } = neu;
+        const scheduler = this.podTemplateSpec.scheduling?.scheduler;
+        const { limits = {}, requests = {} } = this.container.resources || {};
+
+        const out = {
+          requests: {
+            ...requests,
+            [GPU_SHARED_KEY]: requestsGpuShared,
+            [GPU_KEY]:        requestsGpu,
+          },
+          limits: {
+            ...limits,
+            [GPU_SHARED_KEY]: limitsGpuShared,
+            [GPU_KEY]:        limitsGpu,
+            [VGPU_KEY]:       limitsVgpu
+          }
+        };
+
+        this.$set(this.container, 'resources', cleanUp(out));
+
+        const scheduling = this.podTemplateSpec.scheduling ?? {};
+
+        if (requestsGpuShared && limitsGpuShared && (!scheduler || scheduler === 'default-scheduler')) {
+          scheduling.scheduler = this.systemGpuManagementSchedulerName;
+        } else if (this.systemGpuManagementSchedulerName && scheduler === this.systemGpuManagementSchedulerName) {
+          scheduling.scheduler = '';
+        }
+        this.podTemplateSpec.scheduling = scheduling;
       }
     },
 
@@ -857,6 +919,7 @@ export default {
             <t k="workload.scheduling.titles.limits" />
           </h3>
           <ContainerResourceLimit v-model="flatResources" :mode="mode" :show-tip="false" />
+          <GpuResourceLimit v-model="flatGpuResources" :mode="mode" />
           <template>
             <div class="spacer"></div>
             <div>

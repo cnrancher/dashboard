@@ -1554,6 +1554,21 @@ containerResourceLimit:
   requestsCpu: CPU Reservation
   requestsMemory: Memory Reservation
 
+gpuReservation:
+    label: NVIDIA GPU Reservation
+    memUnit: GiB
+    placeholder: e.g. 1
+    set: Limit to
+    shared: Shared GPU Memory
+    sharedTips: While setting the shared GPU memory, Rancher will automatically set the GPU scheduler name for the workload
+    unit: GPUs
+
+vGpuReservation:
+    label: Orion X GPU Reservation
+    placeholder: e.g. 1
+    unit: vGPUs
+    set: Limit to
+
 cruResource:
   backToForm: Back to Form
   backBody: You will lose any changes made to the YAML.
