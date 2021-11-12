@@ -6007,3 +6007,7 @@ legacy:
 serverUpgrade:
   title: "{vendor} Server Changed"
   message: "The page reloaded because the version of {vendor} running on your server changed."
+
+autoLogout:
+  message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
+  title: Auto logout

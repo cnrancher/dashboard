@@ -26,6 +26,7 @@ import { ucFirst } from '@/utils/string';
 import { getVersionInfo, markSeenReleaseNotes } from '@/utils/version';
 import { sortBy } from '@/utils/sort';
 import PageHeaderActions from '@/mixins/page-actions';
+import AutoLogout from '@/mixins/auto-logout';
 
 const SET_LOGIN_ACTION = 'set-as-login';
 
@@ -44,7 +45,7 @@ export default {
     FixedBanner
   },
 
-  mixins: [PageHeaderActions, Brand],
+  mixins: [PageHeaderActions, Brand, AutoLogout],
 
   data() {
     return {

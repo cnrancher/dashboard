@@ -4,6 +4,7 @@ import Brand from '@/mixins/brand';
 import FixedBanner from '@/components/FixedBanner';
 import GrowlManager from '@/components/GrowlManager';
 import { mapPref, DEV } from '@/store/prefs';
+import AutoLogout from '@/mixins/auto-logout';
 
 export default {
 
@@ -11,7 +12,7 @@ export default {
     Header, FixedBanner, GrowlManager
   },
 
-  mixins: [Brand],
+  mixins: [Brand, AutoLogout],
 
   middleware: ['authenticated'],
 

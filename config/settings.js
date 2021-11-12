@@ -55,6 +55,7 @@ export const SETTING = {
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
 
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
+  UI_SESSION_LOGOUT_MINUTES:            'ui-session-logout-minutes',
 };
 
 // These are the settings that are allowed to be edited via the UI

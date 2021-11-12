@@ -6,6 +6,7 @@ import AssignTo from '@/components/AssignTo';
 import IndentedPanel from '@/components/IndentedPanel';
 import Brand from '@/mixins/brand';
 import FixedBanner from '@/components/FixedBanner';
+import AutoLogout from '@/mixins/auto-logout';
 
 export default {
 
@@ -20,7 +21,7 @@ export default {
 
   middleware: ['authenticated'],
 
-  mixins: [Brand],
+  mixins: [Brand, AutoLogout],
 
   data() {
     return {
