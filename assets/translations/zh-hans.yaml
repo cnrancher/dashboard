@@ -87,6 +87,7 @@ nav:
     workload: 工作负载
     monitoring: 监控
     imageRepo: 镜像仓库
+    vlansubnet: 扁平网络
   ns:
     all: 全部命名空间
     clusterLevel: 集群资源
@@ -113,6 +114,8 @@ nav:
     projects: 镜像管理
     logs: 日志
   auditLog: 审计日志
+  vlanSubnet:
+    label: MacvlanSubnet
 
 product:
   clusterGroup: 集群应用
@@ -3579,6 +3582,21 @@ workload:
     subdomain:
       label: 子域名
       placeholder: 例如：web
+    vlansubnet: 
+      label: 扁平网络
+      tip: "因扁平网络使用方式限制，Pod 缩放/升级策略已改为: 先停止旧 Pod，再启动新 Pod"
+      network:
+        label: Interface
+        placeholder: 请选择...
+      ip:
+        label: IP
+        placeholder: "例如: 192.168.1.100，多个 IP 用逗号连接"
+      mac:
+        label: MAC
+        placeholder: "例如: 0a:00:27:00:00:00，多个 MAC 用逗号连接"
+      subnet:
+        label: Subnet
+        placeholder: 请选择一个 MacvlanSubnet
   validation:
     containers: 容器
     containerImage: 容器{{name} - “容器镜像 "是必需的。  

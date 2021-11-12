@@ -154,10 +154,80 @@ export default class Pod extends SteveModel {
       });
     }
 
+    out.push({
+      label:         'Macvlan IP',
+      content:       this.displayMacvlanIp,
+    });
+
     return out;
   }
 
   get isRunning() {
     return this.status.phase === 'Running';
+  }
+
+  get macvlanIpv6() {
+    const annotations = this.metadata?.annotations || {};
+    const networkStatusStr = annotations?.['k8s.v1.cni.cncf.io/networks-status'];
+
+    if (!networkStatusStr) {
+      return '';
+    }
+    let networkStatus;
+
+    try {
+      networkStatus = JSON.parse(networkStatusStr);
+    } catch (err) {
+      return '';
+    }
+    if (networkStatus) {
+      const macvlan = networkStatus.find(n => n.interface === 'eth1');
+
+      return `${ (macvlan && macvlan.ips && macvlan.ips[1]) || '' }`;
+    }
+
+    return '';
+  }
+
+  get displayMacvlanIp() {
+    const macvlanIpWithoutType = this.macvlanIpWithoutType;
+    const macvlanIpv6 = this.macvlanIpv6;
+    let divide = '';
+
+    if (macvlanIpWithoutType && macvlanIpv6) {
+      divide = ` / `;
+    }
+
+    return `${ macvlanIpWithoutType }${ divide }${ macvlanIpv6 }`;
+  }
+
+  // macvlanIpType() {
+  //   const labels = this.labels;
+  //   const type = labels && labels['macvlan.panda.io/macvlanIpType'];
+
+  //   return type || '';
+  // }
+
+  get macvlanIpWithoutType() {
+    const annotations = this.metadata?.annotations || {};
+    const networkStatusStr = annotations && annotations['k8s.v1.cni.cncf.io/networks-status'];
+
+    if (!networkStatusStr) {
+      return '';
+    }
+    let networkStatus;
+
+    try {
+      networkStatus = JSON.parse(networkStatusStr);
+    } catch (err) {
+      return '';
+    }
+    if (networkStatus) {
+      const macvlan = networkStatus.find(n => n.interface === 'eth1');
+
+      return `${ (macvlan && macvlan.ips && macvlan.ips[0]) || '' }`;
+    }
+
+    return '';
   }
 }

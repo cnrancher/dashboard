@@ -1,4 +1,6 @@
 <script>
+import RadioGroup from '@/components/form/RadioGroup';
+import Tip from '@/components/Tip';
 import ArrayList from '@/components/form/ArrayList';
 import KeyValue from '@/components/form/KeyValue';
 import LabeledInput from '@/components/form/LabeledInput';
@@ -7,10 +9,12 @@ import { mapGetters } from 'vuex';
 
 const CLUSTER_FIRST = 'ClusterFirst';
 const CLUSTER_FIRST_HOST = 'ClusterFirstWithHostNet';
+const DUAL_NETWORK_CARD = '[{"name":"static-macvlan-cni-attach","interface":"eth1"}]';
+const SINGLE_NETWORK_CARD = '[{"name":"static-macvlan-cni-attach","interface":"eth0"}]';
 
 export default {
   components: {
-    ArrayList, KeyValue, LabeledInput, LabeledSelect
+    RadioGroup, Tip, ArrayList, KeyValue, LabeledInput, LabeledSelect
   },
 
   props: {
@@ -25,6 +29,22 @@ export default {
     },
   },
 
+  async fetch() {
+    const clusterId = this.currentCluster.id;
+
+    if (clusterId) {
+      await this.$store.dispatch('management/request', { url: `/k8s/clusters/${ clusterId }/apis/macvlan.cluster.cattle.io/v1/namespaces/kube-system/macvlansubnets?limit=50` }).then((resp) => {
+        const items = resp.items.map(item => ({
+          label: `${ item.metadata.name }(${ item.spec.cidr })`,
+          value: item.metadata.name
+        }));
+
+        this.vlansubnetChoices = items;
+        this.unsupportVlansubnet = false;
+      });
+    }
+  },
+
   data() {
     const t = this.$store.getters['i18n/t'];
     const hostAliases = (this.value.hostAliases || []).map((entry) => {
@@ -33,18 +53,30 @@ export default {
         hostnames: entry.hostnames.join(', ')
       };
     });
-    const { dnsConfig = {}, hostname, subdomain } = this.value;
+    const {
+      dnsConfig = {}, hostname, subdomain, vlansubnet = {}
+    } = this.value;
     const { nameservers, searches, options } = dnsConfig;
+    const {
+      network: vlansubnetNetwork, ip: vlansubnetIp, mac: vlansubnetMac, subnet: vlansubnetName, allowVlansubnet
+    } = vlansubnet;
 
     const out = {
-      dnsPolicy:   this.value.dnsPolicy || 'ClusterFirst',
-      networkMode: this.value.hostNetwork ? { label: t('workload.networking.networkMode.options.hostNetwork'), value: true } : { label: t('workload.networking.networkMode.options.normal'), value: false },
+      dnsPolicy:               this.value.dnsPolicy || 'ClusterFirst',
+      networkMode:             this.value.hostNetwork ? { label: t('workload.networking.networkMode.options.hostNetwork'), value: true } : { label: t('workload.networking.networkMode.options.normal'), value: false },
       hostAliases,
       nameservers,
       searches,
       hostname,
       subdomain,
-      options
+      options,
+      allowVlansubnet,
+      vlansubnetNetwork:       vlansubnetNetwork || DUAL_NETWORK_CARD,
+      vlansubnetIp,
+      vlansubnetMac,
+      vlansubnetName,
+      vlansubnetChoices:       [],
+      unsupportVlansubnet:     true,
     };
 
     return out;
@@ -79,7 +111,17 @@ export default {
       ];
     },
 
-    ...mapGetters({ t: 'i18n/t' })
+    vlansubnetNetworkChoices() {
+      return [{
+        label: 'eth1',
+        value: DUAL_NETWORK_CARD,
+      }, {
+        label: 'eth0',
+        value: SINGLE_NETWORK_CARD,
+      }];
+    },
+
+    ...mapGetters({ t: 'i18n/t', currentCluster: 'currentCluster' })
   },
 
   watch: {
@@ -120,6 +162,22 @@ export default {
       this.update();
     },
 
+    async loadVlansubnets() {
+      const clusterId = this.currentCluster.id;
+
+      if (clusterId) {
+        await this.$store.dispatch('management/request', { url: `/k8s/clusters/${ clusterId }/apis/macvlan.cluster.cattle.io/v1/namespaces/kube-system/macvlansubnets?limit=50` }).then((resp) => {
+          const items = resp.items.map(item => ({
+            label: `${ item.metadata.name }(${ item.spec.cidr })`,
+            value: item.metadata.name
+          }));
+
+          this.vlansubnets = items;
+          this.unsupportVlansubnet = false;
+        });
+      }
+    },
+
     update() {
       const dnsConfig = {
         ...this.dnsConfig,
@@ -134,7 +192,14 @@ export default {
         hostname:    this.hostname,
         hostAliases: this.hostAliases,
         subdomain:   this.subdomain,
-        hostNetwork: this.networkMode.value
+        hostNetwork: this.networkMode.value,
+        vlansubnet:  {
+          ip:              this.vlansubnetIp,
+          mac:             this.vlansubnetMac,
+          subnet:          this.vlansubnetName,
+          network:         this.vlansubnetNetwork,
+          allowVlansubnet: this.allowVlansubnet,
+        }
       };
 
       this.$emit('input', out);
@@ -265,6 +330,74 @@ export default {
             <h3>{{ t('workload.networking.hostAliases.label') }}</h3>
           </template>
         </KeyValue>
+      </div>
+    </div>
+    <div class="spacer"></div>
+
+    <div class="mt-20">
+      <div class="row">
+        <div class="col span-12">
+          <RadioGroup
+            v-model="allowVlansubnet"
+            name="vlansubnet"
+            :label="t('workload.networking.vlansubnet.label')"
+            :options="[false,true]"
+            :labels="[t('generic.disabled'), t('generic.enabled')]"
+            :mode="mode"
+            :disabled="unsupportVlansubnet"
+            @input="update"
+          />
+        </div>
+      </div>
+      <div v-if="allowVlansubnet">
+        <div class="row mt-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="vlansubnetNetwork"
+              :mode="mode"
+              :options="vlansubnetNetworkChoices"
+              :label="t('workload.networking.vlansubnet.network.label')"
+              :placeholder="t('workload.networking.network.placeholder')"
+              :required="true"
+              @input="update"
+            />
+          </div>
+
+          <div class="col span-6">
+            <LabeledInput
+              v-model="vlansubnetIp"
+              :mode="mode"
+              :label="t('workload.networking.vlansubnet.ip.label')"
+              :placeholder="t('workload.networking.vlansubnet.ip.placeholder')"
+              @input="update"
+            />
+          </div>
+        </div>
+        <div class="row mt-20">
+          <div class="col span-6">
+            <LabeledInput
+              v-model="vlansubnetMac"
+              :mode="mode"
+              :label="t('workload.networking.vlansubnet.mac.label')"
+              :placeholder="t('workload.networking.vlansubnet.mac.placeholder')"
+              @input="update"
+            />
+          </div>
+
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="vlansubnetName"
+              :mode="mode"
+              :options="vlansubnetChoices"
+              :label="t('workload.networking.vlansubnet.subnet.label')"
+              :placeholder="t('workload.networking.vlansubnet.subnet.placeholder')"
+              :required="true"
+              @input="update"
+            />
+          </div>
+        </div>
+
+        <Tip icon="icon icon-info" class="text-info mt-10" :text="t('workload.networking.vlansubnet.tip')" />
       </div>
     </div>
   </div>

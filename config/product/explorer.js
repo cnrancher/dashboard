@@ -293,6 +293,22 @@ export function init(store) {
   });
   // cluster audit-log end
 
+  // macvlan
+  virtualType({
+    label:      'macvlan',
+    labelKey:   'nav.vlanSubnet.label',
+    name:       'macvlan-subnet',
+    group:      'cluster',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-product-vlansubnet', params: { cluster: 'local', page: 'cluster-vlansubnet' } },
+    exact:      true
+  });
+
+  basicType([
+    'macvlan-subnet',
+  ], 'vlansubnet');
+
   // Ignore these types as they are managed through the settings product
   ignoreType(MANAGEMENT.FEATURE);
   ignoreType(MANAGEMENT.SETTING);

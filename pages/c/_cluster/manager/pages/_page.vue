@@ -18,6 +18,7 @@ export default {
         'image-repo-logs':       '/custom-extension/image-repo/logs-router',
 
         'global-audit-log': '/custom-extension/audit-log',
+        'macvlan-subnet':   '/c/c-m7fx6/vlansubnet',
       }
     };
   }
