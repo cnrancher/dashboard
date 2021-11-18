@@ -27,12 +27,6 @@ export default {
     }
   },
 
-  async asyncData({ store }) {
-    const disabledEncryption = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
-
-    return { disabledEncryption };
-  },
-
   async fetch() {
     if (this.isChange) {
       // Fetch the username for hidden input fields. The value itself is not needed if create or changing another user's password
@@ -45,6 +39,10 @@ export default {
       this.username = user?.username;
     }
     this.userChangeOnLogin = this.mustChangePassword;
+
+    const disabledEncryption = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+
+    this.disabledEncryption = disabledEncryption;
   },
   data(ctx) {
     return {
@@ -60,6 +58,7 @@ export default {
         confirmP:          '',
         userChangeOnLogin: false,
       },
+      disabledEncryption: null
     };
   },
   computed:   {

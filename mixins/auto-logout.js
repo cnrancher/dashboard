@@ -5,34 +5,31 @@ import throttle from 'lodash/throttle';
 const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel'];
 
 export default {
-  async asyncData({ store }) {
-    const uiSessionLogoutMinutes = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_SESSION_LOGOUT_MINUTES);
+  async fetch() {
+    const uiSessionLogoutMinutes = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_SESSION_LOGOUT_MINUTES);
 
-    return { uiSessionLogoutMinutes };
+    this.uiSessionLogoutMinutes = uiSessionLogoutMinutes?.value ?? 30;
   },
 
   data() {
     return {
-      $_lastActive:      new Date().getTime(),
-      $_autoLogoutTimer: null,
+      lastActive:             new Date().getTime(),
+      autoLogoutTimer:        null,
+      uiSessionLogoutMinutes: 30,
     };
   },
 
   computed: {
     uiSessionTimeout() {
-      return parseInt(this.uiSessionLogoutMinutes ?? 30, 10) * 1000 * 60;
+      return parseInt(this.uiSessionLogoutMinutes, 10) * 1000 * 60;
     }
   },
 
   methods: {
-    $_resetLastActive: throttle(function() {
-      this.$_lastActive = new Date().getTime();
-    }, 250, { leading: true }),
-
     $_checkTimeout() {
       const now = new Date().getTime();
 
-      if (now - this.$_lastActive < this.uiSessionTimeout) {
+      if (now - this.lastActive < this.uiSessionTimeout) {
         return;
       }
 
@@ -44,40 +41,34 @@ export default {
       window.setTimeout(() => {
         this.$router.push({ name: 'auth-logout' });
       }, 5000);
-
-      this.$_clear();
-    },
-
-    $_clear() {
-      if (this.$_autoLogoutTimer) {
-        window.clearInterval(this.$_autoLogoutTimer);
-      }
-
-      defaultEvents.forEach((e) => {
-        window.document.removeEventListener(e, this.$_resetLastActive);
-      });
     },
 
     $_init() {
-      this.$_autoLogoutTimer = window.setInterval(() => {
+      this.autoLogoutTimer = window.setInterval(() => {
         this.$_checkTimeout();
       }, 60 * 1000);
+      const resetLastActive = throttle(() => {
+        this.lastActive = new Date().getTime();
+      }, 250, { leading: true });
 
       defaultEvents.forEach((e) => {
-        window.document.addEventListener(e, this.$_resetLastActive);
+        window.document.addEventListener(e, resetLastActive);
+      });
+      this.$on('hook:beforeDestroy', () => {
+        if (this.autoLogoutTimer) {
+          window.clearInterval(this.autoLogoutTimer);
+        }
+
+        defaultEvents.forEach((e) => {
+          window.document.removeEventListener(e, resetLastActive);
+        });
       });
     }
   },
 
-  created() {
+  mounted() {
     if ( process.client ) {
       this.$_init();
     }
   },
-
-  beforeDestroy() {
-    if ( process.client ) {
-      this.$_clear();
-    }
-  }
 };

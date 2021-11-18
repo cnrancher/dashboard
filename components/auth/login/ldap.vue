@@ -3,7 +3,6 @@ import LabeledInput from '@/components/form/LabeledInput';
 import AsyncButton from '@/components/AsyncButton';
 import Login from '@/mixins/login';
 import AESEncrypt from '@/utils/aes-encrypt';
-import { _ALL_IF_AUTHED } from '@/plugins/steve/actions';
 import { MANAGEMENT } from '@/config/types';
 import { SETTING } from '@/config/settings';
 
@@ -18,26 +17,16 @@ export default {
     }
   },
 
-  async asyncData({ store }) {
-    let disabledEncryption;
-
-    try {
-      await store.dispatch('management/findAll', {
-        type: MANAGEMENT.SETTING,
-        opt:  {
-          load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
-        },
-      });
-      disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
-    } catch (e) {
-
-    }
-
-    return { disabledEncryption };
+  data() {
+    return {
+      username: '', password: '', disabledEncryption: null
+    };
   },
 
-  data() {
-    return { username: '', password: '' };
+  created() {
+    this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT).then((d) => {
+      this.disabledEncryption = d;
+    });
   },
 
   methods: {

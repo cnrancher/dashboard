@@ -86,18 +86,14 @@ export default {
     }
   },
 
-  async asyncData({ store }) {
-    const systemGpuManagementSchedulerName = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME);
-
-    return { systemGpuManagementSchedulerName };
-  },
-
   async fetch() {
     const requests = {
       configMaps: this.$store.dispatch('cluster/findAll', { type: CONFIG_MAP }),
       nodes:      this.$store.dispatch('cluster/findAll', { type: NODE }),
       services:   this.$store.dispatch('cluster/findAll', { type: SERVICE }),
-      pvcs:       this.$store.dispatch('cluster/findAll', { type: PVC })
+      pvcs:       this.$store.dispatch('cluster/findAll', { type: PVC }),
+
+      systemGpuManagementSchedulerName: this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME)
     };
 
     if ( this.$store.getters['cluster/schemaFor'](SECRET) ) {
@@ -113,6 +109,7 @@ export default {
     this.allNodes = hash.nodes.map(node => node.id);
     this.allServices = hash.services;
     this.pvcs = hash.pvcs;
+    this.systemGpuManagementSchedulerName = hash.systemGpuManagementSchedulerName?.value ?? '';
   },
 
   data() {
@@ -172,7 +169,9 @@ export default {
       isInitContainer,
       container,
       containerChange:   0,
-      podFsGroup:        podTemplateSpec.securityContext?.fsGroup
+      podFsGroup:        podTemplateSpec.securityContext?.fsGroup,
+
+      systemGpuManagementSchedulerName: '',
     };
   },
 
