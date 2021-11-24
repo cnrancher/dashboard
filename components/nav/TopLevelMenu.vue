@@ -148,6 +148,12 @@ export default {
     hasSupport() {
       return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
     },
+    footerText() {
+      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT )?.value;
+    },
+    footerUrl() {
+      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL )?.value;
+    }
   },
 
   watch: {
@@ -333,6 +339,14 @@ export default {
                 </ul>
               </template>
             </v-popover>
+          </div>
+        </div>
+        <div v-if="footerText" class="footer-banner">
+          <div v-if="footerUrl">
+            <a :href="footerUrl" target="_blank">{{ footerText }}</a>
+          </div>
+          <div v-else>
+            {{ footerText }}
           </div>
         </div>
       </div>
@@ -605,6 +619,13 @@ export default {
 
       .version {
         cursor: pointer;
+      }
+    }
+    .footer-banner {
+      margin: 0 20px 20px 20px;
+
+      > * {
+        color: var(--link);
       }
     }
   }

@@ -53,6 +53,8 @@ export const SETTING = {
   SYSTEM_NAMESPACES:                'system-namespaces',
   DISABLE_PWD_ENCRYPT:              'disable-password-encrypt',
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
+  FOOTER_TEXT:                      'ui-footer-text',
+  FOOTER_URL:                       'ui-footer-url',
 
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
   UI_SESSION_LOGOUT_MINUTES:            'ui-session-logout-minutes',
@@ -91,6 +93,8 @@ export const ALLOWED_SETTINGS = {
     options: ['prompt', 'in', 'out']
   },
   [SETTING.AUDIT_LOG_SERVER_URL]: { kind: 'url' },
+  [SETTING.FOOTER_TEXT]:          {},
+  [SETTING.FOOTER_URL]:           { kind: 'url' },
 };
 
 // harvester Settings ID
