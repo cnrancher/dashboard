@@ -1,7 +1,7 @@
 import IntlMessageFormat from 'intl-messageformat';
 import { LOCALE } from '@/config/cookies';
 import { get } from '@/utils/object';
-import en from '@/assets/translations/en-us.yaml';
+import en from '@/assets/translations-cn/en-us.yaml';
 import { getProduct, getVendor, DOCS_BASE } from '@/config/private-label';
 import { loadTranslation } from '@/utils/dynamic-importer';
 
@@ -15,7 +15,7 @@ export const state = function() {
   // const available = translationContext.keys().map(path => path.replace(/^.*\/([^\/]+)\.[^.]+$/, '$1'));
   // Using require.context() forces them to all be in the same webpack chunk name... just hardcode the list for now so zh-hans
   // gets generated as it's own chunk instead of being loaded all the time.
-  const available = ['en-us', 'zh-hans'];
+  const available = ['en-us', 'zh-hans', 'zh-hant', 'zh-hant-tw'];
 
   const out = {
     default:      'en-us',
