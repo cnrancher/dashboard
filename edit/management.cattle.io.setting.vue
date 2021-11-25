@@ -8,6 +8,9 @@ import TextAreaAutoGrow from '@/components/form/TextAreaAutoGrow';
 import { ALLOWED_SETTINGS, SETTING } from '@/config/settings';
 import RadioGroup from '@/components/form/RadioGroup';
 import { setBrand } from '@/config/private-label';
+import { MANAGEMENT } from '@/config/types';
+
+const URL_DOMAIN_REG = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
 
 export default {
   components: {
@@ -36,6 +39,7 @@ export default {
     const canReset = !!this.value.default;
 
     this.value.value = this.value.value || this.value.default;
+    const originValue = this.value.value;
 
     return {
       setting,
@@ -44,7 +48,12 @@ export default {
       enumOptions,
       canReset,
       errors:      [],
+      originValue,
     };
+  },
+
+  created() {
+    this.registerBeforeHook(this.willSave, 'willSave');
   },
 
   methods: {
@@ -76,6 +85,31 @@ export default {
         ev.srcElement.blur();
       }
       this.value.value = this.value.default;
+    },
+    async willSave() {
+      if (this.value?.id === SETTING.AUDIT_LOG_SERVER_URL) {
+        const s = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.WHITELIST_DOMAIN);
+        let values = s?.value?.split(',') ?? [];
+
+        if (this.originValue) {
+          const originDomain = URL_DOMAIN_REG.exec(this.originValue)?.[0] ?? '';
+
+          if (originDomain !== 'forums.rancher.com') {
+            values = values.filter(v => v !== originDomain);
+          }
+        }
+        const v = this.value.value?.trim();
+
+        if (v) {
+          const newDomain = URL_DOMAIN_REG.exec(v)?.[0] ?? v;
+
+          values.push(newDomain);
+        }
+
+        s.value = [...new Set(values)].filter(v => v).join(',');
+
+        return s.save();
+      }
     }
   }
 };

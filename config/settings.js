@@ -52,6 +52,7 @@ export const SETTING = {
   COMMUNITY_LINKS:                  'ui-community-links',
   SYSTEM_NAMESPACES:                'system-namespaces',
   DISABLE_PWD_ENCRYPT:              'disable-password-encrypt',
+  WHITELIST_DOMAIN:                 'whitelist-domain',
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
   FOOTER_TEXT:                      'ui-footer-text',
   FOOTER_URL:                       'ui-footer-url',
