@@ -6,6 +6,8 @@ import ResourceTabs from '@/components/form/ResourceTabs';
 import DetailText from '@/components/DetailText';
 import Tab from '@/components/Tabbed/Tab';
 
+const HARBOR_AUTH_KEY = 'rancher.cn/registry-harbor-auth';
+
 const types = [
   TYPES.OPAQUE,
   TYPES.DOCKER_JSON,
@@ -14,7 +16,7 @@ const types = [
   TYPES.BASIC,
 ];
 const registryAddresses = [
-  'DockerHub', 'Quay.io', 'Artifactory', 'Custom'
+  'DockerHub', 'Quay.io', 'Harbor', 'Artifactory', 'Custom2'
 ];
 
 export default {
@@ -62,6 +64,8 @@ export default {
       password = auths[registryUrl].password;
     }
 
+    this.initHarborConfig();
+
     const data = this.value?.data || {};
 
     if (this.value._type === TYPES.TLS) {
@@ -100,6 +104,7 @@ export default {
       key,
       crt,
       relatedServices: [],
+      harborConfig:    {},
     };
   },
 
@@ -122,6 +127,11 @@ export default {
 
     isBasicAuth() {
       return this.value._type === TYPES.BASIC;
+    },
+    isHarborCred() {
+      const labels = this.value?.metadata?.labels || {};
+
+      return labels?.[HARBOR_AUTH_KEY] === 'true';
     },
 
     parsedRows() {
@@ -152,6 +162,57 @@ export default {
         return this.t('secret.data');
       }
     }
+  },
+
+  methods: {
+    initHarborConfig() {
+      this.getHarborConfig().then((harborConfig) => {
+        this.harborConfig = harborConfig;
+
+        if (harborConfig?.username) {
+          this.username = harborConfig.username;
+        }
+      });
+    },
+    getHarborConfig() {
+      const v3User = this.$store.getters['auth/v3User'] || {};
+      const isAdmin = this.$store.getters['auth/isAdmin'];
+
+      return this.loadHarborRegistryUrl().then((registryUrl) => {
+        if (!registryUrl) {
+          return {
+            registryUrl:  '',
+            username:    '',
+          };
+        }
+        if (!!isAdmin) {
+          return this.loadHarborAccount().then((account) => {
+            return {
+              registryUrl,
+              username: account,
+            };
+          });
+        } else {
+          const account = v3User.annotations['authz.management.cattle.io.cn/harborauth'];
+
+          return {
+            registryUrl,
+            harborAccount: account || '',
+          };
+        }
+      });
+    },
+
+    loadHarborRegistryUrl() {
+      return this.$store.dispatch('management/request', { url: '/v3/settings/harbor-server-url' }).then((resp) => {
+        return resp?.value || '';
+      });
+    },
+    loadHarborAccount() {
+      return this.$store.dispatch('management/request', { url: '/v3/settings/harbor-admin-auth' }).then((resp) => {
+        return resp?.value || '';
+      });
+    },
   },
 };
 </script>

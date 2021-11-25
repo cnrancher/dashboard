@@ -70,7 +70,11 @@ export const getters = {
 
   loginCooldown(state) {
     return state.loginCooldown;
-  }
+  },
+
+  isAdmin(state) {
+    return state.isAdmin;
+  },
 };
 
 export const mutations = {
