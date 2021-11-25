@@ -133,7 +133,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ t: 'i18n/t', loginCooldown: 'autn/loginCooldown' }),
+    ...mapGetters({ t: 'i18n/t', loginCooldown: 'auth/loginCooldown' }),
 
     nonLocalPrompt() {
       if (this.singleProvider) {

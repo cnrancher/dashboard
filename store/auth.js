@@ -323,11 +323,13 @@ export const actions = {
 
       return res;
     } catch (err) {
-      if (err._status === 401) {
-        if (err.loginCooldown) {
-          commit('setLoginCooldown', parseInt(err.loginCooldown, 10));
-        }
+      const loginCooldown = err._headers?.['x-pandaria-login-cooldown'];
 
+      if (loginCooldown) {
+        commit('setLoginCooldown', parseInt(loginCooldown, 10));
+      }
+
+      if (err._status === 401) {
         return Promise.reject(LOGIN_ERRORS.CLIENT_UNAUTHORIZED);
       } else if ( err._status >= 400 && err._status <= 499 ) {
         return Promise.reject(LOGIN_ERRORS.CLIENT);
