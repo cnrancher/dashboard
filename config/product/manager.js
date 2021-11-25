@@ -158,7 +158,7 @@ export function init(store) {
   // global audit log start
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL);
+      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
     },
     label:      'Audit Log',
     labelKey:   'nav.auditLog',
