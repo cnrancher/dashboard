@@ -7,6 +7,7 @@ import { NORMAN, MANAGEMENT } from '@/config/types';
 import { _CREATE, _EDIT } from '@/config/query-params';
 import AESEncrypt from '@/utils/aes-encrypt';
 import { SETTING } from '@/config/settings';
+import PasswordStrength from '@/components/PasswordStrength';
 
 // Component handles three use cases
 // 1) isChange - Current user is changing their own password
@@ -14,7 +15,7 @@ import { SETTING } from '@/config/settings';
 // 3) isEdit - New password is for an existing user
 export default {
   components: {
-    Checkbox, Banner, Password
+    Checkbox, Banner, Password, PasswordStrength
   },
   props: {
     mode: {
@@ -58,7 +59,8 @@ export default {
         confirmP:          '',
         userChangeOnLogin: false,
       },
-      disabledEncryption: null
+      disabledEncryption: null,
+      passwordStrength:   0,
     };
   },
   computed:   {
@@ -229,6 +231,10 @@ export default {
       });
     },
     async save(user) {
+      if (this.passwordStrength < 2) {
+        this.errorMessages = [this.t('changePassword.errors.strengthError')];
+        throw new Error(this.t('changePassword.errors.strengthError'));
+      }
       if (this.isChange) {
         await this.changePassword();
         if (this.form.deleteKeys) {
@@ -369,6 +375,7 @@ export default {
         </div>
       </div>
       <Checkbox v-if="isChange" v-model="isRandomGenerated" label-key="changePassword.generatePassword.label" class="mt-10 type" />
+      <PasswordStrength :password="isRandomGenerated ? passwordGen: passwordNew" @strengthChange="passwordStrength = $event"></PasswordStrength>
     </div>
     <div v-if="errorMessages && errorMessages.length" class="text-error" :class="{'row': isCreateEdit}">
       <div :class="{'col': isCreateEdit, 'span-8': isCreateEdit}">

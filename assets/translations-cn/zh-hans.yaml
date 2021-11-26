@@ -666,12 +666,20 @@ changePassword:
     failedDeleteKeys: 无法删除多个API密钥
     failedToChange: 无法修改密码
     missmatchedPassword: 前后两次输入的密码不匹配
+    strengthError: 密码强度弱
   generatePassword:
     label: 为用户生成随机密码
   newGeneratedPassword: 推荐密码
   randomGen:
     generated:
       label: 为用户生成随机密码
+  strength:
+    best: 强
+    good: 中
+    label: 密码强度
+    tooltip1: 密码必须至少包含8个字符
+    tooltip2: 至少包括数字、大写字母、小写字母、符号中的两个类型
+    weak: 弱
   title: 修改密码
   userGen:
     confirmPassword:
@@ -1203,7 +1211,7 @@ harvester:
     label: 主机
     promote:
       failed: 角色升级失败
-      none:  
+      none: null
       promoteRestart: 角色升级重启中
       promoteSucceed: 角色升级完成
       running: 角色升级中
@@ -3640,7 +3648,7 @@ validation:
       valid:
         name: 规则组需要名称 {index}.
         rule:
-          alertName: 规则组{groupIndex}规则{ruleIndex}需要一个警报名称。 
+          alertName: 规则组{groupIndex}规则{ruleIndex}需要一个警报名称。
           expr: 规则组{groupIndex}规则{ruleIndex}需要一个PromQL表达式
           labels: 规则组{groupIndex}规则{ruleIndex}至少需要一个标签。建议使用严重程度作为标签。
           recordName: 规则组{groupIndex}规则{ruleIndex}需要一个时间序列名称。
@@ -3667,7 +3675,7 @@ validation:
       targetPort:
         between: 端口规则 [{position}] - 目标端口的取值范围是： 1~65535
         iana: 端口规则 [{position}] - 目标端口必须是 IANA 服务名称或整数值
-        ianaAt: 端口规则 [{position}] - 目标端口 
+        ianaAt: 端口规则 [{position}] - 目标端口
         required: 端口规则 [{position}] - 目标端口是必填项
   stringLength:
     between: "\"{key}\" 的长度必须在 {min} 和 {max} 之间 {max, plural, =1 {字符} other {字符}}"

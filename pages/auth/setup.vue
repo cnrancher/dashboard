@@ -14,7 +14,9 @@ import { _ALL_IF_AUTHED } from '@/plugins/steve/actions';
 import { isDevBuild } from '@/utils/version';
 import { exceptionToErrorsArray } from '@/utils/error';
 import Password from '@/components/form/Password';
+import PasswordStrength from '@/components/PasswordStrength';
 import AESEncrypt from '@/utils/aes-encrypt';
+import { mapGetters } from 'vuex';
 
 const calcIsFirstLogin = (store) => {
   const firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
@@ -67,7 +69,7 @@ export default {
   },
 
   components: {
-    AsyncButton, LabeledInput, CopyToClipboard, Checkbox, RadioGroup, Password
+    AsyncButton, LabeledInput, CopyToClipboard, Checkbox, RadioGroup, Password, PasswordStrength
   },
 
   async asyncData({ route, req, store }) {
@@ -161,7 +163,13 @@ export default {
     };
   },
 
+  data() {
+    return { passwordStrength: 0 };
+  },
+
   computed: {
+    ...mapGetters({ t: 'i18n/t' }),
+
     saveEnabled() {
       if ( !this.eula && this.isFirstLogin) {
         return false;
@@ -204,6 +212,12 @@ export default {
 
   methods: {
     async save(buttonCb) {
+      if (this.mustChangePassword && this.passwordStrength < 2) {
+        buttonCb(false);
+        this.errors = [this.t('changePassword.errors.strengthError')];
+
+        return;
+      }
       const promises = [];
 
       try {
@@ -325,6 +339,7 @@ export default {
               :label="t('setup.confirmPassword')"
               :required="true"
             />
+            <PasswordStrength :password="password" @strengthChange="passwordStrength = $event"></PasswordStrength>
           </template>
 
           <template v-if="isFirstLogin">

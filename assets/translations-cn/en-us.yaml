@@ -855,11 +855,19 @@ changePassword:
     generated:
       label: Generated Password
   newGeneratedPassword: Suggest a password
+  strength:
+    label: Password strength
+    weak: weak
+    good: good
+    best: best
+    tooltip1: Password must contain at least 8 characters
+    tooltip2: Include at least two types of numbers, uppercase letters, lowercase letters, and symbols
   errors:
     missmatchedPassword: Passwords do not match
     failedToChange: Failed to change password
     failedDeleteKey: Failed to delete key
     failedDeleteKeys: Failed to delete keys
+    strengthError: Weak password strength
 
 chartHeading:
   overview: Overview

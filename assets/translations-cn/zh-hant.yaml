@@ -666,12 +666,20 @@ changePassword:
     failedDeleteKeys: 無法刪除多個API密鑰
     failedToChange: 無法修改密碼
     missmatchedPassword: 前後兩次輸入的密碼不匹配
+    strengthError: 密碼強度弱
   generatePassword:
     label: 為用戶生成隨機密碼
   newGeneratedPassword: 推薦密碼
   randomGen:
     generated:
       label: 為用戶生成隨機密碼
+  strength:
+    best: 強
+    good: 中
+    label: 密碼強度
+    tooltip1: 密碼必須至少包含8個字符
+    tooltip2: 至少包括數字、大寫字母、小寫字母、符號中的兩個類型
+    weak: 弱
   title: 修改密碼
   userGen:
     confirmPassword:
@@ -1203,7 +1211,7 @@ harvester:
     label: 主機
     promote:
       failed: 角色升級失敗
-      none:  
+      none: null
       promoteRestart: 角色升級重啟中
       promoteSucceed: 角色升級完成
       running: 角色升級中
@@ -3640,7 +3648,7 @@ validation:
       valid:
         name: 規則組需要名稱 {index}.
         rule:
-          alertName: 規則組{groupIndex}規則{ruleIndex}需要一個警報名稱。 
+          alertName: 規則組{groupIndex}規則{ruleIndex}需要一個警報名稱。
           expr: 規則組{groupIndex}規則{ruleIndex}需要一個PromQL表達式
           labels: 規則組{groupIndex}規則{ruleIndex}至少需要一個標簽。建議使用嚴重程度作為標簽。
           recordName: 規則組{groupIndex}規則{ruleIndex}需要一個時間序列名稱。
@@ -3667,7 +3675,7 @@ validation:
       targetPort:
         between: 端口規則 [{position}] - 目標端口的取值範圍是： 1~65535
         iana: 端口規則 [{position}] - 目標端口必須是 IANA 服務名稱或整數值
-        ianaAt: 端口規則 [{position}] - 目標端口 
+        ianaAt: 端口規則 [{position}] - 目標端口
         required: 端口規則 [{position}] - 目標端口是必填項
   stringLength:
     between: "\"{key}\" 的長度必須在 {min} 和 {max} 之間 {max, plural, =1 {字符} other {字符}}"
