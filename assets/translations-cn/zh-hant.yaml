@@ -646,6 +646,8 @@ catalog:
     url:
       label: Index URL
       placeholder: 例如：https://charts.rancher.io
+    tls:
+      insecureSkipTLSVerify: 跳過證書驗證
   tools:
     action:
       edit: 編輯

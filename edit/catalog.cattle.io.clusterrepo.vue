@@ -3,6 +3,7 @@ import CreateEditView from '@/mixins/create-edit-view';
 import Footer from '@/components/form/Footer';
 import LabeledInput from '@/components/form/LabeledInput';
 import RadioGroup from '@/components/form/RadioGroup';
+import Checkbox from '@/components/form/Checkbox';
 import NameNsDescription from '@/components/form/NameNsDescription';
 import Labels from '@/components/form/Labels';
 import SelectOrCreateAuthSecret from '@/components/form/SelectOrCreateAuthSecret';
@@ -18,6 +19,7 @@ export default {
     NameNsDescription,
     Labels,
     SelectOrCreateAuthSecret,
+    Checkbox,
   },
 
   mixins: [CreateEditView],
@@ -96,6 +98,10 @@ export default {
       :limit-to-namespace="false"
       generate-name="clusterrepo-auth-"
     />
+
+    <div class="mt-20">
+      <Checkbox v-model="value.spec.insecureSkipTLSVerify" label-key="catalog.repo.tls.insecureSkipTLSVerify" />
+    </div>
 
     <Labels
       default-section-class="mt-20"
