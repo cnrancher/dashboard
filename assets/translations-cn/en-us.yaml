@@ -139,6 +139,7 @@ nav:
     logs: Logs
   auditLog: Audit Log
   manageUI: Cluster Manager UI
+  quotas: Quotas
 product:
   apps: Apps & Marketplace
   auth: Users & Authentication

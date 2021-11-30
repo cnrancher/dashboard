@@ -2188,6 +2188,7 @@ nav:
     accountAndKeys: Account & API Keys
     logOut: 登出
     preferences: 首選項
+  quotas: 配額
 node:
   detail:
     detailTop:
