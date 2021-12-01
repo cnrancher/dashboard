@@ -13,7 +13,7 @@ export default {
 
   data() {
     const page = this.$route.params.page;
-    let src;
+    let src = '';
 
     if (page) {
       src = this.pages[page];
@@ -23,6 +23,13 @@ export default {
       src,
       page
     };
+  },
+  watch: {
+    $route() {
+      const page = this.$route.params.page;
+
+      this.src = this.pages[page] ?? '';
+    }
   },
 };
 </script>
