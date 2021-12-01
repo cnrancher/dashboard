@@ -1,15 +1,26 @@
 import { findBy, insertAt } from '@/utils/array';
 import { TARGET_WORKLOADS, TIMESTAMP, UI_MANAGED } from '@/config/labels-annotations';
-import { WORKLOAD_TYPES, SERVICE } from '@/config/types';
+import { WORKLOAD_TYPES, SERVICE, NAMESPACE, MANAGEMENT } from '@/config/types';
 import { clone, get, set } from '@/utils/object';
 import day from 'dayjs';
 import SteveModel from '@/plugins/steve/steve-class';
+import { PROJECT_ID, WORKLOAD_ID } from '@/config/query-params';
+import { SETTING } from '@/config/settings';
 
 export default class Workload extends SteveModel {
   // remove clone as yaml/edit as yaml until API supported
   get _availableActions() {
     let out = this._standardActions;
     const type = this._type ? this._type : this.type;
+
+    const auditLog = {
+      action:     'auditLog',
+      enabled:    this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
+      icon:       'icon icon-fw icon-globe',
+      label:      this.t('nav.auditLog'),
+    };
+
+    insertAt(out, 0, auditLog);
 
     insertAt(out, 0, {
       action: 'addSidecar',
@@ -570,5 +581,19 @@ export default class Workload extends SteveModel {
     } else {
       return null;
     }
+  }
+
+  async auditLog() {
+    const namespaces = await this.$dispatch(`cluster/findAll`, { type: NAMESPACE }, { root: true });
+    const namespace = namespaces.find(n => n.metadata?.name === this.metadata?.namespace);
+
+    this.currentRouter().push({
+      name:   'c-cluster-product-auditlog',
+      params: {
+        cluster:  this.$rootGetters['currentCluster'].id,
+        page:    'workload-audit-log'
+      },
+      query: { [PROJECT_ID]: namespace?.metadata?.annotations?.['field.cattle.io/projectId'], [WORKLOAD_ID]: `${ this.kind.toLowerCase() }:${ this.metadata?.namespace }:${ this.metadata?.name }` }
+    });
   }
 }

@@ -2,6 +2,7 @@ import { DEFAULT_PROJECT, SYSTEM_PROJECT } from '@/config/labels-annotations';
 import { MANAGEMENT, NAMESPACE, NORMAN } from '@/config/types';
 import { insertAt } from '@/utils/array';
 import { PROJECT_ID } from '@/config/query-params';
+import { SETTING } from '@/config/settings';
 
 export default {
   _availableActions() {
@@ -9,7 +10,7 @@ export default {
 
     const auditLog = {
       action:     'auditLog',
-      enabled:    true,
+      enabled:    this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
       icon:       'icon icon-fw icon-globe',
       label:      this.t('nav.auditLog'),
     };
@@ -142,7 +143,7 @@ export default {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-resource-quota'
         },
-        query: { [PROJECT_ID]: this.metadata.name }
+        query: { [PROJECT_ID]: `${ this.$rootGetters['currentCluster'].id }:${ this.metadata.name }` }
       });
     };
   },

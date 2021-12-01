@@ -1,7 +1,7 @@
 <script>
 import EmbeddedPageView from '@/components/EmberPageView';
 import { mapGetters } from 'vuex';
-import { PROJECT_ID } from '@/config/query-params';
+import { PROJECT_ID, WORKLOAD_ID } from '@/config/query-params';
 
 export default {
   components: { EmbeddedPageView },
@@ -10,8 +10,9 @@ export default {
     ...mapGetters(['currentCluster']),
     pages() {
       return {
-        'cluster-audit-log': `/c/${ this.currentCluster.id }/audit-log`,
-        'project-audit-log': `/p/${ this.currentCluster.id }:${ this.$route.query[PROJECT_ID] }/audit-log`
+        'cluster-audit-log':  `/c/${ this.currentCluster.id }/audit-log`,
+        'project-audit-log':  `/p/${ encodeURIComponent(this.$route.query[PROJECT_ID]) }/audit-log`,
+        'workload-audit-log': `/p/${ encodeURIComponent(this.$route.query[PROJECT_ID]) }/workloads/audit-log?workloadId=${ encodeURIComponent(this.$route.query[WORKLOAD_ID]) }`,
       };
     }
   },
