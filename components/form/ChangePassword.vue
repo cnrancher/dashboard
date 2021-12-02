@@ -375,7 +375,11 @@ export default {
         </div>
       </div>
       <Checkbox v-if="isChange" v-model="isRandomGenerated" label-key="changePassword.generatePassword.label" class="mt-10 type" />
-      <PasswordStrength :password="isRandomGenerated ? passwordGen: passwordNew" @strengthChange="passwordStrength = $event"></PasswordStrength>
+      <div :class="{row: !isChange}">
+        <div :class="{col: !isChange, 'span-4': !isChange}">
+          <PasswordStrength :password="isRandomGenerated ? passwordGen: passwordNew" @strengthChange="passwordStrength = $event"></PasswordStrength>
+        </div>
+      </div>
     </div>
     <div v-if="errorMessages && errorMessages.length" class="text-error" :class="{'row': isCreateEdit}">
       <div :class="{'col': isCreateEdit, 'span-8': isCreateEdit}">
