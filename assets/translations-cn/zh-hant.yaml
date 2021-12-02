@@ -405,6 +405,12 @@ authConfig:
     username: 用戶名
     usernameAttribute: 用戶名屬性
     users: 用戶
+    userUniqueIdAttribute:
+      label: 用戶唯一標識
+      tip: 請使用用戶創建後全局唯一的用戶屬性，避免因該屬性值變化導致用戶權限丟失
+    groupUniqueIdAttribute:
+      label: 組唯一標識
+      tip: 請使用用戶組創建後全局唯一的屬性，避免因該屬性值變化導致用戶權限丟失
   localEnabled: "{vendor} 被配置為允許訪問其本地數據庫中的賬戶。"
   manageLocal: 管理賬戶
   noneEnabled: 本地認證總是被啟用，但你可以從下面顯示的認證提供者中選擇另一個額外的認證提供者。

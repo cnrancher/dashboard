@@ -405,6 +405,12 @@ authConfig:
     username: 用户名
     usernameAttribute: 用户名属性
     users: 用户
+    userUniqueIdAttribute:
+      label: 用户唯一标识
+      tip: 请使用用户创建后全局唯一的用户属性，避免因该属性值变化导致用户权限丢失
+    groupUniqueIdAttribute:
+      label: 组唯一标识
+      tip: 请使用用户组创建后全局唯一的属性，避免因该属性值变化导致用户权限丢失
   localEnabled: "{vendor} 被配置为允许访问其本地数据库中的账户。"
   manageLocal: 管理账户
   noneEnabled: 本地认证总是被启用，但你可以从下面显示的认证提供者中选择另一个额外的认证提供者。
