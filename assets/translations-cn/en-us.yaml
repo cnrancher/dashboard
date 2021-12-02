@@ -3345,6 +3345,9 @@ rbac:
         description: Allows the user to view Metrics through the API.
       base:
         label: Login Access
+      read-only-pandaria:
+        label: Read-Only Administrator
+        description: A read-only administrator can access all resources in all downstream clusters, but cannot access the local cluster
 resourceDetail:
   detailTop:
     annotations: Annotations
@@ -4110,6 +4113,7 @@ user:
       adminMessage: This user is an administrator and has all permissions
       tableHeaders:
         permission: Permission
+      readOnlyAdminMessage: This user is a read-only administrator and has read-only access to subordinate cluster objects
     clusterRoles:
       label: Cluster Roles
       description: Roles granted to this user for individual clusters
@@ -4292,6 +4296,9 @@ wm:
   containerShell:
     clear: Clear
     containerName: "Container: {label}"
+    permissionDenied:
+      title: Error Open Shell
+      message: Permission Denied
   kubectlShell:
     title: "Kubectl: {name}"
 workload:
