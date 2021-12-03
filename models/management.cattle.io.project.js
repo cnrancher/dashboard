@@ -10,7 +10,7 @@ export default {
 
     const auditLog = {
       action:     'auditLog',
-      enabled:    this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
+      enabled:    !!this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
       icon:       'icon icon-fw icon-globe',
       label:      this.t('nav.auditLog'),
     };
