@@ -3836,6 +3836,7 @@ workload:
       sysctls: Sysctls
       sysctlsKey: 名称
     standard: 标准容器
+    tags: Tags
     titles:
       command: 命令
       container: 容器配置

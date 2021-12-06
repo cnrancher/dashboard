@@ -4458,6 +4458,7 @@ workload:
       sysctls: Sysctls
       sysctlsKey: Name
     standard: Standard Containter
+    tags: Tags
     titles:
       container: Container
       command: Command

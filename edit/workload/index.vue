@@ -10,6 +10,7 @@ import CreateEditView from '@/mixins/create-edit-view';
 import { allHash } from '@/utils/promise';
 import NameNsDescription from '@/components/form/NameNsDescription';
 import LabeledSelect from '@/components/form/LabeledSelect';
+import LabeledInputSugget from '@/components/form/LabeledInputSugget';
 import LabeledInput from '@/components/form/LabeledInput';
 import HealthCheck from '@/components/form/HealthCheck';
 import Security from '@/components/form/Security';
@@ -58,6 +59,7 @@ export default {
     Loading,
     NameNsDescription,
     LabeledSelect,
+    LabeledInputSugget,
     LabeledInput,
     KeyValue,
     Tabbed,
@@ -120,6 +122,8 @@ export default {
     this.allServices = hash.services;
     this.pvcs = hash.pvcs;
     this.systemGpuManagementSchedulerName = hash.systemGpuManagementSchedulerName?.value ?? '';
+    this.$store.dispatch('harbor/fetchHarborVersion');
+    this.$store.dispatch('harbor/loadHarborServerUrl');
   },
 
   data() {
@@ -479,7 +483,24 @@ export default {
       return out;
     },
 
-    ...mapGetters({ t: 'i18n/t' })
+    harborImagsChoices() {
+      const images = this.harbor?.harborImages?.urls || [];
+
+      return images.length > 0 ? [
+        { kind: 'group', label: 'Images in harbor image repositories' },
+        ...images,
+      ] : [];
+    },
+    suggestions() {
+      return [
+        ...this.harborImagsChoices
+      ];
+    },
+    harborImageTagsChoices() {
+      return (this.harbor?.harborImageTags || []).map(h => h.name);
+    },
+
+    ...mapGetters({ t: 'i18n/t', harbor: 'harbor/all' }),
   },
 
   watch: {
@@ -524,6 +545,29 @@ export default {
       const existing = containers.filter(container => container._active)[0];
 
       Object.assign(existing, neu);
+    },
+
+    'container.imageTag'(neu) {
+      const tag = this.container.imageTag;
+
+      if (tag) {
+        const image = this.container.image;
+        const harborRepo = this.harbor?.harborRepo || '';
+        let repo = image;
+
+        if (repo.startsWith(`${ harborRepo }/`)) {
+          repo = repo.replace(`${ harborRepo }/`, '');
+        }
+        const index = repo.indexOf(':');
+
+        this.$set(this.container, 'image', index > -1 ? `${ image.substr(0, image.lastIndexOf(':')) }:${ tag }` : `${ image }:${ tag }`);
+      }
+    },
+
+    harborImageTagsChoices() {
+      if (this.harbor.imageTag) {
+        this.container.imageTag = this.harbor.imageTag;
+      }
     }
   },
 
@@ -861,7 +905,11 @@ export default {
       }
 
       podTemplateSpec.vlansubnet = neu;
-    }
+    },
+
+    onSearchImages(str) {
+      this.$store.dispatch('harbor/loadImagesInHarbor', str);
+    },
   }
 };
 </script>
@@ -950,12 +998,15 @@ export default {
             <h3>{{ t('workload.container.titles.image') }}</h3>
             <div class="row mb-20">
               <div class="col span-6">
-                <LabeledInput
+                <LabeledInputSugget
                   v-model="container.image"
-                  :mode="mode"
-                  :label="t('workload.container.image')"
                   placeholder="e.g. nginx:latest"
-                  required
+                  text-required
+                  :mode="mode"
+                  :text-label="t('workload.container.image')"
+                  :searchable="true"
+                  :options="suggestions"
+                  @onSearch="onSearchImages"
                 />
               </div>
               <div class="col span-6">
@@ -963,6 +1014,17 @@ export default {
                   v-model="container.imagePullPolicy"
                   :label="t('workload.container.imagePullPolicy')"
                   :options="pullPolicyOptions"
+                  :mode="mode"
+                />
+              </div>
+            </div>
+            <div v-show="container.image && harborImageTagsChoices && harborImageTagsChoices.length > 0" class="row mb-20">
+              <div class="col span-6">
+                <LabeledSelect
+                  v-model="container.imageTag"
+                  :label="t('workload.container.tags')"
+                  :options="harborImageTagsChoices"
+                  :searchable="true"
                   :mode="mode"
                 />
               </div>
