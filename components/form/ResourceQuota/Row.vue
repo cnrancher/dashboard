@@ -2,6 +2,7 @@
 import { _VIEW } from '@/config/query-params';
 import LabeledSelect from '@/components/form/LabeledSelect';
 import UnitInput from '@/components/form/UnitInput';
+import { parseSi, convertToMillis } from '@/utils/units';
 
 export default {
   components: { LabeledSelect, UnitInput },
@@ -53,6 +54,79 @@ export default {
 
     isStorage() {
       return this.typed?.units === 'storage';
+    },
+
+    cpuLimit: {
+      get() {
+        return convertToMillis(this.value.spec.resourceQuota.limit[this.type]);
+      },
+      set(v) {
+        this.$set(this.value.spec.resourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }m`);
+      }
+    },
+    cpuNsDefaultLimit: {
+      get() {
+        return convertToMillis(this.value.spec.namespaceDefaultResourceQuota.limit[this.type]);
+      },
+      set(v) {
+        this.$set(this.value.spec.namespaceDefaultResourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }m`);
+      }
+    },
+    memLimit: {
+      get() {
+        const v = this.value.spec.resourceQuota.limit[this.type];
+
+        return v ? `${ parseSi(v, { increment: 1024 }) / (1024 ** 2) }` : '';
+      },
+      set(v) {
+        this.$set(this.value.spec.resourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }Mi`);
+      }
+    },
+    memNsDefaultLimit: {
+      get() {
+        const v = this.value.spec.namespaceDefaultResourceQuota.limit[this.type];
+
+        return v ? `${ parseSi(v, { increment: 1024 }) / (1024 ** 2) }` : '';
+      },
+      set(v) {
+        this.$set(this.value.spec.namespaceDefaultResourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }Mi`);
+      }
+    },
+    storageLimit: {
+      get() {
+        const v = this.value.spec.resourceQuota.limit[this.type];
+
+        return v ? `${ parseSi(v, { increment: 1024 }) / (1024 ** 3) }` : '';
+      },
+      set(v) {
+        this.$set(this.value.spec.resourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }Gi`);
+      }
+    },
+    storageNsDefaultLimit: {
+      get() {
+        const v = this.value.spec.namespaceDefaultResourceQuota.limit[this.type];
+
+        return v ? `${ parseSi(v, { increment: 1024 }) / (1024 ** 3) }` : '';
+      },
+      set(v) {
+        this.$set(this.value.spec.namespaceDefaultResourceQuota.limit, this.type, [null, undefined].includes(v) ? '' : `${ v }Gi`);
+      }
+    },
+    unitlessLimit: {
+      get() {
+        return this.value.spec.resourceQuota.limit[this.type];
+      },
+      set(v) {
+        this.$set(this.value.spec.resourceQuota.limit, this.type, v);
+      }
+    },
+    unitlessNsDefaultLimit: {
+      get() {
+        return this.value.spec.namespaceDefaultResourceQuota.limit[this.type];
+      },
+      set(v) {
+        this.$set(this.value.spec.namespaceDefaultResourceQuota.limit, this.type, v);
+      }
     }
   },
 
@@ -77,7 +151,7 @@ export default {
 
     <UnitInput
       v-if="isUnitless"
-      v-model="value.spec.resourceQuota.limit[type]"
+      v-model="unitlessLimit"
       class="mr-10"
       :mode="mode"
       :suffix="false"
@@ -86,7 +160,7 @@ export default {
     />
     <UnitInput
       v-if="isUnitless"
-      v-model="value.spec.namespaceDefaultResourceQuota.limit[type]"
+      v-model="unitlessNsDefaultLimit"
       :mode="mode"
       :suffix="false"
       :label="t('resourceQuota.namespaceDefaultLimit.label')"
@@ -95,7 +169,7 @@ export default {
 
     <UnitInput
       v-if="isCpu"
-      v-model="value.spec.resourceQuota.limit[type]"
+      v-model="cpuLimit"
       class="mr-10"
       :suffix="t('suffix.milliCpus')"
       :mode="mode"
@@ -104,7 +178,7 @@ export default {
     />
     <UnitInput
       v-if="isCpu"
-      v-model="value.spec.namespaceDefaultResourceQuota.limit[type]"
+      v-model="cpuNsDefaultLimit"
       :suffix="t('suffix.milliCpus')"
       :mode="mode"
       :label="t('resourceQuota.namespaceDefaultLimit.label')"
@@ -113,7 +187,7 @@ export default {
 
     <UnitInput
       v-if="isMemory"
-      v-model="value.spec.resourceQuota.limit[type]"
+      v-model="memLimit"
       class="mr-10"
       :suffix="t('suffix.mib')"
       :mode="mode"
@@ -122,7 +196,7 @@ export default {
     />
     <UnitInput
       v-if="isMemory"
-      v-model="value.spec.namespaceDefaultResourceQuota.limit[type]"
+      v-model="memNsDefaultLimit"
       :suffix="t('suffix.mib')"
       :mode="mode"
       :label="t('resourceQuota.namespaceDefaultLimit.label')"
@@ -131,7 +205,7 @@ export default {
 
     <UnitInput
       v-if="isStorage"
-      v-model="value.spec.resourceQuota.limit[type]"
+      v-model="storageLimit"
       class="mr-10"
       :suffix="t('suffix.gb')"
       :mode="mode"
@@ -140,7 +214,7 @@ export default {
     />
     <UnitInput
       v-if="isStorage"
-      v-model="value.spec.namespaceDefaultResourceQuota.limit[type]"
+      v-model="storageNsDefaultLimit"
       :suffix="t('suffix.gb')"
       :mode="mode"
       :label="t('resourceQuota.namespaceDefaultLimit.label')"

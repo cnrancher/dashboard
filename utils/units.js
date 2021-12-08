@@ -147,6 +147,17 @@ export function createMemoryValues(total, useful) {
   };
 }
 
+export function convertToMillis(strValue) {
+  if (!strValue) {
+    return '';
+  }
+  if (strValue.endsWith('m')) {
+    return parseInt(strValue.substr(0, strValue.length - 1), 10);
+  } else {
+    return parseInt(strValue, 10) * 1000;
+  }
+}
+
 export default {
   exponentNeeded,
   formatSi,
