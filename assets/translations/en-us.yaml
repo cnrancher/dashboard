@@ -6032,27 +6032,3 @@ serverUpgrade:
 autoLogout:
   message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
   title: Auto logout
-
-cruRegistry:
-  title:
-    new: Add Registry
-    edit: 'Edit Registry: {name}'
-    view: 'Registry: {name}'
-  address:
-    label: Address
-    dockerhub: DockerHub
-    quay: Quay.io
-    custom: Custom
-    harbor: Harbor
-    globalRegistry: Global Registry
-    placeholder: e.g. registry.example.com
-    artifactory: Artifactory
-  multiple: Multiple
-  auth:
-    label: Auth token
-    saved: Saved
-  username:
-    label: Username
-  password:
-    label: Password
-    saved: Saved

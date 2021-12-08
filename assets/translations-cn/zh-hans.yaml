@@ -696,6 +696,29 @@ changePassword:
       label: 新密码
 chartHeading:
   overview: 概述
+cruRegistry:
+  title:
+    new: 添加镜像库凭证
+    edit: '编辑镜像库凭证: {name}'
+    view: '镜像库凭证: {name}'
+  address:
+    label: 地址
+    dockerhub: DockerHub
+    quay: 'Quay.io'
+    custom: 自定义
+    harbor: Harbor
+    globalRegistry: 全局镜像库
+    placeholder: '例如: registry.example.com'
+    artifactory: Artifactory
+  multiple: 多个
+  auth:
+    label: 认证 Token
+    saved: 已保存
+  username:
+    label: 用户名
+  password:
+    label: 密码
+    saved: 已保存
 cis:
   addTest: 添加测试 ID
   alertNeeded: "Alerting must be enabled within the CIS chart questions.yaml. This requires that <a tabindex=\"0\" aria-label=\"Link to Rancher's Monitoring\" href=\"{link}\"> Rancher's Monitoring and Alerting app</a> is installed and the Receivers and Routes are <a target=\"_blank\" rel='noopener nofollow' href='{docsBase}/monitoring-alerting/configuration/#alertmanager-configuration'> configured to send out alerts.</a>"

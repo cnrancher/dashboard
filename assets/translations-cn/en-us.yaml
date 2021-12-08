@@ -855,6 +855,29 @@ changePassword:
 chartHeading:
   overview: Overview
   poweredBy: "Powered by:"
+cruRegistry:
+  title:
+    new: Add Registry
+    edit: 'Edit Registry: {name}'
+    view: 'Registry: {name}'
+  address:
+    label: Address
+    dockerhub: DockerHub
+    quay: Quay.io
+    custom: Custom
+    harbor: Harbor
+    globalRegistry: Global Registry
+    placeholder: e.g. registry.example.com
+    artifactory: Artifactory
+  multiple: Multiple
+  auth:
+    label: Auth token
+    saved: Saved
+  username:
+    label: Username
+  password:
+    label: Password
+    saved: Saved
 cis:
   addTest: Add Test ID
   alertNeeded: |-

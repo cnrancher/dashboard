@@ -4657,28 +4657,3 @@ support:
     four:
       title: 自由创新
       text: 利用我们与众多的Kubernetes厂商、操作系统和开源软件的认证兼容性。
-
-cruRegistry:
-  title:
-    new: 添加镜像库凭证
-    edit: '编辑镜像库凭证: {name}'
-    view: '镜像库凭证: {name}'
-  address:
-    label: 地址
-    dockerhub: DockerHub
-    quay: 'Quay.io'
-    custom: 自定义
-    harbor: Harbor
-    globalRegistry: 全局镜像库
-    placeholder: '例如: registry.example.com'
-    artifactory: Artifactory
-  multiple: 多个
-  auth:
-    label: 认证 Token
-    saved: 已保存
-  username:
-    label: 用户名
-  password:
-    label: 密码
-    saved: 已保存
-
