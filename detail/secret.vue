@@ -16,7 +16,7 @@ const types = [
   TYPES.BASIC,
 ];
 const registryAddresses = [
-  'DockerHub', 'Quay.io', 'Harbor', 'Artifactory', 'Custom2'
+  'DockerHub', 'Quay.io', 'Harbor', 'Artifactory', 'Custom'
 ];
 
 export default {
@@ -64,8 +64,6 @@ export default {
       password = auths[registryUrl].password;
     }
 
-    this.initHarborConfig();
-
     const data = this.value?.data || {};
 
     if (this.value._type === TYPES.TLS) {
@@ -106,6 +104,10 @@ export default {
       relatedServices: [],
       harborConfig:    {},
     };
+  },
+
+  mounted() {
+    this.initHarborConfig();
   },
 
   computed:   {

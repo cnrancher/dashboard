@@ -116,6 +116,10 @@ export const actions = {
   }, input) {
     const isAdmin = getters['auth/isAdmin'];
 
+    if (!state.harborServer) {
+      return;
+    }
+
     return dispatch('apiList', {
       url:     `/meta/harbor/${ ( state.harborServer ).replace('//', '/').replace(/\/+$/, '') }/api${ state.harborVersion === 'v2.0' ? state.harborVersion : '' }/search?q=${ encodeURIComponent(state.latestQuery) }`,
       headers: { 'X-API-Harbor-Admin-Header': !!isAdmin },

@@ -47,8 +47,6 @@ export default {
     const username = auths[registryUrl]?.username || '';
     const password = auths[registryUrl]?.password || '';
 
-    this.initHarborConfig();
-
     return {
       registryProvider,
       username,
@@ -56,6 +54,10 @@ export default {
       registryUrl,
       harborConfig: {},
     };
+  },
+
+  mounted() {
+    this.initHarborConfig();
   },
 
   computed: {

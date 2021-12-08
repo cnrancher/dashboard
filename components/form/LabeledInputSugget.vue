@@ -15,6 +15,11 @@ export default {
       default: false,
     },
 
+    required: {
+      type:    Boolean,
+      default: false,
+    },
+
     searchable: {
       type:    Boolean,
       default: true,
@@ -178,7 +183,7 @@ export default {
       :label="textLabel"
       :placeholder="placeholder"
       :disabled="disabled"
-      :required="textRequired"
+      :required="required"
       :mode="mode"
       v-bind="$attrs"
       @blur="onBlur"

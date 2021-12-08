@@ -1001,7 +1001,7 @@ export default {
                 <LabeledInputSugget
                   v-model="container.image"
                   placeholder="e.g. nginx:latest"
-                  text-required
+                  required
                   :mode="mode"
                   :text-label="t('workload.container.image')"
                   :searchable="true"
