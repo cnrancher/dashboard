@@ -131,7 +131,7 @@ export default {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-audit-log'
         },
-        query: { [PROJECT_ID]: `${ this.$rootGetters['currentCluster'].id }:${ this.metadata.name }` }
+        query: { [PROJECT_ID]: this.id.replace('/', ':') }
       });
     };
   },
@@ -143,7 +143,7 @@ export default {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-resource-quota'
         },
-        query: { [PROJECT_ID]: `${ this.$rootGetters['currentCluster'].id }:${ this.metadata.name }` }
+        query: { [PROJECT_ID]: this.id.replace('/', ':') }
       });
     };
   },
