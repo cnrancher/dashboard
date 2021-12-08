@@ -309,6 +309,22 @@ export function init(store) {
     'macvlan-subnet',
   ], 'vlansubnet');
 
+  // F5 CIS
+  virtualType({
+    label:      'cis-f5',
+    labelKey:   'nav.tools.cisF5',
+    name:       'cis-f5',
+    group:      'cluster',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-product-cisF5', params: { cluster: 'local', page: 'cluster-cisF5' } },
+    exact:      true
+  });
+
+  basicType([
+    'cis-f5',
+  ], 'tools');
+
   // Ignore these types as they are managed through the settings product
   ignoreType(MANAGEMENT.FEATURE);
   ignoreType(MANAGEMENT.SETTING);

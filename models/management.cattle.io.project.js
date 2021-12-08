@@ -22,9 +22,17 @@ export default {
       label:      this.t('nav.quotas'),
     };
 
+    const f5Ingresses = {
+      action:     'f5Ingresses',
+      enabled:    true,
+      icon:       'icon icon-fw icon-globe',
+      label:      this.t('nav.cisF5.controllers'),
+    };
+
     insertAt(out, 0, { divider: true });
     insertAt(out, 0, auditLog);
     insertAt(out, 0, resourceQuota);
+    insertAt(out, 0, f5Ingresses);
 
     return out;
   },
@@ -147,4 +155,16 @@ export default {
       });
     };
   },
+  f5Ingresses() {
+    return () => {
+      this.currentRouter().push({
+        name:   'c-cluster-product-f5Ingresses',
+        params: {
+          cluster:  this.$rootGetters['currentCluster'].id,
+          page:    'project-f5-ingresses'
+        },
+        query: { [PROJECT_ID]: this.id.replace('/', ':') }
+      });
+    };
+  }
 };

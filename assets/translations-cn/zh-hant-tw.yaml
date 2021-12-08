@@ -2183,6 +2183,8 @@ nav:
     starred: 已收藏
     storage: 存儲
     workload: 工作負載
+    tools: 工具
+    vlansubnet: 扁平網路
   header:
     restoreCards: 恢復隱藏的卡片
     setLoginPage: 設置為登錄頁面
@@ -2218,6 +2220,14 @@ nav:
     logOut: 登出
     preferences: 首選項
   quotas: 配額
+  vlanSubnet:
+    label: 扁平網路
+  cisF5:
+    controllers: F5 負載均衡
+    tls: TLS
+  tools: 
+    tab: 工具
+    cisF5: F5 負載均衡服務
 node:
   detail:
     detailTop:
