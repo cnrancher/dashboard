@@ -9,7 +9,7 @@ export default {
   computed: {
     ...mapGetters(['currentCluster']),
     pages() {
-      return { 'project-resource-quota': `/p/${ this.currentCluster.id }:${ this.$route.query[PROJECT_ID] }/quotas-cn` };
+      return { 'project-resource-quota': `/p/${ encodeURIComponent(this.$route.query[PROJECT_ID]) }/quotas-cn` };
     }
   },
 
