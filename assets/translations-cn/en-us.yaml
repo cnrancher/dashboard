@@ -5638,6 +5638,7 @@ action:
   clone: Clone
   disable: Disable
   download: Download YAML
+  downloadFile: Download File
   edit: Edit Config
   editYaml: Edit YAML
   enable: Enable
@@ -5916,3 +5917,14 @@ serverUpgrade:
 autoLogout:
   message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
   title: Auto logout
+
+modalDownLoadFileComponent:
+  title: Container file download
+  container: Container
+  filePath: File Path
+  placeholder: Please enter the path of the file in the container
+  notice: Downloading files over 600MiB may cause your browser to crash.
+  validateContainer: Please select a container
+  validatePath: Please enter the path to the file you want to download.
+  noSuchFile: File does not exist
+  serverError: An error occurred on the service break

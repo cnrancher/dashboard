@@ -621,6 +621,12 @@ export class Resource {
         enabled:    this.canYaml
       },
       {
+        action:     'downloadFile',
+        label:      this.t('action.downloadFile'),
+        icon:       'icon icon-download',
+        enabled:    !!this.actions?.download,
+      },
+      {
         action:  (this.canCustomEdit ? 'goToClone' : 'cloneYaml'),
         label:   this.t('action.clone'),
         icon:    'icon icon-copy',
