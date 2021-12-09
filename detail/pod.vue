@@ -75,6 +75,9 @@ export default {
           // at the container level still has 'this' in scope.
           this.value.openLogs(container.name);
         };
+        container.downloadFile = () => {
+          this.value.downloadFile(container);
+        };
 
         return container;
       });

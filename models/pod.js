@@ -46,9 +46,20 @@ export default class Pod extends SteveModel {
     };
   }
 
+  get downloadFileMenuItem() {
+    return {
+      action:     'downloadFile',
+      enabled:    !!this.actions?.download,
+      icon:       'icon icon-download',
+      label:      this.t('action.downloadFile'),
+    };
+  }
+
   get containerActions() {
     const out = [];
 
+    insertAt(out, 0, this.downloadFileMenuItem);
+    insertAt(out, 0, { divider: true });
     insertAt(out, 0, this.openLogsMenuItem);
     insertAt(out, 0, this.openShellMenuItem);
 
@@ -90,6 +101,15 @@ export default class Pod extends SteveModel {
         initialContainer: containerName
       }
     }, { root: true });
+  }
+
+  downloadFile() {
+    const resources = this;
+
+    this.$dispatch('promptModal', {
+      resources,
+      component: 'DownloadFileDialog'
+    });
   }
 
   containerStateDisplay(container) {

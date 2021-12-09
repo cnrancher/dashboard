@@ -5926,6 +5926,7 @@ action:
   clone: Clone
   disable: Disable
   download: Download YAML
+  downloadFile: Download File
   edit: Edit Config
   editYaml: Edit YAML
   enable: Enable
@@ -6242,3 +6243,14 @@ registryMirror:
   addLabel: Add Mirror
   header: Mirrors
   toolTip: Mirrors can be used to redirect requests for images from one registry to actually come from a list of endpoints you specify instead.  For example you could point docker.io to always talk to your internal registry and instead of ever going to the actual DockerHub on the internet.
+
+modalDownLoadFileComponent:
+  title: Container file download
+  container: Container
+  filePath: File Path
+  placeholder: Please enter the path of the file in the container
+  notice: Downloading files over 600MiB may cause your browser to crash.
+  validateContainer: Please select a container
+  validatePath: Please enter the path to the file you want to download.
+  noSuchFile: File does not exist
+  serverError: An error occurred on the service break
