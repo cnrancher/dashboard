@@ -108,6 +108,13 @@ advancedSettings:
     ui-index: UI的HTML索引。
     ui-issues: 使用一个URL地址来发送新的 "提交问题 "报告，而不是将用户发送到Github问题页面。
     ui-pl: Private-Label company name.
+    harv-additional-ca: 用于TLS验证的自定义CA根证书。
+    harv-cluster-registration-url: 用于多集群管理的注册URL。
+    harv-http-proxy: 用于Harvester访问外部服务的HTTP代理。
+    harv-overcommit-config: 资源超额配置。
+    harv-support-bundle-timeout: 支持包超时配置（分钟），使用0禁用超时。
+    harv-vip-pools: 按CIDR配置VIP全局和命名空间的IP地址池。
+    harv-vm-force-deletion-policy: 配置当虚拟机卡在停机的节点上时的强制删除动作。
   edit:
     changeSetting: 修改设置
     falseOption: "False"
@@ -624,6 +631,9 @@ catalog:
         description: This process will help {action, select, install { create } upgrade { upgrade } update { update }
         label: Metadata
         subtext: 设置应用的 metadata
+      helmCli:
+        checkbox: 在安装前自定义Helm选项
+        label: Helm选项
     version: 版本
     versions:
       current: "{ver} (current)"
@@ -804,6 +814,18 @@ cluster:
     name:
       label: 凭证名称
       placeholder: 请为这个凭证输入一个名称
+    banner:
+      createCredential: |-
+        {length, plural,
+          =0 {首先，你需要创建一个凭证来与云计算供应商对话}
+          other {好的，让我们创建一个新的凭证}
+        }
+    select:
+      option:
+        new: 创建新的...
+        none: 选择一个凭证...
+    selectExisting:
+      label: 选择已有
   description:
     label: 集群描述
     placeholder: （选填项）请输入关于该集群的描述
@@ -823,6 +845,12 @@ cluster:
         controlPlane: "{count, plural,\n  =0 { 每个集群至少需要一个control plane节点才可以使用。 }\n  =1 { 只有一个control plane节点的集群是不具备容错能力的。 }\n  other {}\n}"
         etcd: "{count, plural,\n  =0 { 一个集群至少需要一个etcd节点才能使用，请重新选择节点数量。 }\n  =1 { 只有1个etcd节点的集群是不具备容错能力的。 }\n  =2 { 集群的节点数应该是奇数。 具有2个etcd节点的集群是不具备容错能力的。 }\n  =3 {}\n  =4 { 集群内的节点数量应该为任意大于1的奇数，请重新选择节点数量。 }\n  =5 {}\n  =6 { 集群内的节点数量应该为任意大于1的奇数，请重新选择节点数量。 }\n  =7 {}\n  other { 我们不建议您在集群内创建多于7个节点。 }\n}"
         worker: "{count, plural,\n  =0 { 每个集群至少需要一个worker节点才可以使用 }\n  =1 { 只有一个worker节点的集群是不具备容错能力的。 }\n  other {}\n}"
+    labels:
+      label: Kubernetes节点标签
+    quantity:
+      label: 节点数量
+    role:
+      label: 角色
   name:
     label: 集群名称
     placeholder: 请输入集群名称，该名称不能与其他集群名称相同
@@ -840,6 +868,160 @@ cluster:
     create-template: 使用模板创建集群
     register-custom: 导入 Kubernetes 集群
     register-kontainer: 在托管的 Kubernetes 提供商中注册一个现有的集群
+    create-custom1: 在现有的节点上使用 RKE 创建集群
+    create-custom2: 在现有的节点上使用 RKE2/k3s 创建集群
+    create-rke1: 在新的节点使用RKE创建一个集群
+    create-rke2: 在新的节点使用RKE2/K3s创建一个集群
+  addOns:
+    additionalManifest:
+      title: 补充声明文件
+      tooltip: 集群启动时将会应用Kubernetes补充声明YAML.
+  addonChart:
+    rancher-vsphere-cpi: vSphere CPI配置
+    rancher-vsphere-csi: vSphere CSI配置
+    rke2-calico: Calico配置
+    rke2-calico-crd: Calico配置
+    rke2-canal: Canal配置
+    rke2-cilium: Cilium配置
+    rke2-coredns: CoreDNS配置
+    rke2-ingress-nginx: NGINX Ingress配置
+    rke2-kube-proxy: Kube Proxy配置
+    rke2-metrics-server: Metrics Server配置
+    rke2-multus: Multus配置
+  advanced:
+    agentArgs:
+      label: 如果内核参数与预期的kubelet默认值不同，则抛出错误
+    argInfo:
+      machineSelector:
+        bannerLabel: '注意: 优先匹配最后一个的选择器, 并且只使用它的参数. 其他匹配的选择器的参数不会结合在一起或合并。'
+        kubeApiServerTitle: 附加API服务器参数
+        kubeControllerManagerTitle: 附加Controller管理参数
+        kubeSchedulerTitle: 附加Scheduler参数
+        label: 添加节点选择器
+        listLabel: 添加参数
+        subTitle: '使用Kubelet参数:'
+        title: '对于匹配标签的机器:'
+        titleAlt: '对所有节点使用Kubelet参数:'
+      title: 附加Kubelet参数
+  agentEnvVars:
+    detail: 向agent容器添加额外的环境变量. 这在配置HTTP代理时是最常用的.
+    keyLabel: 变量名
+    label: Agent环境
+  harvester:
+    importNotice: 导入Harvester集群通过
+    machinePool:
+      cpu:
+        placeholder: '例如: 2'
+      disk:
+        placeholder: '例如: 4'
+      image:
+        placeholder: 请选择镜像
+      memory:
+        placeholder: '例如: 4'
+      namespace:
+        placeholder: '例如: default'
+      network:
+        placeholder: 请选择网络
+      sshUser:
+        placeholder: '例如: ubuntu'
+        toolTip: 登录选中的操作系统镜像的SSH用户名.
+    registration:
+      step1: 1. 前往目标Harvester UI的设置页面.
+      step2: 2. 找到<code>cluster-registration-url</code>设置并点击<code><i class="icon icon-actions doc-icon" ></i></code> -> <code>编辑设置</code>按钮.
+      step3: 3. 输入下面的注册URL并点击<code>保存</code>.
+      step4: 注册URL
+    warning:
+      label: 这是Harvester集群 - 启用Harvester特性以管理
+      state: 警告
+  importAction: 导入已有集群
+  legacyWarning: 旧版功能标志已启用，在Kubernetes 1.21+中，并不支持所有的旧版功能。
+  memberRoles:
+    addClusterMember:
+      labelAdd: 添加成员
+      labelSelect: 选择成员
+      noResults: 没有匹配的结果
+      placeholder: 搜索成员以提供集群访问权限
+      searchPlaceholder: 请输入搜索
+    removeMessage: '注意: 删除一个用户不会删除其项目权限'
+  privateRegistry:
+    mode:
+      advanced: 配置高级containerd镜像和镜像仓库认证选项
+      private: 从私有镜像仓库中为{vendor}拉取镜像
+      public: 从公共DockerHub中为{vendor}拉取镜像
+    systemDefaultRegistry:
+      label: Rancher镜像的镜像仓库主机名
+  rke2:
+    address:
+      caCerts:
+        label: CA证书
+        toolTip: Agent需要验证来自信任地址的证书
+      clusterCidr:
+        label: 集群CIDR
+      dns:
+        label: 集群DNS
+      domain:
+        label: 集群域名
+      fqdn:
+        toolTip: FQDN将解析到集群中健康的control plane节点.
+      header: 地址
+      nodePortRange:
+        label: NodePort服务端口范围
+      serviceCidr:
+        label: 服务CIDR
+      tlsSan:
+        label: TLS替代名称
+    cloudProvider:
+      header: 云供应商配置
+      label: 云供应商
+    cni:
+      label: 容器网络供应商
+    controlPlaneConcurrency:
+      label: Control Plane并发
+      toolTip: 可以是一个固定的节点数(如1), 也可以是一个百分比(如10%).
+    defaultPodSecurityPolicyTemplateName:
+      label: 默认Pod安全策略
+    drain:
+      label: 清空节点
+      toolTip: 清空预先删除了每个节点上的pod, 所以在升级的节点上没有运行的工作负载. 在没有清空的情况下进行升级, 速度更快, 但根pod仍然可能在升级过程中重新启动.
+    enableNetworkPolicy:
+      label: 项目网络隔离
+    etcd:
+      disableSnapshots:
+        label: 自动快照
+      exportMetric:
+        "false": 仅供集群内访问
+        label: 指标
+        "true": 通过公开接口暴露
+      snapshotRetention:
+        label: 保持最后
+      snapshotScheduleCron:
+        label: 定时调度
+    security:
+      header: 安全
+    snapshots:
+      suffix: 每个节点的快照
+    systemService:
+      header: 系统服务
+    workNode:
+      label: Worker节点
+    workerConcurrency:
+      label: Worker并发
+      toolTip: 可以是一个固定的节点数(如1), 也可以是一个百分比(如10%).
+  tabs:
+    ace: 认证地址
+    addons: 附加配置
+    advanced: 高级
+    agentEnv: Agent环境变量
+    basic: 基础
+    cluster: 集群配置
+    machinePools: 主机池
+    machines: 主机
+    memberRoles: 成员角色
+    networking: 网络
+    registration: 注册
+    registry: 镜像仓库
+    upgrade: 升级策略
+  toolsTip: 使用新的集群工具来管理和安装监控、日志和其他工具
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{suffix} {total} {units} 中的 {useful}"
@@ -848,6 +1030,11 @@ clusterIndexPage:
     podsUsed: Pods 预留
     ramReserved: Memory 预留
     ramUsed: Memory 使用
+    cores: 核心
+    pods: Pods
+    ram: 内存
+    reserved: 已预留
+    used: 已使用
   header: 集群仪表盘
   resourceGauge:
     totalResources: 资源总额
@@ -872,6 +1059,10 @@ clusterIndexPage:
     nodes:
       label: 节点不健康
       noRows: 所有节点都处于健康状态
+    alerts:
+      label: 告警
+    capacity:
+      label: 容量
 configmap:
   tabs:
     binaryData:
@@ -1086,6 +1277,8 @@ generic:
   unknown: 未知
   value: 值
   yes: 是
+  disable: 禁用
+  enable: 启用
 glance:
   cpu: CPU 使用量
   created: 创建时间
@@ -1099,6 +1292,9 @@ glance:
   provider: 提供商
   reload: 重新加载
   version: Kubernetes 版本
+  clusterInfo: 集群信息
+  installMonitoring: 安装监控
+  monitoringDashboard: 监控仪表盘
 graphOptions:
   detail: 详情
   range: 范围
@@ -1198,6 +1394,7 @@ harvester:
     version: 版本
     virtaulName: 虚拟机名称
     volume: 卷
+    ipv4Address: IPv4地址
   host:
     cordon:
       protip: 此操作将会标记节点 { node } 为不可调度.
@@ -1264,6 +1461,8 @@ harvester:
     uploadFile: 上传文件
     url: 镜像地址
     urlTip: "<a href=\"https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats\" target=\"_blank\">qemu</a> 支持 <code>raw</code> 和 <code>qcow2</code> 镜像格式. 可启动的ISO镜像也可以是类似 <code>raw</code> 格式的镜像."
+    warning:
+      uploading: '{count} 个镜像正在上传中，请不要刷新或关闭当前页面.'
   modal:
     backup:
       addBackup: 添加备份
@@ -1309,6 +1508,8 @@ harvester:
       selectBackup: 选择备份
       success: 虚拟机{ name }恢复成功.
       title: 恢复备份
+    hotunplug:
+      success: 卷{ name } 拔出成功.
   network:
     label: 网络
     message:
@@ -1325,6 +1526,21 @@ harvester:
         prefix: 点击
         suffic: 查看集群网络配置.
       vlanInactive: VLAN网络在主机 {name} 上处于非活动状态
+    layer3Network:
+      cidr:
+        placeholder: '例如: 172.16.0.1/24'
+      gateway:
+        label: 网关
+        placeholder: '例如: 172.16.0.1'
+      mode:
+        auto: 自动(DHCP)
+        label: 模式
+        manual: 手动
+      serverIPAddr:
+        label: DHCP服务IP
+    tabs:
+      basics: 基础
+      layer3Network: 路由
   notification:
     title:
       error: 错误
@@ -1341,6 +1557,14 @@ harvester:
     validation:
       physicalNIC: DefaultPhysicalNIC
     vlanChangeTip: 新修改的默认物理网卡仅适用于新增节点，不适用于现有节点
+    message:
+      ca:
+        middle: 这里
+        prefix: 点击
+        suffic: 添加一个自定义证书.
+    percentTip: 括号内的数值代表所有主机上的网络接口的分布比例。如果选择了一个小于100%的接口，用户需要手动指定vlan网络配置失败的主机上的网络接口。
+    vmForceDeletionPolicy:
+      period: 周期
   sshKey:
     keypair: SSH 公钥
     label: SSH 秘钥
@@ -1410,6 +1634,8 @@ harvester:
         label: 用户配置模板
         tip: 您可以指定Cloud-init相关的用户数据以在启动期间配置实例或运行配置脚本。 如果一次启动多个实例，则该配置会对所有实例生效。<a href="https://cloudinit.readthedocs.io/en/latest/topics/examples.html" target="_blank"> 查看更多 </a>
         title: "User Data:"
+      createNew: 创建新模板...
+      createTemplateTitle: 创建 {name}.
     console:
       novnc: 在 Web VNC 中打开
       serial: 在 Serial Console 中打开
@@ -1531,6 +1757,11 @@ harvester:
       volume: 卷
       volumeTip: VM仅包含一个cd-rom卷。 您可能要添加其他磁盘卷。
       volumeUpdate: 设置卷 { name } 成功
+    osType: 系统类型
+    unplug:
+      actionLabel: 拔出
+      detachVolume: 拔出卷
+      title: 你确定要拔掉卷{name} ?
   virtualizationManagement:
     manage: 管理
   vmTemplate:
@@ -1548,6 +1779,50 @@ harvester:
     sourceOptions:
       new: New
       vmImage: VM Image
+  generic:
+    cpu: CPU
+    hideMore: 隐藏更多
+    memory: 内存
+    noFileChosen: 没有选择任何文件
+    showMore: 显示更多
+    storage: 存储
+  manager:
+    cluster:
+      description: Harvester是一个采用企业级开源技术，包括Kubernetes、Kubevirt和Longhorn，为裸金属服务器打造的现代超融合基础设施（HCI）解决方案.
+      label: Harvester集群
+      learnMore: 了解更多的harvester可以通过<a target="_blank" href="https://harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester网站</a>或者阅读<a target="_blank" href="https://docs.harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester文档</a>
+      none: 没有内容显示
+  namespace:
+    label: 命名空间
+  projectNamespace:
+    label: 项目/命名空间
+  service:
+    healthCheckFailureThreshold:
+      description: 如果健康检查失败的数量达到失败阈值，后端服务器将停止转发流量。
+      label: 健康检查失败阙值
+    healthCheckPeriod:
+      label: 健康检查周期
+    healthCheckPort:
+      description: 探针将访问由后端服务器IP和端口组成的地址.
+      label: 健康检查端口
+    healthCheckSuccessThreshold:
+      description: 如果探针连续检测到一个地址的成功次数达到成功阈值，那么后端服务器就可以开始转发流量.
+      label: 健康检查成功阙值
+    healthCheckTimeout:
+      label: 健康检查超时
+    title: 附加配置
+  support:
+    kubeconfig:
+      title: 下载KubeConfig
+      titleDescription: 下载kubeconfig用于调试
+    title: Harvester支持
+  vip:
+    add:
+      label: 添加IP池
+    cidr:
+      invalid: '"CIRD" 不合法.'
+    namespace:
+      label: 命名空间
 hpa:
   detail:
     currentMetrics:
@@ -1712,6 +1987,8 @@ labels:
     title: 注释
   labels:
     title: 标签
+  addTag: 添加标签
+  addTaint: 添加污点
 landing:
   clusters: 集群
   commercial:
@@ -1729,7 +2006,9 @@ landing:
       fleet: Fleet页面
       lastVisited: 上一次登录时最后访问的页面
       thisScreen: 当前页面
+      homePage: 首页
     title: 你想在登录时看到什么？
+    body: '你可以改变你登陆时的位置:'
   learnMore: 了解更多
   migration:
     body: 阅读集群管理器用户的迁移指南--你需要利用扩展的集群资源管理器的一切优势
@@ -1738,6 +2017,9 @@ landing:
   seeWhatsNew: 了解更多关于该版本的改进和新功能。
   welcomeToRancher: 欢迎使用Rancher！
   whatsNewLink: 2.5的新内容
+  gettingStarted:
+    body: 浏览快速入门指南。对于集群管理员，可以了解更多关于Dashboad UI的新特性
+    title: 快速开始
 locale:
   en-us: English
   none: (None)
@@ -2154,6 +2436,7 @@ namespace:
   project:
     label: 项目
   resources: 资源
+  move: 移动
 namespaceFilter:
   selected:
     label: "{total} 项目选择"
@@ -2185,6 +2468,7 @@ nav:
     workload: 工作负载
     tools: 工具
     vlansubnet: 扁平网络
+    advanced: 高级
   header:
     restoreCards: 恢复隐藏的卡片
     setLoginPage: 设置为登录页面
@@ -2225,7 +2509,7 @@ nav:
   cisF5:
     controllers: F5 负载均衡
     tls: TLS
-  tools: 
+  tools:
     tab: 工具
     cisF5: F5 负载均衡服务
 node:
@@ -2580,6 +2864,8 @@ prefs:
   timeFormat:
     label: 时间格式
   title: 用户偏好设置
+  clusterToShow:
+    label: 在侧边菜单中显示的集群数量
 principal:
   error: 无法获取信息
   loading: 加载中&hellip;
@@ -2879,6 +3165,13 @@ resourceTable:
     project: 以项目分组
   groupLabel:
     cluster: <span>集群：</span> {name}
+    machinePool: <span>节点池</span> {name}
+    namespace: <span>命名空间：</span> {name}
+    notInANamespace: 不在命名空间内
+    notInAProject: 不在项目内
+    notInAWorkspace: 不在工作空间内
+    project: <span>项目：</span> {name}
+    workspace: <span>工作空间:</span> {name}
   machinePool: <span>节点池</span> {name}
   namespace: <span>命名空间：</span> {name}
   notInANamespace: 不在命名空间内
@@ -3502,6 +3795,7 @@ tableHeaders:
   value: 值
   version: 版本号
   weight: 权重
+  taints: 污点
 target:
   router:
     label: 路由
@@ -3534,6 +3828,7 @@ typeDescription:
   resources.cattle.io.backup: 创建备份是为了基于资源集执行一次性备份或安排重复性备份。
   resources.cattle.io.resourceset: 资源集定义了要在备份中存储哪些 CRD 和资源。
   resources.cattle.io.restore: 创建还原是为了根据备份文件触发对集群的还原。
+  node: Kubernetes节点资源展现承载部署的虚拟机或物理机。请进入"管理集群"管理可用机器的生命周期.
 typeLabel:
   catalog.cattle.io.app: "{count, plural,\n  one { 已安装的 App }\n  other { 已安装的 Apps }\n}"
   catalog.cattle.io.clusterrepo: "{count, plural,\n  one { Chart 仓库 }\n  other { Chart 仓库 }\n}"
@@ -3579,6 +3874,10 @@ typeLabel:
   monitoring.coreos.com.thanosruler: "{count, plural,\n  one { Thanos 规则 }\n  other { Thanos 规则 }\n}"
   rancher.cattle.io.cluster: "{count, plural,\n  one { 集群 }\n  other { 集群 }\n}"
   token: "{count, plural,\n  one { API密钥 }\n  other { API密钥 }\n}"
+  management.cattle.io.project: 项目
+  namespace: 命名空间
+  node: 节点
+  provisioning.cattle.io.cluster: 集群
 unit:
   day: "{count, plural,\n  one { 天 }\n  other { 天 }\n}"
   hour: "{count, plural,\n  one { 小时 }\n  other { 小时 }\n}"
@@ -3967,6 +4266,21 @@ workload:
     subdomain:
       label: 子域名
       placeholder: 例如：web
+    vlansubnet:
+      ip:
+        label: IP
+        placeholder: '例如: 192.168.1.100，多个 IP 用逗号连接'
+      label: 扁平网络
+      mac:
+        label: MAC
+        placeholder: '例如: 0a:00:27:00:00:00，多个 MAC 用逗号连接'
+      network:
+        label: Interface
+        placeholder: 请选择...
+      subnet:
+        label: Subnet
+        placeholder: 请选择一个 MacvlanSubnet
+      tip: '因扁平网络使用方式限制，Pod 缩放/升级策略已改为: 先停止旧 Pod，再启动新 Pod'
   replicas: 副本
   scheduling:
     activeDeadlineSeconds: 判定 Pod 是否活跃的截止时间
@@ -4146,3 +4460,162 @@ workloadPorts:
   addHost: 添加主机
   addPort: 添加
   remove: 移除
+drainNode:
+  action: 清空
+  actionStop: 停止清空
+  deleteLocalData: 删除空目录数据
+  force: 强制
+  gracePeriod:
+    custom: '忽略默认值，每个pod为:'
+    default: 使用pod本身的默认值
+    placeholder: '例如: 30'
+    title: Pod终止的宽限周期
+  safe:
+    helpText: 如果一个节点有独立的pods或临时数据, 它将被cordon而不会被清空.
+    label: 安全
+  timeout:
+    custom: '超时后放弃清空:'
+    default: 超时后继续尝试清空
+    placeholder: '例如: 60'
+    title: 清空超时
+  titleMultiple: 清空{count}节点
+  titleOne: 清空{name}
+grafanaDashboard:
+  failedToLoad: 加载表格失败
+  grafana: Grafana
+  reload: 重新加载
+members:
+  clusterMembers: 集群成员
+  clusterPermissions:
+    createProjects: 创建项目
+    custom:
+      description: 为该用户自定义角色.
+      label: 自定义
+    description: 控制用户对集群的访问权限
+    label: 集群权限
+    manageClusterBackups: 管理集群备份
+    manageClusterCatalogs: 管理集群应用商店
+    manageClusterMembers: 管理集群成员
+    manageNavlinks: 管理导航菜单链接
+    manageNodes: 管理节点
+    manageStorage: 管理存储
+    member:
+      description: 成员可以管理集群内的资源, 但不能改变群集本身.
+      label: 成员
+    noDescription: 已创建用户 - 没有描述
+    owner:
+      description: 所有者对集群和集群内的所有资源拥有完全的控制权.
+      label: 所有者
+    viewAllProjects: 查看所有项目
+    viewClusterCatalogs: 查看集群应用商店
+    viewClusterMembers: 查看集群成员
+    viewNodes: 查看节点
+  createActionLabel: 添加
+membershipEditor:
+  label: 成员
+  role: 角色
+  user: 用户
+moveModal:
+  description: '你正在移动下列命名空间:'
+  moveButtonLabel: 移动
+  targetProject: 目标项目
+  title: 移动到新的项目?
+project:
+  containerDefaultResourceLimit: 容器默认资源限制
+  haveOneOwner: 至少需要一个成员的角色为owner
+  members:
+    label: 成员
+  psp:
+    default: 集群默认
+    label: Pod安全策略
+  resourceQuotas: 资源配额
+projectMembers:
+  project:
+    label: 项目
+  projectPermissions:
+    configmapsManage: 管理Config Maps
+    configmapsView: 查看Config Maps
+    createNs: 创建命名空间
+    custom:
+      description: 为该用户选择个别角色.
+      label: 自定义
+    description: 控制用户对项目的访问权限
+    ingressManage: 管理Ingress
+    ingressView: 查看Ingress
+    label: 项目权限
+    member:
+      description: 成员可以管理项目内的资源，但不能改变项目本身.
+      label: 成员
+    monitoringUiView: 查看监控
+    noDescription: 用户创建 - 没有描述
+    owner:
+      description: 所有者对项目和项目内的所有资源拥有完全的控制权.
+      label: 所有者
+    persistentvolumeclaimsManage: 管理卷
+    persistentvolumeclaimsView: 查看卷
+    projectcatalogsManage: 管理项目应用商店
+    projectcatalogsView: 查看项目应用商店
+    projectroletemplatebindingsManage: 管理项目成员
+    projectroletemplatebindingsView: 查看项目成员
+    readOnly:
+      description: 成员只能查看项目内的资源，但不能改变资源.
+      label: 只读
+    searchForMember: 搜索成员以提供项目访问权限
+    secretsManage: 管理密文
+    secretsView: 查看密文
+    serviceaccountsManage: 管理服务账户
+    serviceaccountsView: 查看服务账户
+    servicesManage: 管理服务
+    servicesView: 查看服务
+    workloadsManage: 管理工作负载
+    workloadsView: 查看工作负载
+projectNamespaces:
+  createNamespace: 创建命名空间
+  createProject: 创建项目
+  label: 项目/命名空间
+  noNamespaces: 没有定义的命名空间
+registryConfig:
+  addLabel: 添加镜像仓库
+  header: 镜像仓库认证
+  toolTip: 当需要从给定的镜像仓库主机名中获取镜像时, 这些信息将被镜像仓库用来验证身份并对其进行认证.
+registryMirror:
+  addLabel: 添加镜像
+  header: 镜像
+  toolTip: '镜像可以用来重定向来自一个镜像仓库的镜像请求，使其指向指定的地址列表. 例如: 你可以将docker.io指向你的内部镜像库，而不是指向互联网上的DockerHub。'
+resourceQuota:
+  add:
+    label: 添加资源
+  limitsCpu: CPU限制
+  limitsMemory: 内存
+  namespaceDefaultLimit:
+    cpuPlaceholder: '例如: 500'
+    label: 命名空间默认限制
+    memoryPlaceholder: '例如: 1024'
+    storagePlaceholder: '例如: 10'
+    unitlessPlaceholder: '例如: 10'
+  persistentVolumeClaims: 持久卷申领
+  projectLimit:
+    cpuPlaceholder: '例如: 2000'
+    label: 项目限制
+    memoryPlaceholder: '例如: 2048'
+    storagePlaceholder: '例如: 50'
+    unitlessPlaceholder: '例如: 50'
+  requestsCpu: CPU预留
+  requestsMemory: 内存预留
+  requestsStorage: 存储预留
+  resourceType:
+    label: 资源类型
+  secrets: 密文
+  services: 服务
+  servicesLoadBalancers: 服务负载均衡
+  servicesNodePorts: 服务节点端口
+v1ClusterTools:
+  istio:
+    description: 旧版的V1 Istio. 自Rancher 2.5.0起, Istio v1.5已被弃用.<a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">了解更多</a> 关于迁移至最新版本.
+    label: Istio (旧版)
+  logging:
+    description: 旧版的V1日志. 自Rancher 2.5.0起, V1日志已被弃用.<a target="blank" href="{docsBase}/logging/migrating/">了解更多</a>关于迁移至V2日志.
+    label: 日志 (旧版)
+  monitoring:
+    description: 旧版的V1监控. 自Rancher 2.5.0起, V1监控已被弃用.<a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/">了解更多</a>关于迁移至V2监控的步骤.
+    label: 监控 (旧版)

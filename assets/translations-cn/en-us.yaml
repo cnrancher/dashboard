@@ -72,6 +72,9 @@ generic:
       30d: 30d
   completed: Completed
   privateRegistry: Private Registry
+  clear: Clear
+  disable: Disable
+  enable: Enable
 locale:
   en-us: English
   zh-hans: 简体中文
@@ -81,7 +84,10 @@ locale:
 nav:
   backToRancher: Cluster Manager
   clusterTools: Cluster Tools
-  kubeconfig: Download KubeConfig
+  kubeconfig:
+    copy: Copy KubeConfig to Clipboard
+    download: Download KubeConfig
+    options: KubeConfig Options
   import: Import YAML
   home: Home
   shell: Kubectl Shell
@@ -102,6 +108,7 @@ nav:
     imageRepo: Image Repo
     tools: tools
     vlansubnet: Flat NetWork
+    advanced: Advanced
   ns:
     all: All Namespaces
     clusterLevel: Only Cluster Resources
@@ -147,7 +154,7 @@ nav:
   cisF5:
     controllers: F5 Ingress
     tls: TLS
-  tools: 
+  tools:
     tab: tools
     cisF5: F5 CIS Version
 product:
@@ -602,6 +609,19 @@ asyncButton:
     action: Upgrade
     success: Upgrading
     waiting: Starting&hellip;
+  generate:
+    action: Generate
+    success: Generated
+    waiting: Generating&hellip;
+  pause:
+    action: Pause Orchestration
+    description: New revisions will not be deployed because orchestration is temporarily paused. To deploy new revisions, resume orchestration.
+    success: Paused Orchestration
+    waiting: Pausing Orchestration
+  resume:
+    action: Resume Orchestration
+    success: Resumed Orchestration
+    waiting: Resuming Orchestration
 backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
@@ -681,7 +701,9 @@ catalog:
     section:
       notes: Release Notes
       readme: Chart README
-      resources: Resources
+      resources:
+        busy: The related resources will appear when {app} is fully installed.
+        label: Resources
       values: Values YAML
   chart:
     header:
@@ -711,6 +733,10 @@ catalog:
     noCharts: 'There are no charts available, have you added any repos?'
     noWindows: Your catalogs do not contain any charts capable of being deployed on a Windows cluster.
     search: Filter
+    operatingSystems:
+      all: All OSs
+      linux: Linux
+      windows: Windows
   install:
     action:
       goToUpgrade: Edit/Upgrade
@@ -722,6 +748,15 @@ catalog:
       requiresMissing: 'This chart requires another chart that provides {name}, but none was was found.'
       insufficientCpu: 'This chart requires {need, number} CPU cores, but the cluster only has {have, number} available.'
       insufficientMemory: 'This chart requires {need} of memory, but the cluster only has {have} available.'
+      legacy:
+        category:
+          legacy: Legacy
+          mcm: Multi-cluster
+        enableLegacy:
+          goto: Go to Feature Flag settings
+          prompt: You will need to enable Legacy Features to edit this App
+        label: This is a {legacyType} App and it cannot be modified here
+        navigate: Navigate to {legacyType} Apps
     header:
       install: 'Install {name}'
       installGeneric: Install Chart
@@ -805,6 +840,7 @@ catalog:
     gitBranch:
       label: Git Branch
       placeholder: e.g. master
+      defaultMessage: Will default to "master" if left blank
     gitRepo:
       label: Git Repo URL
       placeholder: 'e.g. https://github.com/your-company/charts.git'
@@ -1095,6 +1131,18 @@ cluster:
         label: KubeconfigContent
       placeholder: 'Namespace/Name'
       cluster: Cluster
+    banner:
+      createCredential: |-
+        {length, plural,
+          =0 {First you'll need to create a credential to talk to the cloud provider}
+          other {Ok, Let's create a new credential}
+        }
+    select:
+      option:
+        new: Create new...
+        none: Select a credential...
+    selectExisting:
+      label: Select Existing
   description:
     label: Cluster Description
     placeholder: Any text you want that better describes this cluster
@@ -1104,6 +1152,27 @@ cluster:
       label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
       state: Warning
     clusterWarning: "There {count, plural,\n=1 {is 1 Harvester cluster that is not shown}\nother {are # Harvester clusters that are not shown}\n}  "
+    machinePool:
+      cpu:
+        placeholder: e.g. 2
+      disk:
+        placeholder: e.g. 4
+      image:
+        placeholder: Please select a image
+      memory:
+        placeholder: e.g. 4
+      namespace:
+        placeholder: e.g. default
+      network:
+        placeholder: Please select a network
+      sshUser:
+        placeholder: e.g. ubuntu
+        toolTip: SSH user to login with the selected OS image.
+    registration:
+      step1: 1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI.
+      step2: 2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.
+      step3: 3. Input the following registration URL and click the <code>Save</code> button.
+      step4: Registration URL
   haveOneOwner: There must be at least one member with the Owner role.
   import:
     commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
@@ -1187,6 +1256,9 @@ cluster:
       vnet:
         label: Virtual Network
         placeholder: '[resourcegroup:]name'
+      plan:
+        label: Purchase Plan
+        placeholder: publisher:product:plan
     digitalocean:
       sizeLabel: |-
         {plan, select,
@@ -1384,6 +1456,12 @@ cluster:
             =1 { A cluster with only one worker node is not fault-tolerant. }
             other {}
           }
+    labels:
+      label: Kubernetes Node Labels
+    quantity:
+      label: Machine Count
+    role:
+      label: Roles
   memberRoles:
     removeMessage: 'Note: Removing a user will not remove their project permissions'
     addClusterMember:
@@ -1474,6 +1552,59 @@ cluster:
       rke2-ingress-nginx: 'NGINX Ingress'
       rke2-kube-proxy: 'Kube Proxy'
       rke2-metrics-server: 'Metrics Server'
+      header: System Services
+    address:
+      caCerts:
+        label: CA Certificates
+        toolTip: Certificates required for the client to successfully verify the validity of the certificate returned by the endpoint.
+      clusterCidr:
+        label: Cluster CIDR
+      dns:
+        label: Cluster DNS
+      domain:
+        label: Cluster Domain
+      fqdn:
+        toolTip: A FQDN which will resolve to the healthy control plane nodes of the cluster.
+      header: Addressing
+      nodePortRange:
+        label: NodePort Service Port Range
+      serviceCidr:
+        label: Service CIDR
+      tlsSan:
+        label: TLS Alternate Names
+    cloudProvider:
+      header: Cloud Provider Config
+      label: Cloud Provider
+    cni:
+      label: Container Network
+    controlPlaneConcurrency:
+      label: Control Plane Concurrency
+      toolTip: This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)
+    defaultPodSecurityPolicyTemplateName:
+      label: Default Pod Security Policy
+    drain:
+      label: Drain Nodes
+      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded.  Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
+    enableNetworkPolicy:
+      label: Project Network Isolation
+    etcd:
+      disableSnapshots:
+        label: Automatic Snapshots
+      exportMetric:
+        "false": Only available inside the cluster
+        label: Metrics
+        "true": Exposed to the public interface
+      snapshotRetention:
+        label: Keep the last
+      snapshotScheduleCron:
+        label: Cron Schedule
+    security:
+      header: Security
+    workNode:
+      label: Worker Nodes
+    workerConcurrency:
+      label: Worker Concurrency
+      toolTip: This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)
   k3s:
     systemService:
       coredns: 'CoreDNS'
@@ -1507,6 +1638,8 @@ cluster:
     memberRoles: Member Roles
     registry: Registries
     upgrade: Upgrade Strategy
+    log: Provisioning Log
+    registration: Registration
   rotateCertificates:
     label: Rotate Certificates
     modalTitle: Rotate Cluster Certificates
@@ -1516,6 +1649,10 @@ cluster:
   toggle:
     v1: RKE1
     v2: RKE2/K3s
+  copyConfig: Copy Config to Clipboard
+  log:
+    connecting: Connecting…
+    noData: There are no provisioning log entries.
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
@@ -1642,6 +1779,8 @@ fleet:
       warning: 'Warning'
       error: 'Error'
       unknown: 'Unknown'
+      notReady: Not Ready
+      waitApplied: Wait Applied
   gitRepo:
     tabs:
       resources: Resources
@@ -2140,6 +2279,10 @@ logging:
     k3sContainerEngine: K3S Container Engine
     enableAdditionalLoggingSources: Enable enhanced cloud provider logging
     dockerRootDirectory: Docker Root Directory
+    default: /run/log/journal
+    systemdLogPath: systemd Log Path
+    tooltip: Some kubernetes distributions log to <code>journald</code>. In order to collect these logs the <code>systemdLogPath</code> needs to be defined. While the <code>/run/log/journal</code> directory is used by default, some Linux distributions do not default to this path.
+    url: <a href="https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/" target="_blank" rel="noopener nofollow noreferrer">Learn more</a>
   elasticsearch:
     host: Host
     scheme: Scheme
@@ -2271,6 +2414,8 @@ logging:
       certificate: Connection
       labels: Labels
       configuration: Configuration
+    buffer:
+      label: Output Buffer
   outputProviders:
     elasticsearch: Elasticsearch
     splunkHec: Splunk
@@ -2291,6 +2436,7 @@ logging:
     syslog: Syslog
     s3: S3
     unknown: Unknown
+    gelf: GELF
   overview:
     poweredBy: Banzai Cloud
     clusterLevel: Cluster-Level
@@ -2318,6 +2464,17 @@ logging:
     clientCertPath: Client Cert Path from Secret
     clientPrivateKeyPath: Client Private Key Path from Secret
     clientPrivateKeyPassphrase: Client Private Key Passphrase from Secret
+  gelf:
+    host: Host
+    port: Port
+    protocol: Protocol
+    tls: Enable TLS
+    tlsOptions:
+      allCiphers: Allow any ciphers to be used
+      clientCert: Client Cert
+      clientKey: Client Cert Key
+      noVerify: Skip TLS verification
+      tlsVersion: TLS version
 longhorn:
   overview:
     title: Overview
@@ -2648,6 +2805,11 @@ namespace:
     warning: 'Warning'
     error: 'Error'
     unknown: 'Unknown'
+    paused:
+      longDescription: Deployment is paused. Pausing stops the controller from deploying revisions.
+      shortDescription: Deployment is paused
+      stateName: Inactive
+  resourceQuotas: Resource Quotas
 namespaceFilter:
   selected:
     label: "{total} items selected"
@@ -2705,6 +2867,7 @@ node:
     downloadSSHKey: Download SSH Key
     downloadNodeConfig: Download Keys
     scaleDown: Scale Down
+    forceDelete: Force Delete
 persistentVolume:
   pluginConfiguration:
     label: Plugin configuration
@@ -3023,6 +3186,7 @@ persistentVolumeClaim:
       readWriteMany: Many Nodes Read-Write
   status:
     label: Status
+  name: Persistent Volume Claim Name
 prefs:
   title: Preferences
   theme:
@@ -3110,6 +3274,7 @@ project:
     default: Cluster Default
     label: Pod Security Policy
     current: "{value} (Current)"
+  vmDefaultResourceLimit: VM Default Resource Limit
 projectMembers:
   project:
     label: Project
@@ -3474,6 +3639,7 @@ resourceYaml:
     diff: Show Diff
     unified: Unified
     split: Split
+    hideDiff: Hide Diff
 secret:
   authentication: Authentication
   certificate:
@@ -3622,6 +3788,10 @@ servicesPage:
       label: Cluster IP
       placeholder: e.g. 10.43.xxx.xxx
     label: IP Addresses
+    loadBalancerIp:
+      helpText: If you specify a loadBalancerIP but your cloud provider does not support the feature, the loadBalancerIP field that you set is ignored.
+      label: Load Balancer IP
+      placeholder: e.g. 192.0.xxx.xxx
   pods:
     label: Pods
   ports:
@@ -4132,6 +4302,9 @@ tableHeaders:
   storage: Storage Size
   defaultVersion: Default version
   ipAddress: IP Address
+  diskState: Disk State
+  health: Health
+  routeConnectivity: Route Connectivity
 target:
   router:
     label: Router
@@ -4295,6 +4468,10 @@ validation:
     route:
       match: At least one Match or Match Regex must be selected
       interval: '"{key}" must be of a format with digits followed by a unit i.e. 1h, 2m, 30s'
+  conflict: |-
+    This resource has been modified since you started editing it, and some of those modifications conflict with your changes.
+    This screen has been updated to reflect the current values on the cluster. Review and reapply the changes you wanted to make, then Save again.
+    Conflicting {fieldCount, plural, =1 {field} other {fields}}: {fields}
 wizard:
   previous: Previous
   finish: Finish
@@ -4602,6 +4779,21 @@ workload:
     subdomain:
       label: Subdomain
       placeholder: e.g. web
+    vlansubnet:
+      ip:
+        label: IP
+        placeholder: e.g. 192.168.1.100,Multiple ips are connected by commas
+      label: Flat Network
+      mac:
+        label: MAC
+        placeholder: e.g. 0a:00:27:00:00:00, Multiple MACs are connected by commas
+      network:
+        label: Interface
+        placeholder: Select a Inetwork...
+      subnet:
+        label: Subnet
+        placeholder: Please choose a MacvlanSubnet
+      tip: 'The upgrade strategy has been changed to: stop the old Pod and start the new Pod'
   normanWarning: It looks like this workload was created in the legacy Rancher UI. You may need to manually delete any services that were automatically created for it.
   validation:
     containers: Containers
@@ -4792,6 +4984,11 @@ workload:
       label: Termination Grace Period
       tip: The duration the pod needs to terminate successfully.
     title: Upgrading
+  list:
+    errorCannotScale: Failed to scale {workloadName} {direction, select, up { up } down { down } }
+  serviceAccountName:
+    createMessage: The service name [ {name} ] does not exist in this namespace, you will need to create it manually.
+    label: Service Account Name
 harvester:
   modal:
     backup:
@@ -4838,6 +5035,8 @@ harvester:
     hotplug:
       success: 'Volume { diskName } is mounted to the VM { vm }.'
       title: Add Volume
+    hotunplug:
+      success: Volume { name } is detach successfully.
   notification:
     title:
       succeed: Succeed
@@ -4910,6 +5109,8 @@ harvester:
     cpu: Cpu
     memory: Memory
     virtaulName: Virtual machine name
+    ipv4Address: IPv4 Address
+    promiscuous: Promiscuous
   validation:
     custom:
       tooLongName: '"Name" cannot be more than {max} characters.'
@@ -5020,6 +5221,7 @@ harvester:
         info: The disk has already been force-formatted
       notification:
         success: 'Update host "{name}" configurations successfully.'
+      error: Host has unready or unschedulable disks.
   virtualizationManagement:
     manage: Manage
   virtualMachine:
@@ -5105,6 +5307,16 @@ harvester:
         label: Network Data Template
         title: "Network Data:"
         tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>Learn more</a>"
+      createNew: Create new...
+      createTemplateTitle: Create {name}.
+      network:
+        label: Network Data Template
+        tip: The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>Learn more</a>
+        title: 'Network Data:'
+      user:
+        label: User Data Template
+        tip: You can specify user data to configure an instance or run a configuration script during launch. If you launch more than one instance at a time, the user data is available to all the instances in that reservation. <a href='https://cloudinit.readthedocs.io/en/latest/topics/examples.html' target='_blank'>Learn more</a>
+        title: 'User Data:'
     scheduling:
       affinity:
         anyNode: 'Run VM on any available node'
@@ -5180,6 +5392,11 @@ harvester:
         down: No events in the past hour
       console:
         down: This Virtual Machine is down. Please start it to access its console.
+    osType: OS Type
+    unplug:
+      actionLabel: Detach
+      detachVolume: Detach Volume
+      title: Are you sure that you want to detach volume {name} ?
   volume:
     label: Volumes
     tabs:
@@ -5203,6 +5420,12 @@ harvester:
     sourceType:
       download: URL
       upload: File
+    warning:
+      uploading: |-
+        {count, plural,
+        =1 {1 image is uploading, please do not refresh or close the page.}
+        other {{count} images are uploading, please do not refresh or close the page.}
+        }
   vmTemplate:
     label: Templates
     tabs:
@@ -5238,6 +5461,7 @@ harvester:
     label: Networks
     tabs:
       basics: Basics
+      layer3Network: Route
     message:
       vlanInactive: 'VLAN network is inactive at {name} host'
       premise:
@@ -5252,6 +5476,19 @@ harvester:
         prefix: Physical NIC value in
         middle: Setting
         suffic: "is invalid, error: "
+    layer3Network:
+      cidr:
+        label: CIDR
+        placeholder: e.g. 172.16.0.1/24
+      gateway:
+        label: Gateway
+        placeholder: e.g. 172.16.0.1
+      mode:
+        auto: Auto(DHCP)
+        label: Mode
+        manual: Manual
+      serverIPAddr:
+        label: DHCP Server IP
   sshKey:
     label: SSH Keys
     keypair: SSH Key
@@ -5267,6 +5504,18 @@ harvester:
       cert: upload a self-signed SSL certificate
     vlanChangeTip: The newly modified default physical NIC only applies to newly added nodes, not existing ones
     defaultPhysicalNIC: Default Physical NIC
+    message:
+      ca:
+        middle: here
+        prefix: Click
+        suffic: to add a custom certificate.
+    percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the vlan network configuration fails.
+    sslCertificates:
+      ca: CA
+      privateKey: Private Key
+      publicCertificate: Public Certificate
+    vmForceDeletionPolicy:
+      period: Period
   cloudTemplate:
     label: Cloud Config Templates
     templateType: Template Type
@@ -5280,6 +5529,45 @@ harvester:
       description: Harvester is a modern Hyperconverged infrastructure (HCI) solution built for bare metal servers using enterprise-grade open source technologies including Kubernetes, Kubevirt and Longhorn.
   support:
     title: Harvester Support
+    kubeconfig:
+      title: Download KubeConfig
+      titleDescription: Download kubeconfig for debugging.
+  generic:
+    cpu: CPU
+    hideMore: Hide More
+    memory: Memory
+    noFileChosen: No file chosen
+    showMore: Show More
+    storage: Storage
+  namespace:
+    label: Namespaces
+  projectNamespace:
+    label: Projects/Namespaces
+  service:
+    healthCheckFailureThreshold:
+      description: The backend server will stop forwarding traffic if the number of health check failures reaches the failure threshold.
+      label: Health Check Failure Threshold
+    healthCheckPeriod:
+      label: Health Check Period
+    healthCheckPort:
+      description: The prober will access the address composed of the backend server IP and the port.
+      label: Health Check Port
+    healthCheckSuccessThreshold:
+      description: If the number of times the prober continuously detects an address successfully reaches the success threshold, then the backend server can start to forward traffic.
+      label: Health Check Success Threshold
+    healthCheckTimeout:
+      label: Health Check Timeout
+    ipam:
+      label: IPAM
+    title: Add-on Config
+  vip:
+    add:
+      label: Add IP Pools
+    cidr:
+      invalid: '"CIRD" is invalid.'
+      label: CIDR
+    namespace:
+      label: Namespace
 ##############################
 # Model Properties
 ##############################
@@ -5731,6 +6019,14 @@ advancedSettings:
     'auditlog-server-url': 'Configure the audit log service url'
     'ui-footer-text': 'Extra text in footer.'
     'ui-footer-url': 'URL for the extra text in footer.'
+    harv-additional-ca: Custom CA root certificates for TLS validation.
+    harv-cluster-registration-url: Registration URL for mutil-cluster management.
+    harv-http-proxy: HTTP proxy for Harvester to access external services.
+    harv-overcommit-config: Resource overcommit configuration.
+    harv-support-bundle-timeout: Support Bundle timeout config in minutes, use 0 to disable the timeout.
+    harv-vip-pools: Config global or namespace IP address pools of the VIP by CIDR.
+    harv-vm-force-deletion-policy: Config the force-delete action when a VM is stuck on a node that is down.
+    ui-consent-banner: Banner is used to display a custom consent banner presented to users during login.
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:
@@ -5805,6 +6101,10 @@ branding:
       bannerBold: Bold
       bannerItalic: Italic
       bannerUnderline: Underline
+    bannerFontSize:
+      label: Font Size
+    consent: Consent Banner
+    showConsent: Show Consent Banner on Login Screen
   color:
     label: Primary Color
     tip: You can override the primary color used throughout the UI with a custom color of your choice.
@@ -5842,6 +6142,19 @@ resourceQuota:
     unitlessPlaceholder: e.g. 10
   resourceType:
     label: Resource Type
+  add:
+    label: Add Resource
+  headers:
+    limit: Limit
+    namespaceDefaultLimit: Namespace Default Limit
+    projectLimit: Project Limit
+    projectResourceAvailability: Project Resource Availability
+    resourceType: Resource Type
+  helpText: Configure how much of the resources the namesapce as a whole can consume.
+  helpTextDetail: The amount of resources the namespace as a whole can consume.
+  label: Resource Quotas
+  namespaceLimit:
+    label: Limit
 ##############################
 ### Support Page
 ##############################
@@ -5916,3 +6229,16 @@ serverUpgrade:
 autoLogout:
   message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
   title: Auto logout
+promptForceRemove:
+  confirmName: 'Enter in the pool name below to confirm:'
+  forceDelete: Force Delete
+  modalTitle: Are you sure?
+  removeWarning: There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. It's highly recommended to manually delete any referenced infrastructure.
+registryConfig:
+  addLabel: Add Registry
+  header: Registry Authentication
+  toolTip: When an image needs to be pulled from the given registry hostname, this information will be used to verify the identity of the registry and authenticate to it.
+registryMirror:
+  addLabel: Add Mirror
+  header: Mirrors
+  toolTip: Mirrors can be used to redirect requests for images from one registry to actually come from a list of endpoints you specify instead.  For example you could point docker.io to always talk to your internal registry and instead of ever going to the actual DockerHub on the internet.
