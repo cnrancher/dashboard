@@ -289,7 +289,7 @@ export function init(store) {
     ifRancherCluster: true,
     name:             'cluster-audit-log',
     weight:           98,
-    route:            { name: 'c-cluster-product-auditlog', params: { cluster: 'local', page: 'cluster-audit-log' } },
+    route:            { name: 'c-cluster-legacy-auditLog-page', params: { cluster: 'local', page: 'cluster-audit-log' } },
     exact:            true,
   });
   // cluster audit-log end
@@ -302,7 +302,7 @@ export function init(store) {
     group:      'cluster',
     namespaced: false,
     icon:       'globe',
-    route:      { name: 'c-cluster-product-vlansubnet', params: { cluster: 'local', page: 'cluster-vlansubnet' } },
+    route:      { name: 'c-cluster-legacy-vlansubnet-page', params: { cluster: 'local', page: 'cluster-vlansubnet' } },
     exact:      true
   });
 
@@ -318,7 +318,7 @@ export function init(store) {
     group:      'cluster',
     namespaced: false,
     icon:       'globe',
-    route:      { name: 'c-cluster-product-cisF5', params: { cluster: 'local', page: 'cluster-cisF5' } },
+    route:      { name: 'c-cluster-legacy-cisF5-page', params: { cluster: 'local', page: 'cluster-cisF5' } },
     exact:      true
   });
 

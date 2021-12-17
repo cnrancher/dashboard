@@ -136,7 +136,7 @@ export default class Project extends HybridModel {
   get auditLog() {
     return (() => {
       this.currentRouter().push({
-        name:   'c-cluster-product-auditlog',
+        name:   'c-cluster-legacy-auditLog-page',
         params: {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-audit-log'
@@ -149,7 +149,7 @@ export default class Project extends HybridModel {
   get resourceQuota() {
     return (() => {
       this.currentRouter().push({
-        name:   'c-cluster-product-resourcequota',
+        name:   'c-cluster-legacy-resourceQuota-page',
         params: {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-resource-quota'
@@ -162,7 +162,7 @@ export default class Project extends HybridModel {
   get f5Ingresses() {
     return (() => {
       this.currentRouter().push({
-        name:   'c-cluster-product-f5Ingresses',
+        name:   'c-cluster-legacy-f5Ingresses-page',
         params: {
           cluster:  this.$rootGetters['currentCluster'].id,
           page:    'project-f5-ingresses'

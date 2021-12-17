@@ -1,10 +1,14 @@
 import { findBy, insertAt } from '@/utils/array';
 import { TARGET_WORKLOADS, TIMESTAMP, UI_MANAGED } from '@/config/labels-annotations';
-import { POD, WORKLOAD_TYPES, SERVICE } from '@/config/types';
+import {
+  POD, WORKLOAD_TYPES, SERVICE, NAMESPACE, MANAGEMENT
+} from '@/config/types';
 import { clone, get, set } from '@/utils/object';
 import day from 'dayjs';
 import SteveModel from '@/plugins/steve/steve-class';
 import { shortenedImage } from '@/utils/string';
+import { PROJECT_ID, WORKLOAD_ID } from '@/config/query-params';
+import { SETTING } from '@/config/settings';
 
 export default class Workload extends SteveModel {
   // remove clone as yaml/edit as yaml until API supported
@@ -52,6 +56,15 @@ export default class Workload extends SteveModel {
         enabled: !!this.links.update && this.spec?.paused === true
       });
     }
+
+    const auditLog = {
+      action:     'auditLog',
+      enabled:    this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
+      icon:       'icon icon-fw icon-globe',
+      label:      this.t('nav.auditLog'),
+    };
+
+    insertAt(out, 0, auditLog);
 
     const toFilter = ['cloneYaml'];
 
@@ -714,5 +727,19 @@ export default class Workload extends SteveModel {
     }
 
     return out;
+  }
+
+  async auditLog() {
+    const namespaces = await this.$dispatch(`cluster/findAll`, { type: NAMESPACE }, { root: true });
+    const namespace = namespaces.find(n => n.metadata?.name === this.metadata?.namespace);
+
+    this.currentRouter().push({
+      name:   'c-cluster-legacy-auditLog-page',
+      params: {
+        cluster:  this.$rootGetters['currentCluster'].id,
+        page:    'workload-audit-log'
+      },
+      query: { [PROJECT_ID]: namespace?.metadata?.annotations?.['field.cattle.io/projectId'], [WORKLOAD_ID]: `${ this.kind.toLowerCase() }:${ this.metadata?.namespace }:${ this.metadata?.name }` }
+    });
   }
 }
