@@ -7,14 +7,17 @@
       <div class="password-strength__chart"></div>
     </div>
     <div v-show="password.length > 0" class="text-error mt-10">
-      <t v-if="password.length < 8" k="changePassword.strength.tooltip1">
+      <t v-if="password.length < minLength" k="changePassword.strength.tooltip1" :length="minLength">
       </t>
-      <t v-else-if="strengthState.state === 'weak' && password.length >= 8" k="changePassword.strength.tooltip2">
+      <t v-else-if="strengthState.state === 'weak' && password.length >= minLength" k="changePassword.strength.tooltip2">
       </t>
     </div>
   </div>
 </template>
 <script>
+
+const MIN_LENGTH = 12;
+
 export default {
   props: {
     password: {
@@ -23,7 +26,7 @@ export default {
     }
   },
   data() {
-    return {};
+    return { minLength: MIN_LENGTH };
   },
   computed: {
     strength() {
@@ -32,7 +35,7 @@ export default {
       if (pwd.length === 0) {
         return 0;
       }
-      if (pwd.length < 8) {
+      if (pwd.length < this.minLength) {
         return 1;
       }
       let modes = 0;

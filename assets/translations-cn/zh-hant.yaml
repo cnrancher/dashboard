@@ -695,7 +695,7 @@ changePassword:
     best: 強
     good: 中
     label: 密碼強度
-    tooltip1: 密碼必須至少包含8個字符
+    tooltip1: 密碼必須至少包含 {length} 個字符
     tooltip2: 至少包括數字、大寫字母、小寫字母、符號中的兩個類型
     weak: 弱
   title: 修改密碼
