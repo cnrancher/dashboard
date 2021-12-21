@@ -4,7 +4,7 @@ name: test
 
 trigger:
   event:
-  - push
+  # - push
   - pull_request
   - tag
 
@@ -98,8 +98,8 @@ node:
 kind: pipeline
 name: hosted-branch
 
-depends_on:
-- test
+# depends_on:
+# - test
 
 trigger:
   ref:
