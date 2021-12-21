@@ -13,6 +13,7 @@ import { get } from '@/utils/object';
 import { AFTER_LOGIN_ROUTE } from '@/store/prefs';
 import { NAME as VIRTUAL } from '@/config/product/harvester';
 import { BACK_TO } from '@/config/local-storage';
+import AESEncrypt from '@/utils/aes-encrypt';
 
 let beforeEachSetup = false;
 
@@ -326,6 +327,11 @@ async function findMe(store) {
 
 async function tryInitialSetup(store, password = 'admin') {
   try {
+    const disabledEncryption = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+
+    if (disabledEncryption?.value !== 'true') {
+      password = AESEncrypt(password.trim());
+    }
     const res = await store.dispatch('auth/login', {
       provider: 'local',
       body:     {
