@@ -2466,8 +2466,6 @@ nav:
     starred: 已收藏
     storage: 存儲
     workload: 工作負載
-    tools: 工具
-    vlansubnet: 扁平網路
     advanced: 高級
   header:
     restoreCards: 恢復隱藏的卡片

@@ -106,8 +106,6 @@ nav:
     workload: Workload
     monitoring: Monitoring
     imageRepo: Image Repo
-    tools: tools
-    vlansubnet: Flat NetWork
     advanced: Advanced
   ns:
     all: All Namespaces
