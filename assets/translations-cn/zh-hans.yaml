@@ -115,7 +115,7 @@ advancedSettings:
     harv-overcommit-config: 资源超额配置。
     harv-support-bundle-timeout: 支持包超时配置（分钟），使用0禁用超时。
     harv-vip-pools: 按CIDR配置VIP全局和命名空间的IP地址池。
-    harv-vm-force-deletion-policy: 配置当虚拟机卡在停机的节点上时的强制删除动作。
+    harv-vm-force-reset-policy: 配置当虚拟机卡在停机的节点上时的强制重启动作。
   edit:
     changeSetting: 修改设置
     falseOption: "False"
@@ -4618,7 +4618,6 @@ v1ClusterTools:
   monitoring:
     description: 旧版的V1监控. 自Rancher 2.5.0起, V1监控已被弃用.<a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/">了解更多</a>关于迁移至V2监控的步骤.
     label: 监控 (旧版)
-
 modalDownLoadFileComponent:
   title: 容器文件下载
   container: 容器
