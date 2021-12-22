@@ -1,10 +1,7 @@
 ---
 kind: pipeline
-name: test
-
-trigger:
-  event:
-  - pull_request
+type: docker
+name: default
 
 platform:
   os: linux
@@ -12,64 +9,25 @@ platform:
 
 steps:
 - name: test
-  pull: default
   image: node:12
   commands:
   - scripts/ci
 
-node:
-  instance: agent-amd64
+  when:
+    event:
+    - pull_request
 
----
-kind: pipeline
-name: docker-tag
-
-trigger:
-  event:
-  - tag
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: docker-image
-  image: plugins/docker
-  settings:
-    build_args:
-    - BRANCH=${DRONE_BRANCH}
-    - TAG=${DRONE_TAG}
-    dockerfile: image-scripts/Dockerfile
-    tag: ${DRONE_TAG}
-    repo: cnrancher/dashboard
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-node:
-  instance: agent-amd64
-
----
-kind: pipeline
-name: embedded-tag
-
-trigger:
-  event:
-  - tag
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: build
+- name: build-embedded
   pull: default
   image: node:12
   commands:
   - scripts/ci-test
   - scripts/build-embedded
+  when:
+    event:
+    - tag
 
-- name: upload
+- name: upload-embedded
   pull: default
   image: plugins/s3
   settings:
@@ -83,32 +41,22 @@ steps:
     source: dist/${DRONE_TAG}.tar.gz
     strip_prefix: dist/
     target: ${DRONE_BRANCH}/
+  when:
+    event:
+    - tag
 
-node:
-  instance: agent-amd64
-
----
-kind: pipeline
-name: hosted-branch
-
-trigger:
-  ref:
-  - "refs/heads/*-dev"
-  - "refs/heads/release-*"
-  event:
-  - push
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: build
+- name: build-hosted
   pull: default
   image: node:12
   commands:
   - ./scripts/build-hosted
-- name: upload
+  when:
+    ref:
+    - "refs/heads/release-*"
+    event:
+    - push
+
+- name: upload-hosted
   pull: default
   image: plugins/s3
   settings:
@@ -122,6 +70,29 @@ steps:
     source: dist/${DRONE_BRANCH}/**/*
     strip_prefix: dist/${DRONE_BRANCH}
     target: /dashboard/${DRONE_BRANCH}
+  when:
+    ref:
+    - "refs/heads/release-*"
+    event:
+    - push
+
+- name: build-docker-image
+  image: plugins/docker
+  settings:
+    build_args:
+    - BRANCH=${DRONE_BRANCH}
+    - TAG=${DRONE_TAG}
+    dockerfile: image-scripts/Dockerfile
+    tag: ${DRONE_TAG}
+    repo: cnrancher/dashboard
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+  when:
+    event:
+    - tag
 
 node:
   instance: agent-amd64
