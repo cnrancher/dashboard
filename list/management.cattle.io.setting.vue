@@ -24,11 +24,11 @@ export default {
 
     // Combine the allowed settings with the data from the API
     for ( const id in ALLOWED_SETTINGS ) {
-      const setting = settingsMap[id];
+      const setting = settingsMap[id] || ALLOWED_SETTINGS[id];
 
-      if ( !setting ) {
-        continue;
-      }
+      // if ( !setting ) {
+      //   return;
+      // }
 
       const readonly = !!ALLOWED_SETTINGS[id].readOnly;
       const s = {
