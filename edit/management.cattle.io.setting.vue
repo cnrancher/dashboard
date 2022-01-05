@@ -34,6 +34,11 @@ export default {
         label: `advancedSettings.enum.${ this.value.id }.${ id }`,
         value: id,
       }));
+    } else if (setting.kind === 'enum-map') {
+      enumOptions = Object.entries(setting.options).map(e => ({
+        label: e[1],
+        value: e[0],
+      }));
     }
 
     const canReset = setting.canReset || !!this.value.default;
@@ -145,6 +150,14 @@ export default {
           v-model="value.value"
           :label="t('advancedSettings.edit.value')"
           :localized-label="true"
+          :mode="mode"
+          :options="enumOptions"
+        />
+      </div>
+      <div v-if="setting.kind === 'enum-map'">
+        <LabeledSelect
+          v-model="value.value"
+          :label="t('advancedSettings.edit.value')"
           :mode="mode"
           :options="enumOptions"
         />

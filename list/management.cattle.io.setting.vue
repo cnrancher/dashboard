@@ -1,15 +1,26 @@
 <script>
 import { mapGetters } from 'vuex';
 import { MANAGEMENT } from '@/config/types';
-import { ALLOWED_SETTINGS } from '@/config/settings';
+import { ALLOWED_SETTINGS, SETTING, fetchOrCreateSetting } from '@/config/settings';
 import Banner from '@/components/Banner';
 import Loading from '@/components/Loading';
 import { DEV } from '@/store/prefs';
+
+const CUSTOM_ALLOWED_SETTINGS = [
+  SETTING.AUDIT_LOG_SERVER_URL,
+  SETTING.FOOTER_TEXT,
+  SETTING.FOOTER_URL,
+  SETTING.UI_SESSION_LOGOUT_MINUTES,
+];
 
 export default {
   components: { Banner, Loading },
 
   async fetch() {
+    // check custom allowed settings
+    await Promise.all(CUSTOM_ALLOWED_SETTINGS.map((id) => {
+      return fetchOrCreateSetting(this.$store, id, ALLOWED_SETTINGS[id].value ?? '');
+    }));
     const isDev = this.$store.getters['prefs/get'](DEV);
     const rows = await this.$store.dispatch(`management/findAll`, { type: MANAGEMENT.SETTING });
     const t = this.$store.getters['i18n/t'];
@@ -24,11 +35,11 @@ export default {
 
     // Combine the allowed settings with the data from the API
     for ( const id in ALLOWED_SETTINGS ) {
-      const setting = settingsMap[id] || ALLOWED_SETTINGS[id];
+      const setting = settingsMap[id];
 
-      // if ( !setting ) {
-      //   return;
-      // }
+      if ( !setting ) {
+        continue;
+      }
 
       const readonly = !!ALLOWED_SETTINGS[id].readOnly;
       const s = {
@@ -48,6 +59,10 @@ export default {
         const v = s.data.value || s.data.default;
 
         s.enum = `advancedSettings.enum.${ id }.${ v }`;
+      } else if (s.kind === 'enum-map') {
+        const v = s.data.value || s.data.default;
+
+        s.enumMap = s.options[v];
       }
       // There are only 2 actions that can be enabled - Edit Setting or View in API
       // If neither is available for this setting then we hide the action menu button
@@ -93,7 +108,9 @@ export default {
             <span v-if="setting.fromEnv" class="modified">Set by Environment Variable</span>
             <span v-else-if="setting.customized" class="modified">Modified</span>
           </h1>
-          <h2>{{ setting.description }}</h2>
+          <h2>
+            <t :k="`advancedSettings.descriptions.${setting.id}`" />
+          </h2>
         </div>
         <div v-if="setting.hasActions" class="action">
           <button aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-sm role-multi-action actions" @click="showActionMenu($event, setting)">
@@ -111,6 +128,7 @@ export default {
           <pre v-if="setting.kind === 'json'">{{ setting.json }}</pre>
           <pre v-else-if="setting.kind === 'multiline'">{{ setting.data.value || setting.data.default }}</pre>
           <pre v-else-if="setting.kind === 'enum'">{{ t(setting.enum) }}</pre>
+          <pre v-else-if="setting.kind === 'enum-map'">{{ setting.enumMap }}</pre>
           <pre v-else-if="setting.data.value || setting.data.default">{{ setting.data.value || setting.data.default }}</pre>
           <pre v-else class="text-muted">&lt;{{ t('advancedSettings.none') }}&gt;</pre>
         </div>

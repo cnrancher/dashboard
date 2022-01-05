@@ -6015,7 +6015,7 @@ advancedSettings:
     'rke-metadata-config': 'Configure RKE metadata refresh parameters.'
     'ui-banners': 'Classification banner is used to display a custom fixed banner in the header, footer, or both.'
     'ui-default-landing': 'The default page users land on after login.'
-    'brand': Folder name for an alternative theme defined in '/assets/brand'
+    'ui-brand': Folder name for an alternative theme defined in '/assets/brand'
     'harv-vlan': Default physical NIC name of the VLAN network.
     'harv-backup-target': Custom back target to store VM backups.
     'harv-log-level': Configure Harvester server log level. Default to info.
@@ -6037,6 +6037,10 @@ advancedSettings:
     harv-ssl-parameters: Custom SSL Parameters for TLS validation.
     harv-support-bundle-namespaces: Specify resources in other namespaces to be collected by the support package.
     harv-vm-force-reset-policy: Config the force-reset action when a VM is stuck on a node that is down.
+    'rdns-base-url': 'Configure the rdns service url.'
+    'ui-session-logout-minutes': 'User will automatically logout without any operation after the configured time (in minutes)'
+    'extra-menus': 'Configure custom menus.'
+    none-operate-session-time: The user will automatically log out if there is no operation beyond the configured time (in seconds)
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:

@@ -80,17 +80,17 @@ addProjectMemberDialog:
   title: 添加項目成員
 advancedSettings:
   descriptions:
-    auth-token-max-ttl-minutes: 自定義一個授權令牌的最大TTL（以分鐘為單位）。
-    auth-user-info-max-age-seconds: 在進行認證提供者組成員同步之前，用戶認證令牌的最大存活時間。
-    auth-user-info-resync-cron: 重新同步認證提供者組成員資格的默認cron時間表。
-    auth-user-session-ttl-minutes: 用戶認證會話的自定義TTL（以分鐘為單位）。
-    cacerts: 驗證伺服器的證書所需的CA證書。
-    cluster-defaults: 在創建新集群時覆蓋RKE默認值。
-    cluster-template-enforcement: 非管理員將被限制只能通過預先批准的RKE模板啟動集群。
-    engine-install-url: 默認的Docker引擎安裝URL（用於大多數節點驅動）。
-    engine-iso-url: 默認的作業系統安裝URL（用於vSphere驅動）。
-    engine-newest-version: 在本次發布時，最新的Docker支持版本。 不滿足支持的Docker範圍但比這更新的Docker版本將被標記為未測試。
-    engine-supported-range: 支持Docker引擎版本的Semver範圍。 不符合這個範圍的版本將在用戶界面中被標記為不支持。
+    'auth-token-max-ttl-minutes': '自定義一個授權令牌的最大TTL（以分鐘為單位）。'
+    'auth-user-info-max-age-seconds': '在在進行認證提供者組成員同步之前，用戶認證令牌的最大存活時間。'
+    'auth-user-info-resync-cron': '用重新同步認證提供者組成員資格的默認 cron 時間表。'
+    'auth-user-session-ttl-minutes': '用戶認證會話的自定義TTL（以分鐘為單位）。'
+    'cacerts': '驗證伺服器的證書所需的CA證書。'
+    'cluster-defaults': '在創建新集群時覆蓋 RKE 默認值。'
+    'cluster-template-enforcement': '管理員將被限制只能通過預先批准的RKE模板啟動集群。'
+    'engine-install-url': '認的 Docker 引擎安裝 URL（用於大多數節點驅動）。'
+    'engine-iso-url': '默認的作業系統安裝 URL（用於 vSphere 驅動）。'
+    'engine-newest-version': '在本次發布時，最新的 Docker 支持版本。 不滿足支持的 Docker 範圍但比這更新的 Docker 版本將被標記為未測試。'
+    'engine-supported-range': '支持 Docker 引擎版本的 Semver 範圍。 不符合這個範圍的版本將在用戶界面中被標記為不支持。'
     harv-backup-target: 自定義備份目標用於存儲VM備份.
     harv-log-level: 配置Harvester伺服器日誌級別. 默認為信息
     harv-server-version: Harvester伺服器版本.
@@ -99,16 +99,17 @@ advancedSettings:
     harv-upgrade-checker-enabled: 指定是否啟用Harvester升級檢查. 默認為true.
     harv-upgrade-checker-url: 默認的Harvester升級檢查地址。 僅在<code> upgrade-checker-enabled </code> 等於true時使用。
     harv-vlan: VLAN網絡的默認物理NIC名稱.
-    ingress-ip-domain: 用於自動生成Ingress主機名的通配符DNS域。<ingress-name>.<namespace-name>.<ingress controller的ip地址>將被添加到該域。
-    rke-metadata-config: 配置RKE元數據刷新參數。
-    server-url: 默認的{appName}安裝網址。必須是HTTPS。你的集群中的所有節點都必須能夠到達這裡。
-    system-default-registry: 用於所有系統Docker鏡像的私有倉庫。
-    telemetry-opt: 遙測報告opt-in。
-    ui-banners: 分類橫幅是用來在頁眉、頁腳或兩者中顯示一個自定義的固定橫幅。
-    ui-default-landing: 用戶在登錄後登陸的默認頁面。
-    ui-index: UI的HTML索引。
-    ui-issues: 使用一個URL地址來發送新的 "提交問題 "報告，而不是將用戶發送到Github問題頁面。
-    ui-pl: Private-Label company name.
+    'ingress-ip-domain': '用於自動生成Ingress主機名的通配符DNS域。<ingress-name>.<namespace-name>.<ingress controller的ip地址>將被添加到該域。'
+    'rke-metadata-config': '配置 RKE 元數據刷新參數。'
+    'server-url': '默認的 {appName} 安裝網址。必須是HTTPS。你的集群中的所有節點都必須能夠到達這裡。'
+    'system-default-registry': '用於所有系統 Docker 鏡像的私有倉庫。'
+    'telemetry-opt': '遙感報告設置。'
+    'ui-banners': '分類橫幅是用來在頁眉、頁腳或兩者中顯示一個自定義的固定橫幅。'
+    'ui-default-landing': '用戶在登錄後登陸的默認頁面。'
+    'ui-index': 'UI HTML 索引位置。'
+    'ui-issues': 使用一個URL地址來發送新的 "提交問題 "報告，而不是將用戶發送到Github問題頁面。
+    'ui-pl': '企業名稱專用標籤。'
+    'ui-brand': 定義在 /assets/brand 中的替代主題的文件夾名稱。
     harv-additional-ca: 用於TLS驗證的自定義CA根證書。
     harv-cluster-registration-url: 用於多集群管理的註冊URL。
     harv-http-proxy: 用於Harvester訪問外部服務的HTTP代理。
@@ -116,6 +117,15 @@ advancedSettings:
     harv-support-bundle-timeout: 支持包超時配置（分鐘），使用0禁用超時。
     harv-vip-pools: 按CIDR配置VIP全局和命名空間的IP地址池。
     harv-vm-force-reset-policy: 配置當虛擬機卡在停機的節點上時的強制重啟動作。
+    'rdns-base-url': '配置 RDNS 服務地址。'
+    'ui-session-logout-minutes': '用戶超過配置時間沒有任何操作將自動註銷(以分鐘為單位)。'
+    'auditlog-server-url': '配置審計日誌服務地址。'
+    'none-operate-session-time': '用戶超過配置時間沒有任何操作將自動註銷(以秒為單位)'
+    'ui-footer-text': '額外的頁腳內容'
+    'ui-footer-url': '額外頁腳內容對應的鏈接'
+    'extra-menus': '配置擴展菜單'
+    ui-dashboard-index: '{appName} UI HTML 首頁地址。'
+    'ui-offline-preferred': '控制 UI 靜態資源是由服務器容器在本地提供還是從 ui-index 和 ui-dashboard-index 設置中定義的遠程 URL 提供。'
   edit:
     changeSetting: 修改設置
     falseOption: "False"

@@ -56,6 +56,7 @@ export const SETTING = {
   AUDIT_LOG_SERVER_URL:             'auditlog-server-url',
   FOOTER_TEXT:                      'ui-footer-text',
   FOOTER_URL:                       'ui-footer-url',
+  UI_DEFAULT_LANDING:               'ui-default-landing',
 
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
   UI_SESSION_LOGOUT_MINUTES:            'ui-session-logout-minutes',
@@ -96,6 +97,15 @@ export const ALLOWED_SETTINGS = {
   [SETTING.AUDIT_LOG_SERVER_URL]: { kind: 'url' },
   [SETTING.FOOTER_TEXT]:          {},
   [SETTING.FOOTER_URL]:           { kind: 'url' },
+  [SETTING.UI_DEFAULT_LANDING]:   {
+    kind:    'enum-map',
+    options: {
+      ember: 'Cluster Manager',
+      vue:   'Cluster Explorer'
+    },
+  },
+
+  [SETTING.UI_SESSION_LOGOUT_MINUTES]: { value: '30' },
 };
 
 // harvester Settings ID
