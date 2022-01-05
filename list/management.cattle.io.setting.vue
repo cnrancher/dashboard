@@ -108,8 +108,7 @@ export default {
             <span v-if="setting.fromEnv" class="modified">Set by Environment Variable</span>
             <span v-else-if="setting.customized" class="modified">Modified</span>
           </h1>
-          <h2>
-            <t :k="`advancedSettings.descriptions.${setting.id}`" />
+          <h2 v-text="t(`advancedSettings.descriptions.${setting.id}`)">
           </h2>
         </div>
         <div v-if="setting.hasActions" class="action">
