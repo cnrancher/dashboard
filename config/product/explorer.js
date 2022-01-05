@@ -325,6 +325,18 @@ export function init(store) {
     exact:      true
   });
 
+  // NavLinks iframe
+  virtualType({
+    label:      'nav-links',
+    labelKey:   'nav.tools.navLinks',
+    name:       'nav-links',
+    group:      'cluster',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-legacy-navLinks-page', params: { cluster: 'local', page: 'iframe' } },
+    exact:      true
+  });
+
   // Ignore these types as they are managed through the settings product
   ignoreType(MANAGEMENT.FEATURE);
   ignoreType(MANAGEMENT.SETTING);

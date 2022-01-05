@@ -4628,3 +4628,56 @@ modalDownLoadFileComponent:
   validatePath: 請輸入要下載文件的路徑
   noSuchFile: 文件不存在
   serverError: 服務端發生錯誤
+
+navlink:
+  name: 
+    label: 名稱
+    placeholder: 請輸入名稱
+  group: 
+    title: 設置為組鏈接
+    name: 
+      label: 組名稱
+      placeholder: 請輸入組名稱
+    sideLabel: 
+      label: 角標籤
+      placeholder: 請輸入關於此鏈接地址的角標籤
+    description: 
+      label: 描述
+      placeholder: 請輸入關於此鏈接地址的描述
+    icon: 
+      label: 圖標
+      placeholder: 請輸入關於此鏈接地址的base64格式的圖標
+    label: 
+      label: 標籤
+      placeholder: 請輸入關於此鏈接地址的標籤
+    uploader:
+      label: 上傳圖標
+      tooMaxError: 上傳圖標大小不能超過1M
+      removeIcon: 刪除圖標
+  target: 
+    label: 打開方式
+    iframe: 使用iframe
+    blank: 新窗口打開
+    self: 當前窗口打開
+  url: 
+    label: 鏈接地址
+    placeholder: 例如：https://<RANCHER_SERVER_URL>/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/?orgId=1
+    service: 
+      name: 
+        label: 服務名稱
+        placeholder: 請輸入服務名稱
+      namespace:
+        label: 命名空間
+        placeholder: 請輸入命名空間
+      path: 
+        label: path
+        placeholder: 例如：proxy/?orgId=1
+      port:
+        label: port
+        placeholder: 例如：80
+      scheme: 
+        label: scheme
+        placeholder: 例如：http
+  iframe:
+    failedToLoad: 頁面加載失敗
+    reload: 重新加載

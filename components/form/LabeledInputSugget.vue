@@ -190,14 +190,14 @@ export default {
     />
     <v-select
       ref="button-dropdown"
-      class="button-dropdown btn"
+      class="button-dropdown btn input-action"
       :class="{
         disabled,
         focused,
       }"
       v-bind="$attrs"
       :no-drop="false"
-      :disabled="false"
+      :disabled="isView || disabled"
       :append-to-body="true"
       :calculate-position="withPopper"
       :searchable="false"
