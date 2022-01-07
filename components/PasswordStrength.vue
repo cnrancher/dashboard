@@ -76,8 +76,11 @@ export default {
     }
   },
   watch: {
-    strength(v) {
-      this.$emit('strengthChange', v);
+    strength: {
+      handler(v) {
+        this.$emit('strengthChange', v);
+      },
+      immediate: true
     }
   }
 };
