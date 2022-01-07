@@ -385,7 +385,7 @@ export default {
       <Checkbox v-if="isChange" v-model="isRandomGenerated" label-key="changePassword.generatePassword.label" class="mt-10 type" />
       <div :class="{row: !isChange}">
         <div :class="{col: !isChange, 'span-4': !isChange}">
-          <PasswordStrength :password="isRandomGenerated ? passwordGen: passwordNew" @strengthChange="passwordStrength = $event"></PasswordStrength>
+          <PasswordStrength class="mt-10" :password="isRandomGenerated ? passwordGen: passwordNew" @strengthChange="passwordStrength = $event"></PasswordStrength>
         </div>
       </div>
     </div>
@@ -409,7 +409,6 @@ export default {
     }
 
     &.create, &.edit {
-      height: 185px;
       .form {
         .fields {
           display: flex;

@@ -246,6 +246,7 @@ export default {
           v-if="!isView"
           ref="changePassword"
           v-model="form.password"
+          class="mb-10"
           :mode="mode"
           :must-change-password="value.mustChangePassword"
           @valid="validation.password = $event"
