@@ -170,21 +170,13 @@ export default {
 
         <h3>{{ t(`authConfig.cas.${NAME}`) }}</h3>
         <div class="row mb-20">
-          <div class="col span-4">
+          <div class="col span-6">
             <LabeledInput
               v-model="model.hostname"
               :label="t('authConfig.cas.hostUrl.label')"
               :placeholder="t('authConfig.cas.hostUrl.placeholder')"
               :mode="mode"
               required
-            />
-          </div>
-          <div class="col span-2">
-            <Checkbox
-              v-model="model.tls"
-              :mode="mode"
-              class="full-height"
-              :label="`${t('authConfig.cas.enableTLS')}(https://)`"
             />
           </div>
           <div class="col span-6">
@@ -200,7 +192,16 @@ export default {
             />
           </div>
         </div>
-
+        <div class="row mb-20">
+          <div class="col span-6">
+            <Checkbox
+              v-model="model.tls"
+              :mode="mode"
+              class="full-height"
+              :label="`${t('authConfig.cas.enableTLS')}(https://)`"
+            />
+          </div>
+        </div>
         <div class="row mb-20">
           <div class="col span-6">
             <UnitInput
