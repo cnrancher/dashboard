@@ -6,17 +6,17 @@ import { LOGGED_OUT } from '@/config/query-params';
 const defaultEvents = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel'];
 
 export default {
-  async fetch() {
-    const uiSessionLogoutMinutes = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_SESSION_LOGOUT_MINUTES);
+  // async fetch() {
+  //   const uiSessionLogoutMinutes = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_SESSION_LOGOUT_MINUTES);
 
-    this.uiSessionLogoutMinutes = uiSessionLogoutMinutes;
-  },
+  //   this.uiSessionLogoutMinutes = uiSessionLogoutMinutes;
+  // },
 
   data() {
     return {
       lastActive:             new Date().getTime(),
       autoLogoutTimer:        null,
-      uiSessionLogoutMinutes: null,
+      // uiSessionLogoutMinutes: null,
     };
   },
 
@@ -25,7 +25,7 @@ export default {
       return parseInt(this.sessionLogoutMinutes, 10) * 1000 * 60;
     },
     sessionLogoutMinutes() {
-      return this.uiSessionLogoutMinutes?.value ?? 30;
+      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_SESSION_LOGOUT_MINUTES)?.value ?? 30;
     }
   },
 
