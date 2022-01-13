@@ -6128,6 +6128,18 @@ branding:
     tip: You can override the link color used throughout the UI with a custom color of your choice.
     useCustom: Use a Custom Link Color
     example: Link Example
+  favicon:
+    label: Favicon
+    tip: 'Upload a icon to replace the favicon. Image width and height should be 21 pixels. Max file size is 20KB'
+    preview: Favicon Preview
+    upload: Upload Favicon
+    useCustom: Use a Custom Favicon
+  loginLandscape:
+    label: Login Page Landscape Image/SVG
+    tip: 'Upload a image/svg to replace the login page landscape image/svg. Max file size is 100KB'
+    preview: Landscape Image/SVG Preview
+    upload: Upload Image/SVG
+    useCustom: Use a Custom Login Page Landscape Image/SVG
 resourceQuota:
   configMaps: Config Maps
   limitsCpu: CPU Limit
@@ -6266,54 +6278,53 @@ modalDownLoadFileComponent:
   validatePath: Please enter the path to the file you want to download.
   noSuchFile: File does not exist
   serverError: An error occurred on the service break
-
 navlink:
-  name: 
+  name:
     label: name
     placeholder: Please enter a name
-  group: 
+  group:
     title: Set as a group link
-    name: 
+    name:
       label: Group name
       placeholder: Please enter a group name
-    sideLabel: 
+    sideLabel:
       label: Side label
       placeholder: Please enter the side label of this link's address.
-    description: 
+    description:
       label: Description
       placeholder: Please enter a description of this link's address.
-    icon: 
+    icon:
       label: Icon
       placeholder: Please enter a Base64 icon of this link's address.
-    label: 
+    label:
       label: Label
       placeholder: Please enter a label of this link's address.
     uploader:
       label: Upload Icon
       tooMaxError: The size of the uploaded icon cannot exceed 1 MB
       removeIcon: Delete icon
-  target: 
+  target:
     label: Open With
     iframe: Use iframe
     blank: New window open
     self: Current window open
-  url: 
+  url:
     label: Link address
     placeholder: e.g. https://<RANCHER_SERVER_URL>/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/?orgId=1
-    service: 
-      name: 
+    service:
+      name:
         label: Service name
         placeholder: Please enter a service name
       namespace:
         label: Namespace
         placeholder: Please enter a namespace
-      path: 
+      path:
         label: path
         placeholder: e.g. proxy/?orgId=1
       port:
         label: port
         placeholder: e.g. 80
-      scheme: 
+      scheme:
         label: scheme
         placeholder: e.g. http
   iframe:

@@ -7,10 +7,15 @@ import { createCssVars } from '@/utils/color';
 export default {
   async fetch() {
     this.globalSettings = await this.$store.getters['management/all'](MANAGEMENT.SETTING);
+    const uiFaviconSetting = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_FAVICON);
+
+    this.uiFaviconSetting = uiFaviconSetting;
   },
 
   data() {
-    return { globalSettings: [], brandCookie: null };
+    return {
+      globalSettings: [], brandCookie: null, uiFaviconSetting: null
+    };
   },
 
   computed: {
@@ -34,7 +39,11 @@ export default {
 
     theme() {
       return this.$store.getters['prefs/theme'];
-    }
+    },
+
+    uiFavicon() {
+      return this.uiFaviconSetting?.value;
+    },
   },
 
   watch: {
@@ -76,7 +85,7 @@ export default {
       for (const prop in vars) {
         document.body.style.removeProperty(prop);
       }
-    }
+    },
   },
   head() {
     let cssClass = `overflow-hidden dashboard-body`;
@@ -94,6 +103,13 @@ export default {
         rel:  'icon',
         type: 'image/x-icon',
         href: ico
+      }];
+    } else if (this.uiFavicon) {
+      out.link = [{
+        hid:  'icon',
+        rel:  'icon',
+        type: 'image/x-icon',
+        href: this.uiFavicon,
       }];
     }
 

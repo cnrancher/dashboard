@@ -4638,56 +4638,68 @@ modalDownLoadFileComponent:
   validatePath: 請輸入要下載文件的路徑
   noSuchFile: 文件不存在
   serverError: 服務端發生錯誤
-
 navlink:
-  name: 
+  name:
     label: 名稱
     placeholder: 請輸入名稱
-  group: 
+  group:
     title: 設置為組鏈接
-    name: 
+    name:
       label: 組名稱
       placeholder: 請輸入組名稱
-    sideLabel: 
+    sideLabel:
       label: 角標籤
       placeholder: 請輸入關於此鏈接地址的角標籤
-    description: 
+    description:
       label: 描述
       placeholder: 請輸入關於此鏈接地址的描述
-    icon: 
+    icon:
       label: 圖標
       placeholder: 請輸入關於此鏈接地址的base64格式的圖標
-    label: 
+    label:
       label: 標籤
       placeholder: 請輸入關於此鏈接地址的標籤
     uploader:
       label: 上傳圖標
       tooMaxError: 上傳圖標大小不能超過1M
       removeIcon: 刪除圖標
-  target: 
+  target:
     label: 打開方式
     iframe: 使用iframe
     blank: 新窗口打開
     self: 當前窗口打開
-  url: 
+  url:
     label: 鏈接地址
     placeholder: 例如：https://<RANCHER_SERVER_URL>/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/?orgId=1
-    service: 
-      name: 
+    service:
+      name:
         label: 服務名稱
         placeholder: 請輸入服務名稱
       namespace:
         label: 命名空間
         placeholder: 請輸入命名空間
-      path: 
+      path:
         label: path
         placeholder: 例如：proxy/?orgId=1
       port:
         label: port
         placeholder: 例如：80
-      scheme: 
+      scheme:
         label: scheme
         placeholder: 例如：http
   iframe:
     failedToLoad: 頁面加載失敗
     reload: 重新加載
+branding:
+  favicon:
+    label: Favicon
+    tip: '上傳一個圖標來替換默認的 favicon 圖標，圖片的寬和高應該是21像素大小. 文件最大是 20KB'
+    preview: Favicon 預覽
+    upload: 上傳 Favicon
+    useCustom: 使用自定義的 Favicon
+  loginLandscape:
+    label: 登錄頁面的背景圖
+    tip: '上傳一個圖片或SVG來替換登錄頁面的默認背景圖片. 文件最大 100KB'
+    preview: 背景圖預覽
+    upload: 上傳背景圖
+    useCustom: 使用自定義登錄頁面背景圖

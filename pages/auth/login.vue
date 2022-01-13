@@ -47,7 +47,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand, disabledEncryption;
+    let firstLoginSetting, plSetting, brand, disabledEncryption, footerText, footerUrl, uiLoginLandscape;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -64,6 +64,9 @@ export default {
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
       disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+      footerText = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
+      footerUrl = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
+      uiLoginLandscape = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -107,7 +110,11 @@ export default {
       showLocal:  !hasOthers || (route.query[LOCAL] === _FLAGGED),
       firstLogin: firstLoginSetting?.value === 'true',
       singleProvider,
-      disabledEncryption
+      disabledEncryption,
+      footerText: footerText?.value,
+      footerUrl:  footerUrl?.value,
+
+      uiLoginLandscape: uiLoginLandscape?.value,
     };
   },
 
@@ -406,8 +413,16 @@ export default {
           </div>
         </template>
       </div>
-
-      <BrandImage class="col span-6 landscape" file-name="login-landscape.svg" />
+      <img v-if="uiLoginLandscape" :src="uiLoginLandscape" class="col span-6 landscape">
+      <BrandImage v-else class="col span-6 landscape" file-name="login-landscape.svg" />
+    </div>
+    <div v-if="footerText" class="footer-banner">
+      <div v-if="footerUrl">
+        <a :href="footerUrl" target="_blank">{{ footerText }}</a>
+      </div>
+      <div v-else>
+        {{ footerText }}
+      </div>
     </div>
   </main>
 </template>
@@ -444,6 +459,12 @@ export default {
           padding: 0;
         }
       }
+    }
+    .footer-banner {
+      position: absolute;
+      bottom: 4px;
+      left: 25%;
+      transform: translate(-50%, 0);
     }
   }
 </style>

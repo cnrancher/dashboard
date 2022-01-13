@@ -57,6 +57,8 @@ export const SETTING = {
   FOOTER_TEXT:                      'ui-footer-text',
   FOOTER_URL:                       'ui-footer-url',
   UI_DEFAULT_LANDING:               'ui-default-landing',
+  UI_FAVICON:                       'ui-favicon',
+  UI_LOGIN_LANDSCAPE:               'ui-login-landscape',
 
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
   UI_SESSION_LOGOUT_MINUTES:            'ui-session-logout-minutes',
