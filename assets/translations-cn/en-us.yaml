@@ -156,7 +156,7 @@ nav:
     tls: TLS
   tools:
     tab: tools
-    cisF5: F5 CIS Version
+    cisF5: F5 CIS
 product:
   apps: Apps & Marketplace
   auth: Users & Authentication
