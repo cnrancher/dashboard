@@ -1,5 +1,5 @@
 import { GITHUB_NONCE, GITHUB_REDIRECT, GITHUB_SCOPE } from '@/config/query-params';
-import { NORMAN } from '@/config/types';
+import { MANAGEMENT, NORMAN } from '@/config/types';
 import { _MULTI } from '@/plugins/steve/actions';
 import { addObjects, findBy } from '@/utils/array';
 import { openAuthPopup, returnTo, thirdAuthLogout } from '@/utils/auth';
@@ -324,6 +324,23 @@ export const actions = {
       }, { redirectUnauthorized: false });
 
       commit('setLoginCooldown', 0);
+      try {
+        const harborServerUrlSetting = await dispatch('management/find', { type: MANAGEMENT.SETTING, id: 'harbor-server-url' }, { root: true });
+
+        if (harborServerUrlSetting?.value) {
+          await dispatch('rancher/request', {
+            url:           '/v3/users?action=syncharboruser',
+            method:        'post',
+            data:          {
+              ...body,
+              provider,
+            },
+          }, { root: true });
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn(error);
+      }
 
       return res;
     } catch (err) {
