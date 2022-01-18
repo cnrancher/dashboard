@@ -327,7 +327,7 @@ async function findMe(store) {
 
 async function tryInitialSetup(store, password = 'admin') {
   try {
-    const disabledEncryption = await store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+    const disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
 
     if (disabledEncryption?.value !== 'true') {
       password = AESEncrypt(password.trim());

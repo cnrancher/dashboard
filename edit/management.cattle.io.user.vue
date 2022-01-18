@@ -18,14 +18,11 @@ export default {
   mixins:     [
     CreateEditView
   ],
-  async fetch() {
-    const disabledEncryption = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
-
-    this.disabledEncryption = disabledEncryption;
-  },
 
   data() {
     const showGlobalRoles = !!this.$store.getters[`management/schemaFor`](MANAGEMENT.GLOBAL_ROLE);
+
+    this.disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
 
     return {
       showGlobalRoles,

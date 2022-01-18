@@ -24,9 +24,7 @@ export default {
   },
 
   created() {
-    this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT).then((d) => {
-      this.disabledEncryption = d;
-    });
+    this.disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
   },
 
   methods: {
