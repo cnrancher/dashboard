@@ -596,6 +596,8 @@ export const actions = {
       } else {
         commit('auth/isAdmin', false);
       }
+    } else {
+      commit('auth/isAdmin', false);
     }
 
     console.log(`Done loading management; isRancher=${ isRancher }; isMultiCluster=${ isMultiCluster }`); // eslint-disable-line no-console
