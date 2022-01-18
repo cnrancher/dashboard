@@ -62,6 +62,11 @@ export default {
     ...mapGetters(['productId', 'clusterId', 'namespaceMode', 'isExplorer', 'currentProduct', 'isSingleVirtualCluster']),
     ...mapGetters({ locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales' }),
     ...mapGetters('type-map', ['activeProducts']),
+    ...mapGetters({ isAdmin: 'auth/isAdmin', v3User: 'auth/v3User' }),
+
+    harborSyncComplete() {
+      return this.v3User?.annotations?.['management.harbor.pandaria.io/synccomplete'];
+    },
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
 
@@ -235,6 +240,20 @@ export default {
       }
     },
 
+    isAdmin(a, b) {
+      if ( !isEqual(a, b) ) {
+        // Immediately update because you'll see it come in later
+        this.getGroups();
+      }
+    },
+
+    harborSyncComplete(a, b) {
+      if ( !isEqual(a, b) ) {
+        // Immediately update because you'll see it come in later
+        this.getGroups();
+      }
+    },
+
     async currentProduct(a, b) {
       if ( !isEqual(a, b) ) {
         if (a.inStore !== b.inStore || a.inStore !== 'cluster' ) {
@@ -254,7 +273,6 @@ export default {
     $route(a, b) {
       this.$nextTick(() => this.syncNav());
     },
-
   },
 
   async created() {

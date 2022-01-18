@@ -593,6 +593,8 @@ export const actions = {
 
       if (b) {
         commit('auth/isAdmin', true);
+      } else {
+        commit('auth/isAdmin', false);
       }
     }
 
