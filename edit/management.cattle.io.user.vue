@@ -22,7 +22,7 @@ export default {
   data() {
     const showGlobalRoles = !!this.$store.getters[`management/schemaFor`](MANAGEMENT.GLOBAL_ROLE);
 
-    this.disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+    const disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
 
     return {
       showGlobalRoles,
@@ -40,7 +40,7 @@ export default {
         roles:        !showGlobalRoles,
         rolesChanged:     false,
       },
-      disabledEncryption: null,
+      disabledEncryption,
     };
   },
 
