@@ -33,7 +33,7 @@ export default {
 
   data() {
     return {
-      target: 'self', group: false, url: 'toURL', suggestionGroups3: []
+      target: '_self', group: false, url: 'toURL'
     };
   },
 
@@ -109,11 +109,11 @@ export default {
     },
 
     updateTarget(neu) {
-      if (neu === 'iframe') {
+      if (neu === '_iframe') {
         this.value.spec.target = '_self';
         this.value.metadata.labels[NAVLINK_IFRAME] = 'true';
       } else {
-        this.value.spec.target = `_${ neu }`;
+        this.value.spec.target = neu;
         delete this.value.metadata.labels[NAVLINK_IFRAME];
       }
 
@@ -173,7 +173,9 @@ export default {
     }
 
     if (this.value.isIframe) {
-      this.$set(this, 'target', 'iframe');
+      this.$set(this, 'target', '_iframe');
+    } else if (this.value.actualTarget) {
+      this.$set(this, 'target', this.value.actualTarget);
     }
 
     if (this.value.spec.group) {
@@ -208,7 +210,7 @@ export default {
           :mode="mode"
           :value="target"
           name="target"
-          :options="['self', 'blank', 'iframe']"
+          :options="['_self', '_blank', '_iframe']"
           :labels="[t('navlink.target.self'), t('navlink.target.blank'), t('navlink.target.iframe')]"
           @input="updateTarget"
         />

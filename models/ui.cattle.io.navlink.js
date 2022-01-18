@@ -1,6 +1,8 @@
 import { proxyUrlFromParts } from '@/models/service';
 import SteveModel from '@/plugins/steve/steve-class';
 
+const NAVLINK_IFRAME = 'navlink.pandaria.io/iframe';
+
 export default class extends SteveModel {
   get labelDisplay() {
     return this.spec?.label || this.metadata.name || '?';
@@ -45,10 +47,10 @@ export default class extends SteveModel {
   }
 
   get actualTarget() {
-    return (this.spec.target || '').trim() || '_blank';
+    return (this.spec.target || '').trim() || '_self';
   }
 
   get isIframe() {
-    return this.metadata.labels?.['navlink.pandaria.io/iframe'] === 'true';
+    return this.metadata.labels?.[NAVLINK_IFRAME] === 'true';
   }
 }

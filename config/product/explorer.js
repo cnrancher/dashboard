@@ -329,7 +329,6 @@ export function init(store) {
   virtualType({
     label:      'nav-links',
     labelKey:   'nav.tools.navLinks',
-    name:       'nav-links',
     group:      'cluster',
     namespaced: false,
     icon:       'globe',

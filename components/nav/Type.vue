@@ -56,6 +56,10 @@ export default {
     },
 
     selectType() {
+      if (!this.type.route) {
+        return;
+      }
+
       const typePath = this.$router.resolve(this.type.route)?.route?.fullPath;
 
       if (typePath !== this.$route.fullPath) {
