@@ -34,6 +34,7 @@ export const state = function() {
     v3User:      null,
     initialPass: null,
     isAdmin:     false,
+    me:          null,
 
     loginCooldown: 0,
   };
@@ -75,6 +76,10 @@ export const getters = {
   isAdmin(state) {
     return state.isAdmin;
   },
+
+  me(state) {
+    return state.me;
+  }
 };
 
 export const mutations = {
@@ -85,6 +90,7 @@ export const mutations = {
   gotUser(state, v3User) {
     // Always deference to avoid race condition when setting `mustChangePassword`
     state.v3User = { ...v3User };
+    state.me = v3User; // do not modify reference, or you will lose reactive
   },
 
   hasAuth(state, hasAuth) {
@@ -106,6 +112,7 @@ export const mutations = {
     state.principalId = null;
     state.v3User = null;
     state.initialPass = null;
+    state.me = null;
   },
 
   initialPass(state, pass) {

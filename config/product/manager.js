@@ -122,7 +122,7 @@ export function init(store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootState.auth?.isAdmin || rootState.auth?.v3User?.annotations?.['management.harbor.pandaria.io/synccomplete'] === 'true';
+      return rootState.auth?.isAdmin || rootState.auth?.me?.annotations?.['management.harbor.pandaria.io/synccomplete'] === 'true';
     },
     label:      'Image Management',
     labelKey:   'nav.imageRepo.projects',
@@ -136,7 +136,7 @@ export function init(store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootState.auth?.isAdmin || rootState.auth?.v3User?.annotations?.['management.harbor.pandaria.io/synccomplete'] === 'true';
+      return rootState.auth?.isAdmin || rootState.auth?.me?.annotations?.['management.harbor.pandaria.io/synccomplete'] === 'true';
     },
     label:      'Logs',
     labelKey:   'nam.imageRepo.logs',

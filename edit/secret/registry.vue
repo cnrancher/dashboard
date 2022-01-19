@@ -85,7 +85,7 @@ export default {
     },
     enabledHarborService() {
       const isAdmin = this.$store.getters['auth/isAdmin'];
-      const v3User = this.$store.getters['auth/v3User'] || {};
+      const v3User = this.$store.getters['auth/me'] || {};
 
       if (this?.harborConfig?.registryUrl) {
         if (isAdmin) {
@@ -179,7 +179,7 @@ export default {
       });
     },
     getHarborConfig() {
-      const v3User = this.$store.getters['auth/v3User'] || {};
+      const v3User = this.$store.getters['auth/me'] || {};
       const isAdmin = this.$store.getters['auth/isAdmin'];
 
       return this.loadHarborRegistryUrl().then((registryUrl) => {

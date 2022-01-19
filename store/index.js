@@ -587,8 +587,8 @@ export const actions = {
       });
     }
 
-    if (res.globalRoleBindings && getters['auth/v3User']?.id) {
-      const id = getters['auth/v3User']?.id;
+    if (res.globalRoleBindings && getters['auth/me']?.id) {
+      const id = getters['auth/me']?.id;
       const b = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
 
       if (b) {

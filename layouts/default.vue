@@ -62,10 +62,10 @@ export default {
     ...mapGetters(['productId', 'clusterId', 'namespaceMode', 'isExplorer', 'currentProduct', 'isSingleVirtualCluster']),
     ...mapGetters({ locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales' }),
     ...mapGetters('type-map', ['activeProducts']),
-    ...mapGetters({ isAdmin: 'auth/isAdmin', v3User: 'auth/v3User' }),
+    ...mapGetters({ isAdmin: 'auth/isAdmin', me: 'auth/me' }),
 
     harborSyncComplete() {
-      return this.v3User?.annotations?.['management.harbor.pandaria.io/synccomplete'];
+      return this.me?.annotations?.['management.harbor.pandaria.io/synccomplete'];
     },
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
