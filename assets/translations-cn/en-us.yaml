@@ -6287,6 +6287,7 @@ navlink:
     name:
       label: Group name
       placeholder: Please enter a group name
+      unavailable: The group name cannot contain Chinese characters or special characters
     sideLabel:
       label: Side label
       placeholder: Please enter the side label of this link's address.
@@ -6300,9 +6301,11 @@ navlink:
       label: Label
       placeholder: Please enter a label of this link's address.
     uploader:
-      label: Upload Icon
-      tooMaxError: The size of the uploaded icon cannot exceed 1 MB
-      removeIcon: Delete icon
+      label: Link Icon
+      tip: 'upload an icon to replace the default link icon. The width and height of the icon are 56 pixels. The maximum file size is 200KB.'
+      preview: Icon Preview
+      upload: Upload Icon
+      useCustom: Use custom link icon
   target:
     label: Open With
     iframe: Use iframe
@@ -6317,7 +6320,7 @@ navlink:
         placeholder: Please enter a service name
       namespace:
         label: Namespace
-        placeholder: Please enter a namespace
+        placeholder: Please select a namespace
       path:
         label: path
         placeholder: e.g. proxy/?orgId=1

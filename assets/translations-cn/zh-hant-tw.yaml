@@ -4660,9 +4660,11 @@ navlink:
       label: 標籤
       placeholder: 請輸入關於此鏈接地址的標籤
     uploader:
-      label: 上傳圖標
-      tooMaxError: 上傳圖標大小不能超過1M
-      removeIcon: 刪除圖標
+      label: 鏈接圖標
+      tip: '上傳一個圖標來替換默認的鏈接圖標，圖標的寬和高是56像素大小。 文件最大是 200KB。'
+      preview: 圖標預覽
+      upload: 上傳圖標
+      useCustom: 使用自定義鏈接圖標
   target:
     label: 打開方式
     iframe: 使用iframe
@@ -4675,9 +4677,10 @@ navlink:
       name:
         label: 服務名稱
         placeholder: 請輸入服務名稱
+        unavailable: 組名稱不支持中文及特殊字元
       namespace:
         label: 命名空間
-        placeholder: 請輸入命名空間
+        placeholder: 請選擇命名空間
       path:
         label: path
         placeholder: 例如：proxy/?orgId=1

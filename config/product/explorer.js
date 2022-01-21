@@ -332,7 +332,7 @@ export function init(store) {
     group:      'cluster',
     namespaced: false,
     icon:       'globe',
-    route:      { name: 'c-cluster-legacy-navLinks-page', params: { cluster: 'local', page: 'iframe' } },
+    route:      { name: 'c-cluster-legacy-navLinks-page' },
     exact:      true
   });
 

@@ -418,7 +418,17 @@ export default {
             sideLabel:   obj.spec.sideLabel,
             iconSrc:     obj.spec.iconSrc,
             description: obj.spec.description,
+            isIframe:    obj.isIframe
           };
+
+          if (obj.isIframe) {
+            entry.route = {
+              page:    'iframe',
+              name:   'c-cluster-legacy-navLinks-page',
+              params: { cluster: this.clusterId },
+              query:  { link: obj.iframeSrc }
+            };
+          }
 
           // If there's a spec.group (groupLabel), all entries with that name go under one nav group
           if ( groupSlug ) {

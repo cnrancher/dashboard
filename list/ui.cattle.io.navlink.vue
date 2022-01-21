@@ -39,7 +39,7 @@ export default {
       </template>
       <template v-else-if="row.isIframe">
         <n-link :to="row.link">
-          {{ row.link.replace(new RegExp(`^\/c\/${clusterId}\/legacy\/navLinks\/iframe\\?link=https:\/\/`), '') }}
+          {{ row.iframeSrc.replace(/^https:\/\//,'') }}
           <i class="icon icon-external-link" />
         </n-link>
       </template>

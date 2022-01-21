@@ -9,13 +9,15 @@ export default class extends SteveModel {
   }
 
   get link() {
-    if (this.isIframe) {
+    const index = window.location.pathname.indexOf('/explorer/ui.cattle.io.navlink');
+
+    if (this.isIframe && index > -1) {
       if ( this.spec?.toURL ) {
-        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks/iframe?link=${ this.spec.toURL }`;
+        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks?link=${ encodeURIComponent(this.spec.toURL) }`;
       } else if ( this.spec?.toService ) {
         const s = this.spec.toService;
 
-        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks/iframe?link=${ proxyUrlFromParts(this.$rootGetters['clusterId'], s.namespace, s.name, s.scheme, s.port, s.path) }`;
+        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks?link=${ encodeURIComponent(proxyUrlFromParts(this.$rootGetters['clusterId'], s.namespace, s.name, s.scheme, s.port, s.path)) }`;
       } else {
         return null;
       }
@@ -52,5 +54,21 @@ export default class extends SteveModel {
 
   get isIframe() {
     return this.metadata.labels?.[NAVLINK_IFRAME] === 'true';
+  }
+
+  get iframeSrc() {
+    if (!this.isIframe) {
+      return '';
+    }
+
+    if ( this.spec?.toURL ) {
+      return this.spec.toURL;
+    } else if ( this.spec?.toService ) {
+      const s = this.spec.toService;
+
+      return proxyUrlFromParts(this.$rootGetters['clusterId'], s.namespace, s.name, s.scheme, s.port, s.path);
+    } else {
+      return null;
+    }
   }
 }

@@ -104,9 +104,11 @@ export const RKE = { EXTERNAL_IP: 'rke.cattle.io/external-ip' };
 export const ISTIO = { AUTO_INJECTION: 'istio-injection' };
 
 const CATTLE_REGEX = /cattle\.io\//;
+const PANDARIA_REGEX = /pandaria\.io\//;
 
 export const LABELS_TO_IGNORE_REGEX = [
-  CATTLE_REGEX
+  CATTLE_REGEX,
+  PANDARIA_REGEX
 ];
 
 export const ANNOTATIONS_TO_IGNORE_REGEX = [

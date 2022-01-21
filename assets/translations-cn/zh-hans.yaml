@@ -4647,6 +4647,7 @@ navlink:
     name:
       label: 组名称
       placeholder: 请输入组名称
+      unavailable: 组名称不支持中文及特殊字符
     sideLabel:
       label: 角标签
       placeholder: 请输入关于此链接地址的角标签
@@ -4660,9 +4661,11 @@ navlink:
       label: 标签
       placeholder: 请输入关于此链接地址的标签
     uploader:
-      label: 上传图标
-      tooMaxError: 上传图标大小不能超过1M
-      removeIcon: 删除图标
+      label: 链接图标
+      tip: '上传一个图标来替换默认的链接图标，图标的宽和高是56像素大小。 文件最大是 200KB。'
+      preview: 图标预览
+      upload: 上传图标
+      useCustom: 使用自定义链接图标
   target:
     label: 打开方式
     iframe: 使用iframe
@@ -4677,7 +4680,7 @@ navlink:
         placeholder: 请输入服务名称
       namespace:
         label: 命名空间
-        placeholder: 请输入命名空间
+        placeholder: 请选择命名空间
       path:
         label: path
         placeholder: 例如：proxy/?orgId=1

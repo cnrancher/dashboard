@@ -854,6 +854,8 @@ $spacing: 10px;
   td {
     padding: 8px 5px;
     border: 0;
+    word-break: break-all;
+    word-wrap: break-word;
 
     &.row-check {
       padding-top: 12px;
