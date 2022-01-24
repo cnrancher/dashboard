@@ -145,9 +145,6 @@ nav:
     projects: Image Management
     logs: Logs
   auditLog: Audit Log
-  manageUI: Manage UI
-  vlanSubnet:
-    label: MacvlanSubnet
 
 product:
   apps: Apps & Marketplace

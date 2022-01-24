@@ -1,6 +1,9 @@
 ##############################
 # Special stuff
 ##############################
+##############################
+# Special stuff
+##############################
 generic:
   add: Add
   all: All
@@ -595,7 +598,7 @@ asyncButton:
     success: Rotated
   snapshot:
     action: Snapshot Now
-    waiting: Snapshotting&hellip;
+    waiting: Snapshot Initiated&hellip;
     success: Snapshot Creating
   uninstall:
     action: Uninstall
@@ -840,7 +843,7 @@ catalog:
     gitBranch:
       label: Git Branch
       placeholder: e.g. master
-      defaultMessage: Will default to "master" if left blank
+      defaultMessage: 'Will default to "master" if left blank'
     gitRepo:
       label: Git Repo URL
       placeholder: 'e.g. https://github.com/your-company/charts.git'
@@ -1169,10 +1172,10 @@ cluster:
         placeholder: e.g. ubuntu
         toolTip: SSH user to login with the selected OS image.
     registration:
-      step1: 1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI.
-      step2: 2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.
-      step3: 3. Input the following registration URL and click the <code>Save</code> button.
-      step4: Registration URL
+      step1: "1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI."
+      step2: '2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.'
+      step3: "3. Input the following registration URL and click the <code>Save</code> button."
+      step4: "Registration URL"
   haveOneOwner: There must be at least one member with the Owner role.
   import:
     commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
@@ -1582,7 +1585,7 @@ cluster:
       label: Container Network
     controlPlaneConcurrency:
       label: Control Plane Concurrency
-      toolTip: This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)
+      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
     defaultPodSecurityPolicyTemplateName:
       label: Default Pod Security Policy
     drain:
@@ -1607,7 +1610,7 @@ cluster:
       label: Worker Nodes
     workerConcurrency:
       label: Worker Concurrency
-      toolTip: This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)
+      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
   k3s:
     systemService:
       coredns: 'CoreDNS'
@@ -2284,8 +2287,8 @@ logging:
     dockerRootDirectory: Docker Root Directory
     default: /run/log/journal
     systemdLogPath: systemd Log Path
-    tooltip: Some kubernetes distributions log to <code>journald</code>. In order to collect these logs the <code>systemdLogPath</code> needs to be defined. While the <code>/run/log/journal</code> directory is used by default, some Linux distributions do not default to this path.
-    url: <a href="https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/" target="_blank" rel="noopener nofollow noreferrer">Learn more</a>
+    tooltip: 'Some kubernetes distributions log to <code>journald</code>. In order to collect these logs the <code>systemdLogPath</code> needs to be defined. While the <code>/run/log/journal</code> directory is used by default, some Linux distributions do not default to this path.'
+    url: '<a href="https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/" target="_blank" rel="noopener nofollow noreferrer">Learn more</a>'
   elasticsearch:
     host: Host
     scheme: Scheme
@@ -2811,7 +2814,7 @@ namespace:
     paused:
       longDescription: Deployment is paused. Pausing stops the controller from deploying revisions.
       shortDescription: Deployment is paused
-      stateName: Inactive
+      stateName: 'Inactive'
   resourceQuotas: Resource Quotas
 namespaceFilter:
   selected:
@@ -3510,7 +3513,7 @@ rbac:
         description: Allows the user to enable, configure, and disable all Authentication provider settings.
       catalogs-manage:
         label: Legacy Configure Catalogs
-        description: Allows the user to add, edit, and remove management.cattle.io based catalogs resources
+        description: Allows the user to add, edit, and remove management.cattle.io based catalogs resources.
       clusters-manage:
         label: Manage all Clusters
         description: Allows the user to manage all clusters, including ones they are not a member of.
@@ -4194,11 +4197,7 @@ tableHeaders:
   endpoints: Endpoints
   flow: Flow
   gitRepos: Git Repos
-  host: |-
-    {count, plural,
-      one { Host }
-      other { Hosts }
-    }
+  host: Host
   id: ID
   image: Image
   imageSize: Size
@@ -4592,7 +4591,7 @@ workload:
         add: Add command to execute
         command:
           label: Command
-          placeholder: e.g. sh -c sleep 10
+          placeholder: "e.g. sh -c 'sleep 10'"
       httpGet:
         title: HttpGet
         add: Create HTTP request
@@ -4782,17 +4781,17 @@ workload:
     vlansubnet:
       ip:
         label: IP
-        placeholder: e.g. 192.168.1.100,Multiple ips are connected by commas
+        placeholder: "e.g. 192.168.1.100,Multiple ips are connected by commas"
       label: Flat Network
       mac:
         label: MAC
-        placeholder: e.g. 0a:00:27:00:00:00, Multiple MACs are connected by commas
+        placeholder: "e.g. 0a:00:27:00:00:00, Multiple MACs are connected by commas"
       network:
         label: Interface
         placeholder: Select a Inetwork...
       subnet:
         label: Subnet
-        placeholder: Please choose a MacvlanSubnet
+        placeholder: "Please choose a MacvlanSubnet"
       tip: 'The upgrade strategy has been changed to: stop the old Pod and start the new Pod'
   normanWarning: It looks like this workload was created in the legacy Rancher UI. You may need to manually delete any services that were automatically created for it.
   validation:
@@ -5036,7 +5035,7 @@ harvester:
       success: 'Volume { diskName } is mounted to the VM { vm }.'
       title: Add Volume
     hotunplug:
-      success: Volume { name } is detach successfully.
+      success: 'Volume { name } is detach successfully.'
   notification:
     title:
       succeed: Succeed
@@ -5143,7 +5142,7 @@ harvester:
     hardwareResourceGauge:
       cpu: CPU
       memory: Memory
-      storage: Storage Size
+      storage: Storage
     sections:
       events:
         label: Events
@@ -5191,7 +5190,7 @@ harvester:
       kernel: Kernel
       management: Management Node
       compute: Compute Node
-      storage: Storage Size
+      storage: Storage
       nic: Physical NIC
       notRecommended: 'Not recommended'
       networkType: Type
@@ -5259,7 +5258,7 @@ harvester:
     restartTip: Restart the virtual machine now to take effect of the configuration changes.
     createRunning: Start virtual machine on creation
     restartNow: Restart Now
-    createSSHKey: Create a New..
+    createSSHKey: Create a New...
     installAgent: Install guest agent
     enableUsb: Enable USB Tablet
     sshTitle: Add Public SSH Key
@@ -5298,7 +5297,7 @@ harvester:
       title: Cloud Config
       cloudInit:
         label: Cloud Init
-        placeholder: Choose a template
+        placeholder: Select a template
       userData:
         label: User Data Template
         title: "User Data:"
@@ -5308,14 +5307,14 @@ harvester:
         title: "Network Data:"
         tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>Learn more</a>"
       createNew: Create new...
-      createTemplateTitle: Create {name}.
+      createTemplateTitle: 'Create {name}.'
       network:
         label: Network Data Template
-        tip: The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>Learn more</a>
+        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>Learn more</a>"
         title: 'Network Data:'
       user:
         label: User Data Template
-        tip: You can specify user data to configure an instance or run a configuration script during launch. If you launch more than one instance at a time, the user data is available to all the instances in that reservation. <a href='https://cloudinit.readthedocs.io/en/latest/topics/examples.html' target='_blank'>Learn more</a>
+        tip: "You can specify user data to configure an instance or run a configuration script during launch. If you launch more than one instance at a time, the user data is available to all the instances in that reservation. <a href='https://cloudinit.readthedocs.io/en/latest/topics/examples.html' target='_blank'>Learn more</a>"
         title: 'User Data:'
     scheduling:
       affinity:
@@ -5396,7 +5395,7 @@ harvester:
     unplug:
       actionLabel: Detach
       detachVolume: Detach Volume
-      title: Are you sure that you want to detach volume {name} ?
+      title: 'Are you sure that you want to detach volume {name} ?'
   volume:
     label: Volumes
     tabs:
@@ -5502,13 +5501,13 @@ harvester:
       accessKeyId: specify your access key id
       secretAccessKey: specify your secret access key
       cert: upload a self-signed SSL certificate
-    vlanChangeTip: The newly modified default physical NIC only applies to newly added nodes, not existing ones
-    defaultPhysicalNIC: Default Physical NIC
+    vlanChangeTip: The newly modified default network interface only applies to newly added nodes, not existing ones.
+    defaultPhysicalNIC: Default Network Interface
     message:
       ca:
-        middle: here
-        prefix: Click
-        suffic: to add a custom certificate.
+        middle: 'here'
+        prefix: 'Click'
+        suffic: 'to add a custom certificate.'
     percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the vlan network configuration fails.
     sslCertificates:
       ca: CA
@@ -6016,8 +6015,8 @@ advancedSettings:
     'ui-banners': 'Classification banner is used to display a custom fixed banner in the header, footer, or both.'
     'ui-default-landing': 'The default page users land on after login.'
     'ui-brand': Folder name for an alternative theme defined in '/assets/brand'
-    'harv-vlan': Default physical NIC name of the VLAN network.
-    'harv-backup-target': Custom back target to store VM backups.
+    'harv-vlan': Default Network Interface name of the VLAN network.
+    'harv-backup-target': Custom backup target to store VM backups.
     'harv-log-level': Configure Harvester server log level. Default to info.
     'harv-server-version': Harvester server version.
     'harv-upgrade-checker-enabled': Specify whether to enable Harvester upgrade check or not. Default is true.
@@ -6027,20 +6026,21 @@ advancedSettings:
     'auditlog-server-url': 'Configure the audit log service url'
     'ui-footer-text': 'Extra text in footer.'
     'ui-footer-url': 'URL for the extra text in footer.'
-    harv-additional-ca: Custom CA root certificates for TLS validation.
-    harv-cluster-registration-url: Registration URL for mutil-cluster management.
-    harv-http-proxy: HTTP proxy for Harvester to access external services.
-    harv-overcommit-config: Resource overcommit configuration.
-    harv-support-bundle-timeout: Support Bundle timeout config in minutes, use 0 to disable the timeout.
-    harv-vip-pools: Config global or namespace IP address pools of the VIP by CIDR.
-    ui-consent-banner: Banner is used to display a custom consent banner presented to users during login.
-    harv-ssl-parameters: Custom SSL Parameters for TLS validation.
-    harv-support-bundle-namespaces: Specify resources in other namespaces to be collected by the support package.
-    harv-vm-force-reset-policy: Config the force-reset action when a VM is stuck on a node that is down.
+    'harv-additional-ca': 'Custom CA root certificates for TLS validation.'
+    'harv-cluster-registration-url': Registration URL for mutil-cluster management.
+    'harv-http-proxy': 'HTTP proxy for Harvester to access external services.'
+    'harv-overcommit-config': 'Resource overcommit configuration.'
+    'harv-support-bundle-timeout': 'Support Bundle timeout config in minutes, use 0 to disable the timeout.'
+    'harv-vip-pools': 'Config global or namespace IP address pools of the VIP by CIDR.'
+    'ui-consent-banner': 'Banner is used to display a custom consent banner presented to users during login.'
+    'harv-ssl-parameters': Custom SSL Parameters for TLS validation.
+    'harv-support-bundle-namespaces': Specify resources in other namespaces to be collected by the support package.
+    'harv-vm-force-reset-policy': Config the force-reset action when a VM is stuck on a node that is down.
     'rdns-base-url': 'Configure the rdns service url.'
     'ui-session-logout-minutes': 'User will automatically logout without any operation after the configured time (in minutes)'
     'extra-menus': 'Configure custom menus.'
     none-operate-session-time: The user will automatically log out if there is no operation beyond the configured time (in seconds)
+    'brand': Folder name for an alternative theme defined in '/assets/brand'
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:
@@ -6116,7 +6116,7 @@ branding:
       bannerItalic: Italic
       bannerUnderline: Underline
     bannerFontSize:
-      label: Font Size
+      label: 'Font Size'
     consent: Consent Banner
     showConsent: Show Consent Banner on Login Screen
   color:
@@ -6259,15 +6259,15 @@ promptForceRemove:
   confirmName: 'Enter in the pool name below to confirm:'
   forceDelete: Force Delete
   modalTitle: Are you sure?
-  removeWarning: There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. It's highly recommended to manually delete any referenced infrastructure.
+  removeWarning: "There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. It's highly recommended to manually delete any referenced infrastructure."
 registryConfig:
   addLabel: Add Registry
   header: Registry Authentication
-  toolTip: When an image needs to be pulled from the given registry hostname, this information will be used to verify the identity of the registry and authenticate to it.
+  toolTip: 'When an image needs to be pulled from the given registry hostname, this information will be used to verify the identity of the registry and authenticate to it.'
 registryMirror:
   addLabel: Add Mirror
   header: Mirrors
-  toolTip: Mirrors can be used to redirect requests for images from one registry to actually come from a list of endpoints you specify instead.  For example you could point docker.io to always talk to your internal registry and instead of ever going to the actual DockerHub on the internet.
+  toolTip: 'Mirrors can be used to redirect requests for images from one registry to actually come from a list of endpoints you specify instead.  For example you could point docker.io to always talk to your internal registry and instead of ever going to the actual DockerHub on the internet.'
 modalDownLoadFileComponent:
   title: Container file download
   container: Container
