@@ -77,7 +77,29 @@ export default class Pod extends SteveModel {
     return containers[0]?.name;
   }
 
-  openShell(containerName = this.defaultContainerName) {
+  async openShell(containerName = this.defaultContainerName) {
+    if (this.$rootGetters['auth/isReadOnlyAdmin']) {
+      try {
+        const clusterId = this.$rootGetters['clusterId'];
+        const { namespace, name } = this.metadata;
+        const endpoint = `/k8s/clusters/${ clusterId }`;
+        const path = `/api/v1/namespaces/${ namespace }/pods/${ name }/exec`;
+        const resp = await this.hasExecShellPermission(endpoint, path);
+
+        if (resp?.status?.allowed === false) {
+          this.$dispatch('growl/error', {
+            title:   this.t('wm.containerShell.permissionDenied.title'),
+            message: this.t('wm.containerShell.permissionDenied.message')
+          }, { root: true });
+
+          return;
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn(error);
+      }
+    }
+
     this.$dispatch('wm/open', {
       id:        `${ this.id }-shell`,
       label:     this.nameDisplay,
@@ -248,5 +270,24 @@ export default class Pod extends SteveModel {
     }
 
     return '';
+  }
+
+  async hasExecShellPermission(endpoint, path) {
+    const url = `${ endpoint }/apis/authorization.k8s.io/v1/selfsubjectaccessreviews`;
+    const params = {
+      spec: {
+        nonResourceAttributes: {
+          verb: 'create',
+          path,
+        }
+      }
+    };
+    const resp = await this.$dispatch('cluster/request', {
+      url,
+      method: 'POST',
+      data:   params,
+    }, { root: true });
+
+    return resp;
   }
 }

@@ -589,15 +589,22 @@ export const actions = {
 
     if (res.globalRoleBindings && getters['auth/me']?.id) {
       const id = getters['auth/me']?.id;
-      const b = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
+      const admin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
+      const readOnlyAdmin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'read-only-pandaria');
 
-      if (b) {
+      if (admin) {
         commit('auth/isAdmin', true);
       } else {
         commit('auth/isAdmin', false);
       }
+      if (readOnlyAdmin) {
+        commit('auth/isReadOnlyAdmin', true);
+      } else {
+        commit('auth/isReadOnlyAdmin', false);
+      }
     } else {
       commit('auth/isAdmin', false);
+      commit('auth/isReadOnlyAdmin', false);
     }
 
     console.log(`Done loading management; isRancher=${ isRancher }; isMultiCluster=${ isMultiCluster }`); // eslint-disable-line no-console
