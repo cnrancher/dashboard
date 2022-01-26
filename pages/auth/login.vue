@@ -111,8 +111,8 @@ export default {
       firstLogin: firstLoginSetting?.value === 'true',
       singleProvider,
       disabledEncryption,
-      footerText: footerText?.value,
-      footerUrl:  footerUrl?.value,
+      footerText,
+      footerUrl,
 
       uiLoginLandscape: uiLoginLandscape?.value,
     };
@@ -416,12 +416,12 @@ export default {
       <img v-if="uiLoginLandscape" :src="uiLoginLandscape" class="col span-6 landscape">
       <BrandImage v-else class="col span-6 landscape" file-name="login-landscape.svg" />
     </div>
-    <div v-if="footerText" class="footer-banner">
-      <div v-if="footerUrl">
-        <a :href="footerUrl" target="_blank">{{ footerText }}</a>
+    <div v-if="footerText && footerText.value" class="footer-banner">
+      <div v-if="footerUrl && footerUrl.value">
+        <a :href="footerUrl.value" target="_blank">{{ footerText.value }}</a>
       </div>
       <div v-else>
-        {{ footerText }}
+        {{ footerText.value }}
       </div>
     </div>
   </main>

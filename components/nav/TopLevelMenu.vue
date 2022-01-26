@@ -149,10 +149,14 @@ export default {
       return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
     },
     footerText() {
-      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT )?.value;
+      const textSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
+
+      return textSetting;
     },
     footerUrl() {
-      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL )?.value;
+      const urlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
+
+      return urlSetting;
     }
   },
 
@@ -341,12 +345,12 @@ export default {
             </v-popover>
           </div>
         </div>
-        <div v-if="footerText" class="footer-banner">
-          <div v-if="footerUrl">
-            <a :href="footerUrl" target="_blank">{{ footerText }}</a>
+        <div v-if="footerText && footerText.value" class="footer-banner">
+          <div v-if="footerUrl && footerUrl.value">
+            <a :href="footerUrl.value" target="_blank">{{ footerText.value }}</a>
           </div>
           <div v-else>
-            {{ footerText }}
+            {{ footerText.value }}
           </div>
         </div>
       </div>
