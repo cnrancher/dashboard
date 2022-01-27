@@ -405,7 +405,7 @@ export default {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        vertical-align: middle;
+        vertical-align: bottom;
       }
     }
   }
