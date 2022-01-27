@@ -85,7 +85,7 @@ export default {
         this.$router.push({
           page:    'iframe',
           name:   'c-cluster-legacy-navLinks-page',
-          params: { cluster: this.$route.params.cluster },
+          params: { cluster: this.$route.params.cluster, page: row.name },
           query:  { link: row.iframeSrc }
         });
       }

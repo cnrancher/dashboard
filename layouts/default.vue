@@ -425,7 +425,7 @@ export default {
             entry.route = {
               page:    'iframe',
               name:   'c-cluster-legacy-navLinks-page',
-              params: { cluster: this.clusterId },
+              params: { cluster: this.clusterId, page: obj.name },
               query:  { link: obj.iframeSrc }
             };
           }
