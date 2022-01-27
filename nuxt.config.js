@@ -269,12 +269,12 @@ module.exports = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{
-      hid:  'icon',
-      rel:  'icon',
-      type: 'image/x-icon',
-      href: `${ resourceBase || '/' }favicon.png`
-    }]
+    // link: [{
+    //   hid:  'icon',
+    //   rel:  'icon',
+    //   type: 'image/x-icon',
+    //   href: `${ resourceBase || '/' }favicon.png`
+    // }]
   },
 
   // Nuxt modules

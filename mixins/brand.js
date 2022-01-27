@@ -7,14 +7,15 @@ import { createCssVars } from '@/utils/color';
 export default {
   async fetch() {
     this.globalSettings = await this.$store.getters['management/all'](MANAGEMENT.SETTING);
-    const uiFaviconSetting = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_FAVICON);
+    const uiFaviconSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_FAVICON);
 
     this.uiFaviconSetting = uiFaviconSetting;
+    this.uiFaviconPending = false;
   },
 
   data() {
     return {
-      globalSettings: [], brandCookie: null, uiFaviconSetting: null
+      globalSettings: [], brandCookie: null, uiFaviconSetting: null, uiFaviconPending: true
     };
   },
 
@@ -42,8 +43,15 @@ export default {
     },
 
     uiFavicon() {
-      return this.uiFaviconSetting?.value;
-    },
+      if (this.uiFaviconPending) {
+        return '';
+      }
+      if (this.uiFaviconSetting && this.uiFaviconSetting.value) {
+        return this.uiFaviconSetting.value;
+      }
+
+      return require(`~/assets/images/favicon.png`);
+    }
   },
 
   watch: {
@@ -104,12 +112,12 @@ export default {
         type: 'image/x-icon',
         href: ico
       }];
-    } else if (this.uiFavicon) {
+    } else {
       out.link = [{
         hid:  'icon',
         rel:  'icon',
         type: 'image/x-icon',
-        href: this.uiFavicon,
+        href: this.uiFavicon
       }];
     }
 
