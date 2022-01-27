@@ -1,7 +1,6 @@
 <script>
 import LabeledInput from '@/components/form/LabeledInput';
 import RadioGroup from '@/components/form/RadioGroup';
-import { set } from '@/utils/object';
 
 const HARBOR_AUTH_KEY = 'rancher.cn/registry-harbor-auth';
 const HARBOR_ADMIN_AUTH_KEY = 'rancher.cn/registry-harbor-admin-auth';
@@ -18,6 +17,20 @@ export default {
     mode: {
       type:     String,
       required: true,
+    }
+  },
+
+  async fetch() {
+    if ( this.harborRegistryUrl ) {
+      return;
+    }
+
+    try {
+      this.harborRegistryUrl = await this.$store.dispatch('management/request', { url: '/v3/settings/harbor-server-url' }).then((resp) => {
+        return resp?.value || '';
+      });
+    } catch (e) {
+      console.error('Failed to fetch harborRegistryUrl'); // eslint-disable-line no-console
     }
   },
 
@@ -42,6 +55,8 @@ export default {
       registryProvider = 'Quay.io';
     } else if (registryUrl.includes('artifactory')) {
       registryProvider = 'Artifactory';
+    } else if (this.value?.metadata?.labels?.[HARBOR_AUTH_KEY] === 'true') {
+      registryProvider = 'Harbor';
     }
 
     const username = auths[registryUrl]?.username || '';
@@ -52,17 +67,13 @@ export default {
       username,
       password,
       registryUrl,
-      harborConfig: {},
+      harborRegistryUrl: '',
     };
-  },
-
-  mounted() {
-    this.initHarborConfig();
   },
 
   computed: {
     registryAddresses() {
-      if (this.enabledHarborService) {
+      if (this.enabledHarborService || this.value?.metadata?.labels?.[HARBOR_AUTH_KEY] === 'true') {
         return ['Custom', 'DockerHub', 'Harbor', 'Quay.io', 'Artifactory'];
       }
 
@@ -70,7 +81,7 @@ export default {
     },
 
     needsDockerServer() {
-      return this.registryProvider === 'Artifactory' || this.registryProvider === 'Custom';
+      return this.registryProvider === 'Artifactory' || this.registryProvider === 'Custom' || this.registryProvider === 'Harbor';
     },
     isHarbor() {
       return this.registryProvider === 'Harbor';
@@ -78,16 +89,11 @@ export default {
     isNew() {
       return this.mode === 'create';
     },
-    isHarborCred() {
-      const labels = this.value?.metadata?.labels || {};
-
-      return labels?.[HARBOR_AUTH_KEY] === 'true';
-    },
     enabledHarborService() {
       const isAdmin = this.$store.getters['auth/isAdmin'];
       const v3User = this.$store.getters['auth/me'] || {};
 
-      if (this?.harborConfig?.registryUrl) {
+      if (this.harborRegistryUrl) {
         if (isAdmin) {
           return true;
         }
@@ -109,7 +115,6 @@ export default {
       }
 
       if (this.registryProvider === 'Harbor' && this.enabledHarborService) {
-        dockerServer = this?.harborConfig?.registryUrl;
         dockerServer = dockerServer.includes('://') ? dockerServer.substr(dockerServer.indexOf('://') + 3) : dockerServer;
         const labels = this.value?.metadata?.labels || {};
         const isAdmin = this.$store.getters['auth/isAdmin'];
@@ -160,63 +165,18 @@ export default {
     registryUrl:      'update',
     username:         'update',
     password:         'update',
-
-    registryAddresses: 'setHarbor'
   },
 
   methods: {
-    setHarbor() {
-      if (this.isHarborCred) {
-        set(this, 'registryProvider', 'Harbor');
-      }
-    },
     update() {
       this.value.setData('.dockerconfigjson', this.dockerconfigjson);
     },
-    initHarborConfig() {
-      this.getHarborConfig().then((harborConfig) => {
-        this.harborConfig = harborConfig;
-      });
-    },
-    getHarborConfig() {
-      const v3User = this.$store.getters['auth/me'] || {};
-      const isAdmin = this.$store.getters['auth/isAdmin'];
 
-      return this.loadHarborRegistryUrl().then((registryUrl) => {
-        if (!registryUrl) {
-          return {
-            registryUrl:  '',
-            username:    '',
-          };
-        }
-        if (!!isAdmin) {
-          return this.loadHarborAccount().then((account) => {
-            return {
-              registryUrl,
-              username: account,
-            };
-          });
-        } else {
-          const account = v3User.annotations['authz.management.cattle.io.cn/harborauth'];
-
-          return {
-            registryUrl,
-            harborAccount: account || '',
-          };
-        }
-      });
-    },
-
-    loadHarborRegistryUrl() {
-      return this.$store.dispatch('management/request', { url: '/v3/settings/harbor-server-url' }).then((resp) => {
-        return resp?.value || '';
-      });
-    },
-    loadHarborAccount() {
-      return this.$store.dispatch('management/request', { url: '/v3/settings/harbor-admin-auth' }).then((resp) => {
-        return resp?.value || '';
-      });
-    },
+    updateHarborRegistryUrl(val) {
+      if (val === 'Harbor' && this.harborRegistryUrl) {
+        this.$set(this, 'registryUrl', this.harborRegistryUrl);
+      }
+    }
   }
 };
 </script>
@@ -230,32 +190,26 @@ export default {
           name="registryProvider"
           :mode="mode"
           :options="registryAddresses"
+          @input="updateHarborRegistryUrl"
         />
       </div>
     </div>
     <div v-if="needsDockerServer" class="row mb-20">
-      <LabeledInput v-model="registryUrl" required :label="t('secret.registry.domainName')" placeholder="e.g. index.docker.io" :mode="mode" />
+      <LabeledInput
+        v-model="registryUrl"
+        required
+        :disabled="isHarbor"
+        :label="t('secret.registry.domainName')"
+        placeholder="e.g. index.docker.io"
+        :mode="mode"
+      />
     </div>
-    <div v-if="!isHarbor" class="row mb-20">
+    <div class="row mb-20">
       <div class="col span-6">
         <LabeledInput v-model="username" :label="t('secret.registry.username')" :mode="mode" />
       </div>
       <div class="col span-6">
         <LabeledInput v-model="password" :label="t('secret.registry.password')" :mode="mode" type="password" />
-      </div>
-    </div>
-
-    <div v-else>
-      <div class="row mb-20">
-        <div class="col span-6">
-          <LabeledInput :value="harborConfig.username" :disabled="isNew" :label="t('secret.registry.username')" :mode="mode" />
-        </div>
-        <div v-if="isNew" class="col span-6">
-          <LabeledInput value="已保存" disabled :label="t('secret.registry.password')" :mode="mode" type="text" />
-        </div>
-        <div v-else class="col span-6">
-          <LabeledInput :value="harborConfig.password" :disabled="isNew" :label="t('secret.registry.password')" :mode="mode" type="password" />
-        </div>
       </div>
     </div>
   </div>
