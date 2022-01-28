@@ -119,10 +119,14 @@ export default {
     updateTarget(neu) {
       if (neu === '_iframe') {
         this.value.spec.target = '_self';
-        this.value.metadata.labels[NAVLINK_IFRAME] = 'true';
+        if (this.value.metadata.labels) {
+          this.value.metadata.labels[NAVLINK_IFRAME] = 'true';
+        } else {
+          this.value.metadata.labels = { [NAVLINK_IFRAME]: 'true' };
+        }
       } else {
         this.value.spec.target = neu;
-        delete this.value.metadata.labels[NAVLINK_IFRAME];
+        this.value.metadata?.labels?.[NAVLINK_IFRAME] && delete this.value.metadata.labels[NAVLINK_IFRAME];
       }
 
       this.target = neu;
@@ -132,7 +136,58 @@ export default {
       this.$set(this.value.spec, 'iconSrc', value);
     },
 
+    removeGroup() {
+      const {
+        group, description, label, sideLabel
+      } = this.value.spec;
+
+      group && delete this.value.spec.group;
+      description && delete this.value.spec.description;
+      label && delete this.value.spec.label;
+      sideLabel && delete this.value.spec.sideLabel;
+
+      this.removeIcon();
+    },
+
+    removeIcon() {
+      const { iconSrc } = this.value.spec;
+
+      iconSrc && delete this.value.spec.iconSrc;
+    },
+
+    removeUrl() {
+      const { toURL } = this.value.spec;
+
+      toURL && delete this.value.spec.toURL;
+    },
+
     willSave() {
+      const valid = this.validation();
+
+      if (!valid) {
+        return Promise.reject(this.errors);
+      } else {
+        this.saveFormatValue();
+
+        return Promise.resolve();
+      }
+    },
+
+    saveFormatValue() {
+      if (!this.group) {
+        this.removeGroup();
+      }
+
+      if (!this.customizeIcon) {
+        this.removeIcon();
+      }
+
+      if (this.value.spec.toService) {
+        this.removeUrl();
+      }
+    },
+
+    validation() {
       const errors = [...this.errors];
 
       if (!this.value.metadata.name) {
@@ -174,9 +229,11 @@ export default {
       }
 
       if (errors.length > 0) {
-        return Promise.reject(errors);
+        this.$set(this, 'errors', errors);
+
+        return false;
       } else {
-        return Promise.resolve();
+        return true;
       }
     },
 
@@ -301,6 +358,9 @@ export default {
           <div class="col span-2">
             <LabeledInput
               v-model="value.spec.toService.port"
+              type="number"
+              min="1"
+              max="65535"
               :mode="mode"
               required
               :label="t('navlink.url.service.port.label')"

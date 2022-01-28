@@ -6,7 +6,7 @@ export default {
 
   data() {
     return {
-      loading: false, error: false, interval: null, initialUrl: this.$route.query?.link || ''
+      loading: false, error: false, interval: null
     };
   },
 
@@ -15,6 +15,12 @@ export default {
       ev.preventDefault();
       this.$refs.frame.contentWindow.location.reload();
     },
+  },
+
+  computed: {
+    initialUrl() {
+      return this.$route.query?.link || '';
+    }
   }
 };
 </script>

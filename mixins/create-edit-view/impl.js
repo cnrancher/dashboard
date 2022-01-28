@@ -133,7 +133,7 @@ export default {
       console.log('User Change', userChange); // eslint-disable-line no-console
       console.log('Conflicts', actualConflicts); // eslint-disable-line no-console
 
-      this.value.metadata.resourceVersion = this.liveValue.metadata.resourceVersion;
+      this.value.metadata.resourceVersion = this.liveValue?.metadata?.resourceVersion || '';
       applyChangeset(this.value, bgChange);
 
       if ( actualConflicts.length ) {
