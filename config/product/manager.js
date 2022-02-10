@@ -80,7 +80,7 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'rke-drivers' } },
-    exact:      true
+    exact:      false
   });
 
   virtualType({
@@ -90,7 +90,7 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'rke-templates' } },
-    exact:      true
+    exact:      false
   });
 
   virtualType({
@@ -100,7 +100,7 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'node-templates' } },
-    exact:      true
+    exact:      false
   });
 
   basicType([
@@ -117,7 +117,8 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'image-repo-config' } },
-    exact:      true
+    exact:      false,
+    weight:     100,
   });
 
   virtualType({
@@ -131,7 +132,8 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'image-repo-projects' } },
-    exact:      true
+    exact:      false,
+    weight:     99,
   });
 
   virtualType({
@@ -145,7 +147,8 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'image-repo-logs' } },
-    exact:      true
+    exact:      false,
+    weight:     98,
   });
 
   basicType([
@@ -167,7 +170,7 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'global-audit-log' } },
-    exact:      true
+    exact:      false
   });
 
   basicType([

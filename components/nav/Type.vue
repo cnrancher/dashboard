@@ -1,6 +1,7 @@
 <script>
 import Favorite from '@/components/nav/Favorite';
 import { FAVORITE, USED } from '@/store/type-map';
+// import { findEmberPage } from '@/utils/ember-page';
 
 const showFavoritesFor = [FAVORITE, USED];
 
@@ -64,6 +65,13 @@ export default {
 
       if (typePath !== this.$route.fullPath) {
         this.$emit('selected');
+      }
+      if (typePath === this.$route.fullPath && /^(\/c|p|g|n\/)/.test(typePath)) {
+        const { name, params } = this.$route;
+
+        this.$router.replace({
+          name, params, query: { _t: new Date().getTime() }
+        });
       }
     }
   }
