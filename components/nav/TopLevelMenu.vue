@@ -9,7 +9,7 @@ import { sortBy } from '@/utils/sort';
 import { ucFirst } from '@/utils/string';
 import { KEY } from '@/utils/platform';
 import { getVersionInfo } from '@/utils/version';
-import { LEGACY } from '@/store/features';
+import { LEGACY, EXPLORER_HARVESTER_CLUSTER } from '@/store/features';
 import { SETTING } from '@/config/settings';
 import { filterOnlyKubernetesClusters } from '@/utils/cluster';
 
@@ -51,13 +51,17 @@ export default {
       return this.features(LEGACY);
     },
 
+    explorerHarvesterClusterEnabled() {
+      return this.features(EXPLORER_HARVESTER_CLUSTER);
+    },
+
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;
     },
 
     clusters() {
       const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      const kubeClusters = filterOnlyKubernetesClusters(all);
+      const kubeClusters = this.explorerHarvesterClusterEnabled ? all : filterOnlyKubernetesClusters(all);
 
       return kubeClusters.map((x) => {
         return {
