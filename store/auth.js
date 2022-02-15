@@ -376,12 +376,18 @@ export const actions = {
     }
   },
 
-  async logout({ dispatch, commit }, { provider }) {
-    const driver = await dispatch('getAuthProvider', provider);
+  async logout({ dispatch, commit }, payload) {
+    if (payload?.provider) {
+      try {
+        const driver = await dispatch('getAuthProvider', payload.provider);
 
-    if (driver && driver.logoutUrl) {
-      await thirdAuthLogout(driver.logoutUrl);
+        if (driver?.logoutUrl) {
+          await thirdAuthLogout(driver.logoutUrl);
+        }
+      } catch (e) {
+      }
     }
+
     try {
       await dispatch('rancher/request', {
         url:                  '/v3/tokens?action=logout',
