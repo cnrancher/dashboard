@@ -1253,6 +1253,7 @@ footer:
   forums: 論壇
   issue: 提交 GitHub Issue
   slack: Slack 討論羣
+  mirror: 下載Rancher資源
   wechat:
     modalText: 掃碼關注 Rancher 中國微信技術羣
     title: 微信
