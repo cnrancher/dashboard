@@ -49,21 +49,6 @@ As of version 2.6, Cluster Manager is no longer provided as a separate UI. The d
       <td>Menu → Cluster Management → Drivers</td>
     </tr>
     <tr>
-      <td>Image Configuration</td>
-      <td>Global → Image Repo → Configuration</td>
-      <td>Menu → Cluster Management → Image Repo → Configuration</td></td>
-    </tr>
-    <tr>
-      <td>Image Management</td>
-      <td>Global → Image Repo → Image Management</td>
-      <td>Menu → Cluster Management → Image Repo → Image Management</td></td>
-    </tr>
-    <tr>
-      <td>Image Logs</td>
-      <td>Global → Image Repo → Image Logs</td>
-      <td>Menu → Cluster Management → Image Repo → Image Logs</td></td>
-    </tr>
-    <tr>
       <td>RKE1 Templates</td>
       <td>Global → Tools → RKE Templates</td>
       <td>Menu → Cluster Management →  RKE1 Configuration → RKE Templates</td>
@@ -117,6 +102,31 @@ As of version 2.6, Cluster Manager is no longer provided as a separate UI. The d
       <td>Global → Security → Pod Security Policies</td>
       <td>Menu → Cluster Management → Advanced → Pod Security Policies</td>
     </tr>
+    <tr>
+      <td>Image Configuration</td>
+      <td>Global → Image Repo → Configuration</td>
+      <td>Menu → Cluster Management → Image Repo → Configuration</td></td>
+    </tr>
+    <tr>
+      <td>Image Management</td>
+      <td>Global → Image Repo → Image Management</td>
+      <td>Menu → Cluster Management → Image Repo → Image Management</td></td>
+    </tr>
+    <tr>
+      <td>Image Logs</td>
+      <td>Global → Image Repo → Image Logs</td>
+      <td>Menu → Cluster Management → Image Repo → Image Logs</td></td>
+    </tr>
+    <tr>
+      <td>Audit Log</td>
+      <td>Global → Audit Log</td>
+      <td>Menu → Cluster Management → Audit Log</td>
+    </tr>
+    <tr>
+      <td>Global Monitring</td>
+      <td>Global → Tools → Global Monitring</td>
+      <td>Menu → Cluster Management → Global Monitring</td></td>
+    </tr>
     <!-- -->
     <tr class="table-group">
       <td colspan="3">Cluster Functionality (for a specific cluster)</td>
@@ -140,6 +150,11 @@ As of version 2.6, Cluster Manager is no longer provided as a separate UI. The d
       <td>Projects/Namespaces</td>
       <td>(Cluster) → Projects/Namespaces</td>
       <td>Menu -> (Cluster) → Cluster → Projects/Namespaces</td>
+    </tr>
+    <tr>
+      <td>Audit Log</td>
+      <td>(Cluster) → Audit Log</td>
+      <td>Menu -> (Cluster) → Cluster → Audit Log</td>
     </tr>
     <tr>
       <td>Alerts (V1)</td>

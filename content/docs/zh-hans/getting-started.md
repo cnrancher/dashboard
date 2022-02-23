@@ -48,21 +48,6 @@ sideToc: false
       <td>Menu → 管理集群 → Drivers</td>
     </tr>
     <tr>
-      <td>Harbor 配置</td>
-      <td>全局 → 镜像仓库 → Harbor 配置</td>
-      <td>菜单 → 管理集群 → 镜像仓库 → harbor 配置</td></td>
-    </tr>
-    <tr>
-      <td>镜像管理</td>
-      <td>全局 → 镜像仓库 → 镜像管理</td>
-      <td>菜单 → 管理集群 → 镜像仓库 → 镜像管理</td></td>
-    </tr>
-    <tr>
-      <td>镜像日志</td>
-      <td>全局 → 镜像仓库 → 日志</td>
-      <td>菜单 → 管理集群 → 镜像仓库 → 日志</td></td>
-    </tr>
-    <tr>
       <td>RKE1 Templates</td>
       <td>Global → Tools → RKE Templates</td>
       <td>Menu → Cluster Management →  RKE1 Configuration → RKE Templates</td>
@@ -116,6 +101,31 @@ sideToc: false
       <td>Global → Security → Pod Security Policies</td>
       <td>Menu → Cluster Management → Advanced → Pod Security Policies</td>
     </tr>
+    <tr>
+      <td>Harbor 配置</td>
+      <td>全局 → 镜像仓库 → Harbor 配置</td>
+      <td>菜单 → 管理集群 → 镜像仓库 → harbor 配置</td></td>
+    </tr>
+    <tr>
+      <td>镜像管理</td>
+      <td>全局 → 镜像仓库 → 镜像管理</td>
+      <td>菜单 → 管理集群 → 镜像仓库 → 镜像管理</td></td>
+    </tr>
+    <tr>
+      <td>镜像日志</td>
+      <td>全局 → 镜像仓库 → 日志</td>
+      <td>菜单 → 管理集群 → 镜像仓库 → 日志</td></td>
+    </tr>
+    <tr>
+      <td>审计日志</td>
+      <td>全局 → 审计日志</td>
+      <td>菜单 → 管理集群 → 审计日志</td>
+    </tr>
+    <tr>
+      <td>全局监控</td>
+      <td>全局 → 工具 → 全局监控</td>
+      <td>菜单 → 管理集群 → 全局监控</td></td>
+    </tr>
     <!-- -->
     <tr class="table-group">
       <td colspan="3">Cluster Functionality (for a specific cluster)</td>
@@ -139,6 +149,11 @@ sideToc: false
       <td>Projects/Namespaces</td>
       <td>(Cluster) → Projects/Namespaces</td>
       <td>Menu -> (Cluster) → Cluster → Projects/Namespaces</td>
+    </tr>
+    <tr>
+      <td>审计日志</td>
+      <td>(集群) → 审计日志</td>
+      <td>菜单 -> (集群) → 集群 → 审计日志</td>
     </tr>
     <tr>
       <td>Alerts (V1)</td>
@@ -214,17 +229,17 @@ sideToc: false
     <tr>
       <td>配额</td>
       <td>(集群) → (项目) → 配额</td>
-      <td>Menu → (集群) → 集群 → Projects/Namespaces → 配额</td>
+      <td>菜单 → (集群) → 集群 → 项目/命名空间 → 配额</td>
     </tr>
     <tr>
       <td>F5 Ingress</td>
       <td>(集群) → (项目) → 资源 → F5 负载均衡</td>
-      <td>Menu → (集群) → 集群 → Projects/Namespaces → F5 负载均衡</td>
+      <td>菜单 → (集群) → 集群 → 项目/命名空间 → F5 负载均衡</td>
     </tr>
     <tr>
       <td>审计日志</td>
-      <td>(集群) → 审计日志</td>
-      <td>菜单 -> (集群) → 集群 → Projects/Namespaces → 审计日志</td>
+      <td>(集群) → (项目) → 资源 → 审计日志</td>
+      <td>菜单 -> (集群) → 集群 → 项目/命名空间 → 审计日志</td>
     </tr>
     <tr>
       <td>Apps</td>
