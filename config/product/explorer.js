@@ -330,9 +330,11 @@ export function init(store) {
     label:      'nav-links',
     labelKey:   'nav.tools.navLinks',
     group:      'cluster',
+    name:        'navlink-iframe',
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-legacy-navLinks-page' },
+    overview:   true,
     exact:      true
   });
 
