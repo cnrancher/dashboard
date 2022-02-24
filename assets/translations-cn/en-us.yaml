@@ -1,9 +1,6 @@
 ##############################
 # Special stuff
 ##############################
-##############################
-# Special stuff
-##############################
 generic:
   add: Add
   all: All
@@ -6181,6 +6178,10 @@ resourceQuota:
   label: Resource Quotas
   namespaceLimit:
     label: Limit
+  requestsGpuMemory: GPU Memory
+  requestsGpuCount: GPU Count
+  requestsStorageClassStorage: Storage Class Storage
+  requestsStorageClassPVC: Storage Class PVC
 ##############################
 ### Support Page
 ##############################

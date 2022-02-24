@@ -358,7 +358,6 @@ authConfig:
     table:
     #server: Server
     #clientId: Client ID
-
     target:
       label: 您想使用哪種GitHub呢？
       private: GitHub企業版的私人安裝
@@ -2139,7 +2138,6 @@ logging:
     #label: Client Key
     #placeholder: 粘貼 client key
     #clientKeyPass: Client Key Pass
-
     host: 主機
     indexName: 索引名稱
     password: 密碼
@@ -4904,14 +4902,14 @@ resourceQuota:
   add:
     label: 添加資源
   limitsCpu: CPU限制
-  limitsMemory: 內存
+  limitsMemory: 內存限制
   namespaceDefaultLimit:
     cpuPlaceholder: '例如: 500'
     label: 命名空間默認限制
     memoryPlaceholder: '例如: 1024'
     storagePlaceholder: '例如: 10'
     unitlessPlaceholder: '例如: 10'
-  persistentVolumeClaims: 持久卷申領
+  persistentVolumeClaims: PVC
   projectLimit:
     cpuPlaceholder: '例如: 2000'
     label: 項目限制
@@ -4927,6 +4925,12 @@ resourceQuota:
   services: 服務
   servicesLoadBalancers: 服務負載均衡
   servicesNodePorts: 服務節點端口
+  configMaps: 配置映射
+  replicationControllers: 副本控制器
+  requestsGpuMemory: GPU Memory
+  requestsGpuCount: GPU Count
+  requestsStorageClassStorage: Storage Class 存儲
+  requestsStorageClassPVC: Storage Class PVC
 v1ClusterTools:
   istio:
     description: '舊版的V1 Istio. 自Rancher 2.5.0起, Istio v1.5已被棄用.<a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">瞭解更多</a> 關於遷移至最新版本.'
