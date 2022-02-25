@@ -239,8 +239,8 @@ As of version 2.6, Cluster Manager is no longer provided as a separate UI. The d
     </tr>
     <tr>
       <td>Audit Log</td>
-      <td>(Cluster) → (Project) → Resources → Audit Log</td>
-      <td>Menu -> (Cluster) → Cluster → Projects/Namespaces → Audit Log</td>
+      <td>(Cluster) → (Project) → Audit Log</td>
+      <td>Menu → (Cluster) → Cluster → Projects/Namespaces → Audit Log</td>
     </tr>
     <tr>
       <td>Apps</td>
