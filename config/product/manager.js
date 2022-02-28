@@ -179,6 +179,9 @@ export function init(store) {
   // global audit log end
 
   virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootState.auth?.isAdmin;
+    },
     label:      'Global Monitoring',
     labelKey:   'nav.globalMonitoring.label',
     name:       'global-monitoring',
@@ -192,7 +195,7 @@ export function init(store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED)?.value === 'true';
+      return rootState.auth?.isAdmin && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED)?.value === 'true';
     },
     label:      'Global Monitoring',
     labelKey:   'nav.globalMonitoring.dashboard',
