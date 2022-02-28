@@ -106,10 +106,14 @@ export default {
 
       return this.mappedTypes
         .filter((mappedType) => {
-          if (typeValues.includes(mappedType.value) && TYPES_WITH_STORAGE_CLASS.includes(mappedType.value)) {
+          if (TYPES_WITH_STORAGE_CLASS.includes(mappedType.value)) {
             const scIds = this.remainingSc(mappedType.value);
 
-            return scIds.length > 0 || mappedType.value === currentType;
+            if (typeValues.includes(mappedType.value)) {
+              return scIds.length > 0 || mappedType.value === currentType;
+            }
+
+            return scIds.length > 0;
           }
 
           return !typeValues.includes(mappedType.value) || mappedType.value === currentType;
