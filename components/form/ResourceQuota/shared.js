@@ -97,7 +97,7 @@ export const RANCHER_TYPES = [
   },
   {
     value:           'requestsGpuMemory',
-    inputExponent:  2,
+    inputExponent:  3,
     increment:      1024,
     labelKey:       'resourceQuota.requestsGpuMemory',
     placeholderKey: 'resourceQuota.projectLimit.memoryPlaceholder'
