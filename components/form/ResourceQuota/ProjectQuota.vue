@@ -96,11 +96,15 @@ export default {
         return t;
       }, {});
     },
+    typeOption() {
+      return this.mappedTypes.reduce((t, c) => {
+        t[c.value] = c;
+
+        return t;
+      }, {});
+    }
   },
   methods: {
-    typeOption(type) {
-      return this.types.find(t => t.value === type);
-    },
     remainingTypes(currentType) {
       const typeValues = this.typeValues;
 
@@ -250,7 +254,7 @@ export default {
         <div></div>
       </div>
 
-      <div v-for="(tq, index) in typeQuotas" :key="`${tq.type}_${tq.limit.sc || ''}`" class="type-row mb-10">
+      <div v-for="(tq, index) in typeQuotas" :key="`${tq.type}_${tq.limit ? tq.limit.sc : ''}`" class="type-row mb-10">
         <template v-if="typesWithStorageClass.includes(tq.type)">
           <div class="type-with-sc">
             <Select :mode="mode" :value="tq.type" :options="remainingTypes(tq.type)" @input="updateType($event, tq)"></Select>
@@ -260,10 +264,10 @@ export default {
             <UnitInput
               v-model="tq.limit.limit"
               :mode="mode"
-              :placeholder="typeOption(tq.type).placeholder"
-              :increment="typeOption(tq.type).increment"
-              :input-exponent="typeOption(tq.type).inputExponent"
-              :base-unit="typeOption(tq.type).baseUnit"
+              :placeholder="typeOption[tq.type].placeholder"
+              :increment="typeOption[tq.type].increment"
+              :input-exponent="typeOption[tq.type].inputExponent"
+              :base-unit="typeOption[tq.type].baseUnit"
               :output-modifier="true"
               @input="updateLimit($event, tq)"
             />
@@ -272,10 +276,10 @@ export default {
             <UnitInput
               v-model="tq.nsLimit.limit"
               :mode="mode"
-              :placeholder="typeOption(tq.type).placeholder"
-              :increment="typeOption(tq.type).increment"
-              :input-exponent="typeOption(tq.type).inputExponent"
-              :base-unit="typeOption(tq.type).baseUnit"
+              :placeholder="typeOption[tq.type].placeholder"
+              :increment="typeOption[tq.type].increment"
+              :input-exponent="typeOption[tq.type].inputExponent"
+              :base-unit="typeOption[tq.type].baseUnit"
               :output-modifier="true"
               @input="updateNsLimit($event, tq)"
             />
@@ -286,20 +290,20 @@ export default {
           <UnitInput
             v-model="tq.limit"
             :mode="mode"
-            :placeholder="typeOption(tq.type).placeholder"
-            :increment="typeOption(tq.type).increment"
-            :input-exponent="typeOption(tq.type).inputExponent"
-            :base-unit="typeOption(tq.type).baseUnit"
+            :placeholder="typeOption[tq.type].placeholder"
+            :increment="typeOption[tq.type].increment"
+            :input-exponent="typeOption[tq.type].inputExponent"
+            :base-unit="typeOption[tq.type].baseUnit"
             :output-modifier="true"
             @input="updateLimit($event, tq)"
           />
           <UnitInput
             v-model="tq.nsLimit"
             :mode="mode"
-            :placeholder="typeOption(tq.type).placeholder"
-            :increment="typeOption(tq.type).increment"
-            :input-exponent="typeOption(tq.type).inputExponent"
-            :base-unit="typeOption(tq.type).baseUnit"
+            :placeholder="typeOption[tq.type].placeholder"
+            :increment="typeOption[tq.type].increment"
+            :input-exponent="typeOption[tq.type].inputExponent"
+            :base-unit="typeOption[tq.type].baseUnit"
             :output-modifier="true"
             @input="updateNsLimit($event, tq)"
           />
