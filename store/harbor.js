@@ -1,35 +1,4 @@
-
-const tagsSortingInit = (arrTag) => {
-  const versions = [];
-  let result = [];
-  const noVersion = [];
-
-  arrTag.forEach((item) => {
-    const version = this.captureVersion(item);
-
-    if (version) {
-      versions.push(version);
-    } else {
-      noVersion.push(item);
-    }
-  });
-  versions.sort(this.versionSort.bind(this)).forEach((item) => {
-    result.push(item[1]);
-  });
-  result = result.concat(noVersion.sort(this.normalSort.bind(this)));
-  result = result.sort(this.markSort.bind(this));
-
-  return result;
-};
-const tagsResultFormat = (arr) => {
-  const list = [];
-
-  arr.forEach((item) => {
-    list.push({ name: item });
-  });
-
-  return list;
-};
+import { tagsSortingInit, tagsResultFormat } from '@/utils/harbor';
 
 export const state = function() {
   return {
@@ -112,16 +81,16 @@ export const actions = {
   },
 
   fetchProjectsAndImages({
-    state, dispatch, commit, getters
+    state, dispatch, commit, rootGetters
   }, input) {
-    const isAdmin = getters['auth/isAdmin'];
+    const isAdmin = rootGetters['auth/isAdmin'];
 
     if (!state.harborServer) {
       return;
     }
 
     return dispatch('apiList', {
-      url:     `/meta/harbor/${ ( state.harborServer ).replace('//', '/').replace(/\/+$/, '') }/api${ state.harborVersion === 'v2.0' ? state.harborVersion : '' }/search?q=${ encodeURIComponent(state.latestQuery) }`,
+      url:     `/meta/harbor/${ ( state.harborServer ).replace('//', '/').replace(/\/+$/, '') }/api${ state.harborVersion === 'v2.0' ? `/${ state.harborVersion }` : '' }/search?q=${ encodeURIComponent(state.latestQuery) }`,
       headers: { 'X-API-Harbor-Admin-Header': !!isAdmin },
     } ).then((res) => {
       const repos = res.repository;
@@ -145,8 +114,8 @@ export const actions = {
     });
   },
 
-  fetchTags({ getters, state, dispatch }, { projectId, name }) {
-    const isAdmin = getters['auth/isAdmin'];
+  fetchTags({ rootGetters, state, dispatch }, { projectId, name }) {
+    const isAdmin = rootGetters['auth/isAdmin'];
 
     return dispatch('apiList', {
       url:     `/meta/harbor/${ state.harborServer.replace('//', '/').replace(/\/+$/, '') }/api/repositories/${ name }/tags?detail=${ projectId }`,
@@ -154,9 +123,9 @@ export const actions = {
     });
   },
 
-  fetchTagsV2({ dispatch, getters, state }, p) {
+  fetchTagsV2({ dispatch, rootGetters, state }, p) {
     // EncodeURIComponent twice for harbor2.0
-    const isAdmin = getters['auth/isAdmin'];
+    const isAdmin = rootGetters['auth/isAdmin'];
     const params = Object.entries(p.q).map((p) => {
       if (p[0] === 'page' || p[0] === 'page_size' ) {
         return `${ p[0] }=${ p[1] }`;
@@ -167,7 +136,7 @@ export const actions = {
     const repoName = p.repository_name.replace(`${ p.project_name }/`, '').replace('/', '%252F');
 
     return dispatch('apiList', {
-      url:     `/meta/harbor/${ (state?.harbor?.harborServer || '').replace('//', '/').replace(/\/+$/, '') }/api${ state.harborVersion === 'v2.0' ? state.harborVersion : '' }/projects/${ p.project_name }/repositories/${ repoName }/artifacts?with_tag=true&with_scan_overview=true&with_label=true&${ params }`,
+      url:     `/meta/harbor/${ (state?.harborServer || '').replace('//', '/').replace(/\/+$/, '') }/api${ state.harborVersion === 'v2.0' ? `/${ state.harborVersion }` : '' }/projects/${ p.project_name }/repositories/${ repoName }/artifacts?with_tag=true&with_scan_overview=true&with_label=true&${ params }`,
       headers: { 'X-API-Harbor-Admin-Header': !!isAdmin },
     });
   },
@@ -208,12 +177,12 @@ export const actions = {
       let tags = [];
 
       try {
-        Array.from(tagList).forEach((artifact) => {
+        tagList.forEach((artifact) => {
           artifact.tags && artifact.tags.forEach(({ name }) => {
             names.push(name);
           });
         });
-        tags = this.tagsResultFormat(this.tagsSortingInit(names));
+        tags = tagsResultFormat(tagsSortingInit(names));
       } catch (err) {
         tags = tagList;
       }

@@ -3,7 +3,7 @@ import omitBy from 'lodash/omitBy';
 import { cleanUp } from '@/utils/object';
 import {
   CONFIG_MAP, SECRET, WORKLOAD_TYPES, NODE, SERVICE, SERVICE_ACCOUNT, PVC
-  , MANAGEMENT
+  , MANAGEMENT, POD
 } from '@/config/types';
 import Tab from '@/components/Tabbed/Tab';
 import CreateEditView from '@/mixins/create-edit-view';
@@ -37,9 +37,10 @@ import Storage from '@/edit/workload/storage';
 import Labels from '@/components/form/Labels';
 import RadioGroup from '@/components/form/RadioGroup';
 import { UI_MANAGED } from '@/config/labels-annotations';
-import { removeObject } from '@/utils/array';
+import { removeObject, uniq } from '@/utils/array';
 import { SETTING } from '@/config/settings';
 import { BEFORE_SAVE_HOOKS } from '@/mixins/child-hook';
+import debounce from 'lodash/debounce';
 
 const GPU_KEY = 'nvidia.com/gpu';
 const GPU_SHARED_KEY = 'rancher.io/gpu-mem';
@@ -122,6 +123,7 @@ export default {
       services:   this.$store.dispatch('cluster/findAll', { type: SERVICE }),
       pvcs:       this.$store.dispatch('cluster/findAll', { type: PVC }),
       sas:        this.$store.dispatch('cluster/findAll', { type: SERVICE_ACCOUNT }),
+      pods:       this.$store.dispatch('cluster/findAll', { type: POD }),
 
       systemGpuManagementSchedulerName: this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME),
     };
@@ -143,6 +145,7 @@ export default {
     this.$store.dispatch('harbor/fetchHarborVersion');
     this.$store.dispatch('harbor/loadHarborServerUrl');
     this.sas = hash.sas;
+    this.allPods = hash.pods;
   },
 
   data() {
@@ -520,11 +523,38 @@ export default {
 
     harborImagsChoices() {
       const images = this.harbor?.harborImages?.urls || [];
+      let inUse = [];
+      let suggestions = [];
 
-      return images.length > 0 ? [
-        { kind: 'group', label: 'Images in harbor image repositories' },
-        ...images,
-      ] : [];
+      this.allPods.forEach((pod) => {
+        inUse = inUse.concat(pod.spec?.containers || []);
+      });
+
+      inUse = inUse.map(obj => (obj.image || ''))
+        .filter(str => !str.includes('sha256:') && !str.startsWith('rancher/'))
+        .sort();
+
+      inUse = uniq(inUse);
+
+      if (inUse.length > 0) {
+        suggestions = suggestions.concat(
+          [
+            { kind: 'group', label: 'Used by other containers' },
+            ...inUse,
+          ]
+        );
+      }
+
+      if (images.length > 0) {
+        suggestions = suggestions.concat(
+          [
+            { kind: 'group', label: 'Images in harbor image repositories' },
+            ...images,
+          ]
+        );
+      }
+
+      return suggestions;
     },
     suggestions() {
       return [
@@ -943,9 +973,9 @@ export default {
       podTemplateSpec.vlansubnet = neu;
     },
 
-    onSearchImages(str) {
+    onSearchImages: debounce(function(str) {
       this.$store.dispatch('harbor/loadImagesInHarbor', str);
-    },
+    }, 500, { leading: false }),
 
     clearPvcFormState(hookName) {
       // On the `closePvcForm` event, remove the
