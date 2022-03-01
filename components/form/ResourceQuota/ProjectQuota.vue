@@ -104,6 +104,43 @@ export default {
       }, {});
     }
   },
+  watch: {
+    typeQuotas: {
+      handler(v) {
+        const nsQuotaLimit = { limit: {} };
+        const quotaLimit = { limit: {} };
+
+        v.filter(t => TYPES_WITH_STORAGE_CLASS.includes(t.type) && (t.limit || t.nsLimit))
+          .forEach((q) => {
+            if (q.nsLimit.limit) {
+              const limit = nsQuotaLimit.limit[q.type] ?? {};
+
+              limit[q.nsLimit.sc] = q.nsLimit.limit;
+              nsQuotaLimit.limit[q.type] = limit;
+            }
+            if (q.limit.limit) {
+              const limit = quotaLimit.limit[q.type] ?? {};
+
+              limit[q.limit.sc] = q.limit.limit;
+              quotaLimit.limit[q.type] = limit;
+            }
+          });
+
+        v.filter(t => !TYPES_WITH_STORAGE_CLASS.includes(t.type) && (t.limit || t.nsLimit))
+          .forEach((q) => {
+            if (q.nsLimit) {
+              nsQuotaLimit.limit[q.type] = q.nsLimit;
+            }
+            if (q.limit) {
+              quotaLimit.limit[q.type] = q.limit;
+            }
+          });
+        this.value.spec.namespaceDefaultResourceQuota = nsQuotaLimit;
+        this.value.spec.resourceQuota = quotaLimit;
+      },
+      deep: true
+    }
+  },
   methods: {
     remainingTypes(currentType) {
       const typeValues = this.typeValues;
@@ -132,7 +169,7 @@ export default {
     },
 
     updateType(type, quota) {
-      const { type: oldType, limit: oldLimit, nsLimit: oldNsLimit } = quota;
+      const { type: oldType } = quota;
 
       if (type === oldType) {
         return;
@@ -149,46 +186,10 @@ export default {
         quota.limit = '';
         quota.nsLimit = '';
       }
-
-      if (TYPES_WITH_STORAGE_CLASS.includes(oldType)) {
-        delete this.value.spec.resourceQuota.limit[oldType]?.[oldLimit.sc];
-        delete this.value.spec.namespaceDefaultResourceQuota.limit[oldType]?.[oldNsLimit.sc];
-      } else {
-        delete this.value.spec.resourceQuota.limit[oldType];
-        delete this.value.spec.namespaceDefaultResourceQuota.limit[oldType];
-      }
     },
     updateStorageClass(sc, quota) {
-      const { type: oldType, limit: oldLimit, nsLimit: oldNsLimit } = quota;
-
       quota.limit.sc = sc;
       quota.nsLimit.sc = sc;
-      delete this.value.spec.resourceQuota.limit[oldType]?.[oldLimit.sc];
-      delete this.value.spec.namespaceDefaultResourceQuota.limit[oldType]?.[oldNsLimit.sc];
-    },
-    updateLimit(v, quota) {
-      if (TYPES_WITH_STORAGE_CLASS.includes(quota.type)) {
-        const limit = this.value.spec.resourceQuota.limit[quota.type] ?? {};
-
-        this.value.spec.resourceQuota.limit[quota.type] = {
-          ...limit,
-          [quota.limit.sc]: v
-        };
-      } else {
-        this.value.spec.resourceQuota.limit[quota.type] = v;
-      }
-    },
-    updateNsLimit(v, quota) {
-      if (TYPES_WITH_STORAGE_CLASS.includes(quota.type)) {
-        const limit = this.value.spec.namespaceDefaultResourceQuota.limit[quota.type] ?? {};
-
-        this.value.spec.namespaceDefaultResourceQuota.limit[quota.type] = {
-          ...limit,
-          [quota.limit.sc]: v
-        };
-      } else {
-        this.value.spec.namespaceDefaultResourceQuota.limit[quota.type] = v;
-      }
     },
     remove(index, quota) {
       this.typeQuotas.splice(index, 1);
@@ -254,7 +255,7 @@ export default {
         <div></div>
       </div>
 
-      <div v-for="(tq, index) in typeQuotas" :key="`${tq.type}_${tq.limit ? tq.limit.sc : ''}`" class="type-row mb-10">
+      <div v-for="(tq, index) in typeQuotas" :key="`${tq.type}${tq.limit && tq.limit.sc ? `_${tq.limit.sc}` : ''}`" class="type-row mb-10">
         <template v-if="typesWithStorageClass.includes(tq.type)">
           <div class="type-with-sc">
             <Select :mode="mode" :value="tq.type" :options="remainingTypes(tq.type)" @input="updateType($event, tq)"></Select>
@@ -269,7 +270,6 @@ export default {
               :input-exponent="typeOption[tq.type].inputExponent"
               :base-unit="typeOption[tq.type].baseUnit"
               :output-modifier="true"
-              @input="updateLimit($event, tq)"
             />
           </div>
           <div>
@@ -281,7 +281,6 @@ export default {
               :input-exponent="typeOption[tq.type].inputExponent"
               :base-unit="typeOption[tq.type].baseUnit"
               :output-modifier="true"
-              @input="updateNsLimit($event, tq)"
             />
           </div>
         </template>
@@ -295,7 +294,6 @@ export default {
             :input-exponent="typeOption[tq.type].inputExponent"
             :base-unit="typeOption[tq.type].baseUnit"
             :output-modifier="true"
-            @input="updateLimit($event, tq)"
           />
           <UnitInput
             v-model="tq.nsLimit"
@@ -305,7 +303,6 @@ export default {
             :input-exponent="typeOption[tq.type].inputExponent"
             :base-unit="typeOption[tq.type].baseUnit"
             :output-modifier="true"
-            @input="updateNsLimit($event, tq)"
           />
         </template>
         <div>
