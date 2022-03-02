@@ -2666,6 +2666,11 @@ namespace:
     label: 項目
   resources: 資源
   move: 移動
+  resourceStates:
+    paused:
+      longDescription: 部署被暫停了。暫停會使控制器停止部署修訂版。
+      shortDescription: 部署暫停了
+  resourceQuotas: 資源配額
 namespaceFilter:
   selected:
     label: "{total} 項目選擇"
@@ -2709,7 +2714,7 @@ nav:
     config: Harbor 配置
     logs: 日誌
     projects: 鏡像管理
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局監控
     dashboard: Dashboard
   import: 導入YAML
@@ -4966,6 +4971,17 @@ resourceQuota:
   requestsGpuCount: GPU Count
   requestsStorageClassStorage: Storage Class 存儲
   requestsStorageClassPVC: Storage Class PVC
+  headers:
+    limit: 限制
+    namespaceDefaultLimit: 命名空間默認限制
+    projectLimit: 項目限制
+    projectResourceAvailability: 項目資源可用性
+    resourceType: 資源類型
+  helpText: 配置整個命名空間可以消耗多少資源。
+  helpTextDetail: 整個命名空間可消耗的資源量。
+  label: 資源配額
+  namespaceLimit:
+    label: 限制
 v1ClusterTools:
   istio:
     description: '舊版的V1 Istio. 自Rancher 2.5.0起, Istio v1.5已被棄用.<a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">瞭解更多</a> 關於遷移至最新版本.'
@@ -5068,18 +5084,18 @@ formReservation:
     label: "{component} Memory 預留"
     placeholder: "例如: 1000"
 globalMonitoringDashboard:
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局監控
     description: 多集羣監控
-  grafana: 
+  grafana:
     label: Grafana
     description: Metrics 儀表盤
-  thanos: 
+  thanos:
     label: Prometheus Thanos
     description: 集羣組件系統
 globalMonitoringPage:
   cluster: 全局監控所在集羣
-  enableMonitoring: 
+  enableMonitoring:
     title: 監控端點
     cluster: 集羣
     warning: 配置刮取該下游集羣prometheus數據的端點，仍需要在下游部署開啟了thanos sidecar的監控
@@ -5087,7 +5103,7 @@ globalMonitoringPage:
   customAnswers:
     detail: 配置自定義的應答。
     title: 自定義應答
-    answer: 
+    answer:
       label: 應答
     addAnswerLabel: 添加應答
   disable: 禁用
@@ -5098,19 +5114,19 @@ globalMonitoringPage:
   grafana:
     header: 監控大屏
     detail: 全局 Grafana 和{appName}監控大屏的配置。
-    title: 
+    title:
       label: 標題
       placeholder: 例如 grafana
-    tabTitle: 
+    tabTitle:
       label: 選項卡標題
       placeholder: 例如 grafana
-    logo: 
+    logo:
       label: logo
       placeholder: 請輸入 logo 地址
-    favicon: 
+    favicon:
       label: favicon
       placeholder: 請輸入 favicon 地址
-    serverUrl: 
+    serverUrl:
       label: serverUrl
       placeholder: 例如 http://rancher.cattle-system
     enableGrafanaSidecar:
@@ -5250,7 +5266,7 @@ globalMonitoringPage:
   version: 全局監控版本
   tls:
     header: 證書
-    serverName: 
+    serverName:
       label: Server Name
     ca:
       label: CA 證書
