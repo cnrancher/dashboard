@@ -97,8 +97,10 @@ export const RANCHER_TYPES = [
   },
   {
     value:           'requestsGpuMemory',
-    inputExponent:  3,
-    increment:      1024,
+    units:          'unitless',
+    inputExponent:  0,
+    baseUnit:       '',
+    suffix:         'GiB',
     labelKey:       'resourceQuota.requestsGpuMemory',
     placeholderKey: 'resourceQuota.projectLimit.storagePlaceholder'
   },

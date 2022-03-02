@@ -207,6 +207,7 @@ export default {
       :increment="typeOption.increment"
       :input-exponent="typeOption.inputExponent"
       :base-unit="typeOption.baseUnit"
+      :suffix="typeOption.suffix"
       :output-modifier="true"
       @input="update"
     />

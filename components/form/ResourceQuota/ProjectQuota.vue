@@ -293,6 +293,7 @@ export default {
             :increment="typeOption[tq.type].increment"
             :input-exponent="typeOption[tq.type].inputExponent"
             :base-unit="typeOption[tq.type].baseUnit"
+            :suffix="typeOption[tq.type].suffix"
             :output-modifier="true"
           />
           <UnitInput
@@ -302,6 +303,7 @@ export default {
             :increment="typeOption[tq.type].increment"
             :input-exponent="typeOption[tq.type].inputExponent"
             :base-unit="typeOption[tq.type].baseUnit"
+            :suffix="typeOption[tq.type].suffix"
             :output-modifier="true"
           />
         </template>
