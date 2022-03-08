@@ -261,7 +261,7 @@ export default {
           name="importModal"
           width="75%"
           height="auto"
-          styles="max-height: 90vh;"
+          styles="max-height: 90vh;overflow: auto;"
         >
           <Import :cluster="currentCluster" @close="closeImport" />
         </modal>
