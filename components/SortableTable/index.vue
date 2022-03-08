@@ -1026,22 +1026,22 @@ $spacing: 10px;
 
   .bulk {
     grid-area: bulk;
-    align-self: center;
-
-    BUTTON:not(:last-child) {
-      margin-right: 10px;
-    }
+    display: flex;
+    gap: 10px 10px;
+    flex-wrap: wrap;
   }
 
   .middle {
     grid-area: middle;
     white-space: nowrap;
-    align-self: center;
   }
 
   .search {
     grid-area: search;
     text-align: right;
+  }
+  .action-availability {
+    align-self: center;
   }
 
   .external-actions {
