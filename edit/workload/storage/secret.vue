@@ -3,12 +3,14 @@ import { mapGetters } from 'vuex';
 import LabeledInput from '@/components/form/LabeledInput';
 import LabeledSelect from '@/components/form/LabeledSelect';
 import RadioGroup from '@/components/form/RadioGroup';
+import KeyToPath from './KeyToPath';
 
 export default {
   components: {
     LabeledInput,
     LabeledSelect,
     RadioGroup,
+    KeyToPath,
   },
 
   props:      {
@@ -118,6 +120,23 @@ export default {
       }
     },
 
+    sourceData() {
+      const type = this.type;
+      const source = this.value[type];
+
+      if (type === 'secret') {
+        const name = source.secretName;
+
+        return this.secrets.find(s => s.metadata?.name === name);
+      } else if (type === 'configMap') {
+        const name = source.name;
+
+        return this.configMaps.find(c => c.metadata?.name === name);
+      }
+
+      return null;
+    },
+
     ...mapGetters({ t: 'i18n/t' })
   },
 
@@ -136,7 +155,7 @@ export default {
           <LabeledInput v-model="defaultMode" :mode="mode" :label="t('workload.storage.defaultMode')" />
         </div>
       </div>
-      <div class="row">
+      <div class="row mb-10">
         <div class="col span-6">
           <LabeledSelect v-if="type==='secret'" v-model="value[type].secretName" :options="secretNames" :mode="mode" :label="t('workload.storage.subtypes.secret')" />
           <LabeledSelect v-else-if="type==='configMap'" v-model="value[type].name" :options="configMapNames" :mode="mode" :label="t('workload.storage.subtypes.configMap')" />
@@ -151,6 +170,11 @@ export default {
             :options="[true, false]"
             :labels="[t('workload.storage.optional.yes'), t('workload.storage.optional.no')]"
           />
+        </div>
+      </div>
+      <div v-if="sourceData" class="row">
+        <div class="col span-12">
+          <KeyToPath :value="value" :ref-data="sourceData" :mode="mode" />
         </div>
       </div>
     </div>

@@ -108,7 +108,7 @@ export default {
         .keys()
         .map(path => path.replace(/(\.\/)|(.vue)/g, ''))
         .filter(
-          file => file !== 'index' && file !== 'Mount' && file !== 'PVC'
+          file => file !== 'index' && file !== 'Mount' && file !== 'PVC' && file !== 'KeyToPath'
         );
 
       const out = [

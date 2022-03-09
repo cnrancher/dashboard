@@ -4767,6 +4767,20 @@ workload:
     title: '存儲'
     volumeName: 卷名稱
     volumePath: 卷路徑
+    keyToPath:
+      addAction: 添加項目
+      header: 項目
+      default: 所有鍵
+      specific: 選擇特定的鍵
+      key:
+        label: 鍵
+        placeholder: "例如: username"
+      path:
+        label: 路徑
+        placeholder: "例如: my-group/my-username"
+      mode:
+        label: 模式
+        placeholder: "例如: 400"
   typeDescriptions:
     apps.daemonset: DaemonSets 在每個符合條件的節點上正好運行一個 pod。當新節點被添加到集羣中時，DaemonSets 會自動部署到它們身上。推薦用於全系統或可垂直擴展的工作負載，每個節點永遠不需要超過一個 pod。
     apps.deployment: 部署運行分佈在符合條件的節點中的可擴展數量的 pod 副本。變更會逐步推出，並可在需要時回滾到之前的版本。推薦用於無狀態和水平可擴展的工作負載。

@@ -4767,6 +4767,20 @@ workload:
     title: '存储'
     volumeName: 卷名称
     volumePath: 卷路径
+    keyToPath:
+      addAction: 添加项目
+      header: 项目
+      default: 所有键
+      specific: 选择特定的键
+      key:
+        label: 键
+        placeholder: "例如: username"
+      path:
+        label: 路径
+        placeholder: '例如: my-group/my-username'
+      mode:
+        label: 模式
+        placeholder: "例如: 400"
   typeDescriptions:
     apps.daemonset: DaemonSets 在每个符合条件的节点上正好运行一个 pod。当新节点被添加到集群中时，DaemonSets 会自动部署到它们身上。推荐用于全系统或可垂直扩展的工作负载，每个节点永远不需要超过一个 pod。
     apps.deployment: 部署运行分布在符合条件的节点中的可扩展数量的 pod 副本。变更会逐步推出，并可在需要时回滚到之前的版本。推荐用于无状态和水平可扩展的工作负载。

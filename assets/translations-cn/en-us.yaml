@@ -147,7 +147,7 @@ nav:
     #registries: Registries
     projects: Image Management
     logs: Logs
-  globalMonitoring: 
+  globalMonitoring:
     label: Global Monitoring
     dashboard: Dashboard
   auditLog: Audit Log
@@ -4973,6 +4973,20 @@ workload:
     title: 'Storage'
     volumeName: Volume Name
     volumePath: Volume Path
+    keyToPath:
+      addAction: Add Item
+      header: Items
+      default: All Keys
+      specific: Select Specific Keys
+      key:
+        label: Key
+        placeholder: "e.g. username"
+      path:
+        label: Path
+        placeholder: "e.g. my-group/my-username"
+      mode:
+        label: Mode
+        placeholder: "e.g. 400"
   typeDescriptions:
     apps.daemonset: DaemonSets run exactly one pod on every eligible node. When new nodes are added to the cluster, DaemonSets automatically deploy to them. Recommended for system-wide or vertically-scalable workloads that never need more than one pod per node.
     apps.deployment: Deployments run a scalable number of replicas of a pod distributed among the eligible nodes. Changes are rolled out incrementally and can be rolled back to the previous revision when needed. Recommended for stateless & horizontally-scalable workloads.
@@ -6383,19 +6397,19 @@ formReservation:
     label: '{component} Memory Reservation'
     placeholder: e.g. 1000
 globalMonitoringDashboard:
-  globalMonitoring: 
+  globalMonitoring:
     label: Global Monitoring
     description: Global Monitoring
-  grafana: 
+  grafana:
     label: Grafana
     description: Metrics Dashboards
-  thanos: 
+  thanos:
     label: Prometheus Thanos
     description: Cluster Component System
 globalMonitoringPage:
   header: Global Monitoring (Experimental)
   cluster: Global Monitoring Cluster
-  enableMonitoring: 
+  enableMonitoring:
     title: Monitoring Store
     cluster: Cluster
     warning: To configure an endpoint for scraping Prometheus data of the downstream cluster, the Thanos Sidecar monitoring function must still be enabled in the downstream cluster
@@ -6414,7 +6428,7 @@ globalMonitoringPage:
   customAnswers:
     title: Custom Answers
     detail: Configure custom answers.
-    answer: 
+    answer:
       label: Answers
     addAnswerLabel: Add Answer
   nodeSelector:
@@ -6531,19 +6545,19 @@ globalMonitoringPage:
         placeholder: "e.g. 0"
   grafana:
     header: Global Dashboard
-    title: 
+    title:
       label: Title
       placeholder: e.g. grafana
-    tabTitle: 
+    tabTitle:
       label: Tab Title
       placeholder: e.g. grafana
-    logo: 
+    logo:
       label: logo
       placeholder: Please enter the logo address
-    favicon: 
+    favicon:
       label: favicon
       placeholder: Please enter the favicon address
-    serverUrl: 
+    serverUrl:
       label: serverUrl
       placeholder: e.g. http://rancher.cattle-system
     detail: Global Grafana and {appName} Global Dashboard configuration.
@@ -6572,7 +6586,7 @@ globalMonitoringPage:
       placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'
     key:
       label: Private Key
-      placeholder:  Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
+      placeholder: Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
     ca:
       label: CA Certificate
       placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'
