@@ -1153,6 +1153,10 @@ containerResourceLimit:
   memPlaceholder: 例如：128
   requestsCpu: CPU 預留
   requestsMemory: 內存預留
+  minCpu: 最小 CPU
+  maxCpu: 最大 CPU
+  minMemory: 最小內存
+  maxMemory: 最大內存
 cruResource:
   backBody: 返回表單編輯不會保留對 YAML 做出的所有更改
   backToForm: 返回表單編輯

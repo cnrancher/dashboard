@@ -39,11 +39,11 @@ export default {
 
   data() {
     const {
-      limitsCpu, limitsMemory, requestsCpu, requestsMemory
+      limitsCpu, limitsMemory, requestsCpu, requestsMemory, minCpu, maxCpu, minMemory, maxMemory,
     } = this.value;
 
     return {
-      limitsCpu, limitsMemory, requestsCpu, requestsMemory, viewMode: _VIEW
+      limitsCpu, limitsMemory, requestsCpu, requestsMemory, minCpu, maxCpu, minMemory, maxMemory, viewMode: _VIEW
     };
   },
 
@@ -75,13 +75,21 @@ export default {
         limitsMemory,
         requestsCpu,
         requestsMemory,
+        minCpu,
+        maxCpu,
+        minMemory,
+        maxMemory,
       } = this;
 
       this.$emit('input', cleanUp({
         limitsCpu,
         limitsMemory,
         requestsCpu,
-        requestsMemory
+        requestsMemory,
+        minCpu,
+        maxCpu,
+        minMemory,
+        maxMemory,
       }));
     },
 
@@ -91,6 +99,10 @@ export default {
         limitsMemory,
         requestsCpu,
         requestsMemory,
+        minCpu,
+        maxCpu,
+        minMemory,
+        maxMemory,
       } = this;
       const namespace = this.namespace; // no deep copy in destructure proxy yet
 
@@ -98,7 +110,11 @@ export default {
         limitsCpu,
         limitsMemory,
         requestsCpu,
-        requestsMemory
+        requestsMemory,
+        minCpu,
+        maxCpu,
+        minMemory,
+        maxMemory,
       });
 
       if (namespace) {
@@ -117,12 +133,20 @@ export default {
           limitsMemory,
           requestsCpu,
           requestsMemory,
+          minCpu,
+          maxCpu,
+          minMemory,
+          maxMemory,
         } = JSON.parse(defaults);
 
         this.limitsCpu = limitsCpu;
         this.limitsMemory = limitsMemory;
         this.requestsCpu = requestsCpu;
         this.requestsMemory = requestsMemory;
+        this.minCpu = minCpu;
+        this.maxCpu = maxCpu;
+        this.minMemory = minMemory;
+        this.maxMemory = maxMemory;
       }
     },
   }
@@ -168,7 +192,7 @@ export default {
       </span>
     </div>
 
-    <div class="row">
+    <div class="row mb-20">
       <span class="col span-6">
         <UnitInput
           v-model="limitsCpu"
@@ -186,6 +210,58 @@ export default {
           v-model="limitsMemory"
           :placeholder="t('containerResourceLimit.memPlaceholder')"
           :label="t('containerResourceLimit.limitsMemory')"
+          :mode="mode"
+          :input-exponent="2"
+          :increment="1024"
+          :output-modifier="true"
+          @input="updateLimits"
+        />
+      </span>
+    </div>
+    <div class="row mb-20">
+      <span class="col span-6">
+        <UnitInput
+          v-model="minCpu"
+          :placeholder="t('containerResourceLimit.cpuPlaceholder')"
+          :label="t('containerResourceLimit.minCpu')"
+          :mode="mode"
+          :input-exponent="-1"
+          :output-modifier="true"
+          :base-unit="t('suffix.cpus')"
+          @input="updateLimits"
+        />
+      </span>
+      <span class="col span-6">
+        <UnitInput
+          v-model="minMemory"
+          :placeholder="t('containerResourceLimit.memPlaceholder')"
+          :label="t('containerResourceLimit.minMemory')"
+          :mode="mode"
+          :input-exponent="2"
+          :increment="1024"
+          :output-modifier="true"
+          @input="updateLimits"
+        />
+      </span>
+    </div>
+    <div class="row">
+      <span class="col span-6">
+        <UnitInput
+          v-model="maxCpu"
+          :placeholder="t('containerResourceLimit.cpuPlaceholder')"
+          :label="t('containerResourceLimit.maxCpu')"
+          :mode="mode"
+          :input-exponent="-1"
+          :output-modifier="true"
+          :base-unit="t('suffix.cpus')"
+          @input="updateLimits"
+        />
+      </span>
+      <span class="col span-6">
+        <UnitInput
+          v-model="maxMemory"
+          :placeholder="t('containerResourceLimit.memPlaceholder')"
+          :label="t('containerResourceLimit.maxMemory')"
           :mode="mode"
           :input-exponent="2"
           :increment="1024"
