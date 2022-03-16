@@ -46,6 +46,9 @@ export default {
       }
     },
 
+    namespace: {
+      type: String
+    }
   },
 
   computed: {
@@ -139,6 +142,17 @@ export default {
 
     ...mapGetters({ t: 'i18n/t' })
   },
+
+  watch: {
+    namespace() {
+      const type = this.type;
+      if (type === 'secret' && this.value[type]?.secretName) {
+        this.value[type].secretName = '';
+      } else if (type === 'configMap' && this.value[type]?.name) {
+        this.value[type].name = '';
+      }
+    }
+  }
 
 };
 </script>
