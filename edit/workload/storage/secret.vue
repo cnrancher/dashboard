@@ -140,19 +140,6 @@ export default {
     ...mapGetters({ t: 'i18n/t' })
   },
 
-  watch: {
-    secretNames() {
-      if (this.value['secret']?.secretName) {
-        this.value['secret'].secretName = '';
-      }
-    },
-    configMapNames() {
-      if (this.value['configMap']?.name) {
-        this.value['configMap'].name = '';
-      }
-    }
-  },
-
 };
 </script>
 
