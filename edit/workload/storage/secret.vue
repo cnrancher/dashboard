@@ -47,7 +47,8 @@ export default {
     },
 
     namespace: {
-      type: String
+      type:    String,
+      default: '',
     }
   },
 
@@ -146,10 +147,13 @@ export default {
   watch: {
     namespace() {
       const type = this.type;
+
       if (type === 'secret' && this.value[type]?.secretName) {
         this.value[type].secretName = '';
+        this.$delete(this.value[type], 'items');
       } else if (type === 'configMap' && this.value[type]?.name) {
         this.value[type].name = '';
+        this.$delete(this.value[type], 'items');
       }
     }
   }
