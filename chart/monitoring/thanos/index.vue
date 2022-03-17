@@ -55,9 +55,12 @@ export default {
       replacement:  '$1',
     }];
 
+    const sidecarEnabled = !!this.value.prometheus.prometheusSpec.thanos?.image;
+    const tlsEnabeled = (this.mode === 'create' && !this.value.prometheus.prometheusSpec.externalLabels.prometheus_from) ? true : !!this.value.prometheus.prometheusSpec.thanos?.grpcServerTlsConfig;
+
     return {
-      sidecar: !!this.value.prometheus.prometheusSpec.thanos?.image,
-      tls:     (this.mode === 'create' && !this.value.prometheus.prometheusSpec.externalLabels.prometheus_from) ? true : !!this.value.prometheus.prometheusSpec.thanos?.grpcServerTlsConfig,
+      sidecar: sidecarEnabled,
+      tls:     sidecarEnabled && tlsEnabeled,
       relabelings,
       volumes,
       thanos,
@@ -150,6 +153,8 @@ export default {
     set,
     changeSidecar() {
       this.updateThanos('sidecar');
+      this.$set(this, 'tls', this.sidecar);
+      this.updateThanos('tls');
     },
     changeTls() {
       this.updateThanos('tls');
@@ -189,7 +194,7 @@ export default {
             :options="[true, false]"
           />
         </div>
-        <div class="col span-6">
+        <div v-if="sidecar" class="col span-6">
           <RadioGroup
             v-model="tls"
             name="tls"

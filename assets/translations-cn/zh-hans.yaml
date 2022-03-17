@@ -5298,6 +5298,10 @@ globalMonitoringPage:
     warning: 使用tls方式访问，下游监控部署也得同步开启tls认证。
   warning:
     undefindChart: 当前集群 chart undefined。
+  uninstallV1:
+    warning1: V1全局监控目前已部署。在启用V2全局监控之前，需要先将其禁用。
+    promptDescription: <div class="mt-20 mb-20">您正在尝试禁用V1全局监控。</div>
+    success1: V1全局监控成功被禁用
 formScheduling:
   title: 主机调度
   detail: 配置 Pod 对应的主机调度规则。

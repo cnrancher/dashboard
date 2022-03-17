@@ -6597,6 +6597,10 @@ globalMonitoringPage:
     warning: If TLS is used for access, the downstream monitoring deployment must also enable TLS authentication simultaneously.
   warning:
     undefindChart: Current cluster chart undefined.
+  uninstallV1:
+    warning1: V1 global monitoring has been deployed. Before enabling V2 global monitoring, you need to disable it.
+    promptDescription: <div class="mt-20 mb-20">You are trying to disable V1 global monitoring.</div>
+    success1: V1 global monitoring successfully uninstalled.
 formScheduling:
   title: Node Scheduling
   detail: Configure what nodes the pods can be deployed to.

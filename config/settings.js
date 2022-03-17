@@ -63,6 +63,7 @@ export const SETTING = {
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME: 'system-gpu-management-scheduler-name',
   UI_SESSION_LOGOUT_MINUTES:            'ui-session-logout-minutes',
   GLOBAL_MONITORING_ENABLED:            'global-monitoring-enabled',
+  GLOBAL_MONITORING_ENABLED_V2:         'global-monitoring-enabled-v2',
   GLOBAL_MONITORING_CLUSTER_ID:         'global-monitoring-cluster-id',
 };
 

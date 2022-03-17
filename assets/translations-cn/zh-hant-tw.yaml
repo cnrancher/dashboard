@@ -5298,6 +5298,10 @@ globalMonitoringPage:
     warning: 使用tls方式訪問，下游監控部署也得同步開啟tls認證。
   warning:
     undefindChart: 當前叢集 chart undefined。
+  uninstallV1:
+    warning1: V1全局監控目前已部署。在啟用V2全局監控之前，需要先將其禁用。
+    promptDescription: <div class=\"mt-20 mb-20\">您正在嘗試禁用V1全局監控。</div>
+    success1: V1全局監控成功被禁用
 formScheduling:
   title: 主機調度
   detail: 配置Pod對應的主機調度規則。

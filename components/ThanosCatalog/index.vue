@@ -9,6 +9,7 @@ import Tolerations from '@/components/form/Tolerations';
 import Reservation from '@/components/form/Reservation.vue';
 import ToggleSwitch from '@/components/form/ToggleSwitch';
 import { random32 } from '@/utils/string';
+import { uniqBy } from 'lodash';
 import GlobalDashboard from './GlobalDashboard';
 import ObjectStorage from './ObjectStorage';
 import Certificate from './Certificate';
@@ -100,7 +101,7 @@ export default {
         this.$set(this, 'chartVersion', this.chart.versions[0].version);
       }
 
-      return (this.chart?.versions || []).map(v => ({
+      return uniqBy(this.chart?.versions || [], 'version').map(v => ({
         label: v.version,
         value: v.version,
       })).sort();

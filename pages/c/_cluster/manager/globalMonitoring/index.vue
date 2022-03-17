@@ -12,15 +12,17 @@ import ThanosCatalog from '@/components/ThanosCatalog';
 import ButtonGroup from '@/components/ButtonGroup';
 import YamlEditor, { EDITOR_MODES } from '@/components/YamlEditor';
 import AsyncButton from '@/components/AsyncButton';
+import IconMessage from '@/components/IconMessage';
 import ChildHook, { BEFORE_SAVE_HOOKS, AFTER_SAVE_HOOKS } from '@/mixins/child-hook';
 import { exceptionToErrorsArray } from '@/utils/error';
 import { CATALOG as CATALOG_ANNOTATIONS, PROJECT } from '@/config/labels-annotations';
 import { diff, get, set } from '@/utils/object';
-import { SETTING } from '@/config/settings';
+import { SETTING, fetchOrCreateSetting } from '@/config/settings';
 import { delay, mergeWith, isArray, throttle } from 'lodash';
 import { sortBy } from '@/utils/sort';
 import { formatSi, parseSi } from '@/utils/units';
 import { base64Encode } from '@/utils/crypto';
+import { allHash } from '@/utils/promise';
 
 const GLOBAL_MONITORING_TOKEN = 'Global Monitoring Token';
 const APP_NAME = 'global-monitoring';
@@ -48,6 +50,7 @@ export default {
     ButtonGroup,
     YamlEditor,
     AsyncButton,
+    IconMessage,
   },
 
   mixins: [
@@ -55,7 +58,15 @@ export default {
   ],
 
   async fetch() {
-    this.originClusters = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
+    const hash = await allHash({
+      originClusters:                  this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER }),
+      globalMonitoringEnabledStting:   fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED_V2, 'false'),
+      globalMonitoringEnabledSttingV1: fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED, 'false'),
+      globalMonitoringClusterId:       fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_CLUSTER_ID, ''),
+    });
+
+    Object.assign(this, hash);
+
     await this.$store.dispatch('catalog/load', { inStore: 'cluster' });
     try {
       if (!!this.chart) {
@@ -99,13 +110,15 @@ export default {
     };
 
     return {
-      errors:                        [],
-      warnings:                      [],
-      clusters:                      [],
-      currentCluster:                {},
-      originClusters:                [],
-      version:                       {},
-      globalMonitoringEnabledStting: {},
+      errors:                          [],
+      warnings:                        [],
+      clusters:                        [],
+      currentCluster:                  {},
+      originClusters:                  [],
+      version:                         {},
+      globalMonitoringEnabledStting:   {},
+      globalMonitoringEnabledSttingV1: {},
+      disabledV1Done:                  false,
 
       formYamlOption:      VALUES_STATE.FORM,
       showDiff:            false,
@@ -272,8 +285,12 @@ export default {
       return need;
     },
 
+    haveV1GlobalMonitoring() {
+      return this.globalMonitoringEnabledSttingV1?.value === 'true';
+    },
+
     existing() {
-      return this.globalMonitoringEnabledStting.value === 'true';
+      return this.globalMonitoringEnabledStting.value === 'true' || this.haveV1GlobalMonitoring;
     },
   },
   methods: {
@@ -483,9 +500,7 @@ export default {
         await this.repo.waitForOperation(operationId);
 
         // Dynamically use store decided when loading catalog (covers standard user case when there's not cluster)
-        const inStore = this.$store.getters['currentProduct'].inStore;
-
-        this.operation = await this.$store.dispatch(`${ inStore }/find`, {
+        this.operation = await this.$store.dispatch(`cluster/find`, {
           type: CATALOG.OPERATION,
           id:   operationId
         });
@@ -506,10 +521,8 @@ export default {
     },
 
     setGlobalMonitoringClusterId(value) {
-      const setting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID) || {};
-
-      set(setting, 'value', value);
-      setting.save();
+      this.$set(this.globalMonitoringClusterId, 'value', value);
+      this.globalMonitoringClusterId.save();
     },
 
     updateSecretThanosSidecarTls(prefix) {
@@ -717,6 +730,38 @@ export default {
       this.initServerUrl();
     },
 
+    disableGlobalMonitoringV1(buttonCb) {
+      this.$store.dispatch('cluster/promptModal', {
+        component: 'GenericPrompt',
+        resources: {
+          applyMode:   'disable',
+          applyAction: async(buttonDone) => {
+            const projects = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.PROJECT });
+
+            const projectId = projects.find(p => p.spec.displayName === 'System')?.id;
+            const monitoringId = `${ projectId.split('/')[1] }:global-monitoring`;
+
+            this.$store.dispatch('rancher/request', {
+              url:     `/v3/project/${ projectId.replace('/', ':') }/apps/${ monitoringId }`,
+              method:  'DELETE',
+              headers: { 'x-api-action-links': 'actionLinks' }
+            }).then(() => {
+              this.globalMonitoringEnabledSttingV1.value = 'false';
+              this.globalMonitoringEnabledSttingV1.save();
+
+              this.$set(this, 'disabledV1Done', true);
+              this.$emit('update', { ready: true, hidden: true });
+            }).catch(() => {
+              throw new Error(`Failed to uninstall`);
+            });
+          },
+          title: this.t('promptRemove.title', {}, true),
+          body:  this.t('globalMonitoringPage.uninstallV1.promptDescription', {}, true),
+        },
+      });
+      buttonCb(true);
+    },
+
     initServerUrl() {
       this.serverUrlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SERVER_URL) || {};
 
@@ -767,14 +812,23 @@ export default {
 
       this.$set(this, 'warnings', warnings);
     },
+
+    reloadPage() {
+      this.$router.go(0);
+    }
+  },
+
+  mounted() {
+    this.getStoreWarnings();
   },
 
   created() {
-    const setting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED) || {};
+    const haveV1GlobalMonitoring = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED)?.value === 'true';
+    const haveV2GlobalMonitoring = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
+    const enabledGlobalMonitoring = haveV1GlobalMonitoring || haveV2GlobalMonitoring;
 
-    this.globalMonitoringEnabledStting = setting;
     const globalMonitoringClusterId = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID)?.value || '';
-    const currentClusterId = this.existing ? globalMonitoringClusterId : this.$route.params.cluster;
+    const currentClusterId = enabledGlobalMonitoring ? globalMonitoringClusterId : this.$route.params.cluster;
     const currentCluster = this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId);
 
     this.currentCluster = currentCluster;
@@ -785,7 +839,7 @@ export default {
       return;
     }
 
-    if (this.existing && this.$route.params.cluster !== globalMonitoringClusterId) {
+    if (enabledGlobalMonitoring && this.$route.params.cluster !== globalMonitoringClusterId) {
       delay(() => {
         this.$router.replace({
           name:   this.$route.name,
@@ -796,14 +850,61 @@ export default {
         });
       }, 1000);
     }
-
-    this.getStoreWarnings();
   },
 };
 </script>
 
 <template>
   <Loading v-if="$fetchState.pending" />
+  <div v-else-if="haveV1GlobalMonitoring || disabledV1Done">
+    <header>
+      <div class="title">
+        <h1>
+          <t k="globalMonitoringPage.header" />
+        </h1>
+      </div>
+    </header>
+    <div class="v1-monitoring">
+      <template v-if="!disabledV1Done">
+        <IconMessage
+          class="mt-40 mb-20"
+          icon="icon-warning"
+          :vertical="true"
+          icon-state="warning"
+        >
+          <template #message>
+            <p>
+              {{ t('globalMonitoringPage.uninstallV1.warning1') }}
+            </p>
+          </template>
+        </IconMessage>
+        <AsyncButton
+          mode="disable"
+          :delay="0"
+          @click="disableGlobalMonitoringV1"
+        />
+      </template>
+      <template v-else>
+        <IconMessage
+          class="mt-40"
+          icon="icon-checkmark"
+          :vertical="true"
+          icon-state="success"
+        >
+          <template #message>
+            <p class="">
+              {{ t('globalMonitoringPage.uninstallV1.success1') }}
+            </p>
+          </template>
+        </IconMessage>
+        <AsyncButton
+          mode="finish"
+          :delay="0"
+          @click="reloadPage"
+        />
+      </template>
+    </div>
+  </div>
   <section v-else class="dashboard">
     <header>
       <div class="title">
@@ -956,5 +1057,18 @@ export default {
     padding-top: $spacer;
 
     border-top: var(--header-border-size) solid var(--header-border);
+  }
+
+  .v1-monitoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    p {
+      max-width: 900px;
+    }
+    .btn {
+      min-width: 200px;
+    }
   }
 </style>

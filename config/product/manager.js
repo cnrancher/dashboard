@@ -195,7 +195,7 @@ export function init(store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootState.auth?.isAdmin && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED)?.value === 'true';
+      return rootState.auth?.isAdmin && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
     },
     label:      'Global Monitoring',
     labelKey:   'nav.globalMonitoring.dashboard',
