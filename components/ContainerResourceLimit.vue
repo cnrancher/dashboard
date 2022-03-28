@@ -34,6 +34,11 @@ export default {
     showTip: {
       type:    Boolean,
       default: true
+    },
+
+    limitMinMaxValues: {
+      type:    Boolean,
+      default: true
     }
   },
 
@@ -218,7 +223,7 @@ export default {
         />
       </span>
     </div>
-    <div class="row mb-20">
+    <div v-if="limitMinMaxValues" class="row mb-20">
       <span class="col span-6">
         <UnitInput
           v-model="minCpu"
@@ -244,7 +249,7 @@ export default {
         />
       </span>
     </div>
-    <div class="row">
+    <div v-if="limitMinMaxValues" class="row">
       <span class="col span-6">
         <UnitInput
           v-model="maxCpu"
