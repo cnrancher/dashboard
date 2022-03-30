@@ -226,32 +226,6 @@ export default {
     <div v-if="limitMinMaxValues" class="row mb-20">
       <span class="col span-6">
         <UnitInput
-          v-model="minCpu"
-          :placeholder="t('containerResourceLimit.cpuPlaceholder')"
-          :label="t('containerResourceLimit.minCpu')"
-          :mode="mode"
-          :input-exponent="-1"
-          :output-modifier="true"
-          :base-unit="t('suffix.cpus')"
-          @input="updateLimits"
-        />
-      </span>
-      <span class="col span-6">
-        <UnitInput
-          v-model="minMemory"
-          :placeholder="t('containerResourceLimit.memPlaceholder')"
-          :label="t('containerResourceLimit.minMemory')"
-          :mode="mode"
-          :input-exponent="2"
-          :increment="1024"
-          :output-modifier="true"
-          @input="updateLimits"
-        />
-      </span>
-    </div>
-    <div v-if="limitMinMaxValues" class="row">
-      <span class="col span-6">
-        <UnitInput
           v-model="maxCpu"
           :placeholder="t('containerResourceLimit.cpuPlaceholder')"
           :label="t('containerResourceLimit.maxCpu')"
@@ -267,6 +241,32 @@ export default {
           v-model="maxMemory"
           :placeholder="t('containerResourceLimit.memPlaceholder')"
           :label="t('containerResourceLimit.maxMemory')"
+          :mode="mode"
+          :input-exponent="2"
+          :increment="1024"
+          :output-modifier="true"
+          @input="updateLimits"
+        />
+      </span>
+    </div>
+    <div v-if="limitMinMaxValues" class="row">
+      <span class="col span-6">
+        <UnitInput
+          v-model="minCpu"
+          :placeholder="t('containerResourceLimit.cpuPlaceholder')"
+          :label="t('containerResourceLimit.minCpu')"
+          :mode="mode"
+          :input-exponent="-1"
+          :output-modifier="true"
+          :base-unit="t('suffix.cpus')"
+          @input="updateLimits"
+        />
+      </span>
+      <span class="col span-6">
+        <UnitInput
+          v-model="minMemory"
+          :placeholder="t('containerResourceLimit.memPlaceholder')"
+          :label="t('containerResourceLimit.minMemory')"
           :mode="mode"
           :input-exponent="2"
           :increment="1024"
