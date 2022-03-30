@@ -66,6 +66,12 @@ export const SETTING = {
   GLOBAL_MONITORING_ENABLED:            'global-monitoring-enabled',
   GLOBAL_MONITORING_ENABLED_V2:         'global-monitoring-enabled-v2',
   GLOBAL_MONITORING_CLUSTER_ID:         'global-monitoring-cluster-id',
+  DISABLE_PASSWORD_ENCRYPT:             'disable-password-encrypt',
+  DOWNLOAD_FILE_SIZE_LIMIT:             'download-file-size-limit',
+  PANDARIA_ENABLE_HEALTHCHECK_API:      'pandaria-enable-healthcheck-api',
+  RESTRICTED_DEFAULT_ADMIN:             'restricted-default-admin',
+  ROTATE_CERTS_IF_EXPIRING_IN_DAYS:     'rotate-certs-if-expiring-in-days',
+  SYSTEM_CATALOG:                       'system-catalog',
 };
 
 // These are the settings that are allowed to be edited via the UI
@@ -99,6 +105,18 @@ export const ALLOWED_SETTINGS = {
   [SETTING.TELEMETRY]: {
     kind:    'enum',
     options: ['prompt', 'in', 'out']
+  },
+  [SETTING.DISABLE_PASSWORD_ENCRYPT]:       { kind: 'boolean' },
+  [SETTING.DOWNLOAD_FILE_SIZE_LIMIT]:       {
+    kind: 'int',
+    unit: 'Mi'
+  },
+  [SETTING.PANDARIA_ENABLE_HEALTHCHECK_API]:  { kind: 'boolean' },
+  [SETTING.RESTRICTED_DEFAULT_ADMIN]:         { kind: 'boolean' },
+  [SETTING.ROTATE_CERTS_IF_EXPIRING_IN_DAYS]: { kind: 'int' },
+  [SETTING.SYSTEM_CATALOG]:                   {
+    kind:    'enum',
+    options: ['external', 'bundled']
   },
   [SETTING.AUDIT_LOG_SERVER_URL]: { kind: 'url' },
   [SETTING.FOOTER_TEXT]:          {},

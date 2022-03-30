@@ -133,7 +133,7 @@ export default {
     @finish="saveSettings"
     @cancel="done"
   >
-    <h4>{{ description }}</h4>
+    <h4 v-html="description" />
 
     <h5 v-if="editHelp" class="edit-help" v-html="editHelp" />
 
@@ -154,7 +154,7 @@ export default {
           :options="enumOptions"
         />
       </div>
-      <div v-if="setting.kind === 'enum-map'">
+      <div v-else-if="setting.kind === 'enum-map'">
         <LabeledSelect
           v-model="value.value"
           :label="t('advancedSettings.edit.value')"

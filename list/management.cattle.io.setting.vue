@@ -96,9 +96,7 @@ export default {
   <Loading v-if="!settings" />
   <div v-else>
     <Banner color="warning" class="settings-banner">
-      <div>
-        {{ t('advancedSettings.subtext') }}
-      </div>
+      <div v-html="t('advancedSettings.subtext', {}, true)" />
     </Banner>
     <div v-for="setting in settings" :key="setting.id" class="advanced-setting mb-20">
       <div class="header">
@@ -108,7 +106,7 @@ export default {
             <span v-if="setting.fromEnv" class="modified">Set by Environment Variable</span>
             <span v-else-if="setting.customized" class="modified">Modified</span>
           </h1>
-          <h2 v-text="t(`advancedSettings.descriptions.${setting.id}`)">
+          <h2 v-html="t(`advancedSettings.descriptions.${setting.id}`, null, true)">
           </h2>
         </div>
         <div v-if="setting.hasActions" class="action">

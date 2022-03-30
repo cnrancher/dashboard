@@ -151,6 +151,12 @@ advancedSettings:
     kubeconfig-generate-token: 自動爲用戶生成 Kubeconfig Token。
     kubeconfig-token-ttl-minutes: Kubeconfig Token 的自定義最大 TTL（單位：分鐘）。
     ui-consent-banner: 橫幅用於在登錄期間，向用戶展示自定義同意橫幅。
+    disable-password-encrypt: 禁用密碼加密。
+    download-file-size-limit: 容器文件下載大小限制（以Mi為單位）。
+    pandaria-enable-healthcheck-api: 啟用Rancher local api-server健康檢查。
+    restricted-default-admin: "初始化管理員角色是否使用受限管理員許可權，許可權說明請查看<a href=\"http://docs.rancher.cn/docs/rancher2.5/admin-settings/rbac/global-permissions/_index/#%E5%8F%97%E9%99%90%E7%AE%A1%E7%90%86%E5%91%98\" target=\"_blank\">這裡</a>。"
+    rotate-certs-if-expiring-in-days: 設置Rancher Server提前輪換證書的時間（以天為單位）。
+    system-catalog: 配置 Rancher 使用 System Chart Repo。
   edit:
     changeSetting: "修改設置："
     falseOption: "False"
@@ -178,6 +184,9 @@ advancedSettings:
       auto: 自動
       bundled: 包
       external: 外部
+    system-catalog:
+      bundled: 'Bundled'
+      external: 'External'
     telemetry-opt:
       in: 加入遙測
       out: 退出遙測
@@ -193,7 +202,7 @@ advancedSettings:
   label: 高級選項
   none: 無
   show: 顯示
-  subtext: 一般用戶不需要修改高級選項設置。請謹慎操作，不正確的值會破壞 {appName} 的安裝。從默認設置中定製的設置會被標記爲"已修改"。
+  subtext: 一般用戶不需要改變這些。請謹慎操作，一旦輸入了不正確的值，會破壞你的{appName}安裝。從默認設置中定製的設置被標記爲 "已修改"。如果這裡沒有您需要的配置項，請查看<a href="/v3/setting" target="_blank">更多設置</a>。
 assignTo:
   labelsTitle: "{count, plural,\n  =1 { 分配集羣到&hellip; }\n  other { 分配 {count} 集羣到&hellip; }\n}"
   title: "{count, plural,\n  =1 { 分配集羣到&hellip; }\n  other { 分配 {count} 集羣到&hellip; }\n}"
