@@ -6742,61 +6742,6 @@ modalDownLoadFileComponent:
   validatePath: 请输入要下载文件的路径
   noSuchFile: 文件不存在
   serverError: 服务端发生错误
-navlink:
-  name:
-    label: 名称
-    placeholder: 请输入名称
-  group:
-    title: 设置为组链接
-    name:
-      label: 组名称
-      placeholder: 请输入组名称
-      unavailable: 组名称不支持中文及特殊字符
-    sideLabel:
-      label: 角标签
-      placeholder: 请输入关于此链接地址的角标签
-    description:
-      label: 描述
-      placeholder: 请输入关于此链接地址的描述
-    icon:
-      label: 图标
-      placeholder: 请输入关于此链接地址的base64格式的图标
-    label:
-      label: 标签
-      placeholder: 请输入关于此链接地址的标签
-    uploader:
-      label: 链接图标
-      tip: '上传一个图标来替换默认的链接图标，图标的宽和高是56像素大小。 文件最大是 200KB。'
-      preview: 图标预览
-      upload: 上传图标
-      useCustom: 使用自定义链接图标
-  target:
-    label: 打开方式
-    iframe: 使用iframe
-    blank: 新窗口打开
-    self: 当前窗口打开
-  url:
-    label: 链接地址
-    placeholder: 例如：https://<RANCHER_SERVER_URL>/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/?orgId=1
-    service:
-      name:
-        label: 服务名称
-        placeholder: 请输入服务名称
-      namespace:
-        label: 命名空间
-        placeholder: 请选择命名空间
-      path:
-        label: path
-        placeholder: 例如：proxy/?orgId=1
-      port:
-        label: port
-        placeholder: 例如：80
-      scheme:
-        label: scheme
-        placeholder: 例如：http
-  iframe:
-    failedToLoad: 加载页面失败
-    reload: 重新加载
 branding:
   favicon:
     label: Favicon
@@ -7452,8 +7397,9 @@ navLink:
       group:
         label: 组名称
         tooltip: 将链接分配给组
+        placeholder: 请输入组名称
       iconSrc:
-        label: 添加镜像
+        label: 添加图标
       label: 组
       sideLabel:
         label: 链接标签
@@ -7480,13 +7426,17 @@ navLink:
         service: 链接到服务
         url: 链接到 URL
     target:
-      label: 窗口目标
+      label: 链接打开方式
       namedValue:
         label: 窗口名称
       option:
-        blank: 新窗口
-        named: 自定义命名窗口
-        self: 替换窗口
+        blank: 新窗口打开
+        named: 自定义跳转方式
+        iframe: 使用 iframe
+        self: 当前窗口打开
+  iframe:
+    failedToLoad: 加载页面失败
+    reload: 重新加载
 networkpolicy:
   config:
     label: 配置

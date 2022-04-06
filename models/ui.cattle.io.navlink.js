@@ -9,7 +9,7 @@ export default class extends SteveModel {
   }
 
   get link() {
-    const index = window.location.pathname.indexOf('/explorer/ui.cattle.io.navlink');
+    const index = window.location.pathname.indexOf('/ui.cattle.io.navlink');
 
     if (this.isIframe && index > -1) {
       if ( this.spec?.toURL ) {

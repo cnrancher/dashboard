@@ -45,6 +45,11 @@ export default {
       default: '',
     },
 
+    tooltip: {
+      default: null,
+      type:    [String, Object],
+    },
+
     // select
     closeOnSelect: {
       default: true,
@@ -185,6 +190,7 @@ export default {
       :disabled="disabled"
       :required="required"
       :mode="mode"
+      :tooltip="tooltip"
       v-bind="$attrs"
       @blur="onBlur"
     />

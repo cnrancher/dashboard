@@ -6575,61 +6575,6 @@ modalDownLoadFileComponent:
   validatePath: Please enter the path to the file you want to download.
   noSuchFile: File does not exist
   serverError: An error occurred on the service break
-navlink:
-  name:
-    label: name
-    placeholder: Please enter a name
-  group:
-    title: Set as a group link
-    name:
-      label: Group name
-      placeholder: Please enter a group name
-      unavailable: The group name cannot contain Chinese characters or special characters
-    sideLabel:
-      label: Side label
-      placeholder: Please enter the side label of this link's address.
-    description:
-      label: Description
-      placeholder: Please enter a description of this link's address.
-    icon:
-      label: Icon
-      placeholder: Please enter a Base64 icon of this link's address.
-    label:
-      label: Label
-      placeholder: Please enter a label of this link's address.
-    uploader:
-      label: Link Icon
-      tip: 'upload an icon to replace the default link icon. The width and height of the icon are 56 pixels. The maximum file size is 200KB.'
-      preview: Icon Preview
-      upload: Upload Icon
-      useCustom: Use custom link icon
-  target:
-    label: Open With
-    iframe: Use iframe
-    blank: New window open
-    self: Current window open
-  url:
-    label: Link address
-    placeholder: e.g. https://<RANCHER_SERVER_URL>/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/?orgId=1
-    service:
-      name:
-        label: Service name
-        placeholder: Please enter a service name
-      namespace:
-        label: Namespace
-        placeholder: Please select a namespace
-      path:
-        label: path
-        placeholder: e.g. proxy/?orgId=1
-      port:
-        label: port
-        placeholder: e.g. 80
-      scheme:
-        label: scheme
-        placeholder: e.g. http
-  iframe:
-    failedToLoad: Page loading failed
-    reload: Reload
 formReservation:
   limitCpu:
     label: '{component} CPU Limit'
@@ -6987,6 +6932,7 @@ navLink:
       group:
         label: Group name
         tooltip: Assign link to a group
+        placeholder: Please enter a group name
       iconSrc:
         label: Add image
       label: Group
@@ -7021,7 +6967,11 @@ navLink:
       option:
         blank: New window
         named: Custom named window
+        iframe: Use iframe
         self: Replace window
+  iframe:
+    failedToLoad: Page loading failed
+    reload: Reload
 networkpolicy:
   config:
     label: Configuration
