@@ -1,7 +1,4 @@
 ##############################
-# Special stuff
-##############################
-##############################
 # Components & Pages
 ##############################
 about:
@@ -22,9 +19,6 @@ about:
     releaseNotes: 查看发行说明
     title: 版本
     version: 版本
-##############################
-# Components & Pages
-##############################
 accountAndKeys:
   account:
     change: 更改密码
@@ -58,9 +52,6 @@ accountAndKeys:
       bearerToken: 持有者 Token
       bearerTokenTip: "访问密钥和密文密钥 可以作为 HTTP Basic auth 的用户名和密码发送，以授权请求。你也可以将它们组合起来作为一个持有者 Token使用。"
       keyCreated: 已创建一个新的 API 密钥。
-      #accessKey: Access Key
-      #secretKey: Secret Key
-      #bearerToken: Bearer Token
       saveWarning: 请善保存以上的信息。这是你唯一查看该信息的机会。如果丢失这些信息，你需要创建一个新的 API 密钥。
       secretKey: 密文密钥
       ttlLimitedWarning: 系统配置导致该 API 密钥的到期时间缩短了。
@@ -175,7 +166,6 @@ advancedSettings:
       debug: Debug
       info: Info
       trace: Trace
-      #'ui-default-landing':
     'har-ui-source':
       auto: 'Auto'
       bundled: 'Bundled'
@@ -204,13 +194,6 @@ advancedSettings:
   none: 无
   show: 显示
   subtext: 一般用户不需要修改高级选项设置。请谨慎操作，不正确的值会破坏 {appName} 的安装。从默认设置中定制的设置会被标记为"已修改"。
-# ember: Cluster Manager
-#vue: Cluster Explorer
-#'telemetry-opt':
-#prompt: Prompt
-#in: Opt-in to Telemetry
-#out: Opt-out of Telemetry
-
 assignTo:
   labelsTitle: "{count, plural,\n  =1 { 分配集群到&hellip; }\n  other { 分配 {count} 集群到&hellip; }\n}"
   title: "{count, plural,\n  =1 { 分配集群到&hellip; }\n  other { 分配 {count} 集群到&hellip; }\n}"
@@ -351,10 +334,6 @@ authConfig:
     applicationId: 应用 ID
     authEndpoint: Auth 端点
     endpoint: 端点
-    #graphEndpoint: Graph Endpoint
-    #tokenEndpoint: Token Endpoint
-    #authEndpoint: Auth Endpoint
-
     graphEndpoint: 图端点
     tenantId: 租户 ID
     tokenEndpoint: Token 端点
@@ -417,8 +396,6 @@ authConfig:
     table:
       clientId: 客户端 ID
       server: Server IP 地址
-    #server: Server
-    #clientId: Client ID
     target:
       label: 你想使用哪个版本的 GitHub?
       private: GitHub企业版的私有安装
@@ -472,8 +449,6 @@ authConfig:
     groupMemberUserAttribute: 用户组成员属性
     groupSearchBase:
       label: 用户组搜索库
-      #placeholder: 'ou=groups,dc=mycompany,dc=com'
-
       placeholder: ou=groups,dc=mycompany,dc=com
     groups: 组
     hostname: 主机名/IP
@@ -723,7 +698,6 @@ catalog:
       upgrade: '升级 {name}'
     helm:
       atomic: Atomic
-      #atomic: Atomic
       cleanupOnFail: 失败时的清理
       crds: 应用自定义资源定义
       description:
@@ -786,14 +760,12 @@ catalog:
       windows: "{ver}（仅限 Windows）"
   operation:
     tableHeaders:
-      #action: Action
       releaseName: 版本名称
       releaseNamespace: 版本命名空间
       action: 操作
   repo:
     action:
       refresh: 刷新
-    #all: All
     gitBranch:
       label: Git 分支
       placeholder: 例如：master
@@ -863,8 +835,6 @@ changePassword:
       label: 新密码
 chartHeading:
   overview: 概述
-  #poweredBy: "Powered by:"
-
   poweredBy: 'Powered by:'
 cruRegistry:
   title:
@@ -934,723 +904,6 @@ cis:
   testID: 测试 ID
   testsSkipped: 已跳过的测试
   testsToSkip: 要跳过的测试
-cluster:
-  credential:
-    aws:
-      accessKey:
-        label: 访问密钥
-        placeholder: 你的 AWS 访问密钥
-      defaultRegion:
-        help: 创建集群时使用的默认区域。需要验证此凭证是否有效。
-        label: 默认区域
-      secretKey:
-        label: SecretKey
-        placeholder: 你的 AWS 密文密钥
-    digitalocean:
-      accessToken:
-        help: 从 DigitalOcean <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="noopener noreferrer nofollow">应用 & API</a> 中粘贴个人访问 Token。
-        #label: Access Token
-        placeholder: 你的 DigitalOcean API 访问 Token
-        label: 访问 Token
-    harvester:
-      cluster: 集群
-      cpu: CPU
-      disk: 磁盘
-      external: 外部的 Harvester（实验功能）
-      image: 镜像
-      import: 导入的 Harvester
-      kubeconfigContent:
-        label: KubeconfigContent
-      memory: 内存
-      namespace: 命名空间
-      network: 网络
-      networkData:
-        label: 网络数据模板
-        title: "网络数据："
-      placeholder: 命名空间/名称
-      sshUser: SSH 用户名
-      userData:
-        label: 用户数据模板
-        title: "用户数据："
-    label: 云凭证
-    name:
-      label: 凭证名称
-      placeholder: 此凭证的名称（可选）
-    banner:
-      createCredential: |-
-        {length, plural,
-          =0 {请先创建一个用于与云提供商对话的凭证}
-          other {请创建一个新凭证}
-        }
-    select:
-      option:
-        new: 创建...
-        none: 选择凭证
-    selectExisting:
-      label: 选择现有
-    azure:
-      clientId:
-        label: 客户端 ID
-      clientSecret:
-        label: 客户端密文
-      environment:
-        label: 环境
-      subscriptionId:
-        label: 订阅 ID
-      tenantId:
-        label: 租户 ID
-    gcp:
-      authEncodedJson:
-        help: |-
-          <p>创建一个<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="noopener noreferrer nofollow">服务账号</a> JSON 私钥文件，并在此处提供 JSON 文件。
-          需要以下 IAM 角色：</p>
-          <ul>
-          <li><b>计算引擎</b>：Compute Viewer (roles/compute.viewer)</li>
-          <li><b>项目</b>：Viewer (roles/viewer)</li>
-          <li><b>Kubernetes 引擎</b>：Kubernetes 引擎管理员 (roles/container.admin)</li>
-          <li><b>服务账号</b>：服务账号用户(roles/iam.serviceAccountUser)</li>
-          </ul>
-          点击<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="noopener noreferrer nofollow">此处</a>查看更多角色相关的信息。
-        label: 服务账号
-        placeholder: 服务帐号私钥 JSON 文件
-    linode:
-      accessToken:
-        help: 从 Linode <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="noopener noreferrer nofollow">API Tokens</a> 粘贴个人访问 Token。
-        label: 访问 Token
-        placeholder: 你的 Linode API 访问 Token
-    s3:
-      accessKey:
-        label: 访问密钥
-        placeholder: 你的 API 访问密钥
-      defaultBucket:
-        label: 默认存储桶
-        placeholder: 可选：要使用的默认存储桶
-      defaultEndpoint:
-        label: 默认端点
-        placeholder: 可选：要使用的默认端点
-      defaultEndpointCA:
-        label: 默认端点 CA 证书
-        placeholder: 可选：用于验证端点的默认 CA 证书
-      defaultFolder:
-        label: 默认文件夹
-        placeholder: 可选：要使用的默认文件夹
-      defaultRegion:
-        label: 默认区域
-        placeholder: 可选：要使用的默认区域
-      defaultSkipSSLVerify:
-        label: 接受任何证书（不安全）
-      secretKey:
-        label: SecretKey
-        placeholder: 你的 API 密文密钥
-    vmwarevsphere:
-      note: 注意：免费的 ESXi 许可证不支持 API 访问。仅支持具有有效或评估许可证的服务器。
-      password:
-        label: 密码
-      port:
-        label: 端口
-      server:
-        label: vCenter 或 ESXi Server
-        placeholder: vcenter.domain.com
-      username:
-        label: 用户名
-  description:
-    label: 集群描述
-    placeholder: 输入可以描述该集群的文本
-  import:
-    clusterRoleBindingCommand: kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>
-    clusterRoleBindingInstructions: 如果你在创建资源时遇到权限错误，你的用户可能没有绑定 <code>cluster-admin</code> 角色。你可以运行这个命令来申请角色：
-    commandInstructions: 在运行支持的 Kubernetes 版本的 Kubernetes 集群上，运行以下 <code>kubectl</code> 命令，以将其导入到 {vendor}：
-    commandInstructionsInsecure: 如果你看到&quot;证书由未知机构签名&quot;的错误，你的 {vendor} 安装了自签名或不受信任的 SSL 证书。你可以运行下面的命令来绕过证书验证：
-  kubernetesVersion:
-    label: Kubernetes 版本
-    experimental: 实验功能
-  machinePool:
-    name:
-      label: 池名称
-      placeholder: 默认会随机生成一个名称
-    nodeTotals:
-      label:
-        controlPlane: "{count} 个 Control Plane 节点"
-        etcd: "{count} 个 ETCD 节点"
-        worker: "{count} 个 worker 节点"
-      tooltip:
-        controlPlane: "{count, plural,\n  =0 { 一个集群需要至少1个可用的 Control Plane 节点。}\n  =1 { 只有1个 Control Plane 节点的集群是不具备容错能力的。}\n  other {}\n}"
-        etcd: "{count, plural,\n  =0 { 一个集群需要至少1个可用的 ETCD 节点。}\n  =1 { 只有1个 ETCD 节点的集群是不具备容错能力的。}\n  =2 { 集群的节点数需要是奇数。只有2个 ETCD 节点的集群是不具备容错能力的。}\n  =3 {}\n  =4 { 集群的节点数需要是奇数。}\n  =5 {}\n  =6 { 集群的节点数需要是奇数。}\n  =7 {}\n  other { 不建议创建多于7个ETCD 节点。}\n}"
-        worker: "{count, plural,\n  =0 { 一个集群需要至少1个可用的 Worker 节点。}\n  =1 { 只有1个 Worker 节点的集群是不具备容错能力的。}\n  other {}\n}"
-    labels:
-      label: Kubernetes 节点标签
-    quantity:
-      label: 机器数量
-    role:
-      label: 角色
-    autoReplace:
-      label: 自动替换
-      toolTip: 如果大于 0，则在此期间无法访问的节点将被自动删除和替换。
-      unit: 分钟
-    drain:
-      header: 清空
-      label: 删除前清空
-  name:
-    label: 集群名称
-    placeholder: 独特的集群名称
-  provider:
-    #aliyun: Alibaba ACK
-    #aliyunecs: Aliyun ECS
-    aws: Amazon
-    #amazonec2: Amazon EC2
-    #amazoneks: Amazon EKS
-    #azure: Azure
-    #azureaks: Azure AKS
-    #baidu: Baidu CCE
-    #cloudca: Cloud.ca
-    custom: 自定义
-    #digitalocean: DigitalOcean
-    #docker: Docker
-    #exoscale: Exoscale
-    #googlegke: Google GKE
-    #huaweicce: Huawei CCE
-    import: 通用
-    #k3s: K3s
-    #kubeAdmin: KubeADM
-    #linode: Linode
-    local: 本地
-    #minikube: Minikube
-    #oci: Oracle Cloud Infrastructure
-    #openstack: OpenStack
-    #oracleoke: Oracle OKE
-    #otc: Open Telekom Cloud
-    other: 其他
-    #packet: Packet
-    pinganyunecs: 平安云 ECS
-    #rackspace: RackSpace
-    #rancherkubernetesengine: RKE
-    #rke2: RKE Government
-    #rke: RKE
-    #rkeWindows: Windows
-    #softlayer: SoftLayer
-    #tencenttke: Tencent TKE
-    #upcloud: UpCloud
-    #vmwarevsphere: vSphere
-    #zstack: ZStack
-
-    aks: Azure AKS
-    aliyun: Alibaba ACK
-    aliyunecs: Aliyun ECS
-    aliyunkubernetescontainerservice: Alibaba ACK
-    amazonec2: Amazon EC2
-    amazoneks: Amazon EKS
-    azure: Azure
-    azureaks: Azure AKS
-    azurekubernetesservice: Azure AKS
-    baidu: 百度 CCE
-    baiducloudcontainerengine: 百度 CCE
-    cloudca: Cloud.ca
-    cloudscale: Cloudscale
-    digitalocean: DigitalOcean
-    docker: Docker
-    eks: Amazon EKS
-    exoscale: Exoscale
-    gcp: Google
-    gke: Google GKE
-    google: Google GCE
-    googlegke: Google GKE
-    harvester: Harvester
-    huaweicce: 华为 CCE
-    imported: 已导入
-    k3s: K3s
-    kubeAdmin: KubeADM
-    linode: Linode
-    linodelke: Linode LKE
-    minikube: Minikube
-    oci: Oracle OCI
-    openstack: OpenStack
-    opentelekomcloudcontainerengine: Open Telekom Cloud CCE
-    oracle: Oracle
-    oracleoke: Oracle OKE
-    otc: Open Telekom Cloud
-    otccce: Open Telekom Cloud CCE
-    packet: Equinix Metal
-    pnap: phoenixNAP
-    rackspace: RackSpace
-    rancherkubernetesengine: RKE
-    rke: RKE1
-    rke2: RKE2
-    rkeWindows: Windows
-    s3: S3 兼容
-    softlayer: IBM 云
-    tencenttke: 腾讯云 TKE
-    upcloud: UpCloud
-    vmwarevsphere: VMware vSphere
-    zstack: ZStack
-  providerGroup:
-    create-custom: 在现有的节点上使用 RKE 创建集群
-    create-kontainer: 在托管的 Kubernetes 提供商中创建集群
-    create-machine: 在新建的节点上使用 RKE 创建集群
-    create-template: 使用 Catalog 模板创建集群
-    register-custom: 导入任意 Kubernetes 集群
-    register-kontainer: 在托管的 Kubernetes 提供商中注册现有集群
-    create-custom1: 使用现有节点并使用 RKE 创建集群
-    create-custom2: 使用现有节点并使用 RKE2/K3s 创建集群
-    create-rke1: 创建新节点并使用 RKE 创建集群
-    create-rke2: 创建节点并使用 RKE2/K3s 创建集群
-  addOns:
-    additionalManifest:
-      title: 其它清单文件
-      tooltip: '集群启动时要应用的其它 Kubernetes 清单 YAML'
-  addonChart:
-    rancher-vsphere-cpi: vSphere CPI 配置
-    rancher-vsphere-csi: vSphere CSI 配置
-    rke2-calico: Calico 配置
-    rke2-calico-crd: Calico 配置
-    rke2-canal: Canal 配置
-    rke2-cilium: Cilium 配置
-    rke2-coredns: CoreDNS 配置
-    rke2-ingress-nginx: NGINX Ingress 配置
-    rke2-kube-proxy: Kube Proxy 配置
-    rke2-metrics-server: Metrics Server 配置
-    rke2-multus: Multus 配置
-  advanced:
-    agentArgs:
-      label: 如果内核参数与预期的 Kubelet 默认值不同，则抛出错误。
-    argInfo:
-      machineSelector:
-        bannerLabel: '注意：优先匹配最后一个的选择器，并且只使用它的参数。匹配到的其他选择器的参数不会合并。'
-        kubeApiServerTitle: 补充的 API server 参数
-        kubeControllerManagerTitle: 补充的 Controller Manager 参数
-        kubeSchedulerTitle: 补充的 Scheduler 参数
-        label: 添加机器选择器
-        listLabel: 添加参数
-        subTitle: '使用 Kubelet 参数：'
-        title: '标签匹配的机器：'
-        titleAlt: "{count, plural,\n  =1 { 所有机器均使用 Kubelet 参数： }\n  other { 任何机器均使用 Kubelet 参数： }\n}"
-      title: 补充 Kubelet 参数
-  agentEnvVars:
-    detail: 向 Agent 容器添加额外的环境变量。这在配置 HTTP 代理时是最常用的。
-    keyLabel: 变量名
-    label: Agent 环境
-  harvester:
-    importNotice: 导入 Harvester 集群方式
-    machinePool:
-      cpu:
-        placeholder: '例如：2'
-      disk:
-        placeholder: '例如：4'
-      image:
-        placeholder: 请选择镜像
-      memory:
-        placeholder: '例如：4'
-      namespace:
-        placeholder: '例如：default'
-      network:
-        placeholder: 请选择网络
-      sshUser:
-        placeholder: '例如：ubuntu'
-        toolTip: 用于登录选中的操作系统镜像的 SSH 用户名
-    registration:
-      step1: "1. 前往目标 Harvester UI 的<code>高级设置</code>页面。"
-      step2: '2. 找到<code>cluster-registration-url</code>设置项，并点击<code><i class="icon icon-actions" ></i></code> -> <code>编辑设置</code>按钮。'
-      step3: "3. 输入以下注册 URL，并点击<code>保存</code>。"
-      step4: "注册 URL"
-    warning:
-      label: 这是一个 Harvester 集群 - 请启用 Harvester 功能开关以对其进行管理。
-      state: 警告
-    clusterWarning: |-
-      还有 {count, plural,
-      =1 {1个 Harvester 集群未显示}
-      other { #个 Harvester 集群未显示}
-      }
-  importAction: 导入已有集群
-  legacyWarning: 旧版功能开关已开启，但是不是所有旧版功能都在 Kubernetes 1.21+ 中支持。
-  memberRoles:
-    addClusterMember:
-      labelAdd: 添加成员
-      labelSelect: 选择成员
-      noResults: 没有匹配的结果
-      placeholder: 搜索成员以提供集群访问权限
-      searchPlaceholder: 请输入搜索
-    removeMessage: '注意：删除用户不会删除其项目权限。'
-  privateRegistry:
-    mode:
-      advanced: 配置高级容器 Mirror 和仓库验证选项
-      private: 从私有仓库中为 {vendor} 拉取镜像
-      public: 从公共 DockerHub 中为 {vendor} 拉取镜像
-    systemDefaultRegistry:
-      label: 用于 {vendor} 镜像的仓库主机名
-  rke2:
-    address:
-      caCerts:
-        label: CA 证书
-        toolTip: 客户端用于验证端点返回的证书是否有效的证书。
-      clusterCidr:
-        label: 集群 CIDR
-      dns:
-        label: 集群 DNS
-      domain:
-        label: 集群域名
-      fqdn:
-        toolTip: FQDN 将解析为集群的健康 Control Plane 节点。
-      header: 寻址
-      nodePortRange:
-        label: NodePort 服务端口范围
-      serviceCidr:
-        label: 服务 CIDR
-      tlsSan:
-        label: TLS 可选名称
-      ipv6:
-        enable: 启用 IPv6 支持
-        warning: 你正在使用 IPv6 CIDR。你可能需要额外配置主机驱动。
-      tooltip: 创建集群后无法更改集群网络值。
-    cloudProvider:
-      header: 云提供商配置
-      label: 云提供商
-    cni:
-      label: 容器网络
-    controlPlaneConcurrency:
-      label: Control Plane 并发
-      toolTip: "可以是固定的节点数（如1），也可以是百分比（如10%）"
-    defaultPodSecurityPolicyTemplateName:
-      label: 默认 Pod 安全策略
-    drain:
-      label: 清空节点
-      toolTip: 清空操作预先移除每个节点上的 Pod，使得升级中的节点上没有运行的工作负载。不清空的升级速度更快，造成的混乱更少，但是 Pod 仍可能根据进行中的升级进行重启。
-    enableNetworkPolicy:
-      label: 项目网络隔离
-    etcd:
-      disableSnapshots:
-        label: 自动快照
-      exportMetric:
-        false: 仅在集群内可用
-        label: 指标
-        true: 暴露给公共接口
-      snapshotRetention:
-        label: 保留最后一个
-      snapshotScheduleCron:
-        label: Cron 调度
-    security:
-      header: 安全
-    snapshots:
-      suffix: 每个节点的快照
-    systemService:
-      header: 系统服务
-      rke2-coredns: CoreDNS
-      rke2-ingress-nginx: NGINX Ingress
-      rke2-kube-proxy: Kube Proxy
-      rke2-metrics-server: Metrics Server
-    workNode:
-      label: Worker 节点
-    workerConcurrency:
-      label: Worker 并发
-      toolTip: "可以是固定的节点数（如1），也可以是百分比（如10%）"
-  tabs:
-    ace: 授权端点
-    addons: 附加配置
-    advanced: 高级选项
-    agentEnv: Agent 环境变量
-    basic: 基本信息
-    cluster: 集群配置
-    machinePools: 机器池
-    machines: 机器
-    memberRoles: 成员角色
-    networking: 网络
-    registration: 注册
-    registry: 镜像仓库
-    upgrade: 升级策略
-    etcd: ETCD
-    log: 配置日志
-  toolsTip: 使用新集群工具来管理和安装监控、日志管理等工具。
-  banner:
-    os: 你正在将 {newOS} worker 节点添加到具有一个或多个 {existingOS} worker 节点的集群。你可能需要升级或删除某些已安装的应用。
-    rke2-k3-reprovisioning: 更改集群配置可能导致节点重新配置。详情请参见 <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">文档</a>。
-    warning: 此集群包含此表单不完全支持的 machineSelectorConfig。使用 YAML 编辑器管理完整配置。
-  cloudProvider:
-    aws:
-      label: Amazon
-    azure:
-      label: Azure
-    external:
-      label: External
-    gcp:
-      label: Google
-    harvester:
-      label: Harvester
-    rancher-vsphere:
-      label: vSphere
-      note: <b>重要</b>：在附加配置标签中配置 vSphere 云提供商和存储提供商选项。
-  copyConfig: 将配置复制到剪贴板
-  custom:
-    advanced:
-      detail: 对节点注册方式的额外控制。每个注册的节点需要的值，通常都不相同。
-      label: 高级选项
-      nodeLabel:
-        label: 添加标签
-        title: 节点标签
-      nodeName: 节点名称
-      privateIp: 节点私有 IP
-      publicIp: 节点公共 IP
-    nodeRole:
-      detail: 选择节点在集群中的角色。在集群中，每个角色都需要至少一个节点。
-      label: 节点角色
-    registrationCommand:
-      insecure: 不安全：如果你的服务器具有自签名证书，选择此项以跳过 TLS 验证。
-      label: 注册命令
-      linuxDetail: 在每台要注册的 Linux 机器上运行此命令。
-      windowsDetail: 在每台要注册的 Windows 机器中的 PowerShell 上运行此命令。Windows 节点只能充当 worker。
-      windowsNotReady: 在用于添加 Windows worker 的注册命令显示之前，集群必须已启动并运行 Linux ETCD，Control Plane，以及 worker 节点。
-      windowsWarning: 工作负载 Pod（包括由 Rancher Chart 部署的 Pod）将默认调度到 Linux 和 Windows 节点上。编辑 Chart 中的 NodeSelector 以将它们放置到兼容的节点上。
-  haveOneOwner: 至少有一名成员需要具有所有者角色。
-  k3s:
-    systemService:
-      coredns: CoreDNS
-      local-storage: 本地存储
-      metrics-server: Metrics Server
-      servicelb: Klipper 服务 LB
-      traefik: Traefik Ingress
-    techPreview: K3s 配置处于技术预览中
-  log:
-    connecting: 正在连接
-    noData: 没有预设的日志项目
-  machineConfig:
-    amazonEc2:
-      ami:
-        label: AMI ID
-        placeholder: 默认：近版 Ubuntu LTS
-      encryptEbsVolume: 加密 EBS 卷
-      httpEndpoint: 允许访问 EC2 元数据
-      httpTokens: 为元数据使用 Token
-      iamInstanceProfile:
-        label: IAM 实例配置文件名称
-        tooltip: Kubernetes 的 AWS 云提供商支持要求使用实例配置文件
-      instanceType: 实例类型
-      kmsKey:
-        label: KMS 密钥 ARN
-        text: 没有权限列出 KMS 密钥。如果你知道密钥 ARN，你可以输入密钥 ARN。
-      privateAddressOnly: 仅使用私有地址
-      region: 区域
-      requestSpotInstance: 请求 Spot 实例
-      rootSize:
-        label: 根磁盘大小
-        placeholder: 默认：16
-        suffix: GB
-      securityGroup:
-        mode:
-          custom: 选择一个或多个现有的安全组：
-          default: 标准：自动创建并使用一个 "{defaultGroup}"; 安全组
-        title: 安全组
-        vpcId: （先选择一个 VPC/子网）
-      selectedNetwork:
-        label: VPC/子网
-        placeholder: 选择一个 VPC 或子网
-      spotPrice:
-        label: Spot 价格
-        placeholder: 默认：0.50
-        suffix: 每小时单价（美元）
-      sshUser:
-        label: 用于 AMI 的 SSH 用户名
-        placeholder: 默认：ubuntu
-        tooltip: 所选 AMI 中的用户名。此用户名将用于 SSH 到这个节点。
-      tagTitle: EC2 标签
-      useEbsOptimizedInstance: EBS 优化实例
-      volumeType:
-        label: EBS 根卷类型
-        placeholder: 默认：gp2
-      zone: 区域
-    aws:
-      sizeLabel: |-
-        {apiName}: {cpu, plural,
-        =1 {1 vCPU}
-        other {# vCPU}
-        } / {memory, number} GiB 内存 / {storageSize, plural,
-          =0 {EBS-Only}
-          other {{storageSize, number} {storageUnit} {storageType}}
-        }
-    azure:
-      availabilitySet:
-        label: 可用性集（非托管）
-      dns:
-        help: 公共 IP 地址的唯一 DNS 标签。
-        label: DNS 标签
-      environment:
-        label: 环境
-      faultDomainCount:
-        help: 如果可用性集已创建，将忽略容错域数量。
-        label: 容错域数量
-      image:
-        help: 你需要使用托管磁盘来提供 ARM 资源标识符。
-        label: 镜像
-      location:
-        label: 位置
-      managedDisks:
-        label: 使用托管磁盘
-      managedDisksSize:
-        label: 托管磁盘大小
-      nsg:
-        help: 如果你使用托管的 Rancher 或提供现有的 NSG ，所有使用此模板的节点都会使用提供的 NSG。如果你没有提供 NSG，将为每个节点创建一个 NSG。
-        label: 网络安全组（NSG）
-      openPort:
-        add: 添加端口
-        help: 如果你使用现有的 NSG，将忽略开放端口。
-        label: 开放端口
-      plan:
-        label: 购买计划
-        placeholder: publisher:product:plan
-      privateIp:
-        label: 私有 IP 地址
-      publicIpOptions:
-        header: 公共 IP 选项
-        noPublic:
-          label: 没有公共 IP
-        staticPublicIp:
-          label: 静态公共 IP
-      resourceGroup:
-        label: 资源组
-      size:
-        label: 虚拟机大小
-      sshUser:
-        label: SSH 用户名
-      storageType:
-        label: 储存类型
-      subnet:
-        label: 子网
-      subnetPrefix:
-        label: 子网前缀
-      updateDomainCount:
-        help: 如果可用性集已创建，将忽略更新域数量。
-        label: 更新域数量
-      usePrivateIp:
-        label: 使用私有 IP
-      vnet:
-        label: 虚拟网络
-        placeholder: '[resourcegroup:]name'
-    banner:
-      updateInfo: 创建一个池用来更新机器配置
-    digitalocean:
-      sizeLabel: |-
-        {plan, select,
-          s {基础： }
-          g {通用： }
-          gd {通用： }
-          c {CPU： }
-          m {内存： }
-          so {存储： }
-          standard {标准： }
-          other {}
-        }{memoryGb} GB, {vcpus, plural,
-          =1 {# vCPU}
-          other {# vCPU}
-        }, {disk} GB 磁盘 ({value})
-      tags:
-        label: Droplet 标签
-        placeholder: 例如：my_server
-    linode:
-      typeLabel: |-
-        {label}, {vcpus, plural,
-          =1 {# vCPU}
-          other {# vCPU}
-        }, {disk} GB 磁盘 ({value})
-    vsphere:
-      creationMethods:
-        legacy: 使用 boot2docker ISO 安装（旧版）
-        library: 使用模板部署：内容库
-        template: 使用模板部署：数据中心
-        vm: 克隆现有的虚拟机
-      customAttributes:
-        add: 添加自定义属性
-        description: 自定义属性用于向 vSphere 对象清单中的对象添加元数据，以便对对象进行排序和搜索。
-        label: 自定义属性（旧版）
-      guestinfo:
-        add: 添加参数
-        keyPlaceholder: 例如：guestinfo.hostname
-        label: guestinfo 配置参数
-        valuePlaceholder: 例如：myrancherhost
-      hostOptions:
-        any: 任意
-      instanceOptions:
-        cloudConfigYaml: 云配置 YAML
-        cloudInit:
-          label: Cloud Init
-          note: Cloud-init 文件 guestinfo 设置的 URL
-          placeholder: 例如：http://my_host/cloud-config.yml
-        contentLibrary: 内容库
-        cpus: CPU
-        creationMethod: 创建方法
-        description: 选择虚拟机的大小和操作系统
-        disk: 磁盘
-        label: 实例选项
-        libraryTemplate: 库模板
-        memory: 内存
-        os: 操作系统
-        osIsoUrl:
-          label: 操作系统 ISO URL
-          placeholder: 默认：最新的 rancheros-vmware 镜像
-        template:
-          label: 模板
-          none: 未找到模板
-        virtualMachine: 虚拟机
-      networks:
-        add: 添加网络
-        label: 网络
-      scheduling:
-        dataCenter: 数据中心
-        dataStore: 数据存储
-        description: 选择虚拟机将被调度到哪个管理程序
-        folder: 文件夹
-        host:
-          label: 主机
-          note: 用于创建虚拟机的主机（如果是独立的 ESXi 或是带有 DRS 的集群，请留空)
-        label: 调度
-        resourcePool: 资源池
-      tags:
-        addTag: 添加标签
-        description: 标签用于向 vSphere 对象清单中的对象添加元数据，以便对对象进行排序和搜索。
-        label: 标签
-      vAppOptions:
-        allocation:
-          label: vApp IP 分配策略
-          placeholder: 例如：fixedAllocated
-          tooltip: DHCP, 固定, 瞬态，或fixedAllocated
-        auto: 使用 vApp 并使用网络协议配置文件配置网络
-        description: 选择 OVF 环境属性
-        disable: 不使用 vApp
-        label: vApp 选项
-        manual: 提供自定义 vApp 配置
-        properties:
-          add: 添加属性
-          keyPlaceholder: 例如：guestinfo.interface.0.ip.0.address
-          label: vApp 属性
-          valuePlaceholder: 例如：ip:虚拟机网络，表达式，或字符串
-        protocol:
-          label: vApp IP 协议
-          placeholder: 例如：IPv4
-          tooltip: IPv4 或 IPv6
-        restoreType: 还原类型
-        transport:
-          label: OVF 环境传输
-          placeholder: 例如：com.vmware.guestInfo
-          tooltip: com.vmware.guestInfo 或 ISO
-  providerTag:
-    rke2:
-      harvester: '{tag}'
-  rotateCertificates:
-    allServices: 轮换所有服务证书
-    label: 轮换证书
-    modalTitle: 轮换集群证书
-    selectService: 轮换单个服务证书
-    services: 服务
-  selectCredential:
-    genericDescription: '{vendor} 没有此驱动的内置支持。请查阅驱动的官方文档，以了解身份验证所需的字段。'
-  snapshot:
-    bulkSuccessMessage: |-
-      {count, plural,
-        =1 { 已为1个集群请求快照 }
-        other {已为{count}个集群请求快照}
-      }
-    bulkSuccessTitle: 快照已开始
-    errorTitle: 快照 {name} 出错
-    successMessage: 已为 {name} 请求快照
-    successTitle: 快照已开始
-  toggle:
-    v1: RKE1
-    v2: RKE2/K3s
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{total} {units} {suffix} 中的 {useful}"
@@ -1776,7 +1029,6 @@ fleet:
       error: '错误'
       success: '就绪'
       unknown: '未知'
-      #info: 'Transitioning'
       warning: '警告'
       info: 转换中
       notReady: 未就绪
@@ -1918,7 +1170,6 @@ gatekeeperConstraint:
   violations:
     title: 违反规定
 gatekeeperIndex:
-  #poweredBy: OPA Gatekeeper
   unavailable: OPA Gatekeeper 不在 system-charts 应用商店中.
   violations: 违反规定
   poweredBy: OPA Gatekeeper
@@ -1951,14 +1202,12 @@ generic:
   loading: 正在加载&hellip;
   members: 成员
   na: N/A
-  #na: n/a
   name: 名称
   never: 从不
   no: 否
   none: 无
   notFound: 未找到
   number: "{prefix}{value, number}{suffix}"
-  #number: '{prefix}{value, number}{suffix}'
   overview: 概述
   plusMore: + {n} 更多
   privateRegistry: Private Registry
@@ -2210,13 +1459,11 @@ harvester:
     url: URL
     urlTip: "支持被 <a href=\"https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats\" target=\"_blank\">qemu</a> 支持的 <code>raw</code> 和 <code>qcow2</code> 镜像格式。可引导的 ISO 镜像也是类似 <code>raw</code> 格式的镜像。"
     warning:
-      uploading: '{count, plural,
-
+      uploading: |-
+        {count, plural,
         =1 {正在上传一个镜像。请不要刷新或关闭前页面。}
-
         other {正在上传{count}个镜像。请不要刷新或关闭前页面。}
-
-        }'
+        }
   modal:
     backup:
       addBackup: 添加备份
@@ -3056,26 +2303,8 @@ logging:
     url: URL
   clusterFlow:
     noOutputsBanner: 选定的命名空间中没有集群输出
-  #url: URL
-  #keyId: Key Id
-  #secretKey: Secret Key
-  #azurestorage:
-  #storageAccount: Storage Account
-  #accessKey:  Access Key
-  #container: Container
-  #path: 路径
-  #storeAs: Store As
-  #cloudwatch:
-  #keyId: Key Id
-  #secretKey: Secret Key
-  #endpoint: Endpoint
-  #region: Region
   datadog:
-    #apiKey: API Key
-    #useSSL: Use SSL
     useCompression: 使用压缩
-    #host: Host
-
     apiKey: API 密钥
     host: 主机
     useSSL: 使用 SSL
@@ -3088,9 +2317,6 @@ logging:
     clientKey:
       label: 客户端密钥
       placeholder: 粘贴客户端密钥
-    #label: Client Key
-    #placeholder: 粘贴 client key
-    #clientKeyPass: Client Key Pass
     host: 主机
     indexName: 索引名称
     password: 密码
@@ -3131,17 +2357,6 @@ logging:
     overwriteExistingPath: 覆盖现有路径
     path: 路径
     project: 项目
-    #kinesisStream:
-    #streamName: Stream Name
-    #keyId: Key Id
-    #secretKey: Secret Key
-    #logdna:
-    #apiKey: API Key
-    #hostname: Hostname
-    #app: App
-    #logz:
-    #url: URL
-    #port: Port
     token: API 令牌
   install:
     dockerRootDirectory: Docker 根目录
@@ -3152,7 +2367,6 @@ logging:
     tooltip: 某些 Kubernetes 发行版在 <code>journald</code>中记录日志。你需要定义<code>systemdLogPath</code> 以收集日志。默认路径是<code>/run/log/journal</code>，但某些 Linux 发行版不默认使用该路径。
     url: <a href="https://rancher.com/docs/rancher/v2.6/en/logging/helm-chart-options/" target="_blank" rel="noopener nofollow noreferrer">了解更多</a>
   kafka:
-    #brokers: Brokers
     defaultTopic: 默认主题
     password: 密码
     saslOverSsl: 通过 SSL 实现 SASL
@@ -3177,15 +2391,11 @@ logging:
     extractKubernetesLabels: 提取 Kubernetes 标签作为 Loki 标签
     key: 密钥
     password: 密码
-    #url: URL
     tenant: 租户
     username: 用户名
     url: URL
   newrelic:
     apiKey: API 密钥
-    #licenseKey: License Key
-    #baseURI: Base URI
-
     baseURI: 基本 URI
     licenseKey: 许可证密钥
   output:
@@ -3193,53 +2403,26 @@ logging:
       access: 访问
       certificate: 连接
       labels: 标签
-      #outputProviders:
-
       target: 目标
       configuration: 配置
     selectBanner: 选择以配置输出
     selectOutputs: 选择输出
-    #elasticsearch: Elasticsearch
-    #splunkHec: Splunk
-    #kafka: Kafka
-    #forward: Fluentd
-    #loki: Loki
-    #awsElasticsearch: Amazon Elasticsearch
-    #azurestorage: Azure Storage
-    #cloudwatch: Cloudwatch
-    #datadog: Datadog
-    #file: File
-    #gcs: GCS
-    #kinesisStream: Kinesis Stream
-    #logdna: LogDNA
-    #logz: LogZ
-    #newrelic: New Relic
-    #sumologic: SumoLogic
-    #syslog: Syslog
-    #s3: S3
     unknown: 未知类型
     buffer:
       label: 输出缓冲
   overview:
-    #poweredBy: Banzai Cloud
     clusterLevel: 集群级别
     namespaceLevel: 命名空间级别
     poweredBy: Banzai Cloud
   provider: 提供商
   s3:
     overwriteExistingPath: 覆盖现有路径
-    #keyId: Key Id
-    #secretKey: Secret Key
-    #endpoint: Endpoint
-    #bucket: Bucket
     path: 路径
     bucket: 存储桶
     endpoint: 端点
     keyId: 密钥 ID
     secretKey: 密文密钥
   splunk:
-    #indexName: Index Name
-    #source: Source
     caFile: CA 证书文件
     caPath: CA 路径
     clientCert: 客户端证书
@@ -3248,7 +2431,6 @@ logging:
     insecureSsl: 不安全的 SSL
     port: 端口
     protocol: 协议
-    #index: Index
     token: Token
     index: 索引
     indexName: 索引名称
@@ -3261,11 +2443,6 @@ logging:
       chunkLimitRecords: 块限制 chunkLimitRecords
       chunkLimitSize: 块大小限制
       flushInterval: 刷新时间间隔
-      #timekey: Timekey
-      #timekeyWait: Timekey Wait
-      #timekeyUseUTC: Timekey 使用 UTC
-
-      #title: Buffer
       tags: 标签
       totalLimitSize: 总限制大小
       timekey: Timekey
@@ -3274,8 +2451,6 @@ logging:
       title: 缓冲
     format:
       addNewLine: 添加新行
-      #messageKey: Message Key
-
       title: 格式
       type: 类型
       messageKey: 消息密钥
@@ -3370,7 +2545,6 @@ longhorn:
   overview:
     linkedList:
       longhorn:
-        #label: 'Longhorn'
         description: '通过 UI 管理存储系统'
         na: 资源不可用
         label: Longhorn
@@ -3391,28 +2565,6 @@ model:
   "catalog.cattle.io.app":
     firstDeployed: 首次部署
     lastDeployed: 最后部署
-  #authConfig:
-  #description:
-  #ldap: LDAP
-  #saml: SAML
-  #oauth: OAuth
-  #provider:
-  #system: System
-  #local: Local
-  #multiple: Multiple
-  #activedirectory: ActiveDirectory
-  #azuread: AzureAD
-  #github: GitHub
-  #keycloak: Keycloak
-  #ldap: LDAP
-  #openldap: OpenLDAP
-  #shibboleth: Shibboleth
-  #ping: Ping Identity
-  #adfs: ADFS
-  #okta: Okta
-  #freeipa: FreeIPA
-  #googleoauth: Google
-
   cluster:
     name: 集群名称
   ingress:
@@ -3422,12 +2574,6 @@ model:
       controlPlane: Control Plane
       etcd: ETCD
       worker: Worker
-      #controlPlane: Control Plane
-      #etcd: etcd
-      #worker: Worker
-    #controlPlane: Control Plane
-    #etcd: etcd
-    #worker: Worker
   openldapconfig:
     domain:
       help: 只有此库下的用户能正常登录。
@@ -3521,7 +2667,6 @@ monitoring:
       annotations: PVC 注释
       className: 存储类名称
       existingClaim: 使用现有 Claim
-      #finalizers: PVC Finalizers
       label: Grafana 存储
       mode: 访问模式
       selector: 选择器
@@ -3550,13 +2695,9 @@ monitoring:
     linkedList:
       alertManager:
         description: 已启用的告警
-        #label: Alertmanager
-
         label: Alertmanager
       grafana:
         description: Metrics 仪表盘
-        #label: Grafana
-
         label: Grafana
       na: 资源不可用
       prometheusPromQl:
@@ -3567,15 +2708,12 @@ monitoring:
         label: Prometheus 规则
       prometheusTargets:
         description: 配置目标
-        #label: Prometheus Targets
-
         label: Prometheus 目标
     subtitle: '由<a href="https://github.com/coreos/prometheus-operator" target="_blank" rel="noopener noreferrer nofollow">Prometheus</a>提供支持'
     title: 仪表盘
     v1Warning: '当前监控由 Rancher UI 部署，如果你想在仪表盘中启用新的监控，请先在 Rancher UI 中禁用原来的监控。'
   prometheus:
     config:
-      #adminApi: Admin API
       evaluation: 评估间隔
       ignoreNamespaceSelectors:
         help: '如果忽略命名空间选择器，集群管理员可以限制团队监视命名空间之外的授权资源。然而，这会影响需要跨命名空间抓取监控数据的应用（例如Istio）的功能。'
@@ -3609,7 +2747,6 @@ monitoring:
     fields:
       name: 名称
     tls:
-      #label: SSL
       caFilePath:
         label: CA 文件路径
         placeholder: 例如：./ca-file.csr
@@ -3637,8 +2774,6 @@ monitoring:
   tabs:
     alerting: 告警
     general: 通用
-    #grafana: Grafana
-    #prometheus: Prometheus
     thanos: Thanos
     grafana: Grafana
     prometheus: Prometheus
@@ -3666,13 +2801,9 @@ monitoringReceiver:
   auth:
     authType: 认证类型
     bearerToken:
-      #label: Bearer Token
       placeholder: 例如：secret-token
       label: 持有者 Token
-    #basicAuth:
-    #label: Basic Auth
     bearerTokenFile:
-      #label: Bearer Token File
       placeholder: 例如：./user_token
       label: 持有者 Token 文件
     label: 认证
@@ -3690,12 +2821,10 @@ monitoringReceiver:
     label: 电子邮箱
     title: 电子邮箱配置
   opsgenie:
-    #label: Opsgenie
     title: Opsgenie 配置
     label: Opsgenie
   pagerduty:
     info: "你可以点击<a href='https://www.pagerduty.com/docs/guides/prometheus-integration-guide/' target='_blank' rel='noopener nofollow' class='flex-right'>这里</a>了解更多关于为 PagerDuty 创建集成密钥的信息。"
-    #label: PagerDuty
     title: PagerDuty 配置
     label: PagerDuty
   shared:
@@ -3710,13 +2839,11 @@ monitoringReceiver:
     title: Slack 配置
   webhook:
     add:
-      #msTeams: Microsoft Teams
       alibabaCloudSms: 阿里巴巴短信
       generic: 通用
       msTeams: Microsoft Teams
     banner: 如果你需要使用 Microsoft Teams 或短信，请先安装<pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> 。
     modifyNamespace: 如果 <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> 的默认值改变了，请以 http://&lt;new_service_name&gt;.&lt;new_namespace&gt.svc.&lt;port&gt/&lt;path&gt 格式更新以下 URL。
-    #label: Webhook
     title: Webhook 配置
     urlTooltip: 对于一些 Webhook 而言，这是一个指向 DNS 服务的 URL
     label: Webhook
@@ -3769,13 +2896,9 @@ nameNsDescription:
     placeholder: '独特的名称'
   namespace:
     label: 命名空间
-    #placeholder:
-
     placeholder: ""
   workspace:
     label: 工作空间
-    #placeholder:
-
     placeholder:
 namespace:
   containerResourceLimit: 容器资源限制
@@ -3806,10 +2929,6 @@ namespaceFilter:
 namespaceList:
   addLabel: 添加命名空间
   selectLabel: 命名空间
-#locale:
-#en-us: English
-#zh-hans: 简体中文
-#none: (None)
 nav:
   apps: 应用
   auditLog: 审计日志
@@ -3909,7 +3028,6 @@ node:
       containerRuntime: 容器运行时
       externalIP: 外网 IP
       internalIP: 内网 IP
-      #os: OS
       version: 版本
       os: 操作系统
     glance:
@@ -3958,7 +3076,6 @@ node:
     scaleUp: 扩容池
 persistentVolume:
   awsElasticBlockStore:
-    #label: Amazon EBS Disk
     volumeId:
       label: 卷 ID
       placeholder: 例如：volume1
@@ -3969,12 +3086,10 @@ persistentVolume:
       none: 无
       readOnly: 只读
       readWrite: 读写
-    #label: Azure Disk
     diskName:
       label: 磁盘名称
       placeholder: 例如：kubernetes-pvc
     diskURI:
-      #label: Disk URI
       placeholder: 例如：https://example.com/disk
       label: 磁盘 URI
     filesystemType:
@@ -3989,7 +3104,6 @@ persistentVolume:
       label: 只读
     label: Azure 磁盘
   azureFile:
-    #label: Azure Filesystem
     shareName:
       label: 共享名称
       placeholder: 例如：abc
@@ -4008,24 +3122,19 @@ persistentVolume:
   cinder:
     label: Openstack Cinder 卷（不支持）
     volumeId:
-      #label: Volume ID
       placeholder: 例如：vol
       label: 卷 ID
   csi:
     controllerExpandSecretName:
-      #label: Controller Expand Secret Name 
       placeholder: 例如：secret
       label: Controller 展开密文名称
     controllerExpandSecretNamespace:
-      #label: Controller Expand Secret Namespace 
       placeholder: 例如：default
       label: Controller 展开密文命名空间
     controllerPublishSecretName:
-      #label: Controller Publish Secret Name 
       placeholder: 例如：secret
       label: Controller 发布密文名称
     controllerPublishSecretNamespace:
-      #label: Controller Publish Secret Namespace 
       placeholder: 例如：default
       label: Controller 发布密文命名空间
     driver:
@@ -4033,25 +3142,20 @@ persistentVolume:
       placeholder: 例如：driver.longhorn.io
     label: CSI（不支持）
     nodePublishSecretName:
-      #label: Node Publish Secret Name 
       placeholder: 例如：secret
       label: 节点发布密文名称
     nodePublishSecretNamespace:
-      #label: Node Publish Secret Namespace 
       placeholder: 例如：default
       label: 节点发布密文命名空间
     nodeStageSecretName:
-      #label: Node Stage Secret Name 
       placeholder: 例如：secret
       label: 节点暂存密文名称
     nodeStageSecretNamespace:
-      #label: Node Stage Secret Namespace 
       placeholder: 例如：default
       label: 节点暂存密文命名空间
     volumeAttributes:
       add: 添加卷属性
     volumeHandle:
-      #label: Volume Handle 
       placeholder: 例如：pvc-xxxx
       label: 卷句柄
   customize:
@@ -4061,7 +3165,6 @@ persistentVolume:
       readWriteMany: 多节点读写
       readWriteOnce: 单节点读写
     affinity:
-      #label: Node Selectors
       addLabel: 添加节点选择器
       label: 节点选择器
     assignToStorageClass:
@@ -4073,7 +3176,6 @@ persistentVolume:
   fc:
     label: 光纤通道（不支持）
     lun:
-      #label: Lun
       placeholder: 例如：2
       label: Lun
     targetWWNS:
@@ -4096,7 +3198,6 @@ persistentVolume:
       placeholder: 例如：uuid
     label: Flocker（不支持）
   gcePersistentDisk:
-    #label: Google Persistent Disk
     persistentDiskName:
       label: 持久磁盘名称
       placeholder: 例如：abc
@@ -4127,27 +3228,19 @@ persistentVolume:
   iscsi:
     chapAuthDiscovery:
       label: CHAP 认证发现
-    #label: Chap Auth Discovery
     chapAuthSession:
       label: CHAP 认证会话
     initiatorName:
       label: 发起者名称
       placeholder: iqn.1994-05.com.redhat:1df7a24fcb92
-    #label: Chap Auth Session
     iqn:
       label: IQN
       placeholder: iqn.2001-04.com.example:storage.kube.sys1.xyz
-    #label: Initiator Name
-    #placeholder: iqn.1994-05.com.redhat:1df7a24fcb92
     iscsiInterface:
-      #label: iSCSI Interface
       placeholder: 例如：interface
       label: iSCSI 接口
     label: iSCSI 目标（不支持）
-    #label: IQN
-    #placeholder: iqn.2001-04.com.example:storage.kube.sys1.xyz
     lun:
-      #label: Lun
       placeholder: 例如：2
       label: Lun
     portals:
@@ -4164,14 +3257,11 @@ persistentVolume:
     options:
       addLabel: 添加
       label: 选项
-    #label: Longhorn
     volumeHandle:
-      #label: Volume Handle
       placeholder: 例如：pvc-xxxx
       label: 卷句柄
     label: Longhorn
   nfs:
-    #label: NFS Share
     path:
       label: 路径
       placeholder: 例如：/var
@@ -4182,7 +3272,6 @@ persistentVolume:
   photonPersistentDisk:
     label: Photon 卷（不支持）
     pdId:
-      #label: PD ID
       placeholder: 例如：abc
       label: PD ID
   pluginConfiguration:
@@ -4190,7 +3279,6 @@ persistentVolume:
   portworxVolume:
     label: Portworx 卷（不支持）
     volumeId:
-      #label: Volume ID
       placeholder: 例如：abc
       label: 卷 ID
   quobyte:
@@ -4212,12 +3300,10 @@ persistentVolume:
       label: 镜像
       placeholder: 例如：image
     keyRing:
-      #label: Key Ring
       placeholder: 例如：/etc/ceph/keyring
       label: 密钥环
     label: Ceph RBD（不支持）
     pool:
-      #label: Pool
       placeholder: 例如：rbd
       label: 池
     user:
@@ -4225,18 +3311,15 @@ persistentVolume:
       placeholder: 例如：root
   scaleIO:
     gateway:
-      #label: Gateway
       placeholder: 例如：https://localhost:443/api
       label: 网关
     label: ScaleIO 卷（不支持）
     protectionDomain:
-      #label: Protection Domain
       placeholder: 例如：pd01
       label: 保护域
     sslEnabled:
       label: 启用 SSL
     storageMode:
-      #label: Storage Mode
       placeholder: 例如：ThinProvisioned
       label: 存储模式
     storagePool:
@@ -4246,7 +3329,6 @@ persistentVolume:
       label: 系统
       placeholder: 例如：scaleio
     volumeName:
-      #label: Volume Name
       placeholder: 例如：vol-0
       label: 卷名称
   shared:
@@ -4281,7 +3363,6 @@ persistentVolume:
     storagePolicyName:
       label: 存储策略名称
       placeholder: 例如：sp
-    #label: VMWare vSphere 卷
     volumePath:
       label: 卷路径
       placeholder: 例如：/
@@ -4331,8 +3412,6 @@ prefs:
   formatting: 格式
   helm:
     "false": 只显示正式版本
-    #label: Helm Charts
-
     "true": 包括预发布版本
     label: Helm Chart
   hideDesc:
@@ -4436,20 +3515,12 @@ prometheusRule:
       runbook:
         input: Runbook URL 注释值
         label: Runbook URL
-      #input: Runbook URL Annotation Value
-      #label: Runbook URL
-      #summary:
-      #input: Summary Annotation Value
-      #label: Summary
-
       summary:
         input: 概述注释值
         label: 概述
     bannerText: '在触发告警时，注释和标签将被传递给配置的 Alertmanager，以允许它们构造通知信息并发送给配置的接收者。'
     for:
       label: 告警触发等待时间
-      #placeholder: '60'
-
       placeholder: "60"
     label: 告警规则
     labels:
@@ -4719,12 +3790,10 @@ resourceDetail:
     import: 导入 {subtype}
   masthead:
     config: 配置
-    #age: Age
     defaultBannerMessage:
       error: 此资源当前处于错误状态，且没有可用的详细消息。
       transitioning: 此资源当前处于转换状态，且没有可用的详细消息。
     detail: 详情
-    #yaml: YAML
     managedWarning: |-
       此 {type} 由 {hasName, select,
         no { {managedBy} 应用}
@@ -4775,9 +3844,6 @@ resourceTabs:
     tab: 最近事件
   related:
     tab: 相关资源
-    #from: Referred To By
-    #to: Refers To
-
     from: 被引用
     to: 引用
 resourceYaml:
@@ -4801,7 +3867,6 @@ rioConfig:
       helpText:
         listItem1: 至少 1 核心 CPU
         listItem2: 至少 2 GB 内存
-  #header: Rio
   yaml:
     buttonText: 自定义
 secret:
@@ -4855,8 +3920,6 @@ secret:
     'helm.sh/release.v1': 'Helm 版本'
     'istio.io/key-and-cert': 'Istio 证书'
     'kubernetes.io/basic-auth': 'HTTP 基础认证'
-    #'opaque': 'Opaque'
-    #'kubernetes.io/service-account-token': 'Svc Acct Token'
     'kubernetes.io/dockercfg': '镜像仓库'
     'kubernetes.io/dockerconfigjson': '镜像仓库'
     'kubernetes.io/ssh-auth': 'SSH 密钥'
@@ -4964,7 +4027,6 @@ servicesPage:
     label: 标签 & 注释
   pods:
     label: Pod
-  #label: Pods
   ports:
     label: 端口
   selectors:
@@ -5030,12 +4092,7 @@ storageClass:
     title: Amazon EBS 磁盘
     volumeType:
       label: 卷类型
-      #gp2: GP2 - General Purpose SSD
-      #io1: IO1 - Provisioned IOPS SSD
-      #st1: ST1 - Throughput-Optimized HDD
-      #sc1: SC1 - Cold-Storage HDD
       provisionedIops:
-        #label: Provisioned IOPS
         suffix: 每秒，每GB
         label: 预配置 IOPS
       gp2: GP2 - 通用 SSD
@@ -5060,7 +4117,6 @@ storageClass:
       label: Sku 名称
       placeholder: 例如：Standard_LRS
     storageAccount:
-      #label: Storage Account
       placeholder: 例如：azure_storage_account_name
       label: Storage Account
     title: Azure 文件
@@ -5143,7 +4199,6 @@ storageClass:
       label: 卷类型
       placeholder: 例如：replicate:3
   longhorn:
-    #title: Longhorn
     addLabel: 添加参数
     title: Longhorn
   no-provisioner:
@@ -5158,7 +4213,6 @@ storageClass:
       label: 块大小
       placeholder: 例如：32
     ephemeral:
-      #label: Ephemeral
       placeholder: 例如：true
       label: 是否临时
     filesystem:
@@ -5202,7 +4256,6 @@ storageClass:
       placeholder: 例如：root
   rbd:
     adminId:
-      #label: Admin ID
       placeholder: 例如：kube
       label: Admin ID
     adminSecret:
@@ -5244,20 +4297,15 @@ storageClass:
       label: 网关
       placeholder: 例如：https://192.168.99.200:443/api
     protectionDomain:
-      #label: Protection Domain
       placeholder: 例如：pd0
       label: 保护域
     readOnly:
       label: 只读
     secretRef:
-      #label: Secret Ref
       placeholder: 例如：sio-secret
       label: 密文 Ref
     storageMode:
       label: 存储模式
-      #thin: Thin Provisioned
-      #thick: Thick Provisioned
-
       thick: 厚预配
       thin: 精简预配
     storagePool:
@@ -5289,15 +4337,10 @@ storageClass:
       label: 缓存预留的大小
       placeholder: 例如：20
     datastore:
-      #label: Datastore
       placeholder: 例如：VSANDatastore
       label: Datastore
     diskFormat:
       label: 磁盘格式
-      #thin: Thin
-      #zeroedthick: Zeroed Thick
-      #eagerzeroedthick: Eager Zeroed Thick
-
       eagerzeroedthick: Eager Zeroed Thick
       thin: Thin
       zeroedthick: Zeroed Thick
@@ -5319,9 +4362,6 @@ suffix:
   mib: MiB
   milliCpus: milli CPU
   percent: "%"
-  #percent: "%"
-  #cpus: CPUs
-  #ib: iB
   revisions: "{count, plural,\n  =1 { 版本 }\n  other { 版本 }\n}"
   sec: 秒
   seconds: "{count, plural,\n  =1 { 秒 }\n  other { 秒 }\n}"
@@ -5368,7 +4408,6 @@ support:
     removeSubscription: 移除订阅 ID
     removeTitle: 是否移除订阅 ID？
 tableHeaders:
-  #accessKey: Access Key
   address: 地址
   age: 存活时间
   apiGroup: API 组
@@ -5381,22 +4420,15 @@ tableHeaders:
   branch: 分支
   builtIn: 内置
   builtin: 内置
-  #bundlesReady: Bundles
   bundleDeploymentsReady: Deployment
-  #chart: Chart
   clusterCreatorDefault: 集群创建者的默认角色
   clusterGroups: 集群组
-  #clusterFlow: Cluster Flow
-  #clusterOutput: Cluster Output
   clusters: 集群
   clustersReady: 就绪集群
-  #commit: Commit
   condition: 状态
-  #cpu: CPU
   date: 日期
   default: 默认
   defaultVersion: 默认版本
-  #customVerbs: Custom Verbs
   description: 描述
   destination: 目标
   download: 下载
@@ -5404,7 +4436,6 @@ tableHeaders:
   endpoints: 端点
   expires: 过期时间
   fingerprint: 唯一标识
-  #flow: Flow
   gitRepos: Git 仓库
   host: 主机
   hostIp: 主机 IP
@@ -5436,14 +4467,12 @@ tableHeaders:
   node: 节点
   nodeName: 名称
   nodesReady: 就绪节点
-  #nodePort: Node Port
   object: 对象
   output: 输出
   p95: 95 百分位数
   persistentVolumeSource: 源
   phase: 阶段
   podImages: 镜像
-  #pods: Pods
   port: 端口
   progress: 进度
   protocol: 协议
@@ -5583,11 +4612,6 @@ typeDescription:
   catalog.cattle.io.clusterrepo: Chart 仓库是一个 Helm 仓库或 {vendor} 基于 git 的应用商店。它提供了集群中可用的 Chart 列表。
   catalog.cattle.io.operation: 操作指最近应用于集群的 Helm 操作列表。
   cis.cattle.io.clusterscan: 扫描是用来根据定义的配置文件，在集群上触发 CIS 扫描的。扫描完成后会创建一份报告。
-  #Map of
-  #type: Description to be shown on the top of list view describing the type.
-  #      Should fit on one line.
-  #      If you link to anything external, it must have
-  #      target="_blank" rel="noopener noreferrer nofollow"
   cis.cattle.io.clusterscanbenchmark: Benchmark 版本是指使用 kube-bench 运行的 Benchmark 名称，以及该 Benchmark 的有效配置参数。
   cis.cattle.io.clusterscanprofile: 配置文件指定 CIS 扫描的配置，也就是要使用的 Benchmark 版本和该 Benchmark 中要跳过的特定测试。
   cis.cattle.io.clusterscanreport: 报告是集群 CIS 扫描的结果。
@@ -5606,11 +4630,6 @@ typeDescription:
   resources.cattle.io.restore: 创建还原用于根据备份文件触发对集群的还原。
   node: Kubernetes 节点资源展示了承载 Deployment 的虚拟机或物理机。请进入"集群管理"管理可用机器的生命周期。
   catalog.cattle.io.clusterrepo.local: ' Chart 仓库是一个 Helm 仓库或 {vendor} 基于 git 的应用商店。它提供了集群中可用的 Chart 列表。集群模板是通过 Helm Chart 部署的。'
-  # Map of
-  # type: Description to be shown on the top of list view describing the type.
-  #       Should fit on one line.
-  #       If you link to anything external, it MUST have
-  #       target="_blank" rel="noopener noreferrer nofollow"
   chart: 除非另有说明，否则所有 Chart 都至少有一个可安装在具有 Linux 和 Windows 节点的集群上的版本。
   cluster.x-k8s.io.machine: 一个 Machine 封装一个 Kubernetes 节点的配置。你可以使用此视图，来查看更新集群后的情况。
   cluster.x-k8s.io.machinedeployment: Machine Deployment 通过使用模板，在一组 Machine Set（与 Deployment 类似）上编排部署。你可以使用此视图，来查看更新集群后的情况。
@@ -5853,8 +4872,6 @@ user:
     generic:
       tableHeaders:
         role: 角色
-        #granted: Granted
-
         granted: 授予
     globalPermissions:
       adminMessage: 该用户是一个管理员，拥有所有权限
@@ -6041,8 +5058,6 @@ wm:
       message: 无权访问
   kubectlShell:
     title: 'Kubectl: {name}'
-    #title: "Kubectl: {name}"
-  #title: "Kubectl: {name}"
 workload:
   container:
     command:
@@ -6070,7 +5085,6 @@ workload:
           label: 值
           placeholder: 例如：bar
       stdin: 标准输入
-      #tty: TTY
       workingDir: 工作目录
       tty: TTY
     containerName: 容器名称
@@ -6224,16 +5238,10 @@ workload:
   detail:
     pods:
       title: Pod
-  #pods:
-  #title: Pods
   detailTop:
     node: 节点
-    #podIP: Pod IP
     podRestarts: Pod 重启
     workload: 工作负载
-    #pods: Pods by State
-    #runs: Runs
-
     podIP: Pod IP
     pods: 按状态划分的 Pod
     runs: 运行
@@ -6242,8 +5250,6 @@ workload:
     failed: 失败
     running: 运行中
     succeeded: 成功
-    #active: Active
-    #transitioning: Transitioning
     warning: 警告
   hideTabs: '隐藏高级选项'
   job:
@@ -6340,11 +5346,9 @@ workload:
         addRule: 添加规则
         doesNotExist: 未设置
         exists: 已设置
-        #greaterThan: ">"
         in: '在列表中'
         inNamespaces: "这些命名空间中的 Pod："
         key: 键
-        #lessThan: <
         namespaces: 命名空间
         notIn: 不在列表中
         operator: 运算符
@@ -6416,7 +5420,6 @@ workload:
       diskURI: 磁盘 URI
       drivers:
         driver.longhorn.io: Longhorn
-      #driver.longhorn.io: Longhorn
       fsType: 文件系统类型
       kind:
         label: 类型
@@ -6458,15 +5461,6 @@ workload:
     subtypes:
       configMap: ConfigMap
       createPVC: 创建持久卷声明
-      #csi: CSI
-      #nfs: NFS
-      #awsElasticBlockStore: Amazon EBS Disk
-      #azureDisk: Azure Disk
-      #azureFile: Azure File
-      #gcePersistentDisk: Google Persistent Disk
-      #driver.longhorn.io: Longhorn
-      #vsphereVolume: VMWare vSphere Volume
-
       hostPath: Bind-Mount
       persistentVolumeClaim: 持久卷声明
       secret: 密文
@@ -7592,3 +6586,709 @@ gpuReservation:
   shared: 共享 GPU 内存
   sharedTips: 在设置共享 GPU 内存的同时，Rancher 将自动为工作负载设置 GPU 调度器名称
   unit: GPUs
+cluster:
+  addonChart:
+    rancher-vsphere-cpi: vSphere CPI 配置
+    rancher-vsphere-csi: vSphere CSI 配置
+    rke2-calico: Calico 配置
+    rke2-calico-crd: Calico 配置
+    rke2-canal: Canal 配置
+    rke2-cilium: Cilium 配置
+    rke2-coredns: CoreDNS 配置
+    rke2-ingress-nginx: NGINX Ingress 配置
+    rke2-kube-proxy: Kube Proxy 配置
+    rke2-metrics-server: Metrics Server 配置
+    rke2-multus: Multus 配置
+  agentEnvVars:
+    label: Agent 环境
+    detail: 向 Agent 容器添加额外的环境变量。这在配置 HTTP 代理时是最常用的。
+    keyLabel: 变量名
+  cloudProvider:
+    aws:
+      label: Amazon
+    azure:
+      label: Azure
+    external:
+      label: External
+    gcp:
+      label: Google
+    rancher-vsphere:
+      label: vSphere
+      note: '<b>重要</b>：在附加配置标签中配置 vSphere 云提供商和存储提供商选项。'
+    harvester:
+      label: Harvester
+  copyConfig: 将配置复制到剪贴板
+  custom:
+    nodeRole:
+      label: 节点角色
+      detail: 选择节点在集群中的角色。在集群中，每个角色都需要至少一个节点。
+    advanced:
+      label: 高级选项
+      detail: 对节点注册方式的额外控制。每个注册的节点需要的值，通常都不相同。
+      nodeName: 节点名称
+      publicIp: 节点公共 IP
+      privateIp: 节点私有 IP
+      nodeLabel:
+        title: 节点标签
+        label: 添加标签
+    registrationCommand:
+      label: 注册命令
+      linuxDetail: 在每台要注册的 Linux 机器上运行此命令。
+      windowsDetail: 在每台要注册的 Windows 机器中的 PowerShell 上运行此命令。Windows 节点只能充当 worker。
+      windowsNotReady: 在用于添加 Windows worker 的注册命令显示之前，集群必须已启动并运行 Linux ETCD，Control Plane，以及 worker 节点。
+      windowsWarning: 工作负载 Pod（包括由 Rancher Chart 部署的 Pod）将默认调度到 Linux 和 Windows 节点上。编辑 Chart 中的 NodeSelector 以将它们放置到兼容的节点上。
+      insecure: "不安全：如果你的服务器具有自签名证书，选择此项以跳过 TLS 验证。"
+  credential:
+    banner:
+      createCredential: |-
+        {length, plural,
+          =0 {请先创建一个用于与云提供商对话的凭证}
+          other {请创建一个新凭证}
+        }
+    selectExisting:
+      label: 选择现有
+    select:
+      option:
+        new: 创建...
+        none: 选择凭证
+    aws:
+      accessKey:
+        label: 访问密钥
+        placeholder: 你的 AWS 访问密钥
+      defaultRegion:
+        help: 创建集群时使用的默认区域。需要验证此凭证是否有效。
+        label: 默认区域
+      secretKey:
+        label: SecretKey
+        placeholder: 你的 AWS 密文密钥
+    azure:
+      clientId:
+        label: 客户端 ID
+      clientSecret:
+        label: 客户端密文
+      environment:
+        label: 环境
+      subscriptionId:
+        label: 订阅 ID
+      tenantId:
+        label: 租户 ID
+    digitalocean:
+      accessToken:
+        help: 从 DigitalOcean <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="noopener noreferrer nofollow">应用 & API</a> 中粘贴个人访问 Token。
+        label: 访问 Token
+        placeholder: 你的 DigitalOcean API 访问 Token
+    label: 云凭证
+    linode:
+      accessToken:
+        help: 从 Linode <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="noopener noreferrer nofollow">API Tokens</a> 粘贴个人访问 Token。
+        label: 访问 Token
+        placeholder: 你的 Linode API 访问 Token
+    name:
+      label: 凭证名称
+      placeholder: 此凭证的名称（可选）
+    s3:
+      accessKey:
+        label: 访问密钥
+        placeholder: 你的 API 访问密钥
+      defaultRegion:
+        label: 默认区域
+        placeholder: "可选：要使用的默认区域"
+      defaultBucket:
+        label: 默认存储桶
+        placeholder: "可选：要使用的默认存储桶"
+      defaultEndpoint:
+        label: 默认端点
+        placeholder: "可选：要使用的默认端点"
+      defaultFolder:
+        label: 默认文件夹
+        placeholder: "可选：要使用的默认文件夹"
+      defaultEndpointCA:
+        label: 默认端点 CA 证书
+        placeholder: "可选：用于验证端点的默认 CA 证书"
+      defaultSkipSSLVerify:
+        label: 接受任何证书（不安全）
+      secretKey:
+        label: SecretKey
+        placeholder: 你的 API 密文密钥
+    vmwarevsphere:
+      server:
+        label: vCenter 或 ESXi Server
+        placeholder: vcenter.domain.com
+      port:
+        label: 端口
+      username:
+        label: 用户名
+      password:
+        label: 密码
+      note: '注意：免费的 ESXi 许可证不支持 API 访问。仅支持具有有效或评估许可证的服务器。'
+    gcp:
+      authEncodedJson:
+        label: 服务账号
+        placeholder: 服务帐号私钥 JSON 文件
+        help: |-
+          <p>创建一个<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="noopener noreferrer nofollow">服务账号</a> JSON 私钥文件，并在此处提供 JSON 文件。
+          需要以下 IAM 角色：</p>
+          <ul>
+          <li><b>计算引擎</b>：Compute Viewer (roles/compute.viewer)</li>
+          <li><b>项目</b>：Viewer (roles/viewer)</li>
+          <li><b>Kubernetes 引擎</b>：Kubernetes 引擎管理员 (roles/container.admin)</li>
+          <li><b>服务账号</b>：服务账号用户(roles/iam.serviceAccountUser)</li>
+          </ul>
+          点击<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="noopener noreferrer nofollow">此处</a>查看更多角色相关的信息。
+    harvester:
+      import: 导入的 Harvester
+      external: 外部的 Harvester（实验功能）
+      namespace: 命名空间
+      cpu: CPU
+      memory: 内存
+      disk: 磁盘
+      image: 镜像
+      network: 网络
+      sshUser: SSH 用户名
+      userData:
+        label: 用户数据模板
+        title: "用户数据："
+      networkData:
+        label: 网络数据模板
+        title: "网络数据："
+      kubeconfigContent:
+        label: KubeconfigContent
+      placeholder: '命名空间/名称'
+      cluster: 集群
+  description:
+    label: 集群描述
+    placeholder: 输入可以描述该集群的文本
+  harvester:
+    importNotice: 导入 Harvester 集群方式
+    warning:
+      label: 这是一个 Harvester 集群 - 请启用 Harvester 功能开关以对其进行管理。
+      state: 警告
+    clusterWarning: |-
+      还有 {count, plural,
+      =1 {1个 Harvester 集群未显示}
+      other { #个 Harvester 集群未显示}
+      }
+    registration:
+      step1: "1. 前往目标 Harvester UI 的<code>高级设置</code>页面。"
+      step2: '2. 找到<code>cluster-registration-url</code>设置项，并点击<code><i class="icon icon-actions" ></i></code> -> <code>编辑设置</code>按钮。'
+      step3: "3. 输入以下注册 URL，并点击<code>保存</code>。"
+      step4: "注册 URL"
+    machinePool:
+      cpu:
+        placeholder: 例如：2
+      memory:
+        placeholder: 例如：4
+      disk:
+        placeholder: 例如：4
+      namespace:
+        placeholder: 例如：default
+      image:
+        placeholder: 请选择镜像
+      network:
+        placeholder: 请选择网络
+      sshUser:
+        placeholder: 例如：ubuntu
+        toolTip: 用于登录选中的操作系统镜像的 SSH 用户名
+  haveOneOwner: 至少有一名成员需要具有所有者角色。
+  import:
+    commandInstructions: '在运行支持的 Kubernetes 版本的 Kubernetes 集群上，运行以下 <code>kubectl</code> 命令，以将其导入到 {vendor}：'
+    commandInstructionsInsecure: '如果你看到&quot;证书由未知机构签名&quot;的错误，你的 {vendor} 安装了自签名或不受信任的 SSL 证书。你可以运行下面的命令来绕过证书验证：'
+    clusterRoleBindingInstructions: '如果你在创建资源时遇到权限错误，你的用户可能没有绑定 <code>cluster-admin</code> 角色。你可以运行这个命令来申请角色：'
+    clusterRoleBindingCommand: 'kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>'
+  importAction: 导入已有集群
+  kubernetesVersion:
+    label: Kubernetes 版本
+    experimental: 实验功能
+  toolsTip: 使用新集群工具来管理和安装监控、日志管理等工具。
+  legacyWarning: 旧版功能开关已开启，但是不是所有旧版功能都在 Kubernetes 1.21+ 中支持。
+  log:
+    connecting: 正在连接
+    noData: 没有预设的日志项目
+  name:
+    label: 集群名称
+    placeholder: 独特的集群名称
+  machineConfig:
+    banner:
+      updateInfo: 创建一个池用来更新机器配置
+    aws:
+      sizeLabel: |-
+        {apiName}: {cpu, plural,
+        =1 {1 vCPU}
+        other {# vCPU}
+        } / {memory, number} GiB 内存 / {storageSize, plural,
+          =0 {EBS-Only}
+          other {{storageSize, number} {storageUnit} {storageType}}
+        }
+    azure:
+      availabilitySet:
+        label: 可用性集（非托管）
+      dns:
+        help: 公共 IP 地址的唯一 DNS 标签。
+        label: DNS 标签
+      environment:
+        label: 环境
+      faultDomainCount:
+        help: 如果可用性集已创建，将忽略容错域数量。
+        label: 容错域数量
+      image:
+        help: 你需要使用托管磁盘来提供 ARM 资源标识符。
+        label: 镜像
+      location:
+        label: 位置
+      managedDisks:
+        label: 使用托管磁盘
+      managedDisksSize:
+        label: 托管磁盘大小
+      nsg:
+        help: 如果你使用托管的 Rancher 或提供现有的 NSG ，所有使用此模板的节点都会使用提供的 NSG。如果你没有提供 NSG，将为每个节点创建一个 NSG。
+        label: 网络安全组（NSG）
+      openPort:
+        add: 添加端口
+        help: 如果你使用现有的 NSG，将忽略开放端口。
+        label: 开放端口
+      plan:
+        label: 购买计划
+        placeholder: publisher:product:plan
+      privateIp:
+        label: 私有 IP 地址
+      publicIpOptions:
+        header: 公共 IP 选项
+        noPublic:
+          label: 没有公共 IP
+        staticPublicIp:
+          label: 静态公共 IP
+      resourceGroup:
+        label: 资源组
+      size:
+        label: 虚拟机大小
+      sshUser:
+        label: SSH 用户名
+      storageType:
+        label: 储存类型
+      subnet:
+        label: 子网
+      subnetPrefix:
+        label: 子网前缀
+      updateDomainCount:
+        help: 如果可用性集已创建，将忽略更新域数量。
+        label: 更新域数量
+      usePrivateIp:
+        label: 使用私有 IP
+      vnet:
+        label: 虚拟网络
+        placeholder: '[resourcegroup:]name'
+    digitalocean:
+      sizeLabel: |-
+        {plan, select,
+          s {基础： }
+          g {通用： }
+          gd {通用： }
+          c {CPU： }
+          m {内存： }
+          so {存储： }
+          standard {标准： }
+          other {}
+        }{memoryGb} GB, {vcpus, plural,
+          =1 {# vCPU}
+          other {# vCPU}
+        }, {disk} GB 磁盘 ({value})
+      tags:
+        label: Droplet 标签
+        placeholder: 例如：my_server
+    linode:
+      typeLabel: |-
+        {label}, {vcpus, plural,
+          =1 {# vCPU}
+          other {# vCPU}
+        }, {disk} GB 磁盘 ({value})
+    vsphere:
+      hostOptions:
+        any: 任意
+      vAppOptions:
+        label: vApp 选项
+        description: 选择 OVF 环境属性
+        disable: 不使用 vApp
+        auto: 使用 vApp 并使用网络协议配置文件配置网络
+        manual: 提供自定义 vApp 配置
+        restoreType: 还原类型
+        transport:
+          label: OVF 环境传输
+          tooltip: com.vmware.guestInfo 或 ISO
+          placeholder: 例如：com.vmware.guestInfo
+        protocol:
+          label: vApp IP 协议
+          tooltip: IPv4 或 IPv6
+          placeholder: 例如：IPv4
+        allocation:
+          label: vApp IP 分配策略
+          tooltip: DHCP, 固定, 瞬态，或fixedAllocated
+          placeholder: 例如：fixedAllocated
+        properties:
+          label: vApp 属性
+          add: 添加属性
+          keyPlaceholder: 例如：guestinfo.interface.0.ip.0.address
+          valuePlaceholder: 例如：ip:虚拟机网络，表达式，或字符串
+      networks:
+        label: 网络
+        add: 添加网络
+      guestinfo:
+        label: guestinfo 配置参数
+        add: 添加参数
+        keyPlaceholder: 例如：guestinfo.hostname
+        valuePlaceholder: 例如：myrancherhost
+      creationMethods:
+        template: '使用模板部署：数据中心'
+        library: '使用模板部署：内容库'
+        vm: '克隆现有的虚拟机'
+        legacy: '使用 boot2docker ISO 安装（旧版）'
+      scheduling:
+        label: 调度
+        description: 选择虚拟机将被调度到哪个管理程序
+        dataCenter: 数据中心
+        resourcePool: 资源池
+        dataStore: 数据存储
+        folder: 文件夹
+        host:
+          label: 主机
+          note: 用于创建虚拟机的主机（如果是独立的 ESXi 或是带有 DRS 的集群，请留空)
+      instanceOptions:
+        label: 实例选项
+        description: 选择虚拟机的大小和操作系统
+        cpus: CPU
+        memory: 内存
+        disk: 磁盘
+        creationMethod: 创建方法
+        template:
+          label: 模板
+          none: 未找到模板
+        contentLibrary: 内容库
+        libraryTemplate: 库模板
+        virtualMachine: 虚拟机
+        osIsoUrl:
+          label: 操作系统 ISO URL
+          placeholder: '默认：最新的 rancheros-vmware 镜像'
+        cloudInit:
+          label: Cloud Init
+          placeholder: 例如：http://my_host/cloud-config.yml
+          note: Cloud-init 文件 guestinfo 设置的 URL
+        cloudConfigYaml: 云配置 YAML
+        os: 操作系统
+      tags:
+        label: 标签
+        description: 标签用于向 vSphere 对象清单中的对象添加元数据，以便对对象进行排序和搜索。
+        addTag: 添加标签
+      customAttributes:
+        label: 自定义属性（旧版）
+        description: 自定义属性用于向 vSphere 对象清单中的对象添加元数据，以便对对象进行排序和搜索。
+        add: 添加自定义属性
+    amazonEc2:
+      region: 区域
+      zone: 区域
+      instanceType: 实例类型
+      rootSize:
+        placeholder: '默认：16'
+        label: 根磁盘大小
+        suffix: GB
+      selectedNetwork:
+        label: 'VPC/子网'
+        placeholder: 选择一个 VPC 或子网
+      iamInstanceProfile:
+        label: IAM 实例配置文件名称
+        tooltip: Kubernetes 的 AWS 云提供商支持要求使用实例配置文件
+      ami:
+        label: AMI ID
+        placeholder: '默认：近版 Ubuntu LTS'
+      sshUser:
+        label: 用于 AMI 的 SSH 用户名
+        placeholder: '默认：ubuntu'
+        tooltip: '所选 AMI 中的用户名。此用户名将用于 SSH 到这个节点。'
+      securityGroup:
+        title: 安全组
+        vpcId: '（先选择一个 VPC/子网）'
+        mode:
+          default: '标准：自动创建并使用一个 "{defaultGroup}"; 安全组'
+          custom: '选择一个或多个现有的安全组：'
+      volumeType:
+        label: EBS 根卷类型
+        placeholder: '默认：gp2'
+      encryptEbsVolume: 加密 EBS 卷
+      kmsKey:
+        label: KMS 密钥 ARN
+        text: '没有权限列出 KMS 密钥。如果你知道密钥 ARN，你可以输入密钥 ARN。'
+      requestSpotInstance: 请求 Spot 实例
+      spotPrice:
+        label: Spot 价格
+        placeholder: '默认：0.50'
+        suffix: 每小时单价（美元）
+      privateAddressOnly: 仅使用私有地址
+      useEbsOptimizedInstance: EBS 优化实例
+      httpEndpoint: 允许访问 EC2 元数据
+      httpTokens: 为元数据使用 Token
+      tagTitle: EC2 标签
+  addOns:
+    additionalManifest:
+      title: 其它清单文件
+      tooltip: '集群启动时要应用的其它 Kubernetes 清单 YAML'
+  advanced:
+    argInfo:
+      title: 补充 Kubelet 参数
+      machineSelector:
+        label: 添加机器选择器
+        listLabel: 添加参数
+        bannerLabel: '注意：优先匹配最后一个的选择器，并且只使用它的参数。匹配到的其他选择器的参数不会合并。'
+        title: '标签匹配的机器：'
+        subTitle: '使用 Kubelet 参数：'
+        titleAlt: |-
+          {count, plural,
+            =1 { 所有机器均使用 Kubelet 参数： }
+            other { 任何机器均使用 Kubelet 参数： }
+          }
+        kubeControllerManagerTitle: 补充的 Controller Manager 参数
+        kubeApiServerTitle: 补充的 API server 参数
+        kubeSchedulerTitle: 补充的 Scheduler 参数
+    agentArgs:
+      label: 如果内核参数与预期的 Kubelet 默认值不同，则抛出错误。
+  banner:
+    warning: '此集群包含此表单不完全支持的 machineSelectorConfig。使用 YAML 编辑器管理完整配置。'
+    os: '你正在将 {newOS} worker 节点添加到具有一个或多个 {existingOS} worker 节点的集群。你可能需要升级或删除某些已安装的应用。'
+    rke2-k3-reprovisioning: '更改集群配置可能导致节点重新配置。详情请参见 <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">文档</a>。'
+  machinePool:
+    name:
+      label: 池名称
+      placeholder: 默认会随机生成一个名称
+    nodeTotals:
+      label:
+        controlPlane: '{count} 个 Control Plane 节点'
+        etcd: '{count} 个 ETCD 节点'
+        worker: '{count} 个 worker 节点'
+      tooltip:
+        controlPlane: |-
+          {count, plural,
+            =0 { 一个集群需要至少1个可用的 Control Plane 节点。}
+            =1 { 只有1个 Control Plane 节点的集群是不具备容错能力的。}
+            other {}
+          }
+        etcd: |-
+          {count, plural,
+            =0 { 一个集群需要至少1个可用的 ETCD 节点。}
+            =1 { 只有1个 ETCD 节点的集群是不具备容错能力的。}
+            =2 { 集群的节点数需要是奇数。只有2个 ETCD 节点的集群是不具备容错能力的。}
+            =3 {}
+            =4 { 集群的节点数需要是奇数。}
+            =5 {}
+            =6 { 集群的节点数需要是奇数。}
+            =7 {}
+            other { 不建议创建多于7个ETCD 节点。}
+          }
+        worker: |-
+          {count, plural,
+            =0 { 一个集群需要至少1个可用的 Worker 节点。}
+            =1 { 只有1个 Worker 节点的集群是不具备容错能力的。}
+            other {}
+          }
+    quantity:
+      label: 机器数量
+    drain:
+      header: 清空
+      label: 删除前清空
+    role:
+      label: 角色
+    labels:
+      label: Kubernetes 节点标签
+    autoReplace:
+      label: 自动替换
+      toolTip: 如果大于 0，则在此期间无法访问的节点将被自动删除和替换。
+      unit: "分钟"
+  memberRoles:
+    removeMessage: '注意：删除用户不会删除其项目权限。'
+    addClusterMember:
+      labelSelect: 选择成员
+      labelAdd: 添加成员
+      placeholder: 搜索成员以提供集群访问权限
+      searchPlaceholder: 请输入搜索
+      noResults: 没有匹配的结果
+  privateRegistry:
+    systemDefaultRegistry:
+      label: 用于 {vendor} 镜像的仓库主机名
+    mode:
+      public: 从公共 DockerHub 中为 {vendor} 拉取镜像
+      private: 从私有仓库中为 {vendor} 拉取镜像
+      advanced: 配置高级容器 Mirror 和仓库验证选项
+  provider:
+    aliyunecs: Aliyun ECS
+    aliyunkubernetescontainerservice: Alibaba ACK
+    aliyun: Alibaba ACK
+    amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
+    aws: Amazon
+    azure: Azure
+    azureaks: Azure AKS
+    aks: Azure AKS
+    azurekubernetesservice: Azure AKS
+    baiducloudcontainerengine: 百度 CCE
+    baidu: 百度 CCE
+    cloudca: Cloud.ca
+    cloudscale: Cloudscale
+    custom: 自定义
+    digitalocean: DigitalOcean
+    docker: Docker
+    eks: Amazon EKS
+    exoscale: Exoscale
+    gcp: Google
+    google: Google GCE
+    googlegke: Google GKE
+    gke: Google GKE
+    harvester: Harvester
+    huaweicce: 华为 CCE
+    import: 通用
+    imported: 已导入
+    k3s: K3s
+    kubeAdmin: KubeADM
+    linode: Linode
+    linodelke: Linode LKE
+    local: 本地
+    minikube: Minikube
+    oci: Oracle OCI
+    openstack: OpenStack
+    opentelekomcloudcontainerengine: Open Telekom Cloud CCE
+    otccce: Open Telekom Cloud CCE
+    oracle: Oracle
+    oracleoke: Oracle OKE
+    otc: Open Telekom Cloud
+    other: 其他
+    packet: Equinix Metal
+    pinganyunecs: 平安云 ECS
+    pnap: phoenixNAP
+    rackspace: RackSpace
+    rancherkubernetesengine: RKE
+    rke2: RKE2
+    rke: RKE1
+    rkeWindows: Windows
+    s3: S3 兼容
+    softlayer: IBM 云
+    tencenttke: 腾讯云 TKE
+    upcloud: UpCloud
+    vmwarevsphere: VMware vSphere
+    zstack: ZStack
+  providerTag:
+    rke2:
+      harvester: '{tag}'
+  providerGroup:
+    create-custom1: 使用现有节点并使用 RKE 创建集群
+    create-custom2: 使用现有节点并使用 RKE2/K3s 创建集群
+    create-kontainer: 在托管的 Kubernetes 提供商中创建集群
+    register-kontainer: 在托管的 Kubernetes 提供商中注册现有集群
+    create-rke1: 创建新节点并使用 RKE 创建集群
+    create-rke2: 创建节点并使用 RKE2/K3s 创建集群
+    create-template: 使用 Catalog 模板创建集群
+    register-custom: 导入任意 Kubernetes 集群
+  rke2:
+    snapshots:
+      suffix: 每个节点的快照
+    systemService:
+      rke2-coredns: 'CoreDNS'
+      rke2-ingress-nginx: 'NGINX Ingress'
+      rke2-kube-proxy: 'Kube Proxy'
+      rke2-metrics-server: 'Metrics Server'
+      header: 系统服务
+    cni:
+      label: 容器网络
+    cloudProvider:
+      label: 云提供商
+      header: 云提供商配置
+    security:
+      header: 安全
+    defaultPodSecurityPolicyTemplateName:
+      label: 默认 Pod 安全策略
+    enableNetworkPolicy:
+      label: 项目网络隔离
+    workNode:
+      label: Worker 节点
+    controlPlaneConcurrency:
+      label: Control Plane 并发
+      toolTip: "可以是固定的节点数（如1），也可以是百分比（如10%）"
+    workerConcurrency:
+      label: Worker 并发
+      toolTip: "可以是固定的节点数（如1），也可以是百分比（如10%）"
+    drain:
+      label: 清空节点
+      toolTip: 清空操作预先移除每个节点上的 Pod，使得升级中的节点上没有运行的工作负载。不清空的升级速度更快，造成的混乱更少，但是 Pod 仍可能根据进行中的升级进行重启。
+    address:
+      tooltip: 创建集群后无法更改集群网络值。
+      header: 寻址
+      clusterCidr:
+        label: 集群 CIDR
+      serviceCidr:
+        label: 服务 CIDR
+      dns:
+        label: 集群 DNS
+      domain:
+        label: 集群域名
+      nodePortRange:
+        label: NodePort 服务端口范围
+      tlsSan:
+        label: TLS 可选名称
+      fqdn:
+        toolTip: FQDN 将解析为集群的健康 Control Plane 节点。
+      caCerts:
+        label: CA 证书
+        toolTip: 客户端用于验证端点返回的证书是否有效的证书。
+      ipv6:
+        warning: 你正在使用 IPv6 CIDR。你可能需要额外配置主机驱动。
+        enable: 启用 IPv6 支持
+    etcd:
+      disableSnapshots:
+        label: 自动快照
+      snapshotScheduleCron:
+        label: Cron 调度
+      snapshotRetention:
+        label: 保留最后一个
+      exportMetric:
+        label: 指标
+        false: 仅在集群内可用
+        true: 暴露给公共接口
+  k3s:
+    techPreview: K3s 配置处于技术预览中
+    systemService:
+      coredns: 'CoreDNS'
+      local-storage: '本地存储'
+      metrics-server: 'Metrics Server'
+      servicelb: 'Klipper 服务 LB'
+      traefik: 'Traefik Ingress'
+  selectCredential:
+    genericDescription: "{vendor} 没有此驱动的内置支持。请查阅驱动的官方文档，以了解身份验证所需的字段。"
+  snapshot:
+    successTitle: 快照已开始
+    errorTitle: "快照 {name} 出错"
+    successMessage: "已为 {name} 请求快照"
+    bulkSuccessTitle: 快照已开始
+    bulkSuccessMessage: |-
+      {count, plural,
+        =1 { 已为1个集群请求快照 }
+        other {已为{count}个集群请求快照}
+      }
+  tabs:
+    ace: 授权端点
+    addons: 附加配置
+    advanced: 高级选项
+    agentEnv: Agent 环境变量
+    basic: 基本信息
+    cluster: 集群配置
+    etcd: ETCD
+    log: 配置日志
+    networking: 网络
+    machinePools: 机器池
+    machines: 机器
+    memberRoles: 成员角色
+    registry: 镜像仓库
+    upgrade: 升级策略
+    registration: 注册
+  rotateCertificates:
+    label: 轮换证书
+    modalTitle: 轮换集群证书
+    services: 服务
+    allServices: 轮换所有服务证书
+    selectService: 轮换单个服务证书
+  toggle:
+    v1: RKE1
+    v2: RKE2/K3s

@@ -161,7 +161,6 @@ nav:
     separator: or
   imageRepo:
     config: Configuration
-    #registries: Registries
     projects: Image Management
     logs: Logs
   globalMonitoring:
@@ -229,9 +228,6 @@ suffix:
       other { Times }
     }
   gpus: GPUs
-##############################
-# Special stuff
-##############################
 ##############################
 # Components & Pages
 ##############################
@@ -1025,714 +1021,6 @@ cis:
   testID: Test ID
   testsSkipped: Tests Skipped
   testsToSkip: Tests to Skip
-cluster:
-  addonChart:
-    rancher-vsphere-cpi: vSphere CPI Configuration
-    rancher-vsphere-csi: vSphere CSI Configuration
-    rke2-calico: Calico Configuration
-    rke2-calico-crd: Calico Configuration
-    rke2-canal: Canal Configuration
-    rke2-cilium: Cilium Configuration
-    rke2-coredns: CoreDNS Configuration
-    rke2-ingress-nginx: NGINX Ingress Configuration
-    rke2-kube-proxy: Kube Proxy Configuration
-    rke2-metrics-server: Metrics Server Configuration
-    rke2-multus: Multus Configuration
-  agentEnvVars:
-    label: Agent Environment
-    detail: Add additional environment variables to the agent container.  This is most commonly useful for configuring a HTTP proxy.
-    keyLabel: Variable Name
-  cloudProvider:
-    aws:
-      label: Amazon
-    azure:
-      label: Azure
-    external:
-      label: External
-    gcp:
-      label: Google
-    rancher-vsphere:
-      label: vSphere
-      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Config tab.'
-    harvester:
-      label: Harvester
-  custom:
-    nodeRole:
-      label: Node Role
-      detail: Choose what roles the node will have in the cluster.  The cluster needs to have at least one node with each role.
-    advanced:
-      label: Advanced
-      detail: Additional control over how the node will be registered.  These values will often need to be different for each node registered.
-      nodeName: Node Name
-      publicIp: Node Public IP
-      privateIp: Node Private IP
-      nodeLabel:
-        title: Node Labels
-        label: Add Label
-    registrationCommand:
-      label: Registration Command
-      linuxDetail: Run this command on each of the existing Linux machines you want to register.
-      windowsDetail: Run this command in PowerShell on each of the existing Windows machines you want to register. Windows nodes can only be workers.
-      windowsNotReady: The cluster must be up and running with Linux etcd, control plane, and worker nodes before the registration command for adding Windows workers will display.
-      windowsWarning: Workload pods, including some deployed by Rancher charts, will be scheduled on both Linux and Windows nodes by default. Edit NodeSelector in the chart to direct them to be placed onto a compatible node.
-      insecure: "Insecure: Select this to skip TLS verification if your server has a self-signed certificate."
-  credential:
-    aws:
-      accessKey:
-        label: Access Key
-        placeholder: Your AWS Access Key
-      defaultRegion:
-        help: The default region to use when creating clusters.  Also contacted to verify that this credential works.
-        label: Default Region
-      secretKey:
-        label: SecretKey
-        placeholder: Your AWS Secret Key
-    azure:
-      clientId:
-        label: Client ID
-      clientSecret:
-        label: Client Secret
-      environment:
-        label: Environment
-      subscriptionId:
-        label: Subscription ID
-      tenantId:
-        label: Tenant ID
-    digitalocean:
-      accessToken:
-        help: Paste in a Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="noopener noreferrer nofollow">Applications & API</a> screen.
-        label: Access Token
-        placeholder: Your DigitalOcean API Access Token
-    label: Cloud Credential
-    name:
-      label: Credential Name
-      placeholder: Name for this credential (optional)
-    s3:
-      accessKey:
-        label: Access Key
-        placeholder: Your API Access Key
-      defaultRegion:
-        label: Default Region
-        placeholder: "Optional: The default region to use"
-      defaultBucket:
-        label: Default Bucket
-        placeholder: "Optional: The default bucket to use"
-      defaultEndpoint:
-        label: Default Endpoint
-        placeholder: "Optional: The default endpoint to use"
-      defaultFolder:
-        label: Default Folder
-        placeholder: "Optional: The default folder to use"
-      defaultEndpointCA:
-        label: Default Endpoint CA Cert
-        placeholder: "Optional: The default CA certificate to use to verify the endpoint"
-      defaultSkipSSLVerify:
-        label: Accept any certificate (insecure)
-      secretKey:
-        label: SecretKey
-        placeholder: Your API Secret Key
-    vmwarevsphere:
-      server:
-        label: vCenter or ESXi Server
-        placeholder: vcenter.domain.com
-      port:
-        label: Port
-      username:
-        label: Username
-      password:
-        label: Password
-      note: 'Note: The free ESXi license does not support API access. Only servers with a valid or evaluation license are supported.'
-    gcp:
-      authEncodedJson:
-        label: Service Account
-        placeholder: Service Account private key JSON file
-        help: |-
-          <p>Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="noopener noreferrer nofollow">Service Account</a> with a JSON private key and provide the JSON here.
-          These IAM roles are required:</p>
-          <ul>
-          <li><b>Compute Engine:</b> Compute Viewer (roles/compute.viewer)</li>
-          <li><b>Project:</b> Viewer (roles/viewer)</li>
-          <li><b>Kubernetes Engine:</b> Kubernetes Engine Admin (roles/container.admin)</li>
-          <li><b>Service Accounts:</b> Service Account User (roles/iam.serviceAccountUser)</li>
-          </ul>
-          More info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="noopener noreferrer nofollow">here</a>.
-    harvester:
-      import: Imported Harvester
-      external: External Harvester (Experimental)
-      namespace: Namespace
-      cpu: CPUs
-      memory: Memory
-      disk: Disk
-      image: Image
-      network: Network Name
-      sshUser: SSH User
-      userData:
-        label: User Data Template
-        title: "User Data:"
-      networkData:
-        label: Network Data Template
-        title: "Network Data:"
-      kubeconfigContent:
-        label: KubeconfigContent
-      placeholder: 'Namespace/Name'
-      cluster: Cluster
-    banner:
-      createCredential: |-
-        {length, plural,
-          =0 {First you'll need to create a credential to talk to the cloud provider}
-          other {Ok, Let's create a new credential}
-        }
-    select:
-      option:
-        new: Create new...
-        none: Select a credential...
-    selectExisting:
-      label: Select Existing
-    linode:
-      accessToken:
-        help: Paste in a Personal Access Token from the Linode <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="noopener noreferrer nofollow">API Tokens</a> screen.
-        label: Access Token
-        placeholder: Your Linode API Access Token
-  description:
-    label: Cluster Description
-    placeholder: Any text you want that better describes this cluster
-  harvester:
-    importNotice: Import Harvester Clusters via
-    warning:
-      label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
-      state: Warning
-    clusterWarning: "There {count, plural,\n=1 {is 1 Harvester cluster that is not shown}\nother {are # Harvester clusters that are not shown}\n}"
-    machinePool:
-      cpu:
-        placeholder: e.g. 2
-      disk:
-        placeholder: e.g. 4
-      image:
-        placeholder: Please select a image
-      memory:
-        placeholder: e.g. 4
-      namespace:
-        placeholder: e.g. default
-      network:
-        placeholder: Please select a network
-      sshUser:
-        placeholder: e.g. ubuntu
-        toolTip: SSH user to login with the selected OS image.
-    registration:
-      step1: "1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI."
-      step2: '2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.'
-      step3: "3. Input the following registration URL and click the <code>Save</code> button."
-      step4: "Registration URL"
-  haveOneOwner: There must be at least one member with the Owner role.
-  import:
-    commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
-    commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate.  Run the command below instead to bypass the certificate verification:'
-    clusterRoleBindingInstructions: 'If you get permission errors creating some of the resources, your user may not have the <code>cluster-admin</code> role.  Use this command to apply it:'
-    clusterRoleBindingCommand: 'kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>'
-    privateRegistry:
-      label: Private Registry
-      placeholder: e.g. index.docker.io
-      title: Private Registry
-      description: "Configure a default private registry for this cluster. When enabled, all images required for cluster provisioning and system add-ons startup will be pulled from this registry(Notice: This config will override system-default-registry in global config)."
-  importAction: Import Existing
-  kubernetesVersion:
-    label: Kubernetes Version
-    experimental: experimental
-  toolsTip: Use the new Cluster Tools to manage and install Monitoring, Logging and other tools
-  legacyWarning: The legacy feature flag is enabled and not all legacy features are supported in Kubernetes 1.21+.
-  name:
-    label: Cluster Name
-    placeholder: A unique name for the cluster
-  machineConfig:
-    banner:
-      updateInfo: Create a new pool to update machine configs
-    aws:
-      sizeLabel: |-
-        {apiName}: {cpu, plural,
-        =1 {1 vCPU}
-          other {# vCPUs}
-        } / {memory, number} GiB Memory / {storageSize, plural,
-          =0 {EBS-Only}
-          other {{storageSize, number} {storageUnit} {storageType}}
-        }
-    azure:
-      availabilitySet:
-        label: Availability Set (unmanaged)
-      dns:
-        help: A unique DNS label for the public IP address.
-        label: DNS Label
-      environment:
-        label: Environment
-      faultDomainCount:
-        help: If the availability set has already been created, the fault domain count will be ignored.
-        label: Fault Domain Count
-      image:
-        help: Providing an ARM resource identifier requires using managed disk.
-        label: Image
-      location:
-        label: Location
-      managedDisks:
-        label: Use Managed Disks
-      managedDisksSize:
-        label: Managed Disk Size
-      nsg:
-        help: When using a Rancher managed or providing an existing NSG, all nodes using this template will use the supplied NSG. If no NSG is provided, a new NSG will be created for each node.
-        label: Network Security Group
-      openPort:
-        add: Add Port
-        help: When using an existing NSG, Open Ports are ignored.
-        label: Open Port
-      privateIp:
-        label: Private IP Address
-      publicIpOptions:
-        header: Public IP Options
-        noPublic:
-          label: No Public IP
-        staticPublicIp:
-          label: Static Public IP
-      resourceGroup:
-        label: Resource Group
-      size:
-        label: VM Size
-      sshUser:
-        label: SSH Username
-      storageType:
-        label: Storage Type
-      subnet:
-        label: Subnet
-      subnetPrefix:
-        label: Subnet Prefix
-      updateDomainCount:
-        help: If the availability set has already been created, the update domain count will be ignored.
-        label: Update Domain Count
-      usePrivateIp:
-        label: Use Private IP
-      vnet:
-        label: Virtual Network
-        placeholder: '[resourcegroup:]name'
-      plan:
-        label: Purchase Plan
-        placeholder: publisher:product:plan
-    digitalocean:
-      sizeLabel: |-
-        {plan, select,
-          s {Basic: }
-          g {General: }
-          gd {General: }
-          c {CPU: }
-          m {Memory: }
-          so {Storage: }
-          standard {Standard: }
-          other {}
-        }{memoryGb} GB, {vcpus, plural,
-          =1 {# vCPU}
-          other {# vCPUs}
-        }, {disk} GB Disk ({value})
-      tags:
-        label: Droplet Tags
-        placeholder: e.g. my_server
-    vsphere:
-      hostOptions:
-        any: Any
-      vAppOptions:
-        label: vApp Options
-        description: Choose OVF environment properties
-        disable: Do not use vApp
-        auto: Use vApp to configure networks with network protocol profiles
-        manual: Provide a custom vApp config
-        restoreType: Restore Type
-        transport:
-          label: OVF environment transport
-          tooltip: com.vmware.guestInfo or iso
-          placeholder: e.g. com.vmware.guestInfo
-        protocol:
-          label: vApp IP protocol
-          tooltip: IPv4 or IPv6
-          placeholder: e.g. IPv4
-        allocation:
-          label: vApp IP allocation policy
-          tooltip: dhcp, fixed, transient or fixedAllocated
-          placeholder: e.g. fixedAllocated
-        properties:
-          label: vApp properties
-          add: Add Property
-          keyPlaceholder: e.g. guestinfo.interface.0.ip.0.address
-          valuePlaceholder: e.g. ip:VM Network, expression or string
-      networks:
-        label: Networks
-        add: Add Network
-      guestinfo:
-        label: Configuration Parameters used for guestinfo
-        add: Add Parameter
-        keyPlaceholder: e.g. guestinfo.hostname
-        valuePlaceholder: e.g. myrancherhost
-      creationMethods:
-        template: 'Deploy from template: Data Center'
-        library: 'Deploy from template: Content Library'
-        vm: 'Clone an existing virtual machine'
-        legacy: 'Install from boot2docker ISO (Legacy)'
-      scheduling:
-        label: Scheduling
-        description: Choose what hypervisor the virtual machine will be scheduled to
-        dataCenter: Data Center
-        resourcePool: Resource Pool
-        dataStore: Data Store
-        folder: Folder
-        host:
-          label: Host
-          note: Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)
-      instanceOptions:
-        label: Instance Options
-        description: Choose the size and OS of the virtual machine
-        cpus: CPUs
-        memory: Memory
-        disk: Disk
-        creationMethod: Creation method
-        template:
-          label: Template
-          none: No Templates Found
-        contentLibrary: Content library
-        libraryTemplate: Library template
-        virtualMachine: Virtual machine
-        osIsoUrl:
-          label: OS ISO URL
-          placeholder: 'Default: Latest rancheros-vmware image'
-        cloudInit:
-          label: Cloud Init
-          placeholder: e.g. http://my_host/cloud-config.yml
-          note: Cloud-init file or url to set in the guestinfo
-        cloudConfigYaml: Cloud Config YAML
-        os: Operating System
-      tags:
-        label: Tags
-        description: Tags allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
-        addTag: Add Tag
-      customAttributes:
-        label: Custom attributes (legacy)
-        description: Custom attributes allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
-        add: Add custom attribute
-    amazonEc2:
-      region: Region
-      zone: Zone
-      instanceType: Instance Type
-      rootSize:
-        placeholder: 'Default: 16'
-        label: Root Disk Size
-        suffix: GB
-      selectedNetwork:
-        label: 'VPC/Subnet'
-        placeholder: Select a VPC or Subnet
-      iamInstanceProfile:
-        label: IAM Instance Profile Name
-        tooltip: Kubernetes AWS Cloud Provider support requires an appropriate instance profile
-      ami:
-        label: AMI ID
-        placeholder: 'Default: A recent Ubuntu LTS'
-      sshUser:
-        label: SSH Username for AMI
-        placeholder: 'Default: ubuntu'
-        tooltip: 'The username that exists in the selected AMI; Provisioning will SSH to the node with this.'
-      securityGroup:
-        title: Security Group
-        vpcId: '(select a VPC/Subnet first)'
-        mode:
-          default: 'Standard: Automatically create and use a "{defaultGroup}"; security group'
-          custom: 'Choose one or more existing security groups:'
-      volumeType:
-        label: EBS Root Volume Type
-        placeholder: 'Default: gp2'
-      encryptEbsVolume: Encrypt EBS Volume
-      kmsKey:
-        label: KMS Key ARN
-        text: 'You do not have permission to list KMS keys, but may still be able to enter a Key ARN if you know one.'
-      requestSpotInstance: Request Spot Instance
-      spotPrice:
-        label: Spot Price
-        placeholder: 'Default: 0.50'
-        suffix: Dollars per hour
-      privateAddressOnly: Use only private address
-      useEbsOptimizedInstance: EBS-Optimized Instance
-      httpEndpoint: Allow access to EC2 metadata
-      httpTokens: Use tokens for metadata
-      tagTitle: EC2 Tags
-    linode:
-      typeLabel: |-
-        {label}, {vcpus, plural,
-          =1 {# vCPU}
-          other {# vCPUs}
-        }, {disk} GB Disk ({value})
-  addOns:
-    additionalManifest:
-      title: Additional Manifest
-      tooltip: 'Additional Kubernetes Manifest YAML to be applied to the cluster on startup.'
-  advanced:
-    argInfo:
-      title: Additional Kubelet Args
-      machineSelector:
-        label: Add Machine Selector
-        listLabel: Add Argument
-        bannerLabel: 'Note: The last selector that matches wins and only args from it will be used.  Args from other matches above will not combined together or merged.'
-        title: 'For machines with labels matching:'
-        subTitle: 'Use the Kubelet args:'
-        titleAlt: |-
-          {count, plural,
-            =1 { For all machines, use the Kubelet args: }
-            other { For any machines, use the Kubelet args: }
-          }
-        kubeControllerManagerTitle: Additional Controller Manager Args
-        kubeApiServerTitle: Additional API Server Args
-        kubeSchedulerTitle: Additional Scheduler Args
-    agentArgs:
-      label: Raise error if kernel parameters are different than the expected kubelet defaults
-  banner:
-    warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
-    os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
-    rke2-k3-reprovisioning: Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.
-  machinePool:
-    name:
-      label: Pool Name
-      placeholder: A random one will be generated by default
-    nodeTotals:
-      label:
-        controlPlane: '{count} Control Plane'
-        etcd: '{count} etcd'
-        worker: '{count} Worker'
-      tooltip:
-        controlPlane: |-
-          {count, plural,
-            =0 { A cluster needs at least one control plane node to be usable. }
-            =1 { A cluster with only one control plane node is not fault-tolerant. }
-            other {}
-          }
-        etcd: |-
-          {count, plural,
-            =0 { A cluster needs at least one etcd node to be usable. }
-            =1 { A cluster with only one etcd node is not fault-tolerant. }
-            =2 { Clusters should have an odd number of nodes.  A cluster with 2 etcd nodes is not fault-tolerant. }
-            =3 {}
-            =4 { Clusters should have an odd number of nodes. }
-            =5 {}
-            =6 { Clusters should have an odd number of nodes. }
-            =7 {}
-            other { More than 7 etcd nods is not recommended. }
-          }
-        worker: |-
-          {count, plural,
-            =0 { A cluster needs at least one worker node to be usable. }
-            =1 { A cluster with only one worker node is not fault-tolerant. }
-            other {}
-          }
-    labels:
-      label: Kubernetes Node Labels
-    quantity:
-      label: Machine Count
-    role:
-      label: Roles
-    autoReplace:
-      label: Auto Replace
-      toolTip: If greater than 0, nodes that are unreachable for this duration will be automatically deleted and replaced.
-      unit: Minutes
-    drain:
-      header: Drain
-      label: Drain Before Delete
-  memberRoles:
-    removeMessage: 'Note: Removing a user will not remove their project permissions'
-    addClusterMember:
-      labelSelect: Select Member
-      labelAdd: Add Member
-      placeholder: Search for a member to provide cluster access
-      searchPlaceholder: Start typing to search
-      noResults: No results found
-  privateRegistry:
-    systemDefaultRegistry:
-      label: Registry hostname for {vendor} images
-    mode:
-      public: Pull images for {vendor} from public DockerHub
-      private: Pull images for {vendor} from a private registry
-      advanced: Configure advanced containerd mirroring and registry authentication options
-  provider:
-    aliyunecs: Aliyun ECS
-    aliyunkubernetescontainerservice: Alibaba ACK
-    aliyun: Alibaba ACK
-    amazonec2: Amazon EC2
-    amazoneks: Amazon EKS
-    aws: Amazon
-    azure: Azure
-    azureaks: Azure AKS
-    aks: Azure AKS
-    azurekubernetesservice: Azure AKS
-    baiducloudcontainerengine: Baidu CCE
-    baidu: Baidu CCE
-    cloudca: Cloud.ca
-    cloudscale: Cloudscale
-    custom: Custom
-    digitalocean: DigitalOcean
-    docker: Docker
-    eks: Amazon EKS
-    exoscale: Exoscale
-    gcp: Google
-    google: Google GCE
-    googlegke: Google GKE
-    gke: Google GKE
-    harvester: Harvester
-    huaweicce: Huawei CCE
-    import: Generic
-    imported: Imported
-    k3s: K3s
-    kubeAdmin: KubeADM
-    linode: Linode
-    linodelke: Linode LKE
-    local: Local
-    minikube: Minikube
-    oci: Oracle OCI
-    openstack: OpenStack
-    opentelekomcloudcontainerengine: Open Telekom Cloud CCE
-    otccce: Open Telekom Cloud CCE
-    oracle: Oracle
-    oracleoke: Oracle OKE
-    otc: Open Telekom Cloud
-    other: Other
-    packet: Equinix Metal
-    pinganyunecs: Pinganyun ECS
-    pnap: phoenixNAP
-    rackspace: RackSpace
-    rancherkubernetesengine: RKE
-    rke2: RKE2
-    rke: RKE1
-    rkeWindows: Windows
-    s3: S3-Compatible
-    softlayer: IBM Cloud
-    tencenttke: Tencent TKE
-    upcloud: UpCloud
-    vmwarevsphere: VMware vSphere
-    zstack: ZStack
-  providerTag:
-    harvester: '{techPreview}'
-    rke2:
-      harvester: '{tag}'
-  providerGroup:
-    create-custom1: Use existing nodes and create a cluster using RKE
-    create-custom2: Use existing nodes and create a cluster using RKE2/K3s
-    create-kontainer: Create a cluster in a hosted Kubernetes provider
-    register-kontainer: Register an existing cluster in a hosted Kubernetes provider
-    create-rke1: Provision new nodes and create a cluster using RKE
-    create-rke2: Provision new nodes and create a cluster using RKE2/K3s
-    create-template: Use a Catalog Template to create a cluster
-    register-custom: Import any Kubernetes cluster
-  rke2:
-    snapshots:
-      suffix: Snapshots per node
-    systemService:
-      rke2-coredns: 'CoreDNS'
-      rke2-ingress-nginx: 'NGINX Ingress'
-      rke2-kube-proxy: 'Kube Proxy'
-      rke2-metrics-server: 'Metrics Server'
-      header: System Services
-    address:
-      caCerts:
-        label: CA Certificates
-        toolTip: Certificates required for the client to successfully verify the validity of the certificate returned by the endpoint.
-      clusterCidr:
-        label: Cluster CIDR
-      dns:
-        label: Cluster DNS
-      domain:
-        label: Cluster Domain
-      fqdn:
-        toolTip: A FQDN which will resolve to the healthy control plane nodes of the cluster.
-      header: Addressing
-      nodePortRange:
-        label: NodePort Service Port Range
-      serviceCidr:
-        label: Service CIDR
-      tlsSan:
-        label: TLS Alternate Names
-      ipv6:
-        enable: Enable IPv6 support
-        warning: It looks like you are using an IPv6 CIDR. Your node driver may require additional configuration to support this.
-      tooltip: Cluster networking values cannot be changed after the cluster is created.
-    cloudProvider:
-      header: Cloud Provider Config
-      label: Cloud Provider
-    cni:
-      label: Container Network
-    controlPlaneConcurrency:
-      label: Control Plane Concurrency
-      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
-    defaultPodSecurityPolicyTemplateName:
-      label: Default Pod Security Policy
-    drain:
-      label: Drain Nodes
-      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded.  Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
-    enableNetworkPolicy:
-      label: Project Network Isolation
-    etcd:
-      disableSnapshots:
-        label: Automatic Snapshots
-      exportMetric:
-        false: Only available inside the cluster
-        label: Metrics
-        true: Exposed to the public interface
-      snapshotRetention:
-        label: Keep the last
-      snapshotScheduleCron:
-        label: Cron Schedule
-    security:
-      header: Security
-    workNode:
-      label: Worker Nodes
-    workerConcurrency:
-      label: Worker Concurrency
-      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
-  k3s:
-    systemService:
-      coredns: 'CoreDNS'
-      local-storage: 'Local Storage'
-      metrics-server: 'Metrics Server'
-      servicelb: 'Klipper Service LB'
-      traefik: 'Traefik Ingress'
-    techPreview: K3s provisioning is in Tech Preview
-  selectCredential:
-    genericDescription: "{vendor} has no built-in support for this driver.  We've taken a guess, but consult the driver's documentation for the fields required for authentication."
-  snapshot:
-    successTitle: Snapshot Started
-    errorTitle: "Error Snapshotting {name}"
-    successMessage: "A snapshot has been requested for {name}"
-    bulkSuccessTitle: Snapshot Started
-    bulkSuccessMessage: |-
-      {count, plural,
-        =1 { A snapshot has been requested for 1 cluster }
-        other {A snapshot has been requested for {count} clusters}
-      }
-  tabs:
-    ace: Authorized Endpoint
-    addons: Add-On Config
-    advanced: Advanced
-    agentEnv: Agent Environment Vars
-    basic: Basics
-    cluster: Cluster Configuration
-    etcd: etcd
-    networking: Networking
-    machinePools: Machine Pools
-    machines: Machines
-    memberRoles: Member Roles
-    registry: Registries
-    upgrade: Upgrade Strategy
-    log: Provisioning Log
-    registration: Registration
-  rotateCertificates:
-    label: Rotate Certificates
-    modalTitle: Rotate Cluster Certificates
-    services: Services
-    allServices: Rotate all service certificates
-    selectService: Rotate an individual service
-  toggle:
-    v1: RKE1
-    v2: RKE2/K3s
-  copyConfig: Copy Config to Clipboard
-  log:
-    connecting: Connecting…
-    noData: There are no provisioning log entries.
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
@@ -5950,11 +5238,6 @@ typeDescription:
   logging.banzaicloud.io.output: An output defines which logging providers that logs can be sent to. The output needs to be in the same namespace as the flow that is using it.
   group.principal: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
   harvesterhci.io.management.cluster: Virtualization Management is in Tech Preview.
-  # Map of
-  # type: Description to be shown on the top of list view describing the type.
-  #       Should fit on one line.
-  #       If you link to anything external, it MUST have
-  #       target="_blank" rel="noopener noreferrer nofollow"
   chart: All charts have at least one version that is installable on clusters with Linux and Windows nodes unless otherwise indicated.
 typeLabel:
   management.cattle.io.token: |-
@@ -7054,3 +6337,714 @@ vncConsole:
 volumeClaimTemplate:
   add:
     label: Add Claim Template
+cluster:
+  addonChart:
+    rancher-vsphere-cpi: vSphere CPI Configuration
+    rancher-vsphere-csi: vSphere CSI Configuration
+    rke2-calico: Calico Configuration
+    rke2-calico-crd: Calico Configuration
+    rke2-canal: Canal Configuration
+    rke2-cilium: Cilium Configuration
+    rke2-coredns: CoreDNS Configuration
+    rke2-ingress-nginx: NGINX Ingress Configuration
+    rke2-kube-proxy: Kube Proxy Configuration
+    rke2-metrics-server: Metrics Server Configuration
+    rke2-multus: Multus Configuration
+  agentEnvVars:
+    label: Agent Environment
+    detail: Add additional environment variables to the agent container.  This is most commonly useful for configuring a HTTP proxy.
+    keyLabel: Variable Name
+  cloudProvider:
+    aws:
+      label: Amazon
+    azure:
+      label: Azure
+    external:
+      label: External
+    gcp:
+      label: Google
+    rancher-vsphere:
+      label: vSphere
+      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Config tab.'
+    harvester:
+      label: Harvester
+  copyConfig: Copy Config to Clipboard
+  custom:
+    nodeRole:
+      label: Node Role
+      detail: Choose what roles the node will have in the cluster.  The cluster needs to have at least one node with each role.
+    advanced:
+      label: Advanced
+      detail: Additional control over how the node will be registered.  These values will often need to be different for each node registered.
+      nodeName: Node Name
+      publicIp: Node Public IP
+      privateIp: Node Private IP
+      nodeLabel:
+        title: Node Labels
+        label: Add Label
+    registrationCommand:
+      label: Registration Command
+      linuxDetail: Run this command on each of the existing Linux machines you want to register.
+      windowsDetail: Run this command in PowerShell on each of the existing Windows machines you want to register. Windows nodes can only be workers.
+      windowsNotReady: The cluster must be up and running with Linux etcd, control plane, and worker nodes before the registration command for adding Windows workers will display.
+      windowsWarning: Workload pods, including some deployed by Rancher charts, will be scheduled on both Linux and Windows nodes by default. Edit NodeSelector in the chart to direct them to be placed onto a compatible node.
+      insecure: "Insecure: Select this to skip TLS verification if your server has a self-signed certificate."
+  credential:
+    banner:
+      createCredential: |-
+        {length, plural,
+          =0 {First you'll need to create a credential to talk to the cloud provider}
+          other {Ok, Let's create a new credential}
+        }
+    selectExisting:
+      label: Select Existing
+    select:
+      option:
+        new: Create new...
+        none: Select a credential...
+    aws:
+      accessKey:
+        label: Access Key
+        placeholder: Your AWS Access Key
+      defaultRegion:
+        help: The default region to use when creating clusters.  Also contacted to verify that this credential works.
+        label: Default Region
+      secretKey:
+        label: SecretKey
+        placeholder: Your AWS Secret Key
+    azure:
+      clientId:
+        label: Client ID
+      clientSecret:
+        label: Client Secret
+      environment:
+        label: Environment
+      subscriptionId:
+        label: Subscription ID
+      tenantId:
+        label: Tenant ID
+    digitalocean:
+      accessToken:
+        help: Paste in a Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="noopener noreferrer nofollow">Applications & API</a> screen.
+        label: Access Token
+        placeholder: Your DigitalOcean API Access Token
+    label: Cloud Credential
+    linode:
+      accessToken:
+        help: Paste in a Personal Access Token from the Linode <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="noopener noreferrer nofollow">API Tokens</a> screen.
+        label: Access Token
+        placeholder: Your Linode API Access Token
+    name:
+      label: Credential Name
+      placeholder: Name for this credential (optional)
+    s3:
+      accessKey:
+        label: Access Key
+        placeholder: Your API Access Key
+      defaultRegion:
+        label: Default Region
+        placeholder: "Optional: The default region to use"
+      defaultBucket:
+        label: Default Bucket
+        placeholder: "Optional: The default bucket to use"
+      defaultEndpoint:
+        label: Default Endpoint
+        placeholder: "Optional: The default endpoint to use"
+      defaultFolder:
+        label: Default Folder
+        placeholder: "Optional: The default folder to use"
+      defaultEndpointCA:
+        label: Default Endpoint CA Cert
+        placeholder: "Optional: The default CA certificate to use to verify the endpoint"
+      defaultSkipSSLVerify:
+        label: Accept any certificate (insecure)
+      secretKey:
+        label: SecretKey
+        placeholder: Your API Secret Key
+    vmwarevsphere:
+      server:
+        label: vCenter or ESXi Server
+        placeholder: vcenter.domain.com
+      port:
+        label: Port
+      username:
+        label: Username
+      password:
+        label: Password
+      note: 'Note: The free ESXi license does not support API access. Only servers with a valid or evaluation license are supported.'
+    gcp:
+      authEncodedJson:
+        label: Service Account
+        placeholder: Service Account private key JSON file
+        help: |-
+          <p>Create a <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="noopener noreferrer nofollow">Service Account</a> with a JSON private key and provide the JSON here.
+          These IAM roles are required:</p>
+          <ul>
+          <li><b>Compute Engine:</b> Compute Viewer (roles/compute.viewer)</li>
+          <li><b>Project:</b> Viewer (roles/viewer)</li>
+          <li><b>Kubernetes Engine:</b> Kubernetes Engine Admin (roles/container.admin)</li>
+          <li><b>Service Accounts:</b> Service Account User (roles/iam.serviceAccountUser)</li>
+          </ul>
+          More info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="noopener noreferrer nofollow">here</a>.
+    harvester:
+      import: Imported Harvester
+      external: External Harvester (Experimental)
+      namespace: Namespace
+      cpu: CPUs
+      memory: Memory
+      disk: Disk
+      image: Image
+      network: Network Name
+      sshUser: SSH User
+      userData:
+        label: User Data Template
+        title: "User Data:"
+      networkData:
+        label: Network Data Template
+        title: "Network Data:"
+      kubeconfigContent:
+        label: KubeconfigContent
+      placeholder: 'Namespace/Name'
+      cluster: Cluster
+  description:
+    label: Cluster Description
+    placeholder: Any text you want that better describes this cluster
+  harvester:
+    importNotice: Import Harvester Clusters via
+    warning:
+      label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
+      state: Warning
+    clusterWarning: |-
+      There {count, plural,
+      =1 {is 1 Harvester cluster that is not shown}
+      other {are # Harvester clusters that are not shown}
+      }
+    registration:
+      step1: "1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI."
+      step2: '2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.'
+      step3: "3. Input the following registration URL and click the <code>Save</code> button."
+      step4: "Registration URL"
+    machinePool:
+      cpu:
+        placeholder: e.g. 2
+      memory:
+        placeholder: e.g. 4
+      disk:
+        placeholder: e.g. 4
+      namespace:
+        placeholder: e.g. default
+      image:
+        placeholder: Please select a image
+      network:
+        placeholder: Please select a network
+      sshUser:
+        placeholder: e.g. ubuntu
+        toolTip: SSH user to login with the selected OS image.
+  haveOneOwner: There must be at least one member with the Owner role.
+  import:
+    commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
+    commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate.  Run the command below instead to bypass the certificate verification:'
+    clusterRoleBindingInstructions: 'If you get permission errors creating some of the resources, your user may not have the <code>cluster-admin</code> role.  Use this command to apply it:'
+    clusterRoleBindingCommand: 'kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>'
+    privateRegistry:
+      label: Private Registry
+      placeholder: e.g. index.docker.io
+      title: Private Registry
+      description: "Configure a default private registry for this cluster. When enabled, all images required for cluster provisioning and system add-ons startup will be pulled from this registry(Notice: This config will override system-default-registry in global config)."
+  importAction: Import Existing
+  kubernetesVersion:
+    label: Kubernetes Version
+    experimental: experimental
+  toolsTip: Use the new Cluster Tools to manage and install Monitoring, Logging and other tools
+  legacyWarning: The legacy feature flag is enabled and not all legacy features are supported in Kubernetes 1.21+.
+  log:
+    connecting: Connecting…
+    noData: There are no provisioning log entries.
+  name:
+    label: Cluster Name
+    placeholder: A unique name for the cluster
+  machineConfig:
+    banner:
+      updateInfo: Create a new pool to update machine configs
+    aws:
+      sizeLabel: |-
+        {apiName}: {cpu, plural,
+        =1 {1 vCPU}
+          other {# vCPUs}
+        } / {memory, number} GiB Memory / {storageSize, plural,
+          =0 {EBS-Only}
+          other {{storageSize, number} {storageUnit} {storageType}}
+        }
+    azure:
+      availabilitySet:
+        label: Availability Set (unmanaged)
+      dns:
+        help: A unique DNS label for the public IP address.
+        label: DNS Label
+      environment:
+        label: Environment
+      faultDomainCount:
+        help: If the availability set has already been created, the fault domain count will be ignored.
+        label: Fault Domain Count
+      image:
+        help: Providing an ARM resource identifier requires using managed disk.
+        label: Image
+      location:
+        label: Location
+      managedDisks:
+        label: Use Managed Disks
+      managedDisksSize:
+        label: Managed Disk Size
+      nsg:
+        help: When using a Rancher managed or providing an existing NSG, all nodes using this template will use the supplied NSG. If no NSG is provided, a new NSG will be created for each node.
+        label: Network Security Group
+      openPort:
+        add: Add Port
+        help: When using an existing NSG, Open Ports are ignored.
+        label: Open Port
+      plan:
+        label: Purchase Plan
+        placeholder: publisher:product:plan
+      privateIp:
+        label: Private IP Address
+      publicIpOptions:
+        header: Public IP Options
+        noPublic:
+          label: No Public IP
+        staticPublicIp:
+          label: Static Public IP
+      resourceGroup:
+        label: Resource Group
+      size:
+        label: VM Size
+      sshUser:
+        label: SSH Username
+      storageType:
+        label: Storage Type
+      subnet:
+        label: Subnet
+      subnetPrefix:
+        label: Subnet Prefix
+      updateDomainCount:
+        help: If the availability set has already been created, the update domain count will be ignored.
+        label: Update Domain Count
+      usePrivateIp:
+        label: Use Private IP
+      vnet:
+        label: Virtual Network
+        placeholder: '[resourcegroup:]name'
+    digitalocean:
+      sizeLabel: |-
+        {plan, select,
+          s {Basic: }
+          g {General: }
+          gd {General: }
+          c {CPU: }
+          m {Memory: }
+          so {Storage: }
+          standard {Standard: }
+          other {}
+        }{memoryGb} GB, {vcpus, plural,
+          =1 {# vCPU}
+          other {# vCPUs}
+        }, {disk} GB Disk ({value})
+      tags:
+        label: Droplet Tags
+        placeholder: e.g. my_server
+    linode:
+      typeLabel: |-
+        {label}, {vcpus, plural,
+          =1 {# vCPU}
+          other {# vCPUs}
+        }, {disk} GB Disk ({value})
+    vsphere:
+      hostOptions:
+        any: Any
+      vAppOptions:
+        label: vApp Options
+        description: Choose OVF environment properties
+        disable: Do not use vApp
+        auto: Use vApp to configure networks with network protocol profiles
+        manual: Provide a custom vApp config
+        restoreType: Restore Type
+        transport:
+          label: OVF environment transport
+          tooltip: com.vmware.guestInfo or iso
+          placeholder: e.g. com.vmware.guestInfo
+        protocol:
+          label: vApp IP protocol
+          tooltip: IPv4 or IPv6
+          placeholder: e.g. IPv4
+        allocation:
+          label: vApp IP allocation policy
+          tooltip: dhcp, fixed, transient or fixedAllocated
+          placeholder: e.g. fixedAllocated
+        properties:
+          label: vApp properties
+          add: Add Property
+          keyPlaceholder: e.g. guestinfo.interface.0.ip.0.address
+          valuePlaceholder: e.g. ip:VM Network, expression or string
+      networks:
+        label: Networks
+        add: Add Network
+      guestinfo:
+        label: Configuration Parameters used for guestinfo
+        add: Add Parameter
+        keyPlaceholder: e.g. guestinfo.hostname
+        valuePlaceholder: e.g. myrancherhost
+      creationMethods:
+        template: 'Deploy from template: Data Center'
+        library: 'Deploy from template: Content Library'
+        vm: 'Clone an existing virtual machine'
+        legacy: 'Install from boot2docker ISO (Legacy)'
+      scheduling:
+        label: Scheduling
+        description: Choose what hypervisor the virtual machine will be scheduled to
+        dataCenter: Data Center
+        resourcePool: Resource Pool
+        dataStore: Data Store
+        folder: Folder
+        host:
+          label: Host
+          note: Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)
+      instanceOptions:
+        label: Instance Options
+        description: Choose the size and OS of the virtual machine
+        cpus: CPUs
+        memory: Memory
+        disk: Disk
+        creationMethod: Creation method
+        template:
+          label: Template
+          none: No Templates Found
+        contentLibrary: Content library
+        libraryTemplate: Library template
+        virtualMachine: Virtual machine
+        osIsoUrl:
+          label: OS ISO URL
+          placeholder: 'Default: Latest rancheros-vmware image'
+        cloudInit:
+          label: Cloud Init
+          placeholder: e.g. http://my_host/cloud-config.yml
+          note: Cloud-init file or url to set in the guestinfo
+        cloudConfigYaml: Cloud Config YAML
+        os: Operating System
+      tags:
+        label: Tags
+        description: Tags allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
+        addTag: Add Tag
+      customAttributes:
+        label: Custom attributes (legacy)
+        description: Custom attributes allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
+        add: Add custom attribute
+    amazonEc2:
+      region: Region
+      zone: Zone
+      instanceType: Instance Type
+      rootSize:
+        placeholder: 'Default: 16'
+        label: Root Disk Size
+        suffix: GB
+      selectedNetwork:
+        label: 'VPC/Subnet'
+        placeholder: Select a VPC or Subnet
+      iamInstanceProfile:
+        label: IAM Instance Profile Name
+        tooltip: Kubernetes AWS Cloud Provider support requires an appropriate instance profile
+      ami:
+        label: AMI ID
+        placeholder: 'Default: A recent Ubuntu LTS'
+      sshUser:
+        label: SSH Username for AMI
+        placeholder: 'Default: ubuntu'
+        tooltip: 'The username that exists in the selected AMI; Provisioning will SSH to the node with this.'
+      securityGroup:
+        title: Security Group
+        vpcId: '(select a VPC/Subnet first)'
+        mode:
+          default: 'Standard: Automatically create and use a "{defaultGroup}"; security group'
+          custom: 'Choose one or more existing security groups:'
+      volumeType:
+        label: EBS Root Volume Type
+        placeholder: 'Default: gp2'
+      encryptEbsVolume: Encrypt EBS Volume
+      kmsKey:
+        label: KMS Key ARN
+        text: 'You do not have permission to list KMS keys, but may still be able to enter a Key ARN if you know one.'
+      requestSpotInstance: Request Spot Instance
+      spotPrice:
+        label: Spot Price
+        placeholder: 'Default: 0.50'
+        suffix: Dollars per hour
+      privateAddressOnly: Use only private address
+      useEbsOptimizedInstance: EBS-Optimized Instance
+      httpEndpoint: Allow access to EC2 metadata
+      httpTokens: Use tokens for metadata
+      tagTitle: EC2 Tags
+  addOns:
+    additionalManifest:
+      title: Additional Manifest
+      tooltip: 'Additional Kubernetes Manifest YAML to be applied to the cluster on startup.'
+  advanced:
+    argInfo:
+      title: Additional Kubelet Args
+      machineSelector:
+        label: Add Machine Selector
+        listLabel: Add Argument
+        bannerLabel: 'Note: The last selector that matches wins and only args from it will be used.  Args from other matches above will not combined together or merged.'
+        title: 'For machines with labels matching:'
+        subTitle: 'Use the Kubelet args:'
+        titleAlt: |-
+          {count, plural,
+            =1 { For all machines, use the Kubelet args: }
+            other { For any machines, use the Kubelet args: }
+          }
+        kubeControllerManagerTitle: Additional Controller Manager Args
+        kubeApiServerTitle: Additional API Server Args
+        kubeSchedulerTitle: Additional Scheduler Args
+    agentArgs:
+      label: Raise error if kernel parameters are different than the expected kubelet defaults
+  banner:
+    warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
+    os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
+    rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
+  machinePool:
+    name:
+      label: Pool Name
+      placeholder: A random one will be generated by default
+    nodeTotals:
+      label:
+        controlPlane: '{count} Control Plane'
+        etcd: '{count} etcd'
+        worker: '{count} Worker'
+      tooltip:
+        controlPlane: |-
+          {count, plural,
+            =0 { A cluster needs at least one control plane node to be usable. }
+            =1 { A cluster with only one control plane node is not fault-tolerant. }
+            other {}
+          }
+        etcd: |-
+          {count, plural,
+            =0 { A cluster needs at least one etcd node to be usable. }
+            =1 { A cluster with only one etcd node is not fault-tolerant. }
+            =2 { Clusters should have an odd number of nodes.  A cluster with 2 etcd nodes is not fault-tolerant. }
+            =3 {}
+            =4 { Clusters should have an odd number of nodes. }
+            =5 {}
+            =6 { Clusters should have an odd number of nodes. }
+            =7 {}
+            other { More than 7 etcd nods is not recommended. }
+          }
+        worker: |-
+          {count, plural,
+            =0 { A cluster needs at least one worker node to be usable. }
+            =1 { A cluster with only one worker node is not fault-tolerant. }
+            other {}
+          }
+    quantity:
+      label: Machine Count
+    drain:
+      header: Drain
+      label: Drain Before Delete
+    role:
+      label: Roles
+    labels:
+      label: Kubernetes Node Labels
+    autoReplace:
+      label: Auto Replace
+      toolTip: If greater than 0, nodes that are unreachable for this duration will be automatically deleted and replaced.
+      unit: "Minutes"
+  memberRoles:
+    removeMessage: 'Note: Removing a user will not remove their project permissions'
+    addClusterMember:
+      labelSelect: Select Member
+      labelAdd: Add Member
+      placeholder: Search for a member to provide cluster access
+      searchPlaceholder: Start typing to search
+      noResults: No results found
+  privateRegistry:
+    systemDefaultRegistry:
+      label: Registry hostname for {vendor} images
+    mode:
+      public: Pull images for {vendor} from public DockerHub
+      private: Pull images for {vendor} from a private registry
+      advanced: Configure advanced containerd mirroring and registry authentication options
+  provider:
+    aliyunecs: Aliyun ECS
+    aliyunkubernetescontainerservice: Alibaba ACK
+    aliyun: Alibaba ACK
+    amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
+    aws: Amazon
+    azure: Azure
+    azureaks: Azure AKS
+    aks: Azure AKS
+    azurekubernetesservice: Azure AKS
+    baiducloudcontainerengine: Baidu CCE
+    baidu: Baidu CCE
+    cloudca: Cloud.ca
+    cloudscale: Cloudscale
+    custom: Custom
+    digitalocean: DigitalOcean
+    docker: Docker
+    eks: Amazon EKS
+    exoscale: Exoscale
+    gcp: Google
+    google: Google GCE
+    googlegke: Google GKE
+    gke: Google GKE
+    harvester: Harvester
+    huaweicce: Huawei CCE
+    import: Generic
+    imported: Imported
+    k3s: K3s
+    kubeAdmin: KubeADM
+    linode: Linode
+    linodelke: Linode LKE
+    local: Local
+    minikube: Minikube
+    oci: Oracle OCI
+    openstack: OpenStack
+    opentelekomcloudcontainerengine: Open Telekom Cloud CCE
+    otccce: Open Telekom Cloud CCE
+    oracle: Oracle
+    oracleoke: Oracle OKE
+    otc: Open Telekom Cloud
+    other: Other
+    packet: Equinix Metal
+    pinganyunecs: Pinganyun ECS
+    pnap: phoenixNAP
+    rackspace: RackSpace
+    rancherkubernetesengine: RKE
+    rke2: RKE2
+    rke: RKE1
+    rkeWindows: Windows
+    s3: S3-Compatible
+    softlayer: IBM Cloud
+    tencenttke: Tencent TKE
+    upcloud: UpCloud
+    vmwarevsphere: VMware vSphere
+    zstack: ZStack
+  providerTag:
+    rke2:
+      harvester: '{tag}'
+  providerGroup:
+    create-custom1: Use existing nodes and create a cluster using RKE
+    create-custom2: Use existing nodes and create a cluster using RKE2/K3s
+    create-kontainer: Create a cluster in a hosted Kubernetes provider
+    register-kontainer: Register an existing cluster in a hosted Kubernetes provider
+    create-rke1: Provision new nodes and create a cluster using RKE
+    create-rke2: Provision new nodes and create a cluster using RKE2/K3s
+    create-template: Use a Catalog Template to create a cluster
+    register-custom: Import any Kubernetes cluster
+  rke2:
+    snapshots:
+      suffix: Snapshots per node
+    systemService:
+      rke2-coredns: 'CoreDNS'
+      rke2-ingress-nginx: 'NGINX Ingress'
+      rke2-kube-proxy: 'Kube Proxy'
+      rke2-metrics-server: 'Metrics Server'
+      header: System Services
+    cni:
+      label: Container Network
+    cloudProvider:
+      label: Cloud Provider
+      header: Cloud Provider Config
+    security:
+      header: Security
+    defaultPodSecurityPolicyTemplateName:
+      label: Default Pod Security Policy
+    enableNetworkPolicy:
+      label: Project Network Isolation
+    workNode:
+      label: Worker Nodes
+    controlPlaneConcurrency:
+      label: Control Plane Concurrency
+      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
+    workerConcurrency:
+      label: Worker Concurrency
+      toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time of a percentage (e.g. 10%)"
+    drain:
+      label: Drain Nodes
+      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded.  Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
+    address:
+      tooltip: Cluster networking values cannot be changed after the cluster is created.
+      header: Addressing
+      clusterCidr:
+        label: Cluster CIDR
+      serviceCidr:
+        label: Service CIDR
+      dns:
+        label: Cluster DNS
+      domain:
+        label: Cluster Domain
+      nodePortRange:
+        label: NodePort Service Port Range
+      tlsSan:
+        label: TLS Alternate Names
+      fqdn:
+        toolTip: A FQDN which will resolve to the healthy control plane nodes of the cluster.
+      caCerts:
+        label: CA Certificates
+        toolTip: Certificates required for the client to successfully verify the validity of the certificate returned by the endpoint.
+      ipv6:
+        warning: It looks like you are using an IPv6 CIDR. Your node driver may require additional configuration to support this.
+        enable: Enable IPv6 support
+    etcd:
+      disableSnapshots:
+        label: Automatic Snapshots
+      snapshotScheduleCron:
+        label: Cron Schedule
+      snapshotRetention:
+        label: Keep the last
+      exportMetric:
+        label: Metrics
+        false: Only available inside the cluster
+        true: Exposed to the public interface
+  k3s:
+    techPreview: K3s provisioning is in Tech Preview
+    systemService:
+      coredns: 'CoreDNS'
+      local-storage: 'Local Storage'
+      metrics-server: 'Metrics Server'
+      servicelb: 'Klipper Service LB'
+      traefik: 'Traefik Ingress'
+  selectCredential:
+    genericDescription: "{vendor} has no built-in support for this driver.  We've taken a guess, but consult the driver's documentation for the fields required for authentication."
+  snapshot:
+    successTitle: Snapshot Started
+    errorTitle: "Error Snapshotting {name}"
+    successMessage: "A snapshot has been requested for {name}"
+    bulkSuccessTitle: Snapshot Started
+    bulkSuccessMessage: |-
+      {count, plural,
+        =1 { A snapshot has been requested for 1 cluster }
+        other {A snapshot has been requested for {count} clusters}
+      }
+  tabs:
+    ace: Authorized Endpoint
+    addons: Add-On Config
+    advanced: Advanced
+    agentEnv: Agent Environment Vars
+    basic: Basics
+    cluster: Cluster Configuration
+    etcd: etcd
+    log: Provisioning Log
+    networking: Networking
+    machinePools: Machine Pools
+    machines: Machines
+    memberRoles: Member Roles
+    registry: Registries
+    upgrade: Upgrade Strategy
+    registration: Registration
+  rotateCertificates:
+    label: Rotate Certificates
+    modalTitle: Rotate Cluster Certificates
+    services: Services
+    allServices: Rotate all service certificates
+    selectService: Rotate an individual service
+  toggle:
+    v1: RKE1
+    v2: RKE2/K3s
