@@ -1797,7 +1797,7 @@ containerResourceLimit:
   gpuPlaceholder: e.g. 1
   limitsGpu: NVIDIA GPU Limit/Reservation
 gpuReservation:
-  label: NVIDIA GPU Reservation
+  label: NVIDIA GPU Limit/Reservation
   memUnit: GiB
   placeholder: e.g. 1
   set: Limit to

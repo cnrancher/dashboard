@@ -281,7 +281,7 @@ export default {
         />
       </span>
     </div>
-    <div class="row">
+    <div v-if="limitMinMaxValues" class="row">
       <span class="col span-6">
         <UnitInput
           v-model="limitsGpu"

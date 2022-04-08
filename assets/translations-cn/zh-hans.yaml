@@ -7579,3 +7579,16 @@ vncConsole:
 volumeClaimTemplate:
   add:
     label: 添加声明模板
+vGpuReservation:
+  label: Orion X GPU 预留
+  placeholder: 例如：1
+  unit: vGPUs
+  set: 限制
+gpuReservation:
+  label: NVIDIA GPU 限制/预留
+  memUnit: GiB
+  placeholder: 例如：1
+  set: 限制
+  shared: 共享 GPU 内存
+  sharedTips: 在设置共享 GPU 内存的同时，Rancher 将自动为工作负载设置 GPU 调度器名称
+  unit: GPUs
