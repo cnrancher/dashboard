@@ -154,6 +154,10 @@ export default {
      * @param {string} value
      */
     setTargetValue(value) {
+      if (this.value.metadata?.labels?.[NAVLINK_IFRAME]) {
+        delete this.value.metadata.labels[NAVLINK_IFRAME];
+      }
+
       switch (value) {
       case LINK_TARGET_SELF:
       case LINK_TARGET_BLANK:
