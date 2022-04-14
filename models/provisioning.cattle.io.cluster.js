@@ -61,6 +61,13 @@ export default class ProvCluster extends SteveModel {
     const canSnapshot = (this.isRke2 && this.mgmt?.isReady && this.canUpdate) || (this.isRke1 && this.mgmt?.hasAction('backupEtcd') && this.mgmt?.isReady);
 
     insertAt(out, idx++, {
+      action:     'editConnectMode',
+      label:      this.$rootGetters['i18n/t']('nav.editConnectMode'),
+      icon:       'icon icon-edit',
+      enabled:    !isLocal,
+    });
+
+    insertAt(out, idx++, {
       action:     'openShell',
       label:      this.$rootGetters['i18n/t']('nav.shell'),
       icon:       'icon icon-terminal',
@@ -612,5 +619,12 @@ export default class ProvCluster extends SteveModel {
     if ( res?._status === 204 ) {
       await this.$dispatch('ws.resource.remove', { data: this });
     }
+  }
+
+  editConnectMode() {
+    this.$dispatch('promptModal', {
+      resources:  [this.mgmt],
+      component: 'EditConnectModeDialog'
+    });
   }
 }

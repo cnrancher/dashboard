@@ -238,6 +238,7 @@ export default {
         <slot
           name="columns"
           :queueUpdate="queueUpdate"
+          :paste="onPaste"
           :i="idx"
           :rows="rows"
           :row="row"

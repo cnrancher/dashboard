@@ -3022,6 +3022,7 @@ nav:
   saveAsRKETemplate: 保存为 RKE 模板
   shellShortcut: Kubectl Shell {key}
   takeSnapshot: 拍摄快照
+  editConnectMode: 连接模式
 node:
   detail:
     detailTop:
@@ -7292,3 +7293,29 @@ cluster:
   toggle:
     v1: RKE1
     v2: RKE2/K3s
+clusterConnectMode:
+  actions:
+    restartConfirm: 您确定保存连接模式并重启 {name} 集群控制器吗？
+    saveAndRestart: 保存并重启
+    yes: 确定
+  apiEndpoint:
+    label: API Endpoint
+    overrideLabel: Override API Endpoints
+    placeholder: 例如：https://10.43.0.1:443
+    required: API Endpoint 不能为空
+  connectMode:
+    label: 连接模式
+  connectStatus:
+    address: Address
+    apiEndpoint: API Endpoint
+    driver: Driver
+    host: Host
+    label: 连接状态
+    provider: Provider
+    timeout: Timeout
+  detail: 查看集群连接模式和 API Endpoints
+  testConnect:
+    error: 测试失败
+    label: 测试
+    success: 测试成功
+  title: 集群连接模式
