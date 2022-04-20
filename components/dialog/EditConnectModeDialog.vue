@@ -13,6 +13,7 @@
               :label="t('clusterConnectMode.connectMode.label')"
               :localized-label="true"
               :options="connectModes"
+              :append-to-body="false"
             />
           </div>
         </div>
