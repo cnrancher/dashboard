@@ -169,14 +169,14 @@ export default {
   <div>
     <div class="row">
       <div v-if="showTip" class="col span-12">
-        <p class="helper-text mb-10">
+        <p class="mb-10 helper-text">
           <t v-if="mode === viewMode" k="containerResourceLimit.helpTextDetail" />
           <t v-else k="containerResourceLimit.helpText" />
         </p>
       </div>
     </div>
 
-    <div class="row mb-20">
+    <div class="mb-20 row">
       <span class="col span-6">
         <UnitInput
           v-model="requestsCpu"
@@ -203,7 +203,7 @@ export default {
       </span>
     </div>
 
-    <div class="row mb-20">
+    <div class="mb-20 row">
       <span class="col span-6">
         <UnitInput
           v-model="limitsCpu"
@@ -229,7 +229,7 @@ export default {
         />
       </span>
     </div>
-    <div v-if="limitMinMaxValues" class="row mb-20">
+    <div v-if="limitMinMaxValues" class="mb-20 row">
       <span class="col span-6">
         <UnitInput
           v-model="maxCpu"
@@ -255,7 +255,7 @@ export default {
         />
       </span>
     </div>
-    <div v-if="limitMinMaxValues" class="row mb-20">
+    <div v-if="limitMinMaxValues" class="row">
       <span class="col span-6">
         <UnitInput
           v-model="minCpu"
@@ -277,18 +277,6 @@ export default {
           :input-exponent="2"
           :increment="1024"
           :output-modifier="true"
-          @input="updateLimits"
-        />
-      </span>
-    </div>
-    <div v-if="limitMinMaxValues" class="row">
-      <span class="col span-6">
-        <UnitInput
-          v-model="limitsGpu"
-          :placeholder="t('containerResourceLimit.gpuPlaceholder')"
-          :label="t('containerResourceLimit.limitsGpu')"
-          :mode="mode"
-          :base-unit="t('suffix.gpus')"
           @input="updateLimits"
         />
       </span>
