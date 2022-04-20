@@ -165,7 +165,7 @@ export default {
 .connect-mode {
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: 20px;
+  column-gap: 60px;
   row-gap: 10px;
 }
 .column-span-2 {

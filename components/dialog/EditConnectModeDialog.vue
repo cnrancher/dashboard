@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Card class="prompt-cluster-connect-mode" :show-highlight-border="false">
+  <div ref="connectModeModal">
+    <Card v-show="!showConfirm" class="prompt-cluster-connect-mode" :show-highlight-border="false">
       <h4 slot="title" class="text-default-text">
         {{ t('clusterConnectMode.connectMode.label') }}
       </h4>
@@ -56,9 +56,10 @@
     >
       <Card class="prompt-cluster-connect-mode" :show-highlight-border="false">
         <h4 slot="title" class="text-default-text">
-          {{ t('clusterConnectMode.actions.restartConfirm', { name: cluster.metadata.name}) }}
+          {{ t('promptRemove.title') }}
         </h4>
         <div slot="body" class="pr-10 pl-10">
+          {{ t('clusterConnectMode.actions.restartConfirm', { name: cluster.metadata.name}) }}
         </div>
         <div slot="actions" class="bottom">
           <div class="buttons">
@@ -103,13 +104,13 @@ export default {
           value: 'true',
         }
       ],
-      endpointStatus: this.mode?.endpointStatus ?? [],
       loading:        false,
       testSuccess:    false,
       errors:         [],
 
       connectModeLoading: true,
-
+      showConfirm:        false,
+      statusMap:          {},
     };
   },
   async fetch() {
@@ -120,8 +121,11 @@ export default {
         method: 'post',
       });
 
+      if (!connectMode.apiEndpoints) {
+        connectMode.apiEndpoints = [];
+      }
       this.mode = connectMode;
-      this.endpointStatus = connectMode.endpointStatus ?? [];
+      this.updateStatusMap(connectMode.apiEndpoints || [], connectMode.endpointStatus || [] );
     } catch (err) {
       this.errors = [stringify(err)];
     }
@@ -131,15 +135,6 @@ export default {
     cluster() {
       return this.resources[0];
     },
-    statusMap() {
-      const apiEndpoints = this.mode?.apiEndpoints ?? [];
-
-      return this.endpointStatus.reduce((t, c, i) => {
-        t[apiEndpoints[i]] = c;
-
-        return t;
-      }, {});
-    }
   },
   methods: {
     confirm(result) {
@@ -158,6 +153,10 @@ export default {
     confirmSave(buttonDone) {
       this.$modal.show('confirm-save');
       this.buttonDone = buttonDone;
+      this.showConfirm = true;
+      this.$nextTick(() => {
+        this.$refs.connectModeModal?.parentElement?.style?.setProperty('--prompt-modal-width', '350px');
+      });
     },
     async save(buttonDone) {
       this.loading = true;
@@ -190,14 +189,14 @@ export default {
       }
 
       this.loading = true;
+      const apiEndpoints = [...(this.mode.apiEndpoints || [])];
+
       try {
         const { endpointStatus = [] } = await this.$store.dispatch('rancher/request', {
           url:    `/v3/clusters/${ this.cluster?.id }?action=validateConnectionConfig`,
           method: 'post',
           data:   this.mode,
         });
-
-        this.endpointStatus = endpointStatus;
 
         if (endpointStatus.some(s => !s.status)) {
           this.errors = [...new Set(endpointStatus.filter(s => !s.status).map(s => s.error))];
@@ -207,12 +206,20 @@ export default {
           this.testSuccess = true;
           buttonDone(true);
         }
+        this.updateStatusMap(apiEndpoints || [], endpointStatus || []);
       } catch (err) {
         this.errors = [stringify(err)];
         this.testSuccess = false;
         buttonDone(false);
       }
       this.loading = false;
+    },
+    updateStatusMap(apiEndpoints = [], endpointStatus = []) {
+      this.statusMap = endpointStatus.reduce((t, c, i) => {
+        t[apiEndpoints[i]] = c;
+
+        return t;
+      }, {});
     }
   },
   components: {

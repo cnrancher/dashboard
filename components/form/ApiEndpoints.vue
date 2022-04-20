@@ -60,7 +60,7 @@ export default {
     },
   },
   data() {
-    return { data: [...this.value] };
+    return { data: [...(this.value || [])] };
   },
   methods: {
     update() {

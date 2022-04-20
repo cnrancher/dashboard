@@ -64,7 +64,7 @@ export default {
   <modal
     class="promptModal-modal"
     name="promptModal"
-    :styles="`background-color: var(--nav-bg); border-radius: var(--border-radius); max-height: 95vh; ${cssProps}`"
+    :styles="`background-color: var(--nav-bg); border-radius: var(--border-radius); max-height: 95vh; overflow: auto; ${cssProps}`"
     height="auto"
     :scrollable="true"
     @closed="close()"
