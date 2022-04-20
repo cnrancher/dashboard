@@ -83,7 +83,7 @@ export default {
       return {
         on:  {
           'prometheus.prometheusSpec.thanos.grpcServerTlsConfig': this.thanos.grpcServerTlsConfig,
-          'prometheus.prometheusSpec.containers':                 `${ this.containers }${ this.value.prometheus.prometheusSpec.containers }`,
+          'prometheus.prometheusSpec.containers':                 `${ !this.value.prometheus.prometheusSpec.containers.includes(this.containers) ? this.containers : '' }${ this.value.prometheus.prometheusSpec.containers }`,
           'prometheus.prometheusSpec.volumes':                    [
             ...(this.value.prometheus.prometheusSpec.volumes || []),
             ...this.volumes,
@@ -154,7 +154,6 @@ export default {
     changeSidecar() {
       this.updateThanos('sidecar');
       this.$set(this, 'tls', this.sidecar);
-      this.updateThanos('tls');
     },
     changeTls() {
       this.updateThanos('tls');
