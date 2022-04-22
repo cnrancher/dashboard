@@ -225,7 +225,7 @@ export default {
     <template v-if="rows.length">
       <div v-if="showHeader">
         <slot name="column-headers">
-          <label class="value text-label mb-10">
+          <label class="text-label mb-10 value">
             {{ valueLabel }}
           </label>
         </slot>
@@ -238,7 +238,7 @@ export default {
         <slot
           name="columns"
           :queueUpdate="queueUpdate"
-          :paste="onPaste"
+          :update="update"
           :i="idx"
           :rows="rows"
           :row="row"

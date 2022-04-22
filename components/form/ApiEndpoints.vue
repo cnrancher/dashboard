@@ -26,7 +26,7 @@
           v-model="scope.row.value"
           :placeholder="t('clusterConnectMode.apiEndpoint.placeholder')"
           :disabled="scope.isView"
-          @paste="scope.paste(scope.i, $event)"
+          @paste="onPaste(scope.rows, scope.i, $event, scope.update)"
           @input="scope.queueUpdate"
         />
       </div>
@@ -66,6 +66,16 @@ export default {
     update() {
       this.$emit('input', this.data);
     },
+    onPaste(rows, index, event, update) {
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+      const split = text.split('\n').map(value => ({ value }));
+
+      split[0].value = `${ rows[index].value }${ split[0].value }`;
+
+      rows.splice(index, 1, ...split);
+      update();
+    }
   },
   watch: {
     value(v) {
