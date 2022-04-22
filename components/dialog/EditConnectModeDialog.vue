@@ -38,6 +38,7 @@
             class="mr-10"
             :action-label="t('clusterConnectMode.testConnect.label')"
             :waiting-label="t('clusterConnectMode.testConnect.label')"
+            :success-label="t('clusterConnectMode.testConnect.label')"
             :disabled="loading || connectModeLoading"
             @click="validate"
           />
