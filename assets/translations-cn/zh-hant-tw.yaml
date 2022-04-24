@@ -1047,6 +1047,16 @@ cluster:
       note: <b>重要</b>：在附加配置標籤中配置 vSphere 雲提供商和存儲提供商選項。
   copyConfig: 將配置複製到剪貼板
   credential:
+    ack:
+      accessKey:
+        label: 訪問密鑰
+        placeholder: 你的 ACK 訪問密鑰
+      defaultRegion:
+        help: 創建集群時使用的默認區域。需要驗證此憑證是否有效。
+        label: 默認區域
+      secretKey:
+        label: SecretKey
+        placeholder: 你的 ACK 密文密鑰
     aws:
       accessKey:
         label: 訪問密鑰
@@ -1523,6 +1533,7 @@ cluster:
     systemDefaultRegistry:
       label: 用於 {vendor} 鏡像的倉庫主機名
   provider:
+    ackoperatorsetting: Alibaba ACK
     aks: Azure AKS
     aliyun: Alibaba ACK
     aliyunecs: Aliyun ECS

@@ -15,7 +15,7 @@ import { set } from '@/utils/object';
 import { mapPref, PROVISIONER, _RKE1, _RKE2 } from '@/store/prefs';
 import { filterAndArrangeCharts } from '@/store/catalog';
 import { CATALOG } from '@/config/labels-annotations';
-import { CAPI, MANAGEMENT } from '@/config/types';
+import { CAPI, MANAGEMENT, NORMAN } from '@/config/types';
 import { mapFeature, RKE2 as RKE2_FEATURE } from '@/store/features';
 import { allHash } from '@/utils/promise';
 import { BLANK_CLUSTER } from '@/store';
@@ -81,6 +81,8 @@ export default {
       hash.nodeDrivers = this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_DRIVER });
     }
 
+    hash.operatorDrivers = this.$store.dispatch('rancher/request', { url: `v3/${ NORMAN.OPERATOR_SETTINGS }` }).catch(() => ([]));
+
     if (this.$store.getters[`management/canList`](MANAGEMENT.KONTAINER_DRIVER)) {
       hash.kontainerDrivers = this.$store.dispatch('management/findAll', { type: MANAGEMENT.KONTAINER_DRIVER });
     }
@@ -100,6 +102,7 @@ export default {
     const res = await allHash(hash);
 
     this.nodeDrivers = res.nodeDrivers || [];
+    this.operatorDrivers = res.operatorDrivers?.data || [];
     this.kontainerDrivers = res.kontainerDrivers || [];
 
     if ( !this.value.spec ) {
@@ -129,6 +132,21 @@ export default {
         this.iconClasses[name] = `machine-driver ${ name }`;
       }
     });
+
+    this.operatorDrivers.forEach((driver) => {
+      if (!driver.spec?.builtin && driver.spec?.uiUrl && driver.spec?.active) {
+        const name = driver.spec?.displayName || driver.id;
+        let cssUrl = driver.spec.uiUrl.replace(/\.js$/, '.css');
+
+        if (cssUrl.startsWith('http://') || cssUrl.startsWith('https://')) {
+          cssUrl = `${ PROXY_ENDPOINT }/${ cssUrl }`;
+        }
+
+        this.loadStylesheet(cssUrl, `driver-ui-css-${ driver.id }`);
+
+        this.iconClasses[name] = `machine-driver ${ name }`;
+      }
+    });
   },
 
   data() {
@@ -138,6 +156,7 @@ export default {
 
     return {
       nodeDrivers:      [],
+      operatorDrivers:  [],
       kontainerDrivers: [],
       subType,
       chart,
@@ -253,6 +272,10 @@ export default {
         }
       });
 
+      this.operatorDrivers.forEach((obj) => {
+        addType(obj.id, 'kontainer', false, (isImport ? `/g/clusters/add/launch/import?importProvider=${ obj.id === 'ackoperatorsetting' ? 'ack' : obj.id }` : `/g/clusters/add/launch/${ obj.id }`));
+      });
+
       if ( isImport ) {
         addType('import', 'custom', false);
       } else {
@@ -323,6 +346,10 @@ export default {
       for ( const row of this.subTypes ) {
         const name = row.group;
         let entry = out[name];
+
+        if (row.id === 'aliyun') {
+          continue;
+        }
 
         if ( !entry ) {
           entry = {
