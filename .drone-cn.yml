@@ -8,91 +8,91 @@ platform:
   arch: amd64
 
 steps:
-- name: test
-  image: node:12
-  commands:
-  - scripts/ci
+  - name: test
+    image: node:12
+    commands:
+      - scripts/ci
 
-  when:
-    event:
-    - pull_request
+    when:
+      event:
+        - pull_request
 
-- name: build-embedded
-  pull: default
-  image: node:12
-  commands:
-  - scripts/ci-test
-  - scripts/build-embedded
-  when:
-    event:
-    - tag
+  - name: build-embedded
+    pull: default
+    image: node:12
+    commands:
+      - scripts/ci-test
+      - scripts/build-embedded
+    when:
+      event:
+        - tag
 
-- name: upload-embedded
-  pull: default
-  image: plugins/s3
-  settings:
-    bucket: pandaria-dashboard-ui
-    region: ap-southeast-2
-    acl: public-read
-    access_key:
-      from_secret: aws_access_id
-    secret_key:
-      from_secret: aws_access_secret
-    source: dist/${DRONE_TAG}.tar.gz
-    strip_prefix: dist/
-    target: ${DRONE_BRANCH}/
-  when:
-    event:
-    - tag
+  - name: upload-embedded
+    pull: default
+    image: plugins/s3
+    settings:
+      bucket: pandaria-dashboard-ui
+      region: ap-southeast-2
+      acl: public-read
+      access_key:
+        from_secret: aws_access_id
+      secret_key:
+        from_secret: aws_access_secret
+      source: dist/${DRONE_TAG}.tar.gz
+      strip_prefix: dist/
+      target: ${DRONE_BRANCH}/
+    when:
+      event:
+        - tag
 
-- name: build-hosted
-  pull: default
-  image: node:12
-  commands:
-  - ./scripts/build-hosted
-  when:
-    ref:
-    - "refs/heads/release-*"
-    event:
-    - push
+  - name: build-hosted
+    pull: default
+    image: node:12
+    commands:
+      - ./scripts/build-hosted
+    when:
+      ref:
+        - "refs/heads/release-*"
+      event:
+        - push
 
-- name: upload-hosted
-  pull: default
-  image: plugins/s3
-  settings:
-    bucket: pandaria-dashboard-ui
-    region: ap-southeast-2
-    acl: public-read
-    access_key:
-      from_secret: aws_access_id
-    secret_key:
-      from_secret: aws_access_secret
-    source: dist/${DRONE_BRANCH}/**/*
-    strip_prefix: dist/${DRONE_BRANCH}
-    target: /dashboard/${DRONE_BRANCH}
-  when:
-    ref:
-    - "refs/heads/release-*"
-    event:
-    - push
+  - name: upload-hosted
+    pull: default
+    image: plugins/s3-sync:1
+    settings:
+      bucket: pandaria-dashboard-ui
+      region: ap-southeast-2
+      acl: public-read
+      access_key:
+        from_secret: aws_access_id
+      secret_key:
+        from_secret: aws_access_secret
+      source: dist/${DRONE_BRANCH}/
+      target: /dashboard/${DRONE_BRANCH}
+      delete: true
+    when:
+      ref:
+        - "refs/heads/release-*"
+      event:
+        - push
 
-- name: build-docker-image
-  image: plugins/docker
-  settings:
-    build_args:
-    - BRANCH=${DRONE_BRANCH}
-    - TAG=${DRONE_TAG}
-    dockerfile: image-scripts/Dockerfile
-    tag: ${DRONE_TAG}
-    repo: cnrancher/dashboard
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
+  - name: build-docker-image
+    image: plugins/docker
+    settings:
+      build_args:
+        - BRANCH=${DRONE_BRANCH}
+        - TAG=${DRONE_TAG}
+      dockerfile: image-scripts/Dockerfile
+      tag: ${DRONE_TAG}
+      repo: cnrancher/dashboard
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
 
-  when:
-    event:
-    - tag
+    when:
+      event:
+        - tag
 
 node:
   instance: agent-amd64
