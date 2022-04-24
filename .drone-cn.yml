@@ -59,6 +59,8 @@ steps:
   - name: upload-hosted
     pull: default
     image: plugins/s3-sync:1
+    environment:
+      DEBUG: "true"
     settings:
       bucket: pandaria-dashboard-ui
       region: ap-southeast-2
