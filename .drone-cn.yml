@@ -21,7 +21,7 @@ steps:
     pull: default
     image: node:12
     commands:
-      - scripts/ci-test
+      # - scripts/ci-test
       - scripts/build-embedded
     when:
       event:
