@@ -158,6 +158,12 @@ advancedSettings:
     ui-offline-preferred: Controls whether UI assets are served locally by the server container or from the remote URL defined in the ui-index and ui-dashboard-index settings. The `Dynamic` option will use local assets in production builds of {appName}.
     ui-pl: Private-Label company name.
     ui-session-logout-minutes: User will automatically logout without any operation after the configured time (in minutes)
+    disable-password-encrypt: Disabling Password Encryption.
+    download-file-size-limit: Container file download size limit（in Mi）.
+    pandaria-enable-healthcheck-api: Enable rancher local API server health check.
+    restricted-default-admin: "Whether the initialization administrator role uses restricted administrator permissions. Please see the permission description <a href=\"http://docs.rancher.cn/docs/rancher2.5/admin-settings/rbac/global-permissions/_index/#%E5%8F%97%E9%99%90%E7%AE%A1%E7%90%86%E5%91%98\" target=\"_blank\">here</a>."
+    rotate-certs-if-expiring-in-days: Set the time for the rancher server to rotate certificates in advance（in days）.
+    system-catalog: Configure Rancher to use System Chart Repo.
   edit:
     changeSetting: 'Change Setting:'
     falseOption: "False"
@@ -188,11 +194,14 @@ advancedSettings:
       dynamic: Dynamic
       false: Remote
       true: Local
+    system-catalog:
+      bundled: 'Bundled'
+      external: 'External'
   hide: Hide
   label: Settings
   none: None
   show: Show
-  subtext: Typical users will not need to change these. Proceed with caution, incorrect values can break your {appName} installation. Settings which have been customized from default settings are tagged 'Modified'.
+  subtext: Typical users will not need to change these. Proceed with caution, incorrect values can break your {appName} installation. Settings which have been customized from default settings are tagged 'Modified'. If there are no configuration items you need here, please view <a href="/v3/setting" target="_blank">More Settings</a>.
 alertmanagerConfigReceiver:
   addButton: Add Receiver
   name: Receiver Name

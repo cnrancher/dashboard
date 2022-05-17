@@ -155,6 +155,12 @@ advancedSettings:
     ui-offline-preferred: 控制 UI 资产是由服务器容器在本地提供，还是从 ui-index 和 ui-dashboard-index 设置中定义的远程 URL 提供。`动态` 选项将在 {appName} 的生产版本中使用本地资产。
     ui-pl: 自有品牌公司名称。
     ui-session-logout-minutes: 用户超过配置时间没有任何操作将自动注销(以分钟为单位)。
+    disable-password-encrypt: 禁用密码加密。
+    download-file-size-limit: 容器文件下载大小限制（以Mi为单位）。
+    pandaria-enable-healthcheck-api: 启用Rancher local api-server健康检查。
+    restricted-default-admin: "初始化管理员角色是否使用受限管理员权限，权限说明请查看<a href=\"http://docs.rancher.cn/docs/rancher2.5/admin-settings/rbac/global-permissions/_index/#%E5%8F%97%E9%99%90%E7%AE%A1%E7%90%86%E5%91%98\" target=\"_blank\">这里</a>。"
+    rotate-certs-if-expiring-in-days: 设置Rancher Server提前轮换证书的时间（以天为单位）。
+    system-catalog: 配置 Rancher 使用 System Chart Repo。
   edit:
     changeSetting: 修改设置：
     falseOption: "False"
@@ -185,11 +191,14 @@ advancedSettings:
       dynamic: 动态
       false: 远端
       true: 本地
+    system-catalog:
+      bundled: 'Bundled'
+      external: 'External'
   hide: 隐藏
   label: 高级选项
   none: 无
   show: 显示
-  subtext: 一般用户不需要修改高级选项设置。请谨慎操作，不正确的值会破坏 {appName} 的安装。从默认设置中定制的设置会被标记为"已修改"。
+  subtext: 一般用户不需要改变这些。请谨慎操作，一旦输入了不正确的值，会破坏你的{appName}安装。从默认设置中定制的设置被标记为 "已修改"。如果这里没有您需要的配置项，请查看<a href="/v3/setting" target="_blank">更多设置</a>。
 alertmanagerConfigReceiver:
   addButton: 添加接收器
   name: 接收器名称
