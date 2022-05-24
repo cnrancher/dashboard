@@ -1264,6 +1264,80 @@ cluster:
     connecting: Connecting…
     noData: There are no provisioning log entries.
   machineConfig:
+    aliyunecs:
+      resourceGroup:
+        label: Resource Group
+        all: "Accounts all Resources"
+      region:
+        label: Region
+        placeholder: Region
+      zone:
+        label: Available Zone
+        prompt: Choose a Available Zone...
+      vpcId:
+        label: VPC
+        prompt: Choose a VPC...
+        default: Default VPC
+      vswitchId:
+        label: VSwitch
+        prompt: Choose a VSwitch...
+        default: Default VSwitch
+      privateIp:
+        label: Private IP
+        placeholder: Private IP in Private Network
+      privateAddressOnly:
+        label: Private Address Only
+      internetChargeType:
+        label: Bandwidth Billing
+        prompt: Choose Bandwidth Billing...
+      internetChargeTypes:
+        payByTraffic: "Pay-By-Traffic"
+        payByBandwidth: "Pay-By-Bandwidth"
+      instanceDescription:
+        label: Instance Description
+        placeholder: Instance Description
+      instanceType: Instance Type
+      systemImage:
+        label: System image
+        placeholder: System image
+      internetMaxBandwidth:
+        label: Internet Max Bandwidth
+        placeholder: 1 to 200
+        suffix: Mbps
+      aliyunSLB:
+        label: Aliyun SLB ID
+        placeholder: Aliyun SLB ID
+      systemDiskCategory:
+        label: System Disk Category
+      systemDiskSize:
+        label: System Disk Size
+        placeholder: "Disk Capacity: 20 ~ 500"
+        suffix: GB
+      dataDiskCategory:
+        label: Data Disk Category
+      diskSize:
+        label: Data Disk Size
+        placeholder: "Disk Capacity: 20 ~ 32768"
+        suffix: GB
+      ioOptimized:
+        label: I/O Optimize Instance
+      upgradeKernel:
+        label: Upgrade Kernel
+      disk:
+        cloud: Ordinary Disk
+        ephemeralSsd: Local SSD Disk
+        efficiency: Ultra Disk
+        ssd: SSD Disk
+        essd: ESSD Disk
+      diskFs:
+        label: diskFs
+      securityGroup:
+        mode:
+          custom: 'Choose one existing security groups:'
+          default: 'Standard: Automatically create and use a "{defaultGroup}"; security group'
+        title: Security Group
+        vpcId: (select a VPC first)
+      tagTitle: ECS Tag
     amazonEc2:
       ami:
         label: AMI ID
