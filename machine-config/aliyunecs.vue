@@ -387,6 +387,16 @@ export default {
 
       return { errors };
     },
+
+    unitInputRangeLimit(value, min, max, key) {
+      if (value < min) {
+        this.value[key] = min;
+      }
+
+      if (value > max) {
+        this.value[key] = max;
+      }
+    }
   },
 
   computed: {
@@ -697,9 +707,12 @@ export default {
             output-as="string"
             :mode="mode"
             :disabled="disabled"
+            :min="1"
+            :max="200"
             :label="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.placeholder')"
             :suffix="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.suffix')"
+            @input="unitInputRangeLimit($event, 1, 200, 'internetMaxBandwidth')"
           />
         </div>
       </div>
@@ -721,10 +734,13 @@ export default {
             v-model="value.systemDiskSize"
             output-as="string"
             :mode="mode"
+            :min="20"
+            :max="500"
             :disabled="disabled"
             :label="t('cluster.machineConfig.aliyunecs.systemDiskSize.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.systemDiskSize.placeholder')"
             :suffix="t('cluster.machineConfig.aliyunecs.systemDiskSize.suffix')"
+            @input="unitInputRangeLimit($event, 20, 500, 'systemDiskSize')"
           />
         </div>
       </div>
@@ -758,10 +774,13 @@ export default {
               v-model="value.diskSize"
               output-as="string"
               :mode="mode"
+              :min="20"
+              :max="32768"
               :disabled="disabled"
               :label="t('cluster.machineConfig.aliyunecs.diskSize.label')"
               :placeholder="t('cluster.machineConfig.aliyunecs.diskSize.placeholder')"
               :suffix="t('cluster.machineConfig.aliyunecs.diskSize.suffix')"
+              @input="unitInputRangeLimit($event, 20, 32768, 'diskSize')"
             />
           </div>
         </div>
