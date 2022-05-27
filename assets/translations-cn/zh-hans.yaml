@@ -1624,6 +1624,7 @@ cluster:
     aliyunkubernetescontainerservice: Alibaba ACK
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
+    alibaba: Alibaba
     aws: Amazon
     azure: Azure
     azureaks: Azure AKS

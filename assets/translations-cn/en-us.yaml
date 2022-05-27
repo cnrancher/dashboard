@@ -1626,6 +1626,7 @@ cluster:
     aliyun: Alibaba ACK
     aliyunecs: Aliyun ECS
     aliyunkubernetescontainerservice: Alibaba ACK
+    alibaba: Alibaba
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
     aws: Amazon

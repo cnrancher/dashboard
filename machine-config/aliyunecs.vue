@@ -728,30 +728,6 @@ export default {
           />
         </div>
       </div>
-      <div class="row mb-20">
-        <div class="col span-6">
-          <LabeledSelect
-            v-model="value.diskCategory"
-            :mode="mode"
-            :options="diskCategoryOptions"
-            :required="true"
-            :searchable="true"
-            :disabled="disabled"
-            :label="t('cluster.machineConfig.aliyunecs.dataDiskCategory.label')"
-          />
-        </div>
-        <div class="col span-6">
-          <UnitInput
-            v-model="value.diskSize"
-            output-as="string"
-            :mode="mode"
-            :disabled="disabled"
-            :label="t('cluster.machineConfig.aliyunecs.diskSize.label')"
-            :placeholder="t('cluster.machineConfig.aliyunecs.diskSize.placeholder')"
-            :suffix="t('cluster.machineConfig.aliyunecs.diskSize.suffix')"
-          />
-        </div>
-      </div>
 
       <portal :to="'advanced-'+uuid">
         <div class="row mb-20">
@@ -762,6 +738,30 @@ export default {
               :disabled="disabled"
               :placeholder="t('cluster.machineConfig.aliyunecs.aliyunSLB.placeholder')"
               :label="t('cluster.machineConfig.aliyunecs.aliyunSLB.label')"
+            />
+          </div>
+        </div>
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="value.diskCategory"
+              :mode="mode"
+              :options="diskCategoryOptions"
+              :required="true"
+              :searchable="true"
+              :disabled="disabled"
+              :label="t('cluster.machineConfig.aliyunecs.dataDiskCategory.label')"
+            />
+          </div>
+          <div class="col span-6">
+            <UnitInput
+              v-model="value.diskSize"
+              output-as="string"
+              :mode="mode"
+              :disabled="disabled"
+              :label="t('cluster.machineConfig.aliyunecs.diskSize.label')"
+              :placeholder="t('cluster.machineConfig.aliyunecs.diskSize.placeholder')"
+              :suffix="t('cluster.machineConfig.aliyunecs.diskSize.suffix')"
             />
           </div>
         </div>
