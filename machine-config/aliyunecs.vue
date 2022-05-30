@@ -13,6 +13,7 @@ import { allHash } from '@/utils/promise';
 import { sortBy } from '@/utils/sort';
 import { stringify, exceptionToErrorsArray } from '@/utils/error';
 import { findBy } from '@/utils/array';
+import { delay } from 'lodash';
 
 const DEFAULT_GROUP = 'docker-machine';
 const OPTION_CHARGETYPES = [
@@ -388,14 +389,22 @@ export default {
       return { errors };
     },
 
-    unitInputRangeLimit(value, min, max, key) {
-      if (value < min) {
-        this.value[key] = min;
-      }
+    unitInputRangeLimit(min, max, key) {
+      delay(() => {
+        const value = this.value?.[key];
 
-      if (value > max) {
-        this.value[key] = max;
-      }
+        if (!value) {
+          return;
+        }
+
+        if (value < min) {
+          this.value[key] = min;
+        }
+
+        if (value > max) {
+          this.value[key] = max;
+        }
+      }, 500);
     }
   },
 
@@ -472,7 +481,7 @@ export default {
       return this.securityGroups.map((obj) => {
         return {
           label: `${ obj.SecurityGroupName } (${ obj.SecurityGroupId })`,
-          value: obj.SecurityGroupId,
+          value: obj.SecurityGroupName,
         };
       }).sort();
     },
@@ -712,7 +721,7 @@ export default {
             :label="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.placeholder')"
             :suffix="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.suffix')"
-            @input="unitInputRangeLimit($event, 1, 200, 'internetMaxBandwidth')"
+            @blur="unitInputRangeLimit(1, 200, 'internetMaxBandwidth')"
           />
         </div>
       </div>
@@ -740,7 +749,7 @@ export default {
             :label="t('cluster.machineConfig.aliyunecs.systemDiskSize.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.systemDiskSize.placeholder')"
             :suffix="t('cluster.machineConfig.aliyunecs.systemDiskSize.suffix')"
-            @input="unitInputRangeLimit($event, 20, 500, 'systemDiskSize')"
+            @blur="unitInputRangeLimit(20, 500, 'systemDiskSize')"
           />
         </div>
       </div>
@@ -780,7 +789,7 @@ export default {
               :label="t('cluster.machineConfig.aliyunecs.diskSize.label')"
               :placeholder="t('cluster.machineConfig.aliyunecs.diskSize.placeholder')"
               :suffix="t('cluster.machineConfig.aliyunecs.diskSize.suffix')"
-              @input="unitInputRangeLimit($event, 20, 32768, 'diskSize')"
+              @blur="unitInputRangeLimit(20, 32768, 'diskSize')"
             />
           </div>
         </div>

@@ -216,6 +216,7 @@ export default {
     :placeholder="placeholder"
     :hide-arrows="hideArrows"
     @input="update($event)"
+    @blur="$emit('blur')"
   >
     <template #suffix>
       <div
