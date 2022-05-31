@@ -272,7 +272,7 @@ export default {
         }
       });
 
-      this.operatorDrivers.forEach((obj) => {
+      this.operatorDrivers.filter(x => x.state === 'active').forEach((obj) => {
         addType(obj.id, 'kontainer', false, (isImport ? `/g/clusters/add/launch/import?importProvider=${ obj.id === 'ackoperatorsetting' ? 'ack' : obj.id }` : `/g/clusters/add/launch/${ obj.id }`));
       });
 
