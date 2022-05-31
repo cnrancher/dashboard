@@ -109,7 +109,7 @@ export default {
        */
       const textWidth = $(textEl).width();
 
-      dropdownList.style.width = `${ textWidth + 40 }px`;
+      dropdownList.style.width = `${ textWidth + 35 }px`;
       /**
        * Here we position the dropdownList relative to the $refs.toggle Element.
        *
@@ -125,7 +125,7 @@ export default {
         modifiers: [
           {
             name:    'offset',
-            options: { offset: [-textWidth - 10, 2] },
+            options: { offset: [-textWidth - 10, 1] },
           },
           {
             name:    'toggleClass',
@@ -287,7 +287,8 @@ export default {
   }
 
   ::v-deep .vs__actions {
-    line-height: 59px;
+    height: 59px;
+    line-height: 31px;
   }
 
   ::v-deep .vs__selected-options {

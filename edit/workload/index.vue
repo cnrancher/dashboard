@@ -1290,7 +1290,7 @@ export default {
           </div>
         </Tab>
         <Tab :label="t('workload.container.titles.networking')" name="networking" :weight="tabWeightMap['networking']">
-          <Networking v-model="podTemplateSpec" :mode="mode" />
+          <Networking v-model="podTemplateSpec" :namespace="value.metadata.namespace" :mode="mode" />
         </Tab>
         <Tab v-if="isStatefulSet" :label="t('workload.container.titles.volumeClaimTemplates')" name="volumeClaimTemplates" :weight="tabWeightMap['volumeClaimTemplates']">
           <VolumeClaimTemplate v-model="spec" :mode="mode" />

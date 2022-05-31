@@ -6,6 +6,8 @@ import KeyValue from '@/components/form/KeyValue';
 import LabeledInput from '@/components/form/LabeledInput';
 import LabeledSelect from '@/components/form/LabeledSelect';
 import { mapGetters } from 'vuex';
+import { NAMESPACE } from '@/config/types';
+import { PROJECT } from '@/config/labels-annotations';
 
 const CLUSTER_FIRST = 'ClusterFirst';
 const CLUSTER_FIRST_HOST = 'ClusterFirstWithHostNet';
@@ -18,6 +20,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type:     String,
+      required: true,
+    },
+
     value: {
       type:     Object,
       required: true,
@@ -30,19 +37,7 @@ export default {
   },
 
   async fetch() {
-    const clusterId = this.currentCluster.id;
-
-    if (clusterId) {
-      await this.$store.dispatch('management/request', { url: `/k8s/clusters/${ clusterId }/apis/macvlan.cluster.cattle.io/v1/namespaces/kube-system/macvlansubnets?limit=50` }).then((resp) => {
-        const items = resp.items.map(item => ({
-          label: `${ item.metadata.name }(${ item.spec.cidr })`,
-          value: item.metadata.name
-        }));
-
-        this.vlansubnetChoices = items;
-        this.unsupportVlansubnet = false;
-      });
-    }
+    await this.fetchVlansubnets();
   },
 
   data() {
@@ -148,6 +143,11 @@ export default {
       } else {
         this.value.dnsPolicy = neu;
       }
+    },
+
+    namespace() {
+      this.vlansubnetName = null;
+      this.fetchVlansubnets();
     }
   },
 
@@ -162,17 +162,26 @@ export default {
       this.update();
     },
 
-    async loadVlansubnets() {
+    async fetchVlansubnets() {
       const clusterId = this.currentCluster.id;
 
       if (clusterId) {
-        await this.$store.dispatch('management/request', { url: `/k8s/clusters/${ clusterId }/apis/macvlan.cluster.cattle.io/v1/namespaces/kube-system/macvlansubnets?limit=50` }).then((resp) => {
+        const inStore = this.$store.getters['currentStore'](NAMESPACE);
+        const namespace = this.$store.getters[`${ inStore }/byId`](NAMESPACE, this.namespace);
+        const projectId = namespace?.metadata?.annotations[PROJECT];
+        const query = {
+          labelSelector: encodeURIComponent(`project in (${ projectId.replace(/[:]/g, '-') }, )`),
+          limit:         50
+        };
+        const q = Object.entries(query).map(e => `${ e[0] }=${ e[1] }`).join('&');
+
+        await this.$store.dispatch('management/request', { url: `/k8s/clusters/${ clusterId }/apis/macvlan.cluster.cattle.io/v1/namespaces/kube-system/macvlansubnets${ q ? `?${ q }` : '' }` }).then((resp) => {
           const items = resp.items.map(item => ({
             label: `${ item.metadata.name }(${ item.spec.cidr })`,
             value: item.metadata.name
           }));
 
-          this.vlansubnets = items;
+          this.vlansubnetChoices = items;
           this.unsupportVlansubnet = false;
         });
       }
