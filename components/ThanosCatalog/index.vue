@@ -208,7 +208,7 @@ export default {
               :label="upgradeAvailable ? t('monitoringPage.upgradeAvailable', {version: latestVersion}) : t('globalMonitoringPage.version')"
               :options="chartVersions"
               :option-label="optionLabel"
-              @input="$emit(updateVersion, $event)"
+              @input="$emit('updateVersion', $event)"
             />
           </div>
         </div>
