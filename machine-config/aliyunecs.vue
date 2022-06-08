@@ -47,7 +47,11 @@ const DISKS = [
   {
     label: 'cluster.machineConfig.aliyunecs.disk.essd',
     value: 'cloud_essd'
-  }
+  },
+  // {
+  //   label: 'cluster.machineConfig.aliyunecs.disk.auto',
+  //   value: 'cloud_auto'
+  // },
 ];
 
 export default {
@@ -546,28 +550,36 @@ export default {
         return [];
       }
 
-      return this.systemDiskCategories.map((item) => {
+      const out = [];
+
+      this.systemDiskCategories.forEach((item) => {
         const disk = DISKS.find(disk => disk.value === item);
 
-        return {
+        disk && disk.label && out.push({
           label: this.t(disk.label),
           value: item,
-        };
-      }).sort();
+        });
+      });
+
+      return out;
     },
     diskCategoryOptions() {
       if ( !this.dataDiskCategories ) {
         return [];
       }
 
-      return this.dataDiskCategories.map((item) => {
+      const out = [];
+
+      this.dataDiskCategories.forEach((item) => {
         const disk = DISKS.find(disk => disk.value === item);
 
-        return {
+        disk && disk.label && out.push({
           label: this.t(disk.label),
           value: item,
-        };
-      }).sort();
+        });
+      });
+
+      return out;
     },
   }
 };

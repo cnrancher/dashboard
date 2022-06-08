@@ -1324,6 +1324,7 @@ cluster:
         efficiency: 高效云盘
         ssd: SSD 云盘
         essd: ESSD 云盘
+        auto: ESSD AutoPL 云盘
       diskFs:
         label: diskFs
       securityGroup:

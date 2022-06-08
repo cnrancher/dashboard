@@ -1329,6 +1329,7 @@ cluster:
         efficiency: Ultra Disk
         ssd: SSD Disk
         essd: ESSD Disk
+        auto: ESSD AutoPL Disk
       diskFs:
         label: diskFs
       securityGroup:
