@@ -134,11 +134,18 @@ export default {
                 buttonCb(true);
               }
             } else if (resp && resp.target && resp.target.status !== 200) {
-              if (resp.target.status === 404) {
-                this.$store.dispatch('growl/fromError', { title: this.t('modalDownLoadFileComponent.noSuchFile') }, { root: true });
-              } else {
-                this.$store.dispatch('growl/fromError', { title: this.t('modalDownLoadFileComponent.serverError') }, { root: true });
+              let errorMessage = '';
+
+              if (resp.target.response) {
+                try {
+                  const respJson = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(resp.target.response)));
+
+                  errorMessage = respJson && respJson.message ? respJson.message : '';
+                } catch (error) {
+                  errorMessage = '';
+                }
               }
+              this.$store.dispatch('growl/fromError', { title: errorMessage || this.t('modalDownLoadFileComponent.serverError') }, { root: true });
               if (!this.isDestroyed) {
                 buttonCb(false);
               }
