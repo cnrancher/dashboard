@@ -67,7 +67,7 @@ steps:
       AWS_DEFAULT_REGION: ap-southeast-2
       DRONE_BRANCH: ${DRONE_BRANCH}
     commands:
-      - s3 sync --delete --acl public-read dist/${DRONE_BRANCH}/ s3://pandaria-dashboard-ui/dashboard/${DRONE_BRANCH}
+      - aws s3 sync --delete --acl public-read dist/${DRONE_BRANCH}/ s3://pandaria-dashboard-ui/dashboard/${DRONE_BRANCH}
     when:
       ref:
         - "refs/heads/release-*"
