@@ -15,6 +15,7 @@ import { isDevBuild } from '@shell/utils/version';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import Password from '@shell/components/form/Password';
 import { applyProducts } from '@shell/store/type-map';
+import AESEncrypt from '@shell/utils/aes-encrypt';
 
 const calcIsFirstLogin = (store) => {
   const firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
@@ -132,6 +133,7 @@ export default {
 
     const isFirstLogin = await calcIsFirstLogin(store);
     const mustChangePassword = await calcMustChangePassword(store);
+    const disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
 
     return {
       productName,
@@ -158,7 +160,8 @@ export default {
       eula: false,
       principals,
 
-      errors: []
+      errors: [],
+      disabledEncryption
     };
   },
 
@@ -216,8 +219,8 @@ export default {
             url:           '/v3/users?action=changepassword',
             method:        'post',
             data:          {
-              currentPassword: this.current,
-              newPassword:     this.password
+              currentPassword: this.encryptPassword(this.current),
+              newPassword:     this.encryptPassword(this.password)
             },
           });
         } else {
@@ -254,6 +257,14 @@ export default {
     done() {
       this.$router.replace('/');
     },
+
+    encryptPassword(password) {
+      if (this.disabledEncryption?.value === 'true') {
+        return password;
+      }
+
+      return AESEncrypt(password.trim());
+    }
   },
 };
 </script>
