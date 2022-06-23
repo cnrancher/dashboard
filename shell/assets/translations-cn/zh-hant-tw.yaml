@@ -68,35 +68,32 @@ generic:
   no: 否
   units:
     time:
-        5s: 5秒
-        10s: 10秒
-        30s: 30秒
-        1m: 1分鐘
-        5m: 5分鐘
-        15m: 15分鐘
-        30m: 30分鐘
-        1h: 1小時
-        2h: 2小時
-        6h: 6小時
-        1d: 1天
-        7d: 7天
-        30d: 30天
+      5s: 5秒
+      10s: 10秒
+      30s: 30秒
+      1m: 1分鐘
+      5m: 5分鐘
+      15m: 15分鐘
+      30m: 30分鐘
+      1h: 1小時
+      2h: 2小時
+      6h: 6小時
+      1d: 1天
+      7d: 7天
+      30d: 30天
   completed: 已完成
   enable: 啟用
   disable: 禁用
   experimental: 實驗功能
-
   deprecated: 已棄用
   placeholder: "例如：{text}"
   moreInfo: 更多信息
-
 locale:
   en-us: English
   zh-hans: 简体中文
   zh-hant: 繁體中文
   zh-hant-tw: 台灣繁體
   none: (None)
-
 nav:
   backToRancher: Cluster Manager
   clusterTools: 集群工具
@@ -169,7 +166,6 @@ nav:
   failWhale:
     reload: 重新加載
     separator: 或者
-
 product:
   apps: 應用 & 應用市場
   auth: 用戶 & 認證
@@ -191,7 +187,6 @@ product:
   harvesterManager: 虛擬化管理
   harvester: Harvester
   rancher: Rancher
-
 suffix:
   percent: "%"
   milliCpus: milli CPU
@@ -218,7 +213,6 @@ suffix:
       other { 次 }
     }
   ago: 前
-
 ##############################
 # Components & Pages
 ##############################
@@ -240,7 +234,6 @@ about:
     title: 鏡像列表
   downloadCLI:
     title: CLI 下載
-
 accountAndKeys:
   title: 賬號 & API 密鑰
   account:
@@ -281,13 +274,10 @@ accountAndKeys:
       keyCreated: 已創建一個新的 API 密鑰。
       bearerTokenTip: "訪問密鑰和密文密鑰 可以作為 HTTP Basic auth 的用戶名和密碼發送，以授權請求。你也可以將它們組合起來作為一個持有者 Token使用。"
       ttlLimitedWarning: 系統配置導致該 API 密鑰的到期時間縮短了。
-
 addClusterMemberDialog:
   title: 添加集群成員
-
 addProjectMemberDialog:
   title: 添加項目成員
-
 authConfig:
   accessMode:
     label: '配置能登錄和使用 {vendor} 的人員名單'
@@ -344,11 +334,11 @@ authConfig:
       1:
         title: '點擊<a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="noopener noreferrer nofollow">此處</a>在新窗口中進入應用設置。'
         body:
-         1: 登錄到你的賬號。導航到 "APIs & Services"，然後選擇 "OAuth consent screen"。
-         2: '授權的域名：'
-         3: '應用主頁鏈接： '
-         4: '在 Google APIs 的範圍下，啟用 "email"，"profile"和"openid"。'
-         5: '點擊“保存”。'
+          1: 登錄到你的賬號。導航到 "APIs & Services"，然後選擇 "OAuth consent screen"。
+          2: '授權的域名：'
+          3: '應用主頁鏈接： '
+          4: '在 Google APIs 的範圍下，啟用 "email"，"profile"和"openid"。'
+          5: '點擊“保存”。'
         topPrivateDomain: '上層私有域名：'
       2:
         title: '導航到 "Credentials" 標籤，創建你的 OAuth 客戶端 ID。'
@@ -472,14 +462,12 @@ authConfig:
   noneEnabled: 本地驗證是長期開啟的。你也可以選擇以下的驗證提供程序。
   localEnabled: '{vendor} 配置為允許訪問本地數據庫中的賬號。'
   manageLocal: 管理賬號
-
 authGroups:
   actions:
     refresh: 刷新用戶組成員名單
     assignRoles: 為當前用戶組成員分配全局角色
   assignEdit:
     assignTitle: 為當前用戶組分配全局角色
-
 assignTo:
   title: |-
     {count, plural,
@@ -492,7 +480,6 @@ assignTo:
       other { 分配 {count} 集群到&hellip; }
     }
   workspace: 工作空間
-
 asyncButton:
   apply:
     action: 應用
@@ -523,11 +510,11 @@ asyncButton:
     success: 禁用
     waiting: 正在關閉&hellip;
   activate:
-    action:  激活
+    action: 激活
     waiting: 正在激活&hellip;
     success: 已激活
   deactivate:
-    action:  停用
+    action: 停用
     waiting: 正在停用&hellip;
     success: 已停用
   done:
@@ -616,7 +603,6 @@ asyncButton:
     action: 生成
     success: 已生成
     waiting: 正在生成&hellip;
-
 backupRestoreOperator:
   backupFilename: 備份文件名
   deleteTimeout:
@@ -690,9 +676,6 @@ backupRestoreOperator:
     useBackup: 使用備份 CR 上指定的 S3 位置
     useDefault: 使用安裝時配置的默認存儲位置
   targetBackup: 目標備份
-
-
-
 catalog:
   app:
     managed: 託管
@@ -811,14 +794,7 @@ catalog:
       basics:
         label: 元數據
         subtext: 設置應用元數據
-        description: 這個過程有助於 {action, select,
-            install { 創建 }
-            upgrade { 升級 }
-            update { 更新 }
-          } 這個 {existing, select,
-            true { 應用 }
-            false { Chart}
-          }。首先設置 {vendor} 用來管理應用的基本信息。
+        description: 這個過程有助於 {action, select, install { 創建 } upgrade { 升級 } update { 更新 } } 這個 {existing, select, true { 應用 } false { Chart} }。首先設置 {vendor} 用來管理應用的基本信息。
         nsCreationDescription: "如果你要把應用安裝到新的命名空間，在命名空間字段中輸入其名稱，並選擇它。"
         createNamespace: "將創建命名空間 <code>{namespace}</code>。"
       clusterTplVersion:
@@ -885,7 +861,6 @@ catalog:
   os:
     versionIncompatible: "此版本與 Windows 節點不兼容。"
     chartIncompatible: "此 Chart 與 Windows 節點不兼容。"
-
 changePassword:
   title: 更改密碼
   cancel: 取消
@@ -911,11 +886,16 @@ changePassword:
     failedToChange: 無法修改密碼
     failedDeleteKey: 無法刪除單個 API 密鑰
     failedDeleteKeys: 無法刪除多個 API 密鑰
-
+  strength:
+    best: 強
+    good: 中
+    label: 密碼強度
+    tooltip1: 密碼必須至少包含 {length} 個字符
+    tooltip2: 至少包括數字、大寫字母、小寫字母、符號中的兩個類型
+    weak: 弱
 chartHeading:
   overview: 概述
   poweredBy: "Powered by:"
-
 cis:
   addTest: 添加測試 ID
   alertNeeded: |-
@@ -972,7 +952,6 @@ cis:
   testID: 測試 ID
   testsSkipped: 已跳過的測試
   testsToSkip: 要跳過的測試
-
 cluster:
   addonChart:
     rancher-vsphere-cpi: vSphere CPI 配置
@@ -1098,16 +1077,16 @@ cluster:
         label: SecretKey
         placeholder: 你的 API 密文密鑰
     vmwarevsphere:
-        server:
-          label: vCenter 或 ESXi Server
-          placeholder: vcenter.domain.com
-        port:
-          label: 端口
-        username:
-          label: 用戶名
-        password:
-          label: 密碼
-        note: '注意：免費的 ESXi 許可證不支持 API 訪問。僅支持具有有效或評估許可證的服務器。'
+      server:
+        label: vCenter 或 ESXi Server
+        placeholder: vcenter.domain.com
+      port:
+        label: 端口
+      username:
+        label: 用戶名
+      password:
+        label: 密碼
+      note: '注意：免費的 ESXi 許可證不支持 API 訪問。僅支持具有有效或評估許可證的服務器。'
     gcp:
       authEncodedJson:
         label: 服務賬號
@@ -1425,7 +1404,7 @@ cluster:
         bannerLabel: '注意：優先匹配最後一個的選擇器，並且只使用它的參數。匹配到的其他選擇器的參數不會合並。'
         title: '標籤匹配的機器：'
         subTitle: '使用 Kubelet 參數：'
-        titleAlt:  |-
+        titleAlt: |-
           {count, plural,
             =1 { 所有機器均使用 Kubelet 參數： }
             other { 任何機器均使用 Kubelet 參數： }
@@ -1439,7 +1418,6 @@ cluster:
     warning: '此集群包含此表單不完全支持的 machineSelectorConfig。使用 YAML 編輯器管理完整配置。'
     os: '你正在將 {newOS} worker 節點添加到具有一個或多個 {existingOS} worker 節點的集群。你可能需要升級或刪除某些已安裝的應用。'
     rke2-k3-reprovisioning: '更改集群配置可能導致節點重新配置。詳情請參見 <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">文檔</a>。'
-
   machinePool:
     name:
       label: 池名稱
@@ -1505,7 +1483,7 @@ cluster:
   provider:
     aliyunecs: Aliyun ECS
     aliyunkubernetescontainerservice: Alibaba ACK
-    aliyun:  Alibaba ACK
+    aliyun: Alibaba ACK
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
     aws: Amazon
@@ -1680,7 +1658,6 @@ cluster:
   toggle:
     v1: RKE1
     v2: RKE2/K3s
-
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{total} {units} {suffix} 中的 {useful}"
@@ -1721,7 +1698,6 @@ clusterIndexPage:
       etcd: Etcd
       scheduler: 調度器
       controller-manager: Controller Manager
-
 configmap:
   tabs:
     data:
@@ -1729,7 +1705,6 @@ configmap:
       protip: 請在此處輸入 UTF-8 文本數據
     binaryData:
       label: 二進制數據
-
 containerResourceLimit:
   cpuPlaceholder: 例如：1000
   gpuPlaceholder: 例如：1
@@ -1742,8 +1717,6 @@ containerResourceLimit:
   memPlaceholder: 例如：128
   requestsCpu: CPU 預留
   requestsMemory: 內存預留
-
-
 cruResource:
   backToForm: 返回表單編輯
   backBody: 返回表單編輯不會保留對 YAML 做出的所有更改
@@ -1753,7 +1726,6 @@ cruResource:
   reviewForm: "繼續編輯 YAML"
   reviewYaml: "繼續編輯 YAML"
   previewYaml: 以 YAML 文件編輯
-
 detailText:
   collapse: 隱藏
   binary: '<二進制數據: {n, number} 字節>'
@@ -1764,7 +1736,6 @@ detailText:
       =1 {+ 1個字符}
       other {+ {n, number}個字符}
     }
-
 drainNode:
   action: '清空'
   actionStop: '停止清空'
@@ -1785,12 +1756,10 @@ drainNode:
     default: 超時後繼續嘗試清空
     placeholder: 例如：60
     custom: "超時後放棄清空："
-
 etcdInfoBanner:
   hasLeader: "ETCD 有一個 Leader："
   leaderChanges: "Leader 變化的次數："
   failedProposals: "失敗的 proposal 數量"
-
 fleet:
   dashboard:
     pageTitle: 持續交付儀表盤
@@ -1918,7 +1887,6 @@ footer:
   wechat:
     title: 微信
     modalText: 掃碼關注 Rancher 中國微信技術群
-
 gatekeeperConstraint:
   match:
     title: 匹配
@@ -1949,12 +1917,10 @@ gatekeeperConstraint:
   template: 模板
   violations:
     title: 違反規定
-
 gatekeeperIndex:
   poweredBy: OPA Gatekeeper
   unavailable: OPA Gatekeeper 不在 system-charts 應用商店中.
   violations: 違反規定
-
 glance:
   created: 創建時間
   cpu: CPU 使用量
@@ -1973,7 +1939,6 @@ glance:
   installMonitoring: 安裝監控
   v1MonitoringInstalled: 已安裝 Monitoring V1
   clusterInfo: 集群信息
-
 clusterBadge:
   addLabel: 添加集群徽章
   editLabel: 編輯集群徽章
@@ -1988,18 +1953,15 @@ clusterBadge:
     badgeAsIcon: 自定義集群圖標
     maxCharsTooltip: 最多兩個字符
     previewTitle: "集群圖標和名稱效果"
-
 grafanaDashboard:
   failedToLoad: 加載圖表失敗
   reload: 重新加載
   grafana: Grafana
-
 graphOptions:
   detail: 詳情
   summary: 概述
   refresh: 刷新
   range: 範圍
-
 hpa:
   detail:
     currentMetrics:
@@ -2062,7 +2024,6 @@ hpa:
     max: 最大副本數
     min: 最小副本數
     targetReference: 目標引用
-
 import:
   title: 導入 YAML
   defaultNamespace:
@@ -2072,7 +2033,6 @@ import:
     =1 {1個資源}
     other {#個資源}
     }
-
 ingress:
   certificates:
     addCertificate: 添加證書
@@ -2128,10 +2088,8 @@ ingress:
     defaultCertificate: 默認
   target:
     default: 默認
-
 internalExternalIP:
   none: 無
-
 istio:
   links:
     kiali:
@@ -2307,7 +2265,6 @@ istio:
     description: 描述
   tracing: 啟用 Jaeger 跟蹤（有限）
   v1Warning: 在安裝這個版本前，請卸載<code>istio-system</code> 命名空間中的當前 Istio 版本。
-
 labels:
   addLabel: 添加標籤
   addSetLabel: 添加/設置標籤
@@ -2318,7 +2275,6 @@ labels:
     title: 標籤
   annotations:
     title: 註釋
-
 landing:
   clusters:
     title: 集群
@@ -2353,7 +2309,6 @@ landing:
       lastVisited: 上次訪問的頁面
       custom: "集群"
   welcomeToRancher: '歡迎使用 {vendor}'
-
 logging:
   clusterFlow:
     noOutputsBanner: 選定的命名空間中沒有集群輸出
@@ -2441,7 +2396,7 @@ logging:
     secretKey: 密文密鑰
   azurestorage:
     storageAccount: 賬號
-    accessKey:  訪問密鑰
+    accessKey: 訪問密鑰
     container: 容器
     path: 路徑
     storeAs: 存儲為
@@ -2572,7 +2527,6 @@ logging:
     clientCertPath: 客戶端證書路徑
     clientPrivateKeyPath: 客戶端私鑰路徑
     clientPrivateKeyPassphrase: 客戶端私鑰密碼
-
 longhorn:
   overview:
     title: 概述
@@ -2582,7 +2536,6 @@ longhorn:
         label: 'Longhorn'
         description: '通過 UI 管理存儲系統'
         na: 資源不可用
-
 neuvector:
   overview:
     title: 概述
@@ -2592,7 +2545,6 @@ neuvector:
         label: 'NeuVector'
         description: '全生命週期容器安全'
         na: 資源不可用
-
 login:
   howdy: 你好！
   welcome: 歡迎使用 {vendor}
@@ -2617,7 +2569,6 @@ login:
   useNonLocal: 使用非本地用戶
   remember:
     label: 記住用戶名
-
 members:
   clusterMembers: 集群成員
   createActionLabel: 添加
@@ -2645,12 +2596,10 @@ members:
     custom:
       label: 自定義
       description: 為該用戶自定義角色。
-
 membershipEditor:
   label: 成員
   user: 用戶名
   role: 角色
-
 monitoring:
   accessModes:
     many: 多次讀寫
@@ -2791,7 +2740,6 @@ monitoring:
         label: 密鑰文件路徑
         placeholder: 例如：./key-file.pfx
       secretsBanner: 部署 Monitoring Chart 時，必須在<<pre class="inline-block m-0 p-0 vertical-middle">alertmanager.alertmanagerSpec.secrets</pre>中引用以下文件路徑。詳情請查看<a href="{docsBase}/monitoring-alerting/" target="_blank" rel="noopener noreferrer nofollow">官方文檔</a>。
-
   route:
     fields:
       groupBy: 分組依據
@@ -2808,7 +2756,7 @@ monitoring:
       warning1: 已部署 Monitoring V1。你需要先卸載 Monitoring V1 才能安裝 Monitoring V2。
       warning2: <a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/" target='_blank' rel='noopener nofollow'>瞭解遷移到 Monitoring V2 的步驟</a>。
       promptDescription: <div class="mt-20 mb-20">你正在嘗試卸載 Monitoring V1。請確保你已閱讀遷移步驟。</div>
-      success1:  Monitoring V1 已成功卸載。
+      success1: Monitoring V1 已成功卸載。
       success2: 點擊下一步繼續
   tabs:
     alerting: 告警
@@ -2820,7 +2768,6 @@ monitoring:
     modes:
       block: 塊
       file: 文件系統
-
 monitoringReceiver:
   addButton: 添加 {type}
   custom:
@@ -2872,7 +2819,6 @@ monitoringReceiver:
       placeholder: 例如：http://my-proxy/
     sendResolved:
       label: 發送已解決警報
-
 monitoringRoute:
   groups:
     label: 分組依據
@@ -2890,13 +2836,11 @@ monitoringRoute:
     label: 重複間隔
   wait:
     label: 組等待時長
-
 moveModal:
   title: 移動到新的項目?
   description: '你正在移動下列命名空間：'
   moveButtonLabel: 移動
   targetProject: 目標項目
-
 nameNsDescription:
   name:
     label: 名稱
@@ -2910,7 +2854,6 @@ nameNsDescription:
   description:
     label: 描述
     placeholder: 輸入可以描述該資源的文本
-
 namespace:
   containerResourceLimit: 容器資源限制
   resourceQuotas: 資源限額
@@ -2923,16 +2866,15 @@ namespace:
   total: 總計
   workloads: 工作負載
   resourceStates:
-      success: '活動'
-      info: '轉換中'
-      warning: '警告'
-      error: '錯誤'
-      unknown: '未知'
-      paused:
-        stateName: '非活動'
-        shortDescription: Deployment 已暫停
-        longDescription: Deployment 已暫停。如果 Deployment 暫停了，Controller 無法部署修改。
-
+    success: '活動'
+    info: '轉換中'
+    warning: '警告'
+    error: '錯誤'
+    unknown: '未知'
+    paused:
+      stateName: '非活動'
+      shortDescription: Deployment 已暫停
+      longDescription: Deployment 已暫停。如果 Deployment 暫停了，Controller 無法部署修改。
 namespaceFilter:
   noMatchingOptions: 沒有匹配的選項
   more: "+{more}"
@@ -2942,11 +2884,9 @@ namespaceFilter:
       one {已選擇 1 項}
       other {已選擇 {total} 項}
       }
-
 namespaceList:
   selectLabel: 命名空間
   addLabel: 添加命名空間
-
 navLink:
   name:
     label: 名稱
@@ -3109,7 +3049,6 @@ node:
     downloadNodeConfig: 下載密鑰
     scaleDown: 縮容
     forceDelete: 強制刪除
-
 persistentVolume:
   pluginConfiguration:
     label: 插件配置
@@ -3407,7 +3346,6 @@ persistentVolume:
       placeholder: 例如：ext4
     readOnly:
       label: 只讀
-
 persistentVolumeClaim:
   name: 持久卷聲明名稱
   accessModes: 訪問模式
@@ -3477,14 +3415,12 @@ prefs:
     'true': 包括預發佈版本
     'false': 只顯示正式版本
     label: Helm Chart
-
 principal:
   loading: 正在加載&hellip;
   error: 無法獲取信息
   name: 名稱
   loginName: 用戶名
   type: 類型
-
 probe:
   checkInterval:
     label: 檢查間隔
@@ -3517,7 +3453,6 @@ probe:
   type:
     label: 類型
     placeholder: 選擇檢查類型
-
 project:
   members:
     label: 成員
@@ -3529,8 +3464,6 @@ project:
     default: 集群默認
     label: Pod 安全策略
     current: "{value} (Current)"
-
-
 projectMembers:
   project:
     label: 項目
@@ -3571,13 +3504,11 @@ projectMembers:
     servicesView: 查看服務
     persistentvolumeclaimsView: 查看卷
     workloadsView: 查看工作負載
-
 projectNamespaces:
   createNamespace: 創建命名空間
   createProject: 創建項目
   label: 項目/命名空間
   noNamespaces: 沒有定義的命名空間。
-
 prometheusRule:
   alertingRules:
     addLabel: 添加告警
@@ -3631,18 +3562,15 @@ prometheusRule:
     labels: 標籤
     name: 時間序列名稱
     removeRecord: 移除記錄
-
 promptForceRemove:
   modalTitle: 是否確認？
   removeWarning: "刪除底層基礎設施時出現問題。如果你繼續執行此操作，機器<b>{nameToMatch}</b>將從 Rancher 中刪除。強烈建議手動刪除所有引用的基礎設施。"
   forceDelete: 強制刪除
   confirmName: "在下面輸入池名稱以確認："
-
 promptScaleMachineDown:
   attemptingToRemove: "你正在嘗試刪除 {count} {type}"
   retainedMachine1: Control Plane 和 Etcd 角色要求至少一臺機器。
   retainedMachine2: <b>{ name }</b> 會保留
-
 promptRemove:
   title: 是否確認？
   andOthers: |-
@@ -3654,10 +3582,8 @@ promptRemove:
   attemptingToRemove: "你正在試圖刪除 {type}"
   protip: "提示：按住 {alternateLabel} 鍵的同時單擊刪除，以繞過此確認。"
   confirmName: "在下方輸入 <b>{nameToMatch}</b> 以確認："
-
 promptRemoveApp:
   removeCrd: "刪除與此應用關聯的 CRD"
-
 promptRestore:
   title: 還原快照
   name: 名稱
@@ -3668,7 +3594,6 @@ promptRestore:
   notification:
     title: 還原快照
     message: 快照 { selectedSnapshot } 恢復已開始...
-
 promptRollback:
   modalTitle: 回滾 {workloadName}
   dropdownTitle: 回滾到修訂版
@@ -3679,24 +3604,20 @@ promptRollback:
   currentLabel: "（當前）"
   multipleWorkloadError: "一次只能回滾一個工作負載。"
   singleRevisionBanner: 沒有可用於回滾的修訂版本。
-
 promptSaveAsRKETemplate:
   title: 將 {cluster} 轉換為新的 RKE 模板
   name: 集群模板名稱
   description: 創建新的集群模板，並使用當前集群配置發起修改。
   warning: 此操作將對集群進行修改，即把新創建的集群模板和修改應用到集群中。此操作不能撤銷。
-
 promptRotateEncryptionKey:
   title: 輪換加密密鑰
   description: 上次備份 {name} 的備份時間為 {date}
   warning: 在繼續操作前，請確保已成功完成集群的 ETCD 備份。
   error: 未找到備份
-
 rancherAlertingDrivers:
   msTeams: 啟用 Microsoft Teams 通知
   sms: 啟用短信通知
   selectOne: 你需要從以下選項中選擇至少一個。
-
 rbac:
   roleBinding:
     noData: 沒有與此資源關聯的成員。
@@ -3769,7 +3690,7 @@ rbac:
         label: 內置角色
         description: 用於實現更精細的權限模型的補充角色
     unknownRole:
-        description: 無描述
+      description: 無描述
     assignOnlyRole: 已分配該角色
     role:
       admin:
@@ -3839,7 +3760,6 @@ rbac:
         label: 登錄訪問
       clustertemplaterevisions-create:
         label: 創建 RKE 模板修訂版
-
 resourceDetail:
   detailTop:
     annotations: 註釋
@@ -3892,7 +3812,6 @@ resourceList:
     create: 創建
     createFromYaml: 使用 YAML 文件創建
     createResource: "創建 {resourceName}"
-
 resourceTable:
   groupBy:
     none: 簡單列表
@@ -3912,7 +3831,6 @@ resourceTable:
     notInANodePool: "不在節點池中"
     nodePool: "<span>節點池：</span> {name} ({count})"
     node: "<span>節點：</span> {name}"
-
 resourceTabs:
   conditions:
     tab: 條件
@@ -3922,8 +3840,6 @@ resourceTabs:
     tab: 相關資源
     from: 被引用
     to: 引用
-
-
 resourceYaml:
   errors:
     namespaceRequired: 這個資源是有命名空間的，所以必須提供一個命名空間。
@@ -3934,7 +3850,6 @@ resourceYaml:
     hideDiff: 隱藏差異
     unified: 統一
     split: 拆分
-
 secret:
   authentication: 身份驗證
   certificate:
@@ -4010,7 +3925,6 @@ secret:
     'kubernetes.io/tls':
       description: 存儲 TLS 證書和密鑰
       docLink: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
-
 selectOrCreateAuthSecret:
   label: 身份驗證
   options:
@@ -4033,7 +3947,6 @@ selectOrCreateAuthSecret:
   createSsh: 創建 SSH 密鑰密文
   createBasic: 創建 HTTP 基本身份驗證密文
   createS3: 創建與 S3 兼容的身份驗證密文
-
 servicePorts:
   header:
     label: 端口規則
@@ -4052,14 +3965,12 @@ servicePorts:
     target:
       label: 目標端口
       placeholder: 例如：80 或 http
-
 serviceTypes:
   clusterip: 集群 IP
   externalname: 外部名稱
   headless: Headless
   loadbalancer: 負載均衡
   nodeport: 節點端口
-
 servicesPage:
   anyNode: 任何節點
   labelsAnnotations:
@@ -4132,7 +4043,6 @@ servicesPage:
       label: 節點端口
   typeOpts:
     label: 服務類型
-
 setup:
   currentPassword: Bootstrap 密碼
   confirmPassword: 確認新密碼
@@ -4155,7 +4065,6 @@ setup:
   useManual: 設置密碼
   useRandom: 使用隨機生成的密碼
   welcome: 歡迎使用 {vendor}！
-
 sortableTable:
   actionAvailability:
     selected: "已選擇 {actionable} 項"
@@ -4175,7 +4084,6 @@ sortableTable:
       =1 {{count} {count, plural, =1 {{singularLabel}} other {{pluralLabel}}}}
       other {{from} - {to} of {count} {pluralLabel}}}
   search: 篩選
-
 storageClass:
   actions:
     setAsDefault: 設為默認配置
@@ -4461,7 +4369,6 @@ storageClass:
       placeholder: 例如：storageos-secret
   no-provisioner:
     title: 本地存儲（不支持）
-
 tableHeaders:
   accessKey: 訪問密鑰
   address: 地址
@@ -4650,7 +4557,6 @@ tableHeaders:
   groupRoleNames: 組角色名稱
   Secret-Name: 密文名稱
   restart: 要求重啟
-
 target:
   router:
     label: 路由
@@ -4662,7 +4568,6 @@ target:
   version:
     label: 版本
     placeholder: 選擇版本
-
 user:
   detail:
     username: 用戶名
@@ -4819,13 +4724,11 @@ validation:
     route:
       match: 必須選擇至少一個匹配或匹配正則表達式。
       interval: '"{key}" 必須是以數字後跟單位（如 1h, 2m, 30s）的格式。'
-
 wizard:
   previous: 上一步
   finish: 完成
   next: 下一步
   step: "步驟 {number}"
-
 wm:
   connection:
     connected: 已連接
@@ -4863,7 +4766,6 @@ wm:
     containerName: "容器：{label}"
   kubectlShell:
     title: "Kubectl: {name}"
-
 workload:
   container:
     command:
@@ -4914,11 +4816,11 @@ workload:
       successThreshold: 成功閾值
       timeout: 超時
       kind:
-        none:  無
-        HTTP:  HTTP 請求返回成功的狀態（200-399）
+        none: 無
+        HTTP: HTTP 請求返回成功的狀態（200-399）
         HTTPS: HTTPS 請求返回成功的狀態
-        tcp:   成功啟動 TCP 連接
-        exec:  容器內運行的命令以 0 狀態退出
+        tcp: 成功啟動 TCP 連接
+        exec: 容器內運行的命令以 0 狀態退出
     image: 容器鏡像
     imagePullPolicy: 鏡像拉取策略
     imagePullSecrets: 拉取密文
@@ -5271,7 +5173,6 @@ workload:
     path: 路徑
     readOnly: 只讀
     server: Server IP 地址
-
     subPath: 卷內子路徑
     title: '存儲'
     volumeName: 卷名稱
@@ -5318,7 +5219,6 @@ workload:
       label: 終止寬限期
       tip: 終止 Pod 前所需的等待時間
     title: 正在升級
-
 harvester:
   modal:
     backup:
@@ -5454,7 +5354,6 @@ harvester:
     cpu: CPU
     storage: 存儲
     noFileChosen: 沒有選擇任何文件
-
   validation:
     custom:
       tooLongName: '"Name" 的長度不能超過{max}個字符。'
@@ -5480,7 +5379,6 @@ harvester:
     image:
       ruleTip: 'URL 後綴不支持。僅支持後綴為 .img，.iso，.qcow，.qcow2或.raw的鏡像文件。'
       ruleFileTip: '文件後綴不支持。僅支持後綴為 .img，.iso，.qcow，.qcow2或.raw的鏡像文件。'
-
   dashboard:
     label: 儀表盤
     header: "Harvester 集群：{cluster}"
@@ -5501,7 +5399,6 @@ harvester:
       versionLabel: 可用的兼容版本
       upgradeNode: 升級節點
       upgradeSysService: 升級系統服務
-
     version: 版本
   host:
     label: 主機
@@ -5570,10 +5467,8 @@ harvester:
       error: 主機有未就緒或不可調度的磁盤。
       fileSystem:
         info: 當前文件系統為 {system}，你可以手動格式化。
-
   virtualizationManagement:
     manage: 管理
-
   virtualMachine:
     label: 虛擬機
     osType: 操作系統類型
@@ -5610,8 +5505,7 @@ harvester:
     unplug:
       title: '是否確認要拔出卷 {name} ？'
       actionLabel: 拔出
-      detachVolume:
-        拔出卷
+      detachVolume: 拔出卷
     restartTip: 重啟虛擬機以使配置更改生效。
     runStrategy: 虛擬機運行策略
     restartNow: 現在重啟
@@ -5631,7 +5525,7 @@ harvester:
       type: 類型
       size: 大小
       edit: 編輯
-      bus:  Bus
+      bus: Bus
       bootOrder: 引導順序
       volume: 卷
       dockerImage: Docker 鏡像
@@ -5652,7 +5546,7 @@ harvester:
     network:
       title: 網絡
       addNetwork: 添加網絡
-      addPort:  添加端口
+      addPort: 添加端口
     cloudConfig:
       title: Cloud Config
       createTemplateTitle: '創建 { name }。'
@@ -5757,7 +5651,6 @@ harvester:
         down: 過去一小時沒有事件
       console:
         down: 此虛擬機已關閉。請啟動虛擬機以訪問其控制檯。
-
   volume:
     label: 卷
     tabs:
@@ -5768,7 +5661,6 @@ harvester:
       new: 創建
       vmImage: 虛擬機鏡像
     image: 鏡像
-
   image:
     label: 鏡像
     tabs:
@@ -5788,14 +5680,12 @@ harvester:
         =1 {正在上傳一個鏡像。請不要刷新或關閉前頁面。}
         other {正在上傳{count}個鏡像。請不要刷新或關閉前頁面。}
         }
-
   vmTemplate:
     label: 模板
     tabs:
       basics: 基本信息
     nameNsDescription:
       name: 模板名稱
-
   upgradePage:
     upgradeApp: 升級軟件
     upgrade: 升級
@@ -5818,10 +5708,9 @@ harvester:
       monitoringChart: Monitoring Chart
       harvesterChart: Harvester Chart
       success: 成功
-      fail:  失敗
+      fail: 失敗
       ongoing: 進行中
     dismissMessage: 忽略
-
   backup:
     label: 備份
     createText: 還原備份
@@ -5847,7 +5736,6 @@ harvester:
       replaceExisting: 替換現有
       virtualMachineName: 虛擬機名稱
     matchTarget: 當前備份目標與現有目標不匹配。
-
   network:
     label: 網絡
     tabs:
@@ -5885,7 +5773,6 @@ harvester:
     keypair: SSH 密鑰
     tabs:
       basics: 基本信息
-
   setting:
     label: 設置
     validation:
@@ -5912,7 +5799,6 @@ harvester:
       imagePullPolicy: 鏡像拉取策略
       repo: 倉庫
       tag: 標籤
-
     upgrade:
       selectExitImage: 請選擇要升級的操作系統鏡像。
       imageUrl: 請輸入有效的圖片網址。
@@ -5933,26 +5819,21 @@ harvester:
     templateType: 模板類型
     userData: 用戶數據
     networkData: 網絡數據
-
   manager:
     cluster:
       label: Harvester 集群
       none: 不存在 Harvester 集群
       learnMore: 訪問 <a target="_blank" href="https://harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester 網站</a> 或閱讀 <a target="_blank" href="https://docs.harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester 官方文檔</a>，以瞭解更多關於 Harvester 的信息。
       description: Harvester 是一個採用企業級開源技術，包括Kubernetes、Kubevirt和Longhorn，為裸金屬服務器打造的現代超融合基礎設施（HCI）解決方案。
-
   support:
     title: Harvester 支持
     kubeconfig:
       title: 下載 KubeConfig
       titleDescription: 下載 Kubeconfig 用於調試。
-
   namespace:
     label: 命名空間
-
   projectNamespace:
     label: 項目/命名空間
-
   service:
     title: 附加配置
     ipam:
@@ -5971,7 +5852,6 @@ harvester:
       label: 健康檢查超時
     healthCheckEnabled:
       label: 健康檢查
-
   vip:
     namespace:
       label: 命名空間
@@ -5980,13 +5860,11 @@ harvester:
       invalid: '"CIRD" 無效。'
     add:
       label: 添加 IP 池
-
   sslParameters:
     protocols:
       label: 協議
     ciphers:
       label: 密碼
-
 ##############################
 # Model Properties
 ##############################
@@ -6029,7 +5907,6 @@ model:
       googleoauth: Google
       oidc: OIDC
       keycloakoidc: Keycloak
-
   cluster:
     name: 集群名稱
   ingress:
@@ -6060,7 +5937,6 @@ model:
     displayKind:
       generic: 服務
       loadBalancer: L4 負載均衡
-
 typeDescription:
   # Map of
   # type: Description to be shown on the top of list view describing the type.
@@ -6094,7 +5970,6 @@ typeDescription:
   logging.banzaicloud.io.flow: 流定義了要收集和過濾的日誌，以及日誌的輸出目標。流是一個命名空間資源。換言之，只有部署了該流的命名空間日誌，才能被該流收集。
   logging.banzaicloud.io.output: 輸出定義了日誌可以發送到哪些日誌提供程序。輸出需要與使用它的流位於相同的命名空間中。
   group.principal: 為組分配全局角色的操作，僅適用於支持組的外部驗證提供程序。本地授權不支持組。
-
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,
@@ -6317,12 +6192,12 @@ typeLabel:
       one { 卷 }
       other { 卷 }
     }
-  harvesterhci.io.user:  |-
+  harvesterhci.io.user: |-
     {count, plural,
       one { 用戶 }
       other { 用戶 }
     }
-  harvesterhci.io.setting:  |-
+  harvesterhci.io.setting: |-
     {count, plural,
       one { 設置 }
       other { 設置 }
@@ -6432,12 +6307,7 @@ typeLabel:
       one { Pod 安全策略 }
       other { Pod 安全策略 }
     }
-  storage.k8s.io.csinode: |-
-    {count, plural,
-      one { CSI 節點 }
-      other { CSI 節點 }
-    } 
-
+  storage.k8s.io.csinode: "{count, plural,\n  one { CSI 節點 }\n  other { CSI 節點 }\n} "
 action:
   clone: 克隆
   disable: 禁用
@@ -6465,7 +6335,6 @@ action:
   runNow: 立即運行
   suspend: 暫停
   resume: 重新開始
-
 unit:
   sec: 秒
   min: 分鐘
@@ -6483,29 +6352,23 @@ workloadPorts:
   addPort: 添加端口
   remove: 移除
   addHost: 添加主機
-
 podAffinity:
   addLabel: 添加 Pod 選擇器
-
 keyValue:
   keyPlaceholder: 例如：foo
   valuePlaceholder: 例如：bar
   protip: '把多行 <em>key=value</em> 或 <em>key: value</em> 鍵值對複製到各字段中，以便批量輸入'
-
 registryMirror:
   header: Mirror
   toolTip: 'Mirror 可用來重定向來自一個倉庫的鏡像請求，使其來自你指定的端點列表。例如，你可以把 docker.io 指向到只和你的內部倉庫通信，而不是通過互聯網訪問實際的 DockerHub。'
   addLabel: 添加 Mirror
-
 registryConfig:
   header: 倉庫驗證
   toolTip: '當需要從給定的鏡像倉庫主機名中拉取鏡像時，此信息將用於識別並驗證倉庫。'
   addLabel: 添加鏡像倉庫
-
 ##############################
 ### Advanced Settings
 ##############################
-
 advancedSettings:
   label: 高級選項
   subtext: 一般用戶不需要修改高級選項設置。請謹慎操作，不正確的值會破壞 {appName} 的安裝。從默認設置中定製的設置會被標記為"已修改"。
@@ -6590,7 +6453,6 @@ advancedSettings:
       info: 信息
       debug: 調試
       trace: 跟蹤
-
 featureFlags:
   label: 功能開關
   warning: |-
@@ -6614,7 +6476,6 @@ featureFlags:
     fleet: 啟動 Rancher 時安裝 Fleet
     multi-cluster-management: Kubernetes 集群的多集群配置和管理。
     rke2: 啟用 RKE2
-
 banner:
   label: 固定橫幅
   settingName: 橫幅
@@ -6645,7 +6506,6 @@ banner:
   bannerFontSize:
     label: '字體大小'
   consent: 同意橫幅
-
 branding:
   label: 公司品牌
   directoryName: 品牌資產目錄名稱
@@ -6677,7 +6537,6 @@ branding:
     tip: 使用自定義鏈接顏色替換整個 UI 中使用的鏈接顏色。
     useCustom: 使用自定義鏈接顏色
     example: 鏈接示例
-
 resourceQuota:
   label: 資源限額
   headers:
@@ -6717,12 +6576,9 @@ resourceQuota:
     unitlessPlaceholder: 例如：10
   add:
     label: 添加資源
-
-
 ##############################
 ### Support Page
 ##############################
-
 support:
   community:
     title: SUSE Rancher 提供世界一流的支持
@@ -6757,11 +6613,9 @@ support:
     four:
       title: 自由創新
       text: 基於我們與各 Kubernetes 供應商、操作系統和開源軟件認證的兼容性，實現自主創新
-
 embedding:
   retry: 重試
   unavailable: Cluster Manager UI 不可用
-
 v1ClusterTools:
   monitoring:
     label: 監控（舊版）
@@ -6772,7 +6626,6 @@ v1ClusterTools:
   istio:
     label: Istio（舊版）
     description: '舊版 Istio V1。自 Rancher 2.5.0 起，我們已棄用 Istio V1.5。瞭解<a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">遷移到最新版本</a> 的更多信息。'
-
 legacy:
   alerts: 告警
   apps: 應用
@@ -6789,19 +6642,15 @@ legacy:
   pipelines: 流水線
   psps: Pod 安全策略
   secrets: 密文
-
   project:
     label: 項目
     select: "使用頁面頂部的項目/命名空間篩選器選擇一個項目，以查看其舊版項目功能。"
-
 serverUpgrade:
   title: "{vendor} Server 已更改"
   message: "由於你服務器上運行的 {vendor} 版本已變更，頁面需要重新加載。"
-
 volumeClaimTemplate:
   add:
     label: 添加聲明模板
-
 manager:
   cloudCredentials:
     label: 雲憑證
@@ -6811,7 +6660,6 @@ manager:
     label: RKE 模板
   nodeTemplates:
     label: 節點模板
-
 auth:
   config:
     label: 認證
@@ -7041,25 +6889,13 @@ charts:
       description: '指定在 Longhorn StorageClass 中 Longhorn 卷使用的後備鏡像。如果不存在，你需要指定後備鏡像數據源類型和後備鏡像數據源參數，以讓 Longhorn 在使用後備鏡像前先創建它。'
     persistence.backingImage.expectedChecksum:
       label: 存儲類後備鏡像的期望 SHA512 校驗和
-      description: '指定在 Longhorn StorageClass 中選定的後備鏡像的期望 SHA512 校驗和。
-        警告：
-          - 如果沒有指定後備鏡像名稱，設置此字段是沒有效的。
-          - 如果數據源類型是 \"export-from-volume\"，則不建議設置此字段。'
+      description: '指定在 Longhorn StorageClass 中選定的後備鏡像的期望 SHA512 校驗和。 警告： - 如果沒有指定後備鏡像名稱，設置此字段是沒有效的。 - 如果數據源類型是 \"export-from-volume\"，則不建議設置此字段。'
     persistence.backingImage.dataSourceType:
       label: 存儲類後備鏡像數據源類型
-      description: '為用於 Longhorn StorageClass 的後備鏡像指定數據源類型。
-        如果後備鏡像不存在，Longhorn 會使用此字段來創建後備驚喜。否則，Longhorn 會以此來驗證所選的後備鏡像。
-        警告：
-          - 如果不指定後備鏡像名稱，設置這個選項是沒有效的。
-          - 如果後備鏡像創建時的數據源類型是 \"upload\"，建議你使用 UI，而不是此處提及的 StorageClass。如果是上傳，文件數據需要在對象創建後發送到 Longhorn 後端，手動進行此操作會非常複雜。'
+      description: '為用於 Longhorn StorageClass 的後備鏡像指定數據源類型。 如果後備鏡像不存在，Longhorn 會使用此字段來創建後備驚喜。否則，Longhorn 會以此來驗證所選的後備鏡像。 警告： - 如果不指定後備鏡像名稱，設置這個選項是沒有效的。 - 如果後備鏡像創建時的數據源類型是 \"upload\"，建議你使用 UI，而不是此處提及的 StorageClass。如果是上傳，文件數據需要在對象創建後發送到 Longhorn 後端，手動進行此操作會非常複雜。'
     persistence.backingImage.dataSourceParameters:
       label: 存儲類後備鏡像數據源參數
-      description: "為用於 Longhorn StorageClass 的後備鏡像指定數據源參數。
-        如果後備鏡像不存在，Longhorn 會使用此字段來創建後備鏡像。否則，Longhorn 會以此來驗證所選的後備鏡像。
-        該選項接受映射的 JSON 字符串，例如 '{\"url\":\"https://backing-image-example.s3-region.amazonaws.com/test-backing-image\"}'。
-        警告：
-          - 如果不指定後備鏡像，設置這個選項是沒有效的。
-          - 請注意引號的使用。"
+      description: "為用於 Longhorn StorageClass 的後備鏡像指定數據源參數。 如果後備鏡像不存在，Longhorn 會使用此字段來創建後備鏡像。否則，Longhorn 會以此來驗證所選的後備鏡像。 該選項接受映射的 JSON 字符串，例如 '{\"url\":\"https://backing-image-example.s3-region.amazonaws.com/test-backing-image\"}'。 警告： - 如果不指定後備鏡像，設置這個選項是沒有效的。 - 請注意引號的使用。"
     ingress.host:
       label: 7 層負載均衡主機名
       description: "7 層負載均衡主機名"

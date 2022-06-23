@@ -69,35 +69,32 @@ generic:
   no: No
   units:
     time:
-        5s: 5s
-        10s: 10s
-        30s: 30s
-        1m: 1m
-        5m: 5m
-        15m: 15m
-        30m: 30m
-        1h: 1h
-        2h: 2h
-        6h: 6h
-        1d: 1d
-        7d: 7d
-        30d: 30d
+      5s: 5s
+      10s: 10s
+      30s: 30s
+      1m: 1m
+      5m: 5m
+      15m: 15m
+      30m: 30m
+      1h: 1h
+      2h: 2h
+      6h: 6h
+      1d: 1d
+      7d: 7d
+      30d: 30d
   completed: Completed
   enable: Enable
   disable: Disable
   experimental: Experimental
-
   deprecated: Deprecated
   placeholder: "e.g. {text}"
   moreInfo: More Info
-
 locale:
   en-us: English
   zh-hans: 简体中文
   zh-hant: 繁體中文
   zh-hant-tw: 台灣繁體
   none: (None)
-
 nav:
   backToRancher: Cluster Manager
   clusterTools: Cluster Tools
@@ -166,7 +163,6 @@ nav:
   failWhale:
     reload: Reload
     separator: or
-
 product:
   apps: Apps
   auth: Users & Authentication
@@ -188,7 +184,6 @@ product:
   harvesterManager: Virtualization Management
   harvester: Harvester
   rancher: Rancher
-
 suffix:
   percent: "%"
   milliCpus: milli CPUs
@@ -214,7 +209,6 @@ suffix:
       =1 { Time }
       other { Times }
     }
-
 ##############################
 # Components & Pages
 ##############################
@@ -236,7 +230,6 @@ about:
     title: Image Lists
   downloadCLI:
     title: CLI Downloads
-
 accountAndKeys:
   title: Account and API Keys
   account:
@@ -277,17 +270,13 @@ accountAndKeys:
       keyCreated: A new API Key has been created
       bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests. You can also combine them to use as a Bearer token:"
       ttlLimitedWarning: The Expiry time for this API Key was reduced due to system configuration
-
 addClusterMemberDialog:
   title: Add Cluster Member
-
 addonConfigConfirmation:
   title: Add-On Config Reset
   body: Changing the Kubernetes Version can reset the Add-On Config values. You should check that the values are as expected before continuing.
-
 addProjectMemberDialog:
   title: Add Project Member
-
 authConfig:
   accessMode:
     label: 'Configure who should be able to login and use {vendor}'
@@ -344,11 +333,11 @@ authConfig:
       1:
         title: 'Click <a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="noopener noreferrer nofollow">here</a> to open applications settings in a new window'
         body:
-         1: Login to your account. Navigate to "APIs & Services" and then select "OAuth consent screen".
-         2: 'Authorized domains:'
-         3: 'Application homepage link: '
-         4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
-         5: 'Click on "Save".'
+          1: Login to your account. Navigate to "APIs & Services" and then select "OAuth consent screen".
+          2: 'Authorized domains:'
+          3: 'Application homepage link: '
+          4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
+          5: 'Click on "Save".'
         topPrivateDomain: 'Top private domain of:'
       2:
         title: 'Navigate to the "Credentials" tab to create your OAuth client ID'
@@ -472,14 +461,12 @@ authConfig:
   noneEnabled: Local Authentication is always enabled, but you may select another additional authentication provider from those shown below.
   localEnabled: '{vendor} is configured to allow access to accounts in its local database.'
   manageLocal: Manage Accounts
-
 authGroups:
   actions:
     refresh: Refresh Group Memberships
     assignRoles: Assign Global Roles
   assignEdit:
     assignTitle: Assign Global Roles To Group
-
 assignTo:
   title: |-
     {count, plural,
@@ -492,7 +479,6 @@ assignTo:
       other { Assign {count} Clusters To&hellip; }
     }
   workspace: Workspace
-
 asyncButton:
   apply:
     action: Apply
@@ -523,11 +509,11 @@ asyncButton:
     success: Disabled
     waiting: Disabling&hellip;
   activate:
-    action:  Activate
+    action: Activate
     waiting: Activating&hellip;
     success: Activated
   deactivate:
-    action:  Deactivate
+    action: Deactivate
     waiting: Deactivating&hellip;
     success: Deactivated
   done:
@@ -620,7 +606,6 @@ asyncButton:
     action: Generate
     success: Generated
     waiting: Generating&hellip;
-
 backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
@@ -694,9 +679,6 @@ backupRestoreOperator:
     useBackup: Use the s3 location specified on the Backup CR
     useDefault: Use the default storage location configured during installation
   targetBackup: Target Backup
-
-
-
 catalog:
   app:
     managed: Managed
@@ -808,14 +790,7 @@ catalog:
       basics:
         label: Metadata
         subtext: Set App metadata
-        description: This process will help {action, select,
-            install { create }
-            upgrade { upgrade }
-            update { update }
-          } the {existing, select,
-            true { app}
-            false { chart}
-          }. Start by setting some basic information used by {vendor} to manage the App.
+        description: This process will help {action, select, install { create } upgrade { upgrade } update { update } } the {existing, select, true { app} false { chart} }. Start by setting some basic information used by {vendor} to manage the App.
         nsCreationDescription: "To install the app into a new namespace enter it's name in the Namespace field and select it."
         createNamespace: "Namespace <code>{namespace}</code> will be created."
       clusterTplVersion:
@@ -882,7 +857,6 @@ catalog:
   os:
     versionIncompatible: "This version is not compatible with Windows nodes."
     chartIncompatible: "This chart is not compatible with Windows nodes."
-
 changePassword:
   title: Change Password
   cancel: Cancel
@@ -908,11 +882,16 @@ changePassword:
     failedToChange: Failed to change password
     failedDeleteKey: Failed to delete key
     failedDeleteKeys: Failed to delete keys
-
+  strength:
+    best: best
+    good: good
+    label: Password strength
+    tooltip1: Password must contain at least {length} characters
+    tooltip2: Include at least two types of numbers, uppercase letters, lowercase letters, and symbols
+    weak: weak
 chartHeading:
   overview: Overview
   poweredBy: "Powered by:"
-
 cis:
   addTest: Add Test ID
   alertNeeded: |-
@@ -969,7 +948,6 @@ cis:
   testID: Test ID
   testsSkipped: Tests Skipped
   testsToSkip: Tests to Skip
-
 cluster:
   addonChart:
     rancher-vsphere-cpi: vSphere CPI Configuration
@@ -1095,16 +1073,16 @@ cluster:
         label: SecretKey
         placeholder: Your API Secret Key
     vmwarevsphere:
-        server:
-          label: vCenter or ESXi Server
-          placeholder: vcenter.domain.com
-        port:
-          label: Port
-        username:
-          label: Username
-        password:
-          label: Password
-        note: 'Note: The free ESXi license does not support API access. Only servers with a valid or evaluation license are supported.'
+      server:
+        label: vCenter or ESXi Server
+        placeholder: vcenter.domain.com
+      port:
+        label: Port
+      username:
+        label: Username
+      password:
+        label: Password
+      note: 'Note: The free ESXi license does not support API access. Only servers with a valid or evaluation license are supported.'
     gcp:
       authEncodedJson:
         label: Service Account
@@ -1423,7 +1401,7 @@ cluster:
         bannerLabel: 'Note: The last selector that matches wins and only args from it will be used.  Args from other matches above will not combined together or merged.'
         title: 'For machines with labels matching:'
         subTitle: 'Use the Kubelet args:'
-        titleAlt:  |-
+        titleAlt: |-
           {count, plural,
             =1 { For all machines, use the Kubelet args: }
             other { For any machines, use the Kubelet args: }
@@ -1437,7 +1415,6 @@ cluster:
     warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
     os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
     rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
-
   machinePool:
     name:
       label: Pool Name
@@ -1504,7 +1481,7 @@ cluster:
   provider:
     aliyunecs: Aliyun ECS
     aliyunkubernetescontainerservice: Alibaba ACK
-    aliyun:  Alibaba ACK
+    aliyun: Alibaba ACK
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
     aws: Amazon
@@ -1684,7 +1661,6 @@ cluster:
     v2: RKE2/K3s
   validation:
     iamInstanceProfileName: If the Amazon cloud provider is selected the "IAM Instance Profile Name" must be defined for each Machine Pool
-
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
@@ -1725,7 +1701,6 @@ clusterIndexPage:
       etcd: Etcd
       scheduler: Scheduler
       controller-manager: Controller Manager
-
 configmap:
   tabs:
     data:
@@ -1733,7 +1708,6 @@ configmap:
       protip: Use this area for anything that's UTF-8 text data
     binaryData:
       label: Binary Data
-
 containerResourceLimit:
   cpuPlaceholder: e.g. 1000
   gpuPlaceholder: e.g. 1
@@ -1746,12 +1720,9 @@ containerResourceLimit:
   memPlaceholder: e.g. 128
   requestsCpu: CPU Reservation
   requestsMemory: Memory Reservation
-
-
 resource:
   errors:
     update: "Error updating {name}"
-
 cruResource:
   backToForm: Back to Form
   backBody: You will lose any changes made to the YAML.
@@ -1761,7 +1732,6 @@ cruResource:
   reviewForm: "Keep editing YAML"
   reviewYaml: "Keep editing YAML"
   previewYaml: Edit as YAML
-
 detailText:
   collapse: Hide
   binary: '<Binary Data: {n, number} bytes>'
@@ -1772,7 +1742,6 @@ detailText:
       =1 {+ 1 more char}
       other {+ {n, number} more chars}
     }
-
 drainNode:
   action: 'Drain'
   actionStop: 'Stop Drain'
@@ -1793,12 +1762,10 @@ drainNode:
     default: Keep trying forever
     placeholder: e.g. 60
     custom: "Give up after:"
-
 etcdInfoBanner:
   hasLeader: "Etcd has a leader:"
   leaderChanges: "Number of leader changes:"
   failedProposals: "Number of failed proposals:"
-
 fleet:
   dashboard:
     pageTitle: Continuous Delivery Dashboard
@@ -1927,14 +1894,12 @@ fleet:
     error: Error
     ready: Ready
     errors: Errors
-
 footer:
   docs: Docs
   download: Download CLI
   forums: Forums
   issue: File an Issue
   slack: Slack
-
 gatekeeperConstraint:
   match:
     title: Match
@@ -1965,12 +1930,10 @@ gatekeeperConstraint:
   template: Template
   violations:
     title: Violations
-
 gatekeeperIndex:
   poweredBy: OPA Gatekeeper
   unavailable: OPA + Gatekeeper is not available in the system-charts catalog.
   violations: Violations
-
 glance:
   created: Created
   cpu: CPU Usage
@@ -1989,7 +1952,6 @@ glance:
   installMonitoring: Install Monitoring
   v1MonitoringInstalled: V1 Monitoring Installed
   clusterInfo: Cluster Information
-
 clusterBadge:
   addLabel: Add Cluster Badge
   editLabel: Edit Cluster Badge
@@ -2004,18 +1966,15 @@ clusterBadge:
     badgeAsIcon: Customize cluster icon
     maxCharsTooltip: Maximum two characters
     previewTitle: "Cluster icon and name presentation:"
-
 grafanaDashboard:
   failedToLoad: Failed to load graph
   reload: Reload
   grafana: Grafana
-
 graphOptions:
   detail: Detail
   summary: Summary
   refresh: Refresh
   range: Range
-
 hpa:
   detail:
     currentMetrics:
@@ -2078,7 +2037,6 @@ hpa:
     max: Maximum Replicas
     min: Minimum Replicas
     targetReference: Target Reference
-
 import:
   title: Import YAML
   defaultNamespace:
@@ -2088,7 +2046,6 @@ import:
     =1 {1 Resource}
     other {# Resources}
     }
-
 ingress:
   certificates:
     addCertificate: Add Certificate
@@ -2144,10 +2101,8 @@ ingress:
     defaultCertificate: default
   target:
     default: Default
-
 internalExternalIP:
   none: None
-
 istio:
   links:
     kiali:
@@ -2323,7 +2278,6 @@ istio:
     description: Description
   tracing: Enabled Jaeger Tracing (limited)
   v1Warning: Please uninstall the current Istio version in the <code>istio-system</code> namespace before attempting to install this version.
-
 labels:
   addLabel: Add Label
   addSetLabel: Add/Set Label
@@ -2334,7 +2288,6 @@ labels:
     title: Labels
   annotations:
     title: Annotations
-
 landing:
   clusters:
     title: Clusters
@@ -2371,7 +2324,6 @@ landing:
       lastVisited: Take me to the area I last visited
       custom: "Take me to cluster:"
   welcomeToRancher: 'Welcome to {vendor}'
-
 logging:
   clusterFlow:
     noOutputsBanner: There are no cluster outputs in the selected namespace.
@@ -2459,7 +2411,7 @@ logging:
     secretKey: Secret Key from Secret
   azurestorage:
     storageAccount: Account from Secret
-    accessKey:  Access Key from Secret
+    accessKey: Access Key from Secret
     container: Container
     path: Path
     storeAs: Store As
@@ -2590,7 +2542,6 @@ logging:
     clientCertPath: Client Cert Path from Secret
     clientPrivateKeyPath: Client Private Key Path from Secret
     clientPrivateKeyPassphrase: Client Private Key Passphrase from Secret
-
 longhorn:
   overview:
     title: Overview
@@ -2600,7 +2551,6 @@ longhorn:
         label: 'Longhorn'
         description: 'Manage storage system via UI'
         na: Resource Unavailable
-
 neuvector:
   overview:
     title: Overview
@@ -2610,7 +2560,6 @@ neuvector:
         label: 'NeuVector'
         description: 'Full Lifecycle Container Security'
         na: Resource Unavailable
-
 login:
   howdy: Howdy!
   welcome: Welcome to {vendor}
@@ -2635,7 +2584,6 @@ login:
   useNonLocal: Use a non-local user
   remember:
     label: Remember Username
-
 members:
   clusterMembers: Cluster Members
   createActionLabel: Add
@@ -2664,12 +2612,10 @@ members:
       label: Custom
       description: Choose individual roles for this user.
   localClusterWarning: "Caution: This is the cluster that Rancher is using as a data store.  Only administrators should be given write access to this cluster. Users with write access to this cluster can use it to grant themselves access to any other cluster managed by this installation."
-
 membershipEditor:
   label: Members
   user: User
   role: Role
-
 monitoring:
   accessModes:
     many: ReadWriteMany
@@ -2882,7 +2828,6 @@ monitoring:
     modes:
       block: Block
       file: Filesystem
-
 monitoringReceiver:
   addButton: Add {type}
   custom:
@@ -2941,7 +2886,6 @@ monitoringReceiver:
       placeholder: e.g. http://my-proxy/
     sendResolved:
       label: Enable send resolved alerts
-
 alertmanagerConfigReceiver:
   secretKeyId: Key Id from Secret
   name: Receiver Name
@@ -2981,13 +2925,11 @@ monitoringRoute:
     label: Repeat Interval
   wait:
     label: Group Wait
-
 moveModal:
   title: Move to a new project?
   description: 'You are moving the following namespaces:'
   moveButtonLabel: Move
   targetProject: Target Project
-
 nameNsDescription:
   name:
     label: Name
@@ -3001,7 +2943,6 @@ nameNsDescription:
   description:
     label: Description
     placeholder: Any text you want that better describes this resource
-
 namespace:
   containerResourceLimit: Container Resource Limit
   resourceQuotas: Resource Quotas
@@ -3014,16 +2955,15 @@ namespace:
   total: Total
   workloads: Workloads
   resourceStates:
-      success: 'Active'
-      info: 'Transitioning'
-      warning: 'Warning'
-      error: 'Error'
-      unknown: 'Unknown'
-      paused:
-        stateName: 'Inactive'
-        shortDescription: Deployment is paused
-        longDescription: Deployment is paused. Pausing stops the controller from deploying revisions.
-
+    success: 'Active'
+    info: 'Transitioning'
+    warning: 'Warning'
+    error: 'Error'
+    unknown: 'Unknown'
+    paused:
+      stateName: 'Inactive'
+      shortDescription: Deployment is paused
+      longDescription: Deployment is paused. Pausing stops the controller from deploying revisions.
 namespaceFilter:
   noMatchingOptions: No matching options
   more: "+{more}"
@@ -3033,11 +2973,9 @@ namespaceFilter:
       one {1 item selected}
       other {{total} items selected}
       }
-
 namespaceList:
   selectLabel: Namespace
   addLabel: Add Namespace
-
 navLink:
   name:
     label: Name
@@ -3200,7 +3138,6 @@ node:
     downloadNodeConfig: Download Keys
     scaleDown: Scale Down
     forceDelete: Force Delete
-
 persistentVolume:
   pluginConfiguration:
     label: Plugin configuration
@@ -3498,7 +3435,6 @@ persistentVolume:
       placeholder: e.g. ext4
     readOnly:
       label: Read Only
-
 persistentVolumeClaim:
   name: Persistent Volume Claim Name
   accessModes: Access Modes
@@ -3572,14 +3508,12 @@ prefs:
     'true': Include Prerelease Versions
     'false': Show Releases Only
     label: Helm Charts
-
 principal:
   loading: Loading&hellip;
   error: Unable to fetch principal info
   name: Name
   loginName: Username
   type: Type
-
 probe:
   checkInterval:
     label: Check Interval
@@ -3612,7 +3546,6 @@ probe:
   type:
     label: Type
     placeholder: Select a check type
-
 project:
   membersEditOnly: Only permissions equal to or below those of the current user can be applied
   members:
@@ -3625,8 +3558,6 @@ project:
     default: Cluster Default
     label: Pod Security Policy
     current: "{value} (Current)"
-
-
 projectMembers:
   project:
     label: Project
@@ -3667,14 +3598,12 @@ projectMembers:
     servicesView: View Services
     persistentvolumeclaimsView: View Volumes
     workloadsView: View Workloads
-
 projectNamespaces:
   createNamespace: Create Namespace
   createProject: Create Project
   label: Projects/Namespaces
   noNamespaces: There are no namespaces defined.
   noProjectNoNamespaces: All namespaces are in a project
-
 prometheusRule:
   alertingRules:
     addLabel: Add Alert
@@ -3728,18 +3657,15 @@ prometheusRule:
     labels: Labels
     name: Time Series Name
     removeRecord: Remove Record
-
 promptForceRemove:
   modalTitle: Are you sure?
   removeWarning: "There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. It's highly recommended to manually delete any referenced infrastructure."
   forceDelete: Force Delete
   confirmName: "Enter in the pool name below to confirm:"
-
 promptScaleMachineDown:
   attemptingToRemove: "You are attempting to delete {count} {type}"
   retainedMachine1: At least one Machine must exist for roles Control Plane and Etcd.
   retainedMachine2: <b>{ name }</b> will remain
-
 promptRemove:
   title: Are you sure?
   andOthers: |-
@@ -3751,10 +3677,8 @@ promptRemove:
   attemptingToRemove: "You are attempting to delete the {type}"
   protip: "Tip: Hold the {alternateLabel} key while clicking delete to bypass this confirmation"
   confirmName: "Enter <b>{nameToMatch}</b> below to confirm:"
-
 promptRemoveApp:
   removeCrd: "Delete the CRD associated with this app"
-
 promptRestore:
   title: Restore Snapshot
   name: Name
@@ -3765,7 +3689,6 @@ promptRestore:
   notification:
     title: Restore Snapshot
     message: Restoring snapshot { selectedSnapshot } has started...
-
 promptRollback:
   modalTitle: Roll Back {workloadName}
   dropdownTitle: Roll Back to Revision
@@ -3776,24 +3699,20 @@ promptRollback:
   currentLabel: "(Current)"
   multipleWorkloadError: "Only one workload can be rolled back at a time."
   singleRevisionBanner: There are no revisions to roll back to.
-
 promptSaveAsRKETemplate:
   title: Convert {cluster} to new RKE Template
   name: Cluster Template Name
   description: Create a new RKE cluster template and initial revision from the current cluster configuration.
   warning: This will modify the cluster, setting it up to use the newly created cluster template and revision. This can not be undone.
-
 promptRotateEncryptionKey:
   title: Rotate Encryption Keys
   description: The last backup {name} was performed on {date}
   warning: Before proceeding, ensure a successful ETCD backup of the cluster has been completed.
   error: No backup found
-
 rancherAlertingDrivers:
   msTeams: Enable Microsoft Teams
   sms: Enable SMS
   selectOne: You must select at least one of the options below.
-
 rbac:
   roleBinding:
     noData: There are no members associated with this resource.
@@ -3866,7 +3785,7 @@ rbac:
         label: Built-in
         description: Additional roles to define more fine-grain permissions model.
     unknownRole:
-        description: No description provided
+      description: No description provided
     assignOnlyRole: This role is already assigned
     role:
       admin:
@@ -3936,7 +3855,6 @@ rbac:
         label: Login Access
       clustertemplaterevisions-create:
         label: Create RKE Template Revisions
-
 resourceDetail:
   detailTop:
     annotations: Annotations
@@ -3993,7 +3911,6 @@ resourceList:
     create: Create
     createFromYaml: Create from YAML
     createResource: "Create {resourceName}"
-
 resourceTable:
   groupBy:
     none: Flat List
@@ -4013,7 +3930,6 @@ resourceTable:
     notInANodePool: "Not in a Pool"
     nodePool: "<span>Pool:</span> {name} ({count})"
     node: "<span>Node:</span> {name}"
-
 resourceTabs:
   conditions:
     tab: Conditions
@@ -4023,8 +3939,6 @@ resourceTabs:
     tab: Related Resources
     from: Referred To By
     to: Refers To
-
-
 resourceYaml:
   errors:
     namespaceRequired: This resource is namespaced, so a namespace must be provided.
@@ -4035,7 +3949,6 @@ resourceYaml:
     hideDiff: Hide Diff
     unified: Unified
     split: Split
-
 secret:
   authentication: Authentication
   certificate:
@@ -4111,7 +4024,6 @@ secret:
     'kubernetes.io/tls':
       description: Store a certificate and key for TLS
       docLink: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
-
 selectOrCreateAuthSecret:
   label: Authentication
   options:
@@ -4134,14 +4046,12 @@ selectOrCreateAuthSecret:
   createSsh: Create a SSH Key Secret
   createBasic: Create a HTTP Basic Auth Secret
   createS3: Create a S3-Compatible Auth Secret
-
 serviceAccount:
   automount: Automount Service Account Token
   imagePullSecrets: Image Pull Secrets
   tabs:
     serviceAccount:
       label: Service Account
-
 servicePorts:
   header:
     label: Port Rules
@@ -4160,14 +4070,12 @@ servicePorts:
     target:
       label: Target Port
       placeholder: e.g. 80 or http
-
 serviceTypes:
   clusterip: Cluster IP
   externalname: External Name
   headless: Headless
   loadbalancer: Load Balancer
   nodeport: Node Port
-
 servicesPage:
   anyNode: Any Node
   labelsAnnotations:
@@ -4240,7 +4148,6 @@ servicesPage:
       label: Node Port
   typeOpts:
     label: Service Type
-
 setup:
   currentPassword: Bootstrap Password
   confirmPassword: Confirm New Password
@@ -4263,7 +4170,6 @@ setup:
   useManual: Set a specific password to use
   useRandom: Use a randomly generated password
   welcome: Welcome to {vendor}!
-
 sortableTable:
   actionAvailability:
     selected: "{actionable} selected"
@@ -4283,7 +4189,6 @@ sortableTable:
       =1 {{count} {count, plural, =1 {{singularLabel}} other {{pluralLabel}}}}
       other {{from} - {to} of {count} {pluralLabel}}}
   search: Filter
-
 storageClass:
   actions:
     setAsDefault: Set as Default
@@ -4569,7 +4474,6 @@ storageClass:
       placeholder: e.g. storageos-secret
   no-provisioner:
     title: Local Storage (Unsupported)
-
 tableHeaders:
   accessKey: Access Key
   address: Address
@@ -4736,7 +4640,6 @@ tableHeaders:
   groupName: Group Name
   groupRoleNames: Group Role Names
   restart: Restart Required
-
 target:
   router:
     label: Router
@@ -4748,7 +4651,6 @@ target:
   version:
     label: Version
     placeholder: Select a version
-
 user:
   detail:
     username: Username
@@ -4906,13 +4808,11 @@ validation:
     route:
       match: At least one Match or Match Regex must be selected
       interval: '"{key}" must be of a format with digits followed by a unit i.e. 1h, 2m, 30s'
-
 wizard:
   previous: Previous
   finish: Finish
   next: Next
   step: "Step {number}"
-
 wm:
   connection:
     connected: Connected
@@ -4950,7 +4850,6 @@ wm:
     containerName: "Container: {label}"
   kubectlShell:
     title: "Kubectl: {name}"
-
 workload:
   container:
     command:
@@ -5001,11 +4900,11 @@ workload:
       successThreshold: Success Threshold
       timeout: Timeout
       kind:
-        none:  None
-        HTTP:  HTTP request returns a successful status (200-399)
+        none: None
+        HTTP: HTTP request returns a successful status (200-399)
         HTTPS: HTTPS request returns a successful status
-        tcp:   TCP connection opens successfully
-        exec:  Command run inside the container exits with status 0
+        tcp: TCP connection opens successfully
+        exec: Command run inside the container exits with status 0
     image: Container Image
     imagePullPolicy: Pull Policy
     imagePullSecrets: Pull Secrets
@@ -5358,7 +5257,6 @@ workload:
     path: Path
     readOnly: Read Only
     server: Server
-
     subPath: Sub Path in Volume
     title: 'Storage'
     volumeName: Volume Name
@@ -5405,7 +5303,6 @@ workload:
       label: Termination Grace Period
       tip: The duration the pod needs to terminate successfully.
     title: Upgrading
-
 harvester:
   modal:
     backup:
@@ -5541,7 +5438,6 @@ harvester:
     cpu: CPU
     storage: Storage
     noFileChosen: No file chosen
-
   validation:
     custom:
       tooLongName: '"Name" cannot be more than {max} characters.'
@@ -5567,7 +5463,6 @@ harvester:
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
       ruleFileTip: 'The file you have chosen ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
-
   dashboard:
     label: Dashboard
     header: "Harvester Cluster: {cluster}"
@@ -5580,7 +5475,6 @@ harvester:
         label: Events
       vmMetrics:
         label: VM Metrics
-
     version: Version
   host:
     label: Hosts
@@ -5649,10 +5543,8 @@ harvester:
       error: Host has unready or unschedulable disks.
       fileSystem:
         info: Current file system is {system}, You can format it manually.
-
   virtualizationManagement:
     manage: Manage
-
   virtualMachine:
     label: Virtual Machines
     osType: OS Type
@@ -5689,8 +5581,7 @@ harvester:
     unplug:
       title: 'Are you sure that you want to detach volume {name} ?'
       actionLabel: Detach
-      detachVolume:
-        Detach Volume
+      detachVolume: Detach Volume
     restartTip: Restart the virtual machine now to take effect of the configuration changes.
     runStrategy: Run Strategy
     restartNow: Restart Now
@@ -5710,7 +5601,7 @@ harvester:
       type: Type
       size: Size
       edit: Edit
-      bus:  Bus
+      bus: Bus
       bootOrder: Boot Order
       volume: Volume
       dockerImage: Docker Image
@@ -5731,7 +5622,7 @@ harvester:
     network:
       title: Network
       addNetwork: Add Network
-      addPort:  Add Port
+      addPort: Add Port
     cloudConfig:
       title: Cloud Config
       createTemplateTitle: 'Create {name}.'
@@ -5836,7 +5727,6 @@ harvester:
         down: No events in the past hour
       console:
         down: This Virtual Machine is down. Please start it to access its console.
-
   volume:
     label: Volumes
     tabs:
@@ -5847,7 +5737,6 @@ harvester:
       new: New
       vmImage: VM Image
     image: Image
-
   image:
     label: Images
     tabs:
@@ -5867,14 +5756,12 @@ harvester:
         =1 {1 image is uploading, please do not refresh or close the page.}
         other {{count} images are uploading, please do not refresh or close the page.}
         }
-
   vmTemplate:
     label: Templates
     tabs:
       basics: Basics
     nameNsDescription:
       name: Template Name
-
   upgradePage:
     upgradeApp: Upgrade Software
     upgrade: Upgrade
@@ -5897,10 +5784,9 @@ harvester:
       monitoringChart: Monitoring Chart
       harvesterChart: Harvester Chart
       success: Success
-      fail:  Fail
+      fail: Fail
       ongoing: on-going
     dismissMessage: Dismiss it
-
   backup:
     label: Backups
     createText: Restore Backup
@@ -5926,7 +5812,6 @@ harvester:
       replaceExisting: Replace existing
       virtualMachineName: Virtual Machine Name
     matchTarget: The current backup target does not match the existing one.
-
   network:
     label: Networks
     tabs:
@@ -5964,7 +5849,6 @@ harvester:
     keypair: SSH Key
     tabs:
       basics: Basics
-
   setting:
     label: Settings
     validation:
@@ -5991,7 +5875,6 @@ harvester:
       imagePullPolicy: Pull Policy
       repo: Repository
       tag: Tag
-
     upgrade:
       selectExitImage: Please select the OS image to upgrade.
       imageUrl: Please input a valid image url.
@@ -6012,26 +5895,21 @@ harvester:
     templateType: Template Type
     userData: User Data
     networkData: Network Data
-
   manager:
     cluster:
       label: Harvester Clusters
       none: There are no Harvester Clusters
       learnMore: Learn more about Harvester from the <a target="_blank" href="https://harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester Web Site</a> or read the the <a target="_blank" href="https://docs.harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester Docs</a>
       description: Harvester is a modern Hyperconverged infrastructure (HCI) solution built for bare metal servers using enterprise-grade open source technologies including Kubernetes, Kubevirt and Longhorn.
-
   support:
     title: Harvester Support
     kubeconfig:
       title: Download KubeConfig
       titleDescription: Download kubeconfig for debugging.
-
   namespace:
     label: Namespaces
-
   projectNamespace:
     label: Projects/Namespaces
-
   service:
     title: Add-on Config
     ipam:
@@ -6050,7 +5928,6 @@ harvester:
       label: Health Check Timeout
     healthCheckEnabled:
       label: Health Check
-
   vip:
     namespace:
       label: Namespace
@@ -6059,13 +5936,11 @@ harvester:
       invalid: '"CIRD" is invalid.'
     add:
       label: Add IP Pools
-
   sslParameters:
     protocols:
       label: Protocols
     ciphers:
       label: Ciphers
-
 ##############################
 # Model Properties
 ##############################
@@ -6108,7 +5983,6 @@ model:
       googleoauth: Google
       oidc: OIDC
       keycloakoidc: Keycloak
-
   cluster:
     name: Cluster Name
   ingress:
@@ -6139,7 +6013,6 @@ model:
     displayKind:
       generic: Service
       loadBalancer: L4 Balancer
-
 typeDescription:
   # Map of
   # type: Description to be shown on the top of list view describing the type.
@@ -6174,7 +6047,6 @@ typeDescription:
   logging.banzaicloud.io.flow: A flow defines which logs to collect and filter as well as which output to send the logs. The flow is a namespaced resource, which means logs will only be collected from the namespace that the flow is deployed in.
   logging.banzaicloud.io.output: An output defines which logging providers that logs can be sent to. The output needs to be in the same namespace as the flow that is using it.
   group.principal: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
-
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,
@@ -6407,12 +6279,12 @@ typeLabel:
       one { Volume }
       other { Volumes }
     }
-  harvesterhci.io.user:  |-
+  harvesterhci.io.user: |-
     {count, plural,
       one { User }
       other { Users }
     }
-  harvesterhci.io.setting:  |-
+  harvesterhci.io.setting: |-
     {count, plural,
       one { Setting }
       other { Settings }
@@ -6442,12 +6314,7 @@ typeLabel:
       one { Bundle }
       other { Bundles }
     }
-  fleet.cattle.io.clusterregistrationtoken: |-
-    {count, plural,
-      one { Cluster Registration Token }
-      other { Cluster Registration Tokens }
-    } 
-
+  fleet.cattle.io.clusterregistrationtoken: "{count, plural,\n  one { Cluster Registration Token }\n  other { Cluster Registration Tokens }\n} "
 action:
   clone: Clone
   disable: Disable
@@ -6475,7 +6342,6 @@ action:
   runNow: Run Now
   suspend: Suspend
   resume: Resume
-
 unit:
   sec: secs
   min: mins
@@ -6493,29 +6359,23 @@ workloadPorts:
   addPort: Add Port
   remove: Remove
   addHost: Add Host
-
 podAffinity:
   addLabel: Add Pod Selector
-
 keyValue:
   keyPlaceholder: e.g. foo
   valuePlaceholder: e.g. bar
   protip: 'Paste lines of <em>key=value</em> or <em>key: value</em> into any key field for easy bulk entry'
-
 registryMirror:
   header: Mirrors
   toolTip: 'Mirrors can be used to redirect requests for images from one registry to actually come from a list of endpoints you specify instead.  For example you could point docker.io to always talk to your internal registry and instead of ever going to the actual DockerHub on the internet.'
   addLabel: Add Mirror
-
 registryConfig:
   header: Registry Authentication
   toolTip: 'When an image needs to be pulled from the given registry hostname, this information will be used to verify the identity of the registry and authenticate to it.'
   addLabel: Add Registry
-
 ##############################
 ### Advanced Settings
 ##############################
-
 advancedSettings:
   label: Settings
   subtext: Typical users will not need to change these. Proceed with caution, incorrect values can break your {appName} installation. Settings which have been customized from default settings are tagged 'Modified'.
@@ -6603,7 +6463,6 @@ advancedSettings:
       info: Info
       debug: Debug
       trace: Trace
-
 featureFlags:
   label: Feature Flags
   warning: |-
@@ -6617,7 +6476,6 @@ featureFlags:
   restart:
     title: Waiting for Restart
     wait: This may take a few moments
-
 banner:
   label: Fixed Banners
   settingName: Banners
@@ -6649,7 +6507,6 @@ banner:
     label: 'Font Size'
   consent: Consent Banner
   consentFootnote: "Tip: Use \\n character for line break"
-
 branding:
   label: Branding
   directoryName: Brand Asset Directory Name
@@ -6686,7 +6543,7 @@ notifications:
   menuLabel: 'Custom Notifications'
   loginError:
     header: Login Failed Banner
-    showCheckboxLabel: Show custom login error 
+    showCheckboxLabel: Show custom login error
     messageLabel: Text to display
 resourceQuota:
   label: Resource Quotas
@@ -6732,13 +6589,9 @@ resourceQuota:
     namespace: 'This Namespace:'
     available: 'Available:'
     max: 'Total:'
-
-
-
 ##############################
 ### Support Page
 ##############################
-
 support:
   community:
     title: SUSE Rancher provides world-class support
@@ -6753,7 +6606,6 @@ support:
     addLabel: "Please enter a valid Subscription ID:"
     removeTitle: Remove your ID?
     removeBody: "Note: This will not affect your subscription."
-
   suse:
     title: "Great News - You're covered"
     editBrand: Customize UI Theme
@@ -6777,11 +6629,9 @@ support:
     four:
       title: Innovate with Freedom
       text: Take advantage of our certified compatibility with a wide range of Kubernetes providers, operating systems, and open source software.
-
 embedding:
   retry: Retry
   unavailable: Cluster Manager UI is not available
-
 v1ClusterTools:
   monitoring:
     label: Monitoring (Legacy)
@@ -6792,7 +6642,6 @@ v1ClusterTools:
   istio:
     label: Istio (Legacy)
     description: 'Legacy V1 Istio. Istio v1.5 has been deprecated since Rancher 2.5.0. <a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">Learn more</a> about migrating to the latest version.'
-
 legacy:
   alerts: Alerts
   apps: Apps
@@ -6809,19 +6658,15 @@ legacy:
   pipelines: Pipelines
   psps: Pod Security Policies
   secrets: Secrets
-
   project:
     label: Project
     select: "Use the Project/Namespace filter at the top of the page to select a Project in order to see legacy Project features."
-
 serverUpgrade:
   title: "{vendor} Server Changed"
   message: "The page reloaded because the version of {vendor} running on your server changed."
-
 volumeClaimTemplate:
   add:
     label: Add Claim Template
-
 manager:
   cloudCredentials:
     label: Cloud Credentials
@@ -6831,7 +6676,6 @@ manager:
     label: RKE Templates
   nodeTemplates:
     label: Node Templates
-
 auth:
   config:
     label: Auth Provider
