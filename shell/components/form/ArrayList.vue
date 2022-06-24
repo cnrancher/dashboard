@@ -242,6 +242,7 @@ export default {
         <slot
           name="columns"
           :queueUpdate="queueUpdate"
+          :update="update"
           :i="idx"
           :rows="rows"
           :row="row"
