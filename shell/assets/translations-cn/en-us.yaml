@@ -6682,3 +6682,29 @@ auth:
 vncConsole:
   error:
     message: Web VNC console connection is disconnected
+clusterConnectMode:
+  actions:
+    restartConfirm: Are You Sure You Want To Save Connect Mode And Restart {name} Cluster Controller？
+    saveAndRestart: Save And Restart
+    yes: Yes
+  apiEndpoint:
+    label: API Endpoint
+    overrideLabel: Override API Endpoints
+    placeholder: e.g. https://10.43.0.1:443
+    required: API Endpoint is required
+  connectMode:
+    label: Connect Mode
+  connectStatus:
+    address: Address
+    apiEndpoint: API Endpoint
+    driver: Driver
+    host: Host
+    label: Connect Status
+    provider: Provider
+    timeout: Timeout
+  detail: View cluster connection mode and API Endpoints
+  testConnect:
+    error: Connect Failed
+    label: Test
+    success: Connect Success
+  title: Cluster connect mode
