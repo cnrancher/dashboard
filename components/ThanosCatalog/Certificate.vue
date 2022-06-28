@@ -95,7 +95,6 @@ export default {
             v-model="tls.key"
             :mode="mode"
             type="multiline"
-            required
             :label="t('globalMonitoringPage.tls.key.label')"
             :placeholder="t('globalMonitoringPage.tls.key.placeholder')"
           />
@@ -106,7 +105,6 @@ export default {
             v-model="tls.cert"
             :mode="mode"
             type="multiline"
-            required
             :label="t('globalMonitoringPage.tls.cert.label')"
             :placeholder="t('globalMonitoringPage.tls.cert.placeholder')"
           />
@@ -119,7 +117,6 @@ export default {
             v-model="tls.ca"
             :mode="mode"
             type="multiline"
-            required
             :label="t('globalMonitoringPage.tls.ca.label')"
             :placeholder="t('globalMonitoringPage.tls.ca.placeholder')"
           />
