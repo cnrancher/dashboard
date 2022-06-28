@@ -3860,6 +3860,9 @@ rbac:
         label: Login Access
       clustertemplaterevisions-create:
         label: Create RKE Template Revisions
+      read-only-pandaria:
+        description: A read-only administrator can access all resources in all downstream clusters, but cannot access the local cluster
+        label: Read-Only Administrator
 resourceDetail:
   detailTop:
     annotations: Annotations
@@ -4665,6 +4668,7 @@ user:
       adminMessage: This user is an administrator and has all permissions
       tableHeaders:
         permission: Permission
+      readOnlyAdminMessage: This user is a read-only administrator and has read-only access to subordinate cluster objects
     clusterRoles:
       label: Cluster Roles
       description: Roles granted to this user for individual clusters
@@ -4853,6 +4857,9 @@ wm:
   containerShell:
     clear: Clear
     containerName: "Container: {label}"
+    permissionDenied:
+      message: Permission Denied
+      title: Error Open Shell
   kubectlShell:
     title: "Kubectl: {name}"
 workload:
