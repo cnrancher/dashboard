@@ -6724,3 +6724,16 @@ clusterConnectMode:
     label: Test
     success: Connect Success
   title: Cluster connect mode
+gpuReservation:
+  label: NVIDIA GPU Limit/Reservation
+  memUnit: GiB
+  placeholder: e.g. 1
+  set: Limit to
+  shared: Shared GPU Memory
+  sharedTips: While setting the shared GPU memory, Rancher will automatically set the GPU scheduler name for the workload
+  unit: GPUs
+vGpuReservation:
+  label: Orion X GPU Reservation
+  placeholder: e.g. 1
+  set: Limit to
+  unit: vGPUs

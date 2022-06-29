@@ -6941,3 +6941,16 @@ clusterConnectMode:
     label: 測試
     success: 測試成功
   title: 集羣連接模式
+gpuReservation:
+  label: NVIDIA GPU 限制/預留
+  memUnit: GiB
+  placeholder: 例如：1
+  set: 限制
+  shared: 共享 GPU 內存
+  sharedTips: 在設置共享 GPU 內存的同時，Rancher 將自動爲工作負載設置 GPU 調度器名稱
+  unit: GPUs
+vGpuReservation:
+  label: Orion X GPU 預留
+  placeholder: 例如：1
+  set: 限制
+  unit: vGPUs
