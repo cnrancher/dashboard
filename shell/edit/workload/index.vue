@@ -984,7 +984,7 @@ export default {
           <h3 class="mb-10">
             <t k="workload.scheduling.titles.limits" />
           </h3>
-          <ContainerResourceLimit v-model="flatResources" :mode="mode" :show-tip="false" />
+          <ContainerResourceLimit v-model="flatResources" :mode="mode" :show-tip="false" :limit-min-max-values="false" />
           <template>
             <div class="spacer"></div>
             <div>
