@@ -2,7 +2,7 @@
 import omitBy from 'lodash/omitBy';
 import { cleanUp } from '@shell/utils/object';
 import {
-  CONFIG_MAP, SECRET, WORKLOAD_TYPES, NODE, SERVICE, PVC, SERVICE_ACCOUNT, CAPI
+  CONFIG_MAP, SECRET, WORKLOAD_TYPES, NODE, SERVICE, PVC, SERVICE_ACCOUNT, CAPI, MANAGEMENT
 } from '@shell/config/types';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -36,6 +36,8 @@ import { RadioGroup } from '@components/Form/Radio';
 import { UI_MANAGED } from '@shell/config/labels-annotations';
 import { removeObject } from '@shell/utils/array';
 import { BEFORE_SAVE_HOOKS } from '@shell/mixins/child-hook';
+import GpuResourceLimit from '@shell/components/GpuResourceLimit';
+import { SETTING } from '@shell/config/settings';
 
 const TAB_WEIGHT_MAP = {
   general:              99,
@@ -52,6 +54,8 @@ const TAB_WEIGHT_MAP = {
 };
 
 const GPU_KEY = 'nvidia.com/gpu';
+const GPU_SHARED_KEY = 'rancher.io/gpu-mem';
+const VGPU_KEY = 'virtaitech.com/gpu';
 
 export default {
   name:       'CruWorkload',
@@ -81,6 +85,7 @@ export default {
     VolumeClaimTemplate,
     Labels,
     RadioGroup,
+    GpuResourceLimit,
   },
 
   mixins: [CreateEditView],
@@ -98,7 +103,10 @@ export default {
   },
 
   async fetch() {
-    const requests = { rancherClusters: this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }) };
+    const requests = {
+      rancherClusters:                  this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }),
+      systemGpuManagementSchedulerName: this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME),
+    };
     const needed = {
       configMaps: CONFIG_MAP,
       nodes:      NODE,
@@ -128,6 +136,7 @@ export default {
     this.allServices = hash.services || [];
     this.pvcs = hash.pvcs || [];
     this.sas = hash.sas || [];
+    this.systemGpuManagementSchedulerName = hash.systemGpuManagementSchedulerName?.value ?? '';
   },
 
   data() {
@@ -192,6 +201,8 @@ export default {
       podFsGroup:        podTemplateSpec.securityContext?.fsGroup,
       savePvcHookName:   'savePvcHook',
       tabWeightMap:      TAB_WEIGHT_MAP,
+
+      systemGpuManagementSchedulerName: '',
     };
   },
 
@@ -309,7 +320,7 @@ export default {
       },
       set(neu) {
         const {
-          limitsCpu, limitsMemory, requestsCpu, requestsMemory, limitsGpu
+          limitsCpu, limitsMemory, requestsCpu, requestsMemory, /* limitsGpu */
         } = neu;
 
         const out = {
@@ -320,11 +331,57 @@ export default {
           limits: {
             cpu:       limitsCpu,
             memory:    limitsMemory,
-            [GPU_KEY]: limitsGpu
+            // [GPU_KEY]: limitsGpu
           }
         };
 
         this.$set(this.container, 'resources', cleanUp(out));
+      }
+    },
+
+    flatGpuResources: {
+      get() {
+        const { limits = {}, requests = {} } = this.container.resources || {};
+
+        return {
+          limitsGpuShared:   limits[GPU_SHARED_KEY],
+          limitsGpu:         limits[GPU_KEY],
+          limitsVgpu:        limits[VGPU_KEY],
+          requestsGpuShared: requests[GPU_SHARED_KEY],
+          requestsGpu:       requests[GPU_KEY],
+        };
+      },
+      set(neu) {
+        const {
+          limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu
+        } = neu;
+        const scheduler = this.podTemplateSpec.scheduling?.scheduler;
+        const { limits = {}, requests = {} } = this.container.resources || {};
+
+        const out = {
+          requests: {
+            ...requests,
+            [GPU_SHARED_KEY]: requestsGpuShared,
+            [GPU_KEY]:        requestsGpu,
+          },
+          limits: {
+            ...limits,
+            [GPU_SHARED_KEY]: limitsGpuShared,
+            [GPU_KEY]:        limitsGpu,
+            [VGPU_KEY]:       limitsVgpu
+          }
+        };
+
+        this.$set(this.container, 'resources', cleanUp(out));
+
+        const scheduling = this.podTemplateSpec.scheduling ?? {};
+
+        if (requestsGpuShared && limitsGpuShared && (!scheduler || scheduler === 'default-scheduler')) {
+          scheduling.scheduler = this.systemGpuManagementSchedulerName;
+        } else if (this.systemGpuManagementSchedulerName && scheduler === this.systemGpuManagementSchedulerName) {
+          scheduling.scheduler = '';
+        }
+        this.podTemplateSpec.scheduling = scheduling;
       }
     },
 
@@ -985,6 +1042,7 @@ export default {
             <t k="workload.scheduling.titles.limits" />
           </h3>
           <ContainerResourceLimit v-model="flatResources" :mode="mode" :show-tip="false" :limit-min-max-values="false" />
+          <GpuResourceLimit v-model="flatGpuResources" :mode="mode" />
           <template>
             <div class="spacer"></div>
             <div>
