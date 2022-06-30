@@ -6592,6 +6592,10 @@ resourceQuota:
     unitlessPlaceholder: 例如：10
   add:
     label: 添加資源
+  requestsGpuCount: GPU Count
+  requestsGpuMemory: GPU Memory
+  requestsStorageClassPVC: Storage Class PVC
+  requestsStorageClassStorage: Storage Class 存儲
 ##############################
 ### Support Page
 ##############################

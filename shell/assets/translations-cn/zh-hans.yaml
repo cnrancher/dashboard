@@ -6566,7 +6566,7 @@ resourceQuota:
   configMaps: ConfigMaps
   limitsCpu: CPU 限制
   limitsMemory: 内存限制
-  persistentVolumeClaims: 持久卷声明
+  persistentVolumeClaims: 久卷声明
   pods: Pod
   replicationControllers: ReplicationController
   requestsCpu: CPU 预留
@@ -6592,6 +6592,10 @@ resourceQuota:
     unitlessPlaceholder: 例如：10
   add:
     label: 添加资源
+  requestsGpuCount: GPU Count
+  requestsGpuMemory: GPU Memory
+  requestsStorageClassPVC: Storage Class PVC
+  requestsStorageClassStorage: Storage Class 存储
 ##############################
 ### Support Page
 ##############################
