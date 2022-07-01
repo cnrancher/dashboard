@@ -8,6 +8,7 @@ import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
 import GrowlManager from '@shell/components/GrowlManager';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
+import AutoLogout from '@shell/mixins/auto-logout';
 
 export default {
 
@@ -25,7 +26,7 @@ export default {
 
   middleware: ['authenticated'],
 
-  mixins: [Brand],
+  mixins: [Brand, AutoLogout],
 
   data() {
     return {

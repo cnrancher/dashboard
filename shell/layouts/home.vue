@@ -5,6 +5,7 @@ import FixedBanner from '@shell/components/FixedBanner';
 import GrowlManager from '@shell/components/GrowlManager';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
 import { mapPref, DEV } from '@shell/store/prefs';
+import AutoLogout from '@shell/mixins/auto-logout';
 
 export default {
 
@@ -15,7 +16,7 @@ export default {
     GrowlManager
   },
 
-  mixins: [Brand],
+  mixins: [Brand, AutoLogout],
 
   middleware: ['authenticated'],
 
