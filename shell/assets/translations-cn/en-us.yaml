@@ -6040,6 +6040,7 @@ model:
       googleoauth: Google
       oidc: OIDC
       keycloakoidc: Keycloak
+      cas: CAS
   cluster:
     name: Cluster Name
   ingress:
