@@ -6972,3 +6972,6 @@ vGpuReservation:
   placeholder: 例如：1
   set: 限制
   unit: vGPUs
+autoLogout:
+  message: 你在 {autoLogoutTime} 分鐘內沒有任何操作, 系統將自動登出
+  title: 自動登出

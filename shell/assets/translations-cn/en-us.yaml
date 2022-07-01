@@ -6755,3 +6755,6 @@ vGpuReservation:
   placeholder: e.g. 1
   set: Limit to
   unit: vGPUs
+autoLogout:
+  message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
+  title: Auto logout

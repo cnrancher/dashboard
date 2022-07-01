@@ -27,6 +27,7 @@ import { ucFirst } from '@shell/utils/string';
 import { getVersionInfo, markSeenReleaseNotes } from '@shell/utils/version';
 import { sortBy } from '@shell/utils/sort';
 import PageHeaderActions from '@shell/mixins/page-actions';
+import AutoLogout from '@shell/mixins/auto-logout';
 
 const SET_LOGIN_ACTION = 'set-as-login';
 
@@ -46,7 +47,7 @@ export default {
     AwsComplianceBanner
   },
 
-  mixins: [PageHeaderActions, Brand],
+  mixins: [PageHeaderActions, Brand, AutoLogout],
 
   data() {
     return {
