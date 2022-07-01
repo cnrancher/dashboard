@@ -5964,6 +5964,7 @@ model:
       googleoauth: Google
       oidc: OIDC
       keycloakoidc: Keycloak
+      cas: CAS
   cluster:
     name: 集群名稱
   ingress:
