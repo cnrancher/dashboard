@@ -47,7 +47,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand, disabledEncryption;
+    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -64,6 +64,7 @@ export default {
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
       disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
+      uiLoginLandscape = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -107,7 +108,9 @@ export default {
       showLocal:  !hasOthers || (route.query[LOCAL] === _FLAGGED),
       firstLogin: firstLoginSetting?.value === 'true',
       singleProvider,
-      disabledEncryption
+      disabledEncryption,
+
+      uiLoginLandscape: uiLoginLandscape?.value,
     };
   },
 
@@ -428,8 +431,8 @@ export default {
           </div>
         </template>
       </div>
-
-      <BrandImage class="col span-6 landscape" file-name="login-landscape.svg" />
+      <img v-if="uiLoginLandscape" :src="uiLoginLandscape" class="col span-6 landscape">
+      <BrandImage v-else class="col span-6 landscape" file-name="login-landscape.svg" />
     </div>
   </main>
 </template>

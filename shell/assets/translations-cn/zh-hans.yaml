@@ -6602,6 +6602,18 @@ branding:
     tip: 使用自定义链接颜色替换整个 UI 中使用的链接颜色。
     useCustom: 使用自定义链接颜色
     example: 链接示例
+  favicon:
+    label: Favicon
+    preview: Favicon 预览
+    tip: 上传一个图标来替换默认的 favicon 图标，图片的宽和高应该是21像素大小. 文件最大是 20KB
+    upload: 上传 Favicon
+    useCustom: 使用自定义的 Favicon
+  loginLandscape:
+    label: 登录页面的背景图
+    preview: 背景图预览
+    tip: 上传一个图片或SVG来替换登录页面的默认背景图片. 文件最大 100KB
+    upload: 上传背景图
+    useCustom: 使用自定义登录页面背景图
 resourceQuota:
   label: 资源限额
   headers:
