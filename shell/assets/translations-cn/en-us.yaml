@@ -4902,6 +4902,7 @@ wm:
     title: "Kubectl: {name}"
 workload:
   container:
+    tags: Tags
     command:
       addEnvVar: Add Variable
       args: Arguments
