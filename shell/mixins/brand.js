@@ -9,10 +9,19 @@ export default {
     if ( this.$store.getters['management/canList'](CATALOG.APP) ) {
       this.apps = await this.$store.dispatch('management/findAll', { type: CATALOG.APP });
     }
+    const uiFaviconSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_FAVICON);
+
+    this.uiFaviconSetting = uiFaviconSetting;
+    this.uiFaviconPending = false;
   },
 
   data() {
-    return { globalSettings: [], apps: [] };
+    return {
+      globalSettings:   [],
+      apps:             [],
+      uiFaviconSetting: null,
+      uiFaviconPending: true
+    };
   },
 
   computed: {
@@ -51,6 +60,17 @@ export default {
 
     cspAdapter() {
       return findBy(this.apps, 'metadata.name', 'csp-adapter' );
+    },
+
+    uiFavicon() {
+      if (this.uiFaviconPending) {
+        return '';
+      }
+      if (this.uiFaviconSetting && this.uiFaviconSetting.value) {
+        return this.uiFaviconSetting.value;
+      }
+
+      return require(`~shell/static/favicon.png`);
     }
   },
 
@@ -138,6 +158,13 @@ export default {
         rel:  'icon',
         type: 'image/x-icon',
         href: ico
+      }];
+    } else {
+      out.link = [{
+        hid:  'icon',
+        rel:  'icon',
+        type: 'image/x-icon',
+        href: this.uiFavicon
       }];
     }
 
