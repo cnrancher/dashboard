@@ -27,7 +27,7 @@ export default {
       const setting = settingsMap[id];
 
       if ( !setting ) {
-        return;
+        continue;
       }
 
       const readonly = !!ALLOWED_SETTINGS[id].readOnly;
@@ -48,6 +48,10 @@ export default {
         const v = s.data.value || s.data.default;
 
         s.enum = `advancedSettings.enum.${ id }.${ v }`;
+      } else if (s.kind === 'enum-map') {
+        const v = s.data.value || s.data.default;
+
+        s.enumMap = s.options[v];
       }
       // There are only 2 actions that can be enabled - Edit Setting or View in API
       // If neither is available for this setting then we hide the action menu button
@@ -81,9 +85,7 @@ export default {
   <Loading v-if="!settings" />
   <div v-else>
     <Banner color="warning" class="settings-banner">
-      <div>
-        {{ t('advancedSettings.subtext') }}
-      </div>
+      <div v-html="t('advancedSettings.subtext', {}, true)"></div>
     </Banner>
     <div v-for="setting in settings" :key="setting.id" class="advanced-setting mb-20">
       <div class="header">
@@ -93,7 +95,7 @@ export default {
             <span v-if="setting.fromEnv" class="modified">Set by Environment Variable</span>
             <span v-else-if="setting.customized" class="modified">Modified</span>
           </h1>
-          <h2>{{ setting.description }}</h2>
+          <h2 v-html="t(`advancedSettings.descriptions.${setting.id}`, null, true)"></h2>
         </div>
         <div v-if="setting.hasActions" class="action">
           <button aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-sm role-multi-action actions" @click="showActionMenu($event, setting)">
@@ -111,6 +113,7 @@ export default {
           <pre v-if="setting.kind === 'json'">{{ setting.json }}</pre>
           <pre v-else-if="setting.kind === 'multiline'">{{ setting.data.value || setting.data.default }}</pre>
           <pre v-else-if="setting.kind === 'enum'">{{ t(setting.enum) }}</pre>
+          <pre v-else-if="setting.kind === 'enum-map'">{{ setting.enumMap }}</pre>
           <pre v-else-if="setting.data.value || setting.data.default">{{ setting.data.value || setting.data.default }}</pre>
           <pre v-else class="text-muted">&lt;{{ t('advancedSettings.none') }}&gt;</pre>
         </div>
