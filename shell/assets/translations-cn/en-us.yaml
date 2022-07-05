@@ -6506,6 +6506,8 @@ advancedSettings:
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
     'harvester-monitoring': Specifies the monitoring configuration that the Harvester's built-in Prometheus will use.
     'hide-local-cluster': Hide the local cluster
+    ui-footer-text: Extra text in footer.
+    ui-footer-url: URL for the extra text in footer.
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:
