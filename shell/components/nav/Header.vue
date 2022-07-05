@@ -329,6 +329,11 @@ export default {
     <div class="spacer"></div>
 
     <div class="rd-header-right">
+      <div class="manage-ui-link">
+        <a href="/g/clusters">
+          {{ t('nav.manageUI') }}
+        </a>
+      </div>
       <HarvesterUpgrade v-if="isVirtualCluster" />
       <div
         v-if="currentCluster && !simple && (currentProduct.showNamespaceFilter || currentProduct.showWorkspaceSwitcher)"
@@ -874,5 +879,11 @@ export default {
         height: 1px;
       }
     }
+  }
+
+  .manage-ui-link {
+    grid-area: manage-ui;
+    display: flex;
+    align-items: center;
   }
 </style>

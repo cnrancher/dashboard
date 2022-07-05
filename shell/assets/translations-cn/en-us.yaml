@@ -163,6 +163,7 @@ nav:
   failWhale:
     reload: Reload
     separator: or
+  manageUI: Cluster Manager UI
 product:
   apps: Apps
   auth: Users & Authentication
