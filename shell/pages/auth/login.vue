@@ -47,7 +47,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape;
+    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -65,6 +65,8 @@ export default {
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
       disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PWD_ENCRYPT);
       uiLoginLandscape = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
+      footerText = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
+      footerUrl = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -109,6 +111,8 @@ export default {
       firstLogin: firstLoginSetting?.value === 'true',
       singleProvider,
       disabledEncryption,
+      footerText,
+      footerUrl,
 
       uiLoginLandscape: uiLoginLandscape?.value,
     };
@@ -434,6 +438,14 @@ export default {
       <img v-if="uiLoginLandscape" :src="uiLoginLandscape" class="col span-6 landscape">
       <BrandImage v-else class="col span-6 landscape" file-name="login-landscape.svg" />
     </div>
+    <div v-if="footerText && footerText.value" class="footer-banner">
+      <div v-if="footerUrl && footerUrl.value">
+        <a :href="footerUrl.value" target="_blank">{{ footerText.value }}</a>
+      </div>
+      <div v-else>
+        {{ footerText.value }}
+      </div>
+    </div>
   </main>
 </template>
 
@@ -469,6 +481,13 @@ export default {
           padding: 0;
         }
       }
+    }
+
+    .footer-banner {
+      position: absolute;
+      bottom: 4px;
+      left: 25%;
+      transform: translate(-50%, 0);
     }
   }
 </style>
