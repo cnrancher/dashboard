@@ -6498,6 +6498,16 @@ advancedSettings:
     'harvester-monitoring': 指定 Harvester 內置的 Prometheus 將使用的監控配置。
     ui-footer-text: 額外的頁腳內容
     ui-footer-url: 額外頁腳內容對應的鏈接
+    auditlog-server-url: 配置審計日誌服務地址。
+    disable-password-encrypt: 禁用密碼加密。
+    download-file-size-limit: 容器文件下載大小限制（以Mi爲單位）。
+    hide-local-cluster: 隱藏本地羣集
+    pandaria-enable-healthcheck-api: 啓用Rancher local api-server健康檢查。
+    restricted-default-admin: 初始化管理員角色是否使用受限管理員權限，權限說明請查看<a href="http://docs.rancher.cn/docs/rancher2.5/admin-settings/rbac/global-permissions/_index/#%E5%8F%97%E9%99%90%E7%AE%A1%E7%90%86%E5%91%98" target="_blank">這裏</a>。
+    rotate-certs-if-expiring-in-days: 設置Rancher Server提前輪換證書的時間（以天爲單位）。
+    system-catalog: 配置 Rancher 使用 System Chart Repo。
+    ui-brand: 定義在 /assets/brand 中的替代主題的文件夾名稱。
+    ui-session-logout-minutes: 用戶超過配置時間沒有任何操作將自動註銷(以分鐘爲單位)。
   editHelp:
     'ui-banners': 此設置使用包含 3 個根參數的 JSON 對象，分別是<code>banner</code>、<code>showHeader</code>和<code>showFooter</code>。<code>banner</code> 是包含 <code>textColor</code>，<code>background</code>和<code>text</code>的對象，其中<code>textColor</code> 和 <code>background</code>的值可以是任何有效的 CSS 顏色值。
   enum:

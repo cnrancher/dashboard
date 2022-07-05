@@ -6496,8 +6496,18 @@ advancedSettings:
     'harv-auto-disk-provision-paths': 指定 Harvester 将自动添加为虚拟机存储的磁盘（使用 glob 模式）。
     'harv-support-bundle-image': 支持捆绑镜像配置。前往 <a href="https://hub.docker.com/r/rancher/support-bundle-kit/tags" target="_blank">rancher/support-bundle-kit</a> 查看更多版本。
     'harvester-monitoring': 指定 Harvester 内置的 Prometheus 将使用的监控配置。
-    ui-footer-text: 额外的页脚内容
-    ui-footer-url: 额外页脚内容对应的链接
+    'ui-footer-text': 额外的页脚内容
+    'ui-footer-url': 额外页脚内容对应的链接
+    'auditlog-server-url': 配置审计日志服务地址。
+    'disable-password-encrypt': 禁用密码加密。
+    'download-file-size-limit': 容器文件下载大小限制（以Mi为单位）。
+    'hide-local-cluster': 隐藏本地群集
+    'pandaria-enable-healthcheck-api': 启用Rancher local api-server健康检查。
+    'restricted-default-admin': 初始化管理员角色是否使用受限管理员权限，权限说明请查看<a href="http://docs.rancher.cn/docs/rancher2.5/admin-settings/rbac/global-permissions/_index/#%E5%8F%97%E9%99%90%E7%AE%A1%E7%90%86%E5%91%98" target="_blank">这里</a>。
+    'rotate-certs-if-expiring-in-days': 设置Rancher Server提前轮换证书的时间（以天为单位）。
+    'system-catalog': 配置 Rancher 使用 System Chart Repo。
+    'ui-brand': 定义在 /assets/brand 中的替代主题的文件夹名称。
+    'ui-session-logout-minutes': 用户超过配置时间没有任何操作将自动注销(以分钟为单位)。
   editHelp:
     'ui-banners': 此设置使用包含 3 个根参数的 JSON 对象，分别是<code>banner</code>、<code>showHeader</code>和<code>showFooter</code>。<code>banner</code> 是包含 <code>textColor</code>，<code>background</code>和<code>text</code>的对象，其中<code>textColor</code> 和 <code>background</code>的值可以是任何有效的 CSS 颜色值。
   enum:
