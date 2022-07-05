@@ -166,6 +166,7 @@ nav:
   failWhale:
     reload: 重新加载
     separator: 或者
+  manageUI: 集群管理 UI
 product:
   apps: 应用 & 应用市场
   auth: 用户 & 认证
