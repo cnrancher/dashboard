@@ -628,14 +628,21 @@ export const actions = {
 
     if (res.globalRoleBindings && getters['auth/me']?.id) {
       const id = getters['auth/me']?.id;
+      const admin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
       const readOnlyAdmin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'read-only-pandaria');
 
+      if (admin) {
+        commit('auth/isAdmin', true);
+      } else {
+        commit('auth/isAdmin', false);
+      }
       if (readOnlyAdmin) {
         commit('auth/setReadOnlyAdmin', true);
       } else {
         commit('auth/setReadOnlyAdmin', false);
       }
     } else {
+      commit('auth/setAdmin', false);
       commit('auth/setReadOnlyAdmin', false);
     }
 

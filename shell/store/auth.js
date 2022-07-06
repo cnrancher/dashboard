@@ -34,6 +34,7 @@ export const state = function() {
     v3User:      null,
     initialPass: null,
     me:          null,
+    isAdmin:     false,
 
     isReadOnlyAdmin: false,
   };
@@ -70,6 +71,10 @@ export const getters = {
 
   me(state) {
     return state.me;
+  },
+
+  isAdmin(state) {
+    return state.isAdmin;
   },
 
   isReadOnlyAdmin(state) {
@@ -121,6 +126,10 @@ export const mutations = {
 
   setReadOnlyAdmin(state, isReadOnlyAdmin) {
     state.isReadOnlyAdmin = isReadOnlyAdmin;
+  },
+
+  setAdmin(state, isAdmin) {
+    state.isAdmin = isAdmin;
   },
 
   setLoginCooldown(state, time) {
