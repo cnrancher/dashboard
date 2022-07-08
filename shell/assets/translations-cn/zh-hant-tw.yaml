@@ -1936,6 +1936,7 @@ footer:
   forums: 論壇
   issue: 提交 GitHub Issue
   slack: Slack 討論群
+  mirror: 下載 Rancher 資源
   wechat:
     title: 微信
     modalText: 掃碼關注 Rancher 中國微信技術群

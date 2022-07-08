@@ -15,5 +15,6 @@ export function options(issues, hideRancher) {
     'footer.forums': 'https://forums.rancher.com/',
     'footer.slack':  'https://slack.rancher.io',
     'footer.issue':  issues,
+    'footer.mirror': 'http://mirror.cnrancher.com',
   };
 }
