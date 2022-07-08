@@ -7,6 +7,20 @@ export default class extends SteveModel {
   }
 
   get link() {
+    const index = window.location.pathname.indexOf('/ui.cattle.io.navlink');
+
+    if (this.isIframe && index > -1) {
+      if ( this.spec?.toURL ) {
+        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks?link=${ encodeURIComponent(this.spec.toURL) }`;
+      } else if ( this.spec?.toService ) {
+        const s = this.spec.toService;
+
+        return `/c/${ this.$rootGetters['clusterId'] }/legacy/navLinks?link=${ encodeURIComponent(proxyUrlFromParts(this.$rootGetters['clusterId'], s.namespace, s.name, s.scheme, s.port, s.path)) }`;
+      } else {
+        return null;
+      }
+    }
+
     if ( this.spec?.toURL ) {
       return this.spec.toURL;
     } else if ( this.spec?.toService ) {
