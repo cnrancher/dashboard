@@ -94,6 +94,16 @@ export default {
 
     async willSave() {
       if (this.value?.id === SETTING.AUDIT_LOG_SERVER_URL) {
+        const urlReg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+        const errors = [];
+
+        if (!urlReg.test(this.value.value?.trim())) {
+          errors.push(this.t('validation.invalid', { key: SETTING.AUDIT_LOG_SERVER_URL }, true));
+        }
+        if (errors.length > 0) {
+          return Promise.reject(errors);
+        }
+
         const s = await this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.WHITELIST_DOMAIN);
         let values = s?.value?.split(',') ?? [];
 

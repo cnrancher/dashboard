@@ -2,6 +2,9 @@ import { DEFAULT_PROJECT, SYSTEM_PROJECT } from '@shell/config/labels-annotation
 import { MANAGEMENT, NAMESPACE, NORMAN } from '@shell/config/types';
 import HybridModel from '@shell/plugins/steve/hybrid-class';
 import isEmpty from 'lodash/isEmpty';
+import { SETTING } from '@shell/config/settings';
+import { insertAt } from '@shell/utils/array';
+import { PROJECT_ID } from '@shell/config/query-params';
 
 function clearUnusedResourceQuotas(spec, types) {
   types.forEach((type) => {
@@ -38,6 +41,22 @@ function clearUnusedResourceQuotas(spec, types) {
 }
 
 export default class Project extends HybridModel {
+  get _availableActions() {
+    const out = super._availableActions;
+
+    const auditLog = {
+      action:     'auditLog',
+      enabled:    !!this.$rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value,
+      icon:       'icon icon-fw icon-globe',
+      label:      this.t('nav.auditLog'),
+    };
+
+    insertAt(out, 0, { divider: true });
+    insertAt(out, 0, auditLog);
+
+    return out;
+  }
+
   get isSystem() {
     return this.metadata?.labels?.[SYSTEM_PROJECT] === 'true';
   }
@@ -148,5 +167,18 @@ export default class Project extends HybridModel {
 
   get canEditYaml() {
     return this.schema?.resourceMethods?.find(x => x === 'blocked-PUT') ? false : super.canUpdate;
+  }
+
+  get auditLog() {
+    return (() => {
+      this.currentRouter().push({
+        name:   'c-cluster-legacy-auditLog-page',
+        params: {
+          cluster:  this.$rootGetters['currentCluster'].id,
+          page:    'project-audit-log'
+        },
+        query: { [PROJECT_ID]: this.id.replace('/', ':') }
+      });
+    })();
   }
 }

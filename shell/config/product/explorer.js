@@ -21,6 +21,7 @@ import {
 } from '@shell/config/table-headers';
 
 import { DSL } from '@shell/store/type-map';
+import { SETTING } from '@shell/config/settings';
 
 export const NAME = 'explorer';
 
@@ -56,6 +57,7 @@ export function init(store) {
     'cluster-dashboard',
     'projects-namespaces',
     'namespaces',
+    'cluster-audit-log',
     NODE,
     VIRTUAL_TYPES.CLUSTER_MEMBERS,
   ], 'cluster');
@@ -290,6 +292,23 @@ export function init(store) {
     route:            { name: 'c-cluster-product-namespaces' },
     exact:            true,
   });
+
+  // cluster audit-log start
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
+    },
+    label:            store.getters['i18n/t']('nav.auditLog'),
+    group:            'cluster',
+    icon:             'globe',
+    namespaced:       false,
+    ifRancherCluster: true,
+    name:             'cluster-audit-log',
+    weight:           98,
+    route:            { name: 'c-cluster-legacy-auditLog-page', params: { cluster: 'local', page: 'cluster-audit-log' } },
+    exact:            true,
+  });
+  // cluster audit-log end
 
   // Ignore these types as they are managed through the settings product
   ignoreType(MANAGEMENT.FEATURE);

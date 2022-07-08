@@ -169,6 +169,7 @@ nav:
     config: Configuration
     logs: Logs
     projects: Image Management
+  auditLog: Audit Log
 product:
   apps: Apps
   auth: Users & Authentication

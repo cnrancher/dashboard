@@ -172,6 +172,7 @@ nav:
     config: Harbor 配置
     logs: 日志
     projects: 镜像管理
+  auditLog: 审计日志
 product:
   apps: 应用 & 应用市场
   auth: 用户 & 认证

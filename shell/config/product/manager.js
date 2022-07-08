@@ -2,11 +2,13 @@ import { AGE, NAME as NAME_COL, STATE } from '@shell/config/table-headers';
 import {
   CAPI,
   CATALOG,
+  MANAGEMENT,
   NORMAN,
   HCI
 } from '@shell/config/types';
 import { MULTI_CLUSTER } from '@shell/store/features';
 import { DSL } from '@shell/store/type-map';
+import { SETTING } from '@shell/config/settings';
 
 export const NAME = 'manager';
 
@@ -155,6 +157,26 @@ export function init(store) {
     'image-repo-logs',
   ], 'imageRepo');
   // image repo end
+
+  // global audit log start
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
+    },
+    label:      'Audit Log',
+    labelKey:   'nav.auditLog',
+    name:       'global-audit-log',
+    group:      'Root',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'global-audit-log' } },
+    exact:      false
+  });
+
+  basicType([
+    'global-audit-log',
+  ]);
+  // global audit log end
 
   weightType(CAPI.MACHINE_DEPLOYMENT, 3, true);
   weightType(CAPI.MACHINE_SET, 2, true);
