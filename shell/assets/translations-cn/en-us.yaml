@@ -131,6 +131,7 @@ nav:
     apps: Apps
     clusterProvisioning: Cluster Provisioning
     core: Core
+    imageRepo: Image Repo
   ns:
     all: All Namespaces
     clusterLevel: Only Cluster Resources
@@ -164,6 +165,10 @@ nav:
     reload: Reload
     separator: or
   manageUI: Cluster Manager UI
+  imageRepo:
+    config: Configuration
+    logs: Logs
+    projects: Image Management
 product:
   apps: Apps
   auth: Users & Authentication

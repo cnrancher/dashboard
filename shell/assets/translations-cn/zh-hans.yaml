@@ -134,6 +134,7 @@ nav:
     Policy: 策略
     Scheduling: 调度
     Storage: 存储
+    imageRepo: 镜像仓库
   ns:
     all: 所有命名空间
     clusterLevel: 集群资源
@@ -167,6 +168,10 @@ nav:
     reload: 重新加载
     separator: 或者
   manageUI: 集群管理 UI
+  imageRepo:
+    config: Harbor 配置
+    logs: 日志
+    projects: 镜像管理
 product:
   apps: 应用 & 应用市场
   auth: 用户 & 认证
