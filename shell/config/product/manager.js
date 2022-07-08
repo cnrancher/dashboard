@@ -178,6 +178,44 @@ export function init(store) {
   ]);
   // global audit log end
 
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootState.auth?.isAdmin;
+    },
+    label:      'Global Monitoring',
+    labelKey:   'nav.globalMonitoring.label',
+    name:       'global-monitoring',
+    group:      'Root',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-manager-globalMonitoring' },
+    exact:      true,
+    weight:     99,
+  });
+
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootState.auth?.isAdmin && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
+    },
+    label:      'Global Monitoring',
+    labelKey:   'nav.globalMonitoring.dashboard',
+    name:       'global-monitoring-dasboard',
+    group:      'Root',
+    namespaced: false,
+    icon:       'globe',
+    route:      {
+      name:   'c-cluster-manager-globalMonitoring-dashboard',
+      params: { cluster: 'local', dashboard: 'dashboard' }
+    },
+    exact:      true,
+    weight:     98,
+  });
+
+  basicType([
+    'global-monitoring',
+    'global-monitoring-dasboard',
+  ], 'globalMonitoring');
+
   weightType(CAPI.MACHINE_DEPLOYMENT, 3, true);
   weightType(CAPI.MACHINE_SET, 2, true);
   weightType(CAPI.MACHINE, 1, true);
