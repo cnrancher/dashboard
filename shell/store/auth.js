@@ -37,6 +37,7 @@ export const state = function() {
     isAdmin:     false,
 
     isReadOnlyAdmin: false,
+    loginCooldown:   0,
   };
 };
 
