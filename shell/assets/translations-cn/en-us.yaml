@@ -170,6 +170,7 @@ nav:
     logs: Logs
     projects: Image Management
   auditLog: Audit Log
+  quotas: Quotas
 product:
   apps: Apps
   auth: Users & Authentication
