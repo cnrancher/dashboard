@@ -9,6 +9,7 @@ import { uniq } from '@shell/utils/array';
 import AsyncButton from '@shell/components/AsyncButton';
 import { CATALOG as CATALOG_ANNOTATIONS } from '@shell/config/labels-annotations';
 import { CATALOG } from '@shell/config/types';
+import { pullAllBy } from 'lodash';
 
 export default {
   components: {
@@ -18,6 +19,7 @@ export default {
     const { resource } = this.$route.params;
 
     return {
+      removeFinalizers:    false,
       hasCustomRemove:     false,
       randomPosition:      Math.random(),
       confirmName:         '',
@@ -30,6 +32,9 @@ export default {
     };
   },
   computed:   {
+    hasTerminatingState() {
+      return !!this.toRemove.find(item => item.state === 'terminating');
+    },
     names() {
       return this.toRemove.map(obj => obj.nameDisplay).slice(0, 5);
     },
@@ -221,10 +226,23 @@ export default {
       this.error = '';
       this.chartsDeleteCrd = false;
       this.chartsToRemoveIsApp = false;
+      this.removeFinalizers = false;
       this.$store.commit('action-menu/togglePromptRemove');
     },
 
-    remove(btnCB) {
+    async remove(btnCB) {
+      if (this.removeFinalizers) {
+        await Promise.all(this.toRemove.map(resource => resource.removeFinalizers().save()));
+        pullAllBy(this.toRemove, [{ state: 'terminating' }], 'state');
+        this.removeFinalizers = false;
+
+        if (!this.toRemove.length) {
+          this.close();
+
+          return;
+        }
+      }
+
       if (this.doneLocation) {
         // doneLocation will recompute to undefined when delete request completes
         this.cachedDoneLocation = { ...this.doneLocation };
@@ -292,6 +310,20 @@ export default {
       const promises = types.map(type => this.$store.dispatch(`${ inStore }/findAll`, { type, opt: { force: true } }, { root: true }));
 
       return Promise.all(promises);
+    },
+
+    finalizersToRemove() {
+      try {
+        if (this.removeFinalizers) {
+          this.warning = this.t('promptForceRemove.namespaceWarning');
+        } else if (!this.chartsDeleteCrd) {
+          this.warning = '';
+        }
+      } catch (err) {
+        this.error = err;
+        this.warning = '';
+        this.removeFinalizers = false;
+      }
     },
 
     async chartAddCrdToRemove() {
@@ -363,6 +395,7 @@ export default {
           {{ protip }}
         </div>
         <Checkbox v-if="chartsToRemoveIsApp" v-model="chartsDeleteCrd" label-key="promptRemoveApp.removeCrd" class="mt-10 type" @input="chartAddCrdToRemove" />
+        <Checkbox v-if="hasTerminatingState" v-model="removeFinalizers" label-key="promptForceRemove.forceDelete" class="mt-10 type" @input="finalizersToRemove" />
       </div>
       <template #actions>
         <button class="btn role-secondary" @click="close">

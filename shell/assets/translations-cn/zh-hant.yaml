@@ -3653,6 +3653,7 @@ promptForceRemove:
   removeWarning: "刪除底層基礎設施時出現問題。如果你繼續執行此操作，機器<b>{nameToMatch}</b>將從 Rancher 中刪除。強烈建議手動刪除所有引用的基礎設施。"
   forceDelete: 強制刪除
   confirmName: "在下面輸入池名稱以確認："
+  namespaceWarning: 強制刪除將會直接修改 finalizers，有可能導致錯誤。
 promptScaleMachineDown:
   attemptingToRemove: "你正在嘗試刪除 {count} {type}"
   retainedMachine1: Control Plane 和 Etcd 角色要求至少一臺機器。

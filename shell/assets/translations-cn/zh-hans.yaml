@@ -3653,6 +3653,7 @@ promptForceRemove:
   removeWarning: "删除底层基础设施时出现问题。如果你继续执行此操作，机器<b>{nameToMatch}</b>将从 Rancher 中删除。强烈建议手动删除所有引用的基础设施。"
   forceDelete: 强制删除
   confirmName: "在下面输入池名称以确认："
+  namespaceWarning: 强制删除将会直接修改 finalizers，有可能导致错误。
 promptScaleMachineDown:
   attemptingToRemove: "你正在尝试删除 {count} {type}"
   retainedMachine1: Control Plane 和 Etcd 角色要求至少一台机器。
