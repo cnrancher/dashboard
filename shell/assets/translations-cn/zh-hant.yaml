@@ -136,6 +136,7 @@ nav:
     Storage: 存儲
     imageRepo: 鏡像倉庫
     globalMonitoring: 全局監控
+    vlansubnet: 扁平網絡
   ns:
     all: 所有命名空間
     clusterLevel: 集羣資源

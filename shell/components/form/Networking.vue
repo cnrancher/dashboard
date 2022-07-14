@@ -20,6 +20,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type:     String,
+      required: true,
+    },
+
     value: {
       type:     Object,
       required: true,

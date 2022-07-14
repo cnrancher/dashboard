@@ -133,6 +133,7 @@ nav:
     core: Core
     imageRepo: Image Repo
     globalMonitoring: Global Monitoring
+    vlansubnet: Flat NetWork
   ns:
     all: All Namespaces
     clusterLevel: Only Cluster Resources
