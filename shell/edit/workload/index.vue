@@ -197,14 +197,14 @@ export default {
 
       if (this.$route.query.init) {
         podTemplateSpec.initContainers.push({
-          imagePullPolicy: 'Always',
+          imagePullPolicy: 'IfNotPresent',
           name:            `container-${ allContainers.length }`,
         });
         containers = podTemplateSpec.initContainers;
       }
       if (createSidecar) {
         container = {
-          imagePullPolicy: 'Always',
+          imagePullPolicy: 'IfNotPresent',
           name:            `container-${ allContainers.length }`,
         };
         containers.push(container);
@@ -915,7 +915,7 @@ export default {
         nameNumber++;
       }
       const container = {
-        imagePullPolicy: 'Always',
+        imagePullPolicy: 'IfNotPresent',
         name:            `container-${ nameNumber }`,
       };
 
