@@ -269,6 +269,10 @@ export default {
       return this.type === WORKLOAD_TYPES.STATEFUL_SET;
     },
 
+    enabledVlansubnet() {
+      return this.podTemplateSpec?.vlansubnet?.allowVlansubnet;
+    },
+
     // if this is a cronjob, grab pod spec from within job template spec
     podTemplateSpec: {
       get() {
@@ -1293,7 +1297,7 @@ export default {
         </Tab>
         <Tab :label="t('workload.container.titles.upgrading')" name="upgrading" :weight="tabWeightMap['upgrading']">
           <Job v-if="isJob || isCronJob" v-model="spec" :mode="mode" :type="type" />
-          <Upgrading v-else v-model="spec" :mode="mode" :type="type" />
+          <Upgrading v-else v-model="spec" :mode="mode" :type="type" :enabled-vlansubnet="enabledVlansubnet" />
         </Tab>
         <Tab v-if="!isInitContainer" :label="t('workload.container.titles.healthCheck')" name="healthCheck" :weight="tabWeightMap['healthCheck']">
           <HealthCheck v-model="healthCheck" :mode="mode" />

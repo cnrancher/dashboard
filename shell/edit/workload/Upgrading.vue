@@ -25,6 +25,11 @@ export default {
       default: WORKLOAD_TYPES.DEPLOYMENT
     },
 
+    enabledVlansubnet: {
+      type:    Boolean,
+      default: false
+    },
+
     mode: { type: String, default: _CREATE },
   },
   data() {
@@ -75,6 +80,11 @@ export default {
       terminationGracePeriodSeconds,
       podManagementPolicy
     };
+  },
+  watch: {
+    enabledVlansubnet() {
+      this.update();
+    }
   },
   computed: {
     strategyOptions() {
@@ -137,6 +147,9 @@ export default {
         let strategy;
 
         if (this.strategy === 'RollingUpdate') {
+          if ( this.enabledVlansubnet ) {
+            maxSurge = 0;
+          }
           strategy = {
             rollingUpdate: {
               maxSurge,
