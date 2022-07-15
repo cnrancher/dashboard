@@ -1067,6 +1067,16 @@ cluster:
       option:
         new: 创建...
         none: 选择凭证
+    ack:
+      accessKey:
+        label: 访问密钥
+        placeholder: 你的 ACK 访问密钥
+      defaultRegion:
+        help: 创建集群时使用的默认区域。需要验证此凭证是否有效。
+        label: 默认区域
+      secretKey:
+        label: SecretKey
+        placeholder: 你的 ACK 密文密钥
     aws:
       accessKey:
         label: 访问密钥
@@ -1536,6 +1546,7 @@ cluster:
       private: 从私有仓库中为 {vendor} 拉取镜像
       advanced: 配置高级容器 Mirror 和仓库验证选项
   provider:
+    ackoperatorsetting: Alibaba ACK
     aliyunecs: Aliyun ECS
     aliyunkubernetescontainerservice: Alibaba ACK
     aliyun: Alibaba ACK

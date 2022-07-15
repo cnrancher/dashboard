@@ -1063,6 +1063,16 @@ cluster:
       option:
         new: Create new...
         none: Select a credential...
+    ack:
+      accessKey:
+        label: Access Key
+        placeholder: Your ACK Access Key
+      defaultRegion:
+        help: The default region to use when creating clusters.  Also contacted to verify that this credential works.
+        label: Default Region
+      secretKey:
+        label: SecretKey
+        placeholder: Your ACK Secret Key
     aws:
       accessKey:
         label: Access Key
@@ -1534,6 +1544,7 @@ cluster:
       private: Pull images for {vendor} from a private registry
       advanced: Configure advanced containerd mirroring and registry authentication options
   provider:
+    ackoperatorsetting: Alibaba ACK
     aliyunecs: Aliyun ECS
     aliyunkubernetescontainerservice: Alibaba ACK
     aliyun: Alibaba ACK

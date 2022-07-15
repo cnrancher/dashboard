@@ -37,7 +37,8 @@ export const rke1Supports = [
   'linode',
   'oracle',
   'pnap',
-  'vmwarevsphere'
+  'vmwarevsphere',
+  'aliyun',
 ];
 
 // Map a credential driver name to a component name
@@ -55,10 +56,14 @@ const driverMap = {
   oci:                             'oracle',
   opentelekomcloudcontainerengine: 'otc',
   oraclecontainerengine:           'oracle',
+
+  aliyunecs:                        'aliyun',
+  aliyunkubernetescontainerservice: 'aliyun',
 };
 
 // Map a driver component back to the cloud credential field name their data has to be stored in
 const driverToFieldMap = {
+  aliyun: 'aliyunecs',
   aws:    'amazonec2',
   gcp:    'google',
   oracle: 'oci',
