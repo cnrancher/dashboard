@@ -180,7 +180,7 @@ nav:
     label: 全局监控
     dashboard: Dashboard
   vlanSubnet:
-    label: MacvlanSubnet
+    label: 扁平网络
 product:
   apps: 应用 & 应用市场
   auth: 用户 & 认证

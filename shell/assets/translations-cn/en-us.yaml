@@ -177,7 +177,7 @@ nav:
     label: Global Monitoring
     dashboard: Dashboard
   vlanSubnet:
-    label: MacvlanSubnet
+    label: Flat Network
 product:
   apps: Apps
   auth: Users & Authentication
