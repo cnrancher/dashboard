@@ -149,6 +149,9 @@ nav:
     multiCluster: Global Apps
     legacy: Legacy Apps
     configuration: Configuration
+  cisF5:
+    label: F5 CIS
+    controllers: F5 Ingress
   search:
     placeholder: Type to search clusters
     noResults: No matching clusters

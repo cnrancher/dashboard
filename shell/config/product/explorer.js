@@ -59,6 +59,7 @@ export function init(store) {
     'namespaces',
     'cluster-audit-log',
     'macvlan-subnet',
+    'cis-f5',
     NODE,
     VIRTUAL_TYPES.CLUSTER_MEMBERS,
   ], 'cluster');
@@ -320,6 +321,23 @@ export function init(store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: 'c-cluster-legacy-vlansubnet-page', params: { cluster: 'local', page: 'cluster-vlansubnet' } },
+    exact:      true
+  });
+
+  // F5 CIS
+  virtualType({
+    showMenuFun(state, getters, rootState, rootGetters) {
+      const currentCluster = rootGetters['currentCluster'];
+
+      return currentCluster?.id !== 'local';
+    },
+    label:      'cis-f5',
+    labelKey:   'nav.cisF5.label',
+    name:       'cis-f5',
+    group:      'cluster',
+    namespaced: false,
+    icon:       'globe',
+    route:      { name: 'c-cluster-legacy-cisF5-page', params: { cluster: 'local', page: 'cluster-cisF5' } },
     exact:      true
   });
 

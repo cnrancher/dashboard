@@ -152,6 +152,9 @@ nav:
     multiCluster: 全局应用
     legacy: 旧版应用
     configuration: 配置
+  cisF5:
+    label: F5 负载均衡服务
+    controllers: F5 负载均衡
   search:
     placeholder: 输入关键词，搜索集群
     noResults: 没有匹配的集群
