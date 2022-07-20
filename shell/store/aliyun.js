@@ -60,7 +60,18 @@ export const getters = {
       diskCategory:       null,
       internetChargeType: 'PayByTraffic',
       diskFs:             'ext4',
-      securityGroup:      DEFAULT_GROUP
+      securityGroup:      DEFAULT_GROUP,
+      instanceChargeType: 'PostPaid',
+      spotStrategy:       'NoSpot',
+      spotDuration:       true,
+      systemDiskSize:     {
+        Max: 500,
+        Min: 20,
+      },
+      dataDiskSize:       {
+        Max: 32768,
+        Min: 20,
+      },
     };
   },
 
