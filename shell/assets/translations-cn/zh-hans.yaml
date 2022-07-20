@@ -6604,7 +6604,7 @@ modalDownLoadFileComponent:
 ##############################
 advancedSettings:
   label: 高级选项
-  subtext: 一般用户不需要修改高级选项设置。请谨慎操作，不正确的值会破坏 {appName} 的安装。从默认设置中定制的设置会被标记为"已修改"。
+  subtext: 一般用户不需要改变这些。请谨慎操作，一旦输入了不正确的值，会破坏你的{appName}安装。从默认设置中定制的设置被标记为 "已修改"。如果这里没有您需要的配置项，请查看<a href="/v3/setting" target="_blank">更多设置</a>。
   show: 显示
   hide: 隐藏
   none: 无
@@ -6698,6 +6698,9 @@ advancedSettings:
       info: 信息
       debug: 调试
       trace: 跟踪
+    system-catalog:
+      bundled: 'Bundled'
+      external: 'External'
 featureFlags:
   label: 功能开关
   warning: |-
