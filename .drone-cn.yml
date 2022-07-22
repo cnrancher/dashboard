@@ -9,7 +9,7 @@ platform:
 
 steps:
   - name: test
-    image: node:12
+    image: node:14
     commands:
       - scripts/ci
 
@@ -19,7 +19,7 @@ steps:
 
   - name: build-embedded
     pull: default
-    image: node:12
+    image: node:14
     commands:
       # - scripts/ci-test
       - scripts/build-embedded
@@ -47,7 +47,7 @@ steps:
 
   - name: build-hosted
     pull: default
-    image: node:12
+    image: node:14
     commands:
       - ./scripts/build-hosted
     when:
