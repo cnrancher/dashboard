@@ -1,4 +1,4 @@
-FROM node:12-alpine as builder
+FROM node:14-alpine as builder
 
 RUN apk --update add git less openssh bash && \
     rm -rf /var/lib/apt/lists/* && \
