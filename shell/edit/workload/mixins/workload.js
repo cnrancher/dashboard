@@ -10,6 +10,7 @@ import {
   SERVICE_ACCOUNT,
   CAPI,
   MANAGEMENT,
+  POD,
 } from '@shell/config/types';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -40,11 +41,12 @@ import Storage from '@shell/edit/workload/storage';
 import Labels from '@shell/components/form/Labels';
 import { RadioGroup } from '@components/Form/Radio';
 import { UI_MANAGED } from '@shell/config/labels-annotations';
-import { removeObject } from '@shell/utils/array';
+import { removeObject, uniq } from '@shell/utils/array';
 import { BEFORE_SAVE_HOOKS } from '@shell/mixins/child-hook';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import formRulesGenerator from '@shell/utils/validators/formRules';
 import { SETTING } from '@shell/config/settings';
+import debounce from 'lodash/debounce';
 
 const TAB_WEIGHT_MAP = {
   general:              99,
@@ -130,6 +132,7 @@ export default {
       pvcs:       PVC,
       sas:        SERVICE_ACCOUNT,
       secrets:    SECRET,
+      pods:       POD,
     };
 
     // Only fetch types if the user can see them
@@ -152,6 +155,7 @@ export default {
     this.allServices = hash.services || [];
     this.pvcs = hash.pvcs || [];
     this.sas = hash.sas || [];
+    this.allPods = hash.pods || [];
     this.systemGpuManagementSchedulerName = hash.systemGpuManagementSchedulerName?.value ?? '';
     this.$store.dispatch('harbor/fetchHarborVersion');
     this.$store.dispatch('harbor/loadHarborServerUrl');
@@ -220,6 +224,7 @@ export default {
       name:              this.value?.metadata?.name || null,
       pvcs:              [],
       sas:               [],
+      allPods:           [],
       showTabs:          false,
       pullPolicyOptions: ['Always', 'IfNotPresent', 'Never'],
       spec,
@@ -574,11 +579,34 @@ export default {
 
     harborImagsChoices() {
       const images = this.harbor?.harborImages?.urls || [];
+      let inUse = [];
+      let suggestions = [];
 
-      return images.length > 0 ? [
-        { kind: 'group', label: 'Images in harbor image repositories' },
-        ...images,
-      ] : [];
+      this.allPods.forEach((pod) => {
+        inUse = inUse.concat(pod.spec?.containers || []);
+      });
+      inUse = inUse.map(obj => (obj.image || ''))
+        .filter(str => !str.includes('sha256:') && !str.startsWith('rancher/'))
+        .sort();
+      inUse = uniq(inUse);
+      if (inUse.length > 0) {
+        suggestions = suggestions.concat(
+          [
+            { kind: 'group', label: 'Used by other containers' },
+            ...inUse,
+          ]
+        );
+      }
+      if (images.length > 0) {
+        suggestions = suggestions.concat(
+          [
+            { kind: 'group', label: 'Images in harbor image repositories' },
+            ...images,
+          ]
+        );
+      }
+
+      return suggestions;
     },
     suggestions() {
       return [
@@ -589,7 +617,7 @@ export default {
       return (this.harbor?.harborImageTags || []).map(h => h.name);
     },
 
-    ...mapGetters({ t: 'i18n/t' }),
+    ...mapGetters({ t: 'i18n/t', harbor: 'harbor/all' }),
   },
 
   watch: {
@@ -1098,8 +1126,8 @@ export default {
       //
     },
 
-    onSearchImages(str) {
+    onSearchImages: debounce(function(str) {
       this.$store.dispatch('harbor/loadImagesInHarbor', str);
-    },
+    }, 500, { leading: false }),
   },
 };
