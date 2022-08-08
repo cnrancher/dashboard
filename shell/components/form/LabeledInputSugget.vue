@@ -191,6 +191,7 @@ export default {
       :required="required"
       :mode="mode"
       :tooltip="tooltip"
+      :rules="rules"
       v-bind="$attrs"
       @blur="onBlur"
     />
