@@ -70,13 +70,19 @@ const getActiveNamespaces = (state, getters) => {
   }
 
   if ( product.showWorkspaceSwitcher ) {
-    return { [workspace]: true };
+    const fleetOut = { [workspace]: true };
+
+    updateActiveNamespaceCache(state, fleetOut);
+
+    return fleetOut;
   }
 
   const inStore = product?.inStore;
   const clusterId = getters['currentCluster']?.id;
 
   if ( !clusterId || !inStore ) {
+    updateActiveNamespaceCache(state, out);
+
     return out;
   }
 
@@ -124,20 +130,28 @@ const getActiveNamespaces = (state, getters) => {
       }
     }
   }
+  // Create map that can be used to efficiently check if a
+  // resource should be displayed
+  updateActiveNamespaceCache(state, out);
 
   return out;
 };
 
-const updateActiveNamespaceCache = (state, getters) => {
-  state.activeNamespaceCache = getActiveNamespaces(state, getters);
-
+const updateActiveNamespaceCache = (state, activeNamespaceCache) => {
   // This is going to run a lot, so keep it optimised
   let cacheKey = '';
 
-  for (const key in state.activeNamespaceCache) {
-    cacheKey += key + state.activeNamespaceCache[key];
+  for (const key in activeNamespaceCache) {
+    // I though array.join would be faster than string concatenation, but in places like this where the array must first be constructed it's
+    // slower.
+    cacheKey += key + activeNamespaceCache[key];
   }
-  state.activeNamespaceCacheKey = cacheKey;
+
+  // Only update `activeNamespaceCache` if there have been changes. This reduces a lot of churn
+  if (state.activeNamespaceCacheKey !== cacheKey) {
+    state.activeNamespaceCacheKey = cacheKey;
+    state.activeNamespaceCache = activeNamespaceCache;
+  }
 };
 
 export const state = () => {
@@ -506,7 +520,7 @@ export const mutations = {
 
     // Create map that can be used to efficiently check if a
     // resource should be displayed
-    updateActiveNamespaceCache(state, getters);
+    getActiveNamespaces(state, getters);
   },
 
   pageActions(state, pageActions) {
@@ -529,7 +543,7 @@ export const mutations = {
 
     state.workspace = value;
 
-    updateActiveNamespaceCache(state, getters);
+    getActiveNamespaces(state, getters);
   },
 
   clusterId(state, neu) {

@@ -4,7 +4,7 @@ import {
   SETUP, TIMED_OUT, UPGRADED, _FLAGGED, _UNFLAG
 } from '@shell/config/query-params';
 import { SETTING } from '@shell/config/settings';
-import { MANAGEMENT, NORMAN } from '@shell/config/types';
+import { MANAGEMENT, NORMAN, DEFAULT_WORKSPACE } from '@shell/config/types';
 import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
 import { applyProducts } from '@shell/store/type-map';
 import { findBy } from '@shell/utils/array';
@@ -189,7 +189,9 @@ export default async function({
   }
 
   if ( store.getters['auth/enabled'] !== false && !store.getters['auth/loggedIn'] ) {
+    // `await` so we have one successfully request whilst possibly logged in (ensures fromHeader is populated from `x-api-cattle-auth`)
     await store.dispatch('auth/getUser');
+
     const v3User = store.getters['auth/v3User'] || {};
 
     if (v3User?.mustChangePassword) {
@@ -320,7 +322,7 @@ export default async function({
       // See note above for store.app.router.beforeEach, need to setProduct manually, for the moment do this in a targeted way
       setProduct(store, route);
       store.commit('updateWorkspace', {
-        value:   store.getters['prefs/get'](WORKSPACE),
+        value:   store.getters['prefs/get'](WORKSPACE) || DEFAULT_WORKSPACE,
         getters: store.getters
       });
     }
@@ -382,6 +384,7 @@ export default async function({
 }
 
 async function findMe(store) {
+  // First thing we do in loadManagement is fetch principals anyway.... so don't ?me=true here
   const principals = await store.dispatch('rancher/findAll', {
     type: NORMAN.PRINCIPAL,
     opt:  {

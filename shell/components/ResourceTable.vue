@@ -199,11 +199,12 @@ export default {
       const isVirtualProduct = this.$store.getters['currentProduct'].name === HARVESTER;
 
       // If the resources isn't namespaced or we want ALL of them, there's nothing to do.
-      if ( (!this.isNamespaced || isAll) && !isVirtualProduct) {
+      // If this is a harvester list, 'all' must still be filtered
+      if ( !this.isNamespaced || (isAll && !isVirtualProduct)) {
         return this.rows || [];
       }
 
-      const includedNamespaces = this.$store.getters['activeNamespaceCache'];
+      const includedNamespaces = this.$store.getters['namespaces']();
 
       // Shouldn't happen, but does for resources like management.cattle.io.preference
       if (!this.rows) {
