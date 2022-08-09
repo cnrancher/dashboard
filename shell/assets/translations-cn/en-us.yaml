@@ -251,6 +251,25 @@ about:
     title: Image Lists
   downloadCLI:
     title: CLI Downloads
+  diagnostic:
+    checkboxLabel: Make additional requests
+    checkboxTooltip: Supplement diagnostics data with response times for the top 10 resources. These may take a while to complete
+    logs:
+      subtitle: Latest Logs
+    resourceCounts:
+      subtitle: Resource Counts
+    systemInformation:
+      browserLanguage: Browser Language
+      browserUserAgent: Browser User Agent
+      cookieEnabled: Cookies Enabled
+      deviceMemory: Device Memory
+      hardwareConcurrency: Hardware Concurrency
+      memJsHeapLimit: Memory JS Heap Size limit
+      memTotalJsHeapSize: Memory Total JS Heap Size
+      memUsedJsHeapSize: Memory Used JS Heap Size
+      os: OS
+      subtitle: System Information
+    title: Diagnostics
 accountAndKeys:
   title: Account and API Keys
   account:
@@ -674,6 +693,10 @@ asyncButton:
     action: Generate
     success: Generated
     waiting: Generating&hellip;
+  diagnostic:
+    action: Download Data
+    success: Saving
+    waiting: Downloading&hellip;
 backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
@@ -1248,6 +1271,7 @@ cluster:
       label: Private Registry
       placeholder: e.g. index.docker.io
       title: Private Registry
+    warningBanner: You should not import a cluster which has already been connected to another instance of Rancher as it will lead to data corruption.
   importAction: Import Existing
   kubernetesVersion:
     label: Kubernetes Version
@@ -3945,6 +3969,7 @@ promptRemove:
   protip: "Tip: Hold the {alternateLabel} key while clicking delete to bypass this confirmation"
   confirmName: "Enter <b>{nameToMatch}</b> below to confirm:"
   deleteAssociatedNamespaces: 'Also delete the namespaces in this project:'
+  willDeleteAssociatedNamespaces: 'This will also delete all namespaces in the project: '
 promptRemoveApp:
   removeCrd: "Delete the CRD associated with this app"
 promptRestore:
@@ -6787,7 +6812,7 @@ advancedSettings:
     'auth-user-session-ttl-minutes': 'Custom TTL (in minutes) on a user auth session.'
     'auth-token-max-ttl-minutes': 'Max TTL (in minutes) for all authentication tokens. When set to 0, the token never expires.'
     'kubeconfig-generate-token': 'Automatically generate tokens for users when a kubeconfig is requested.'
-    'kubeconfig-token-ttl-minutes': 'TTL used for tokens generated via the CLI. Deprecated: This setting will be removed, and kubeconfig-default-ttl-minutes will be used for all kubeconfig tokens.'
+    'kubeconfig-token-ttl-minutes': 'TTL used for tokens generated via the CLI. Deprecated: This setting will be removed, and kubeconfig-default-token-ttl-minutes will be used for all kubeconfig tokens.'
     'rke-metadata-config': 'Configure RKE metadata refresh parameters.'
     'ui-banners': 'Classification banner is used to display a custom fixed banner in the header, footer, or both.'
     'custom-notifications': Edit custom notifications
@@ -7358,3 +7383,23 @@ growl:
     title: Websocket Disconnected
 managementNode:
   customName: Custom Name
+performance:
+  banner: These settings are experimental and may be removed or updated in future versions
+  description: 'Performance settings allow the behavior of the UI to be configured when dealing with many resources in a cluster. These settings only apply to the following resources: Pods, Deployments, Cron Jobs, Daemon Sets, Jobs, Stateful Sets, Replica Sets, Replication Controllers, Workloads and Secrets.'
+  incrementalLoad:
+    checkboxLabel: Enable incremental loading
+    description: When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources.
+    inputLabel: Resource Threshold
+    label: Incremental Loading
+    setting: You can configure the threshold above which incremental loading will be used.
+  label: UI Performance Settings
+  manualRefresh:
+    buttonTooltip: Refresh list
+    checkboxLabel: Enable manual refresh of data for lists
+    description: When enabled list data will not auto-update but instead the user must manually trigger a list-view refresh.
+    inputLabel: Resource Threshold
+    label: Manual Refresh
+    setting: You can configure a threshold above which manual refresh will be enabled.
+  settingName: Performance
+resourceLoadingIndicator:
+  loading: Loading
