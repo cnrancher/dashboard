@@ -149,7 +149,7 @@ export default {
         <div></div>
       </div>
       <div v-for="(item, index) in items" :key="index" class="key-to-path mb-10">
-        <LabeledSelect v-model="item.key" :options="keys" :mode="mode" :label="t('workload.storage.keyToPath.key.label')" />
+        <LabeledSelect v-model="item.key" :options="keys" :mode="mode" />
         <LabeledInput v-model.trim="item.path" :mode="mode" :placeholder="t('workload.storage.keyToPath.path.placeholder')" />
         <LabeledInput v-model.number="item.mode" type="number" :mode="mode" :placeholder="t('workload.storage.keyToPath.mode.placeholder')" />
         <button v-if="mode!=='view'" type="button" class="btn btn-sm role-link action" @click="remove(index)">
