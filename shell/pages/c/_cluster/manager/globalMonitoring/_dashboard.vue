@@ -3,6 +3,7 @@ import { MANAGEMENT, CATALOG } from '@shell/config/types';
 import LazyImage from '@shell/components/LazyImage';
 import { SETTING } from '@shell/config/settings';
 import { compare } from '@shell/utils/version';
+import { mapGetters } from 'vuex';
 
 const APP_NAME = 'global-monitoring';
 const APP_NAMESPACE = 'cattle-global-monitoring';
@@ -12,7 +13,7 @@ export default {
 
   async fetch() {
     try {
-      this.app = await this.$store.dispatch('cluster/find', {
+      this.app = await this.$store.dispatch(`${ this.inStore }/find`, {
         type: CATALOG.APP,
         id:   `${ APP_NAMESPACE }/${ APP_NAME }`
       });
@@ -31,6 +32,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ inStore: 'catalog/inStore' }),
     appVersion() {
       return this.app?.versionDisplay;
     },

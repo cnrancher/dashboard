@@ -65,6 +65,10 @@ export default {
       type:    String,
       default: 'label',
     },
+    version: {
+      type:    String,
+      default: '',
+    },
   },
   components: {
     Tab,
@@ -98,7 +102,11 @@ export default {
     },
     chartVersions() {
       if (!this.chartVersion && this.chart?.versions?.length) {
-        this.$set(this, 'chartVersion', this.chart.versions[0].version);
+        if (this.version && this.chart.versions.find(obj => obj.version === this.version)) {
+          this.$set(this, 'chartVersion', this.version);
+        } else {
+          this.$set(this, 'chartVersion', this.chart.versions[0].version);
+        }
       }
 
       return uniqBy(this.chart?.versions || [], 'version').map(v => ({

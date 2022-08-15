@@ -110,6 +110,7 @@ export default {
     };
 
     return {
+      chartVersion:                    '',
       errors:                          [],
       warnings:                        [],
       clusters:                        [],
@@ -189,7 +190,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ allCharts: 'catalog/charts', loadingErrors: 'catalog/errors' }),
+    ...mapGetters({
+      allCharts: 'catalog/charts', loadingErrors: 'catalog/errors', inStore: 'catalog/inStore'
+    }),
     formYamlOptions() {
       const options = [];
 
@@ -453,7 +456,7 @@ export default {
         await this.repo.waitForOperation(operationId);
 
         // Dynamically use store decided when loading catalog (covers standard user case when there's not cluster)
-        this.operation = await this.$store.dispatch(`cluster/find`, {
+        this.operation = await this.$store.dispatch(`${ this.inStore }/find`, {
           type: CATALOG.OPERATION,
           id:   operationId
         });
@@ -488,7 +491,7 @@ export default {
 
     async disableMonitoring() {
       try {
-        const app = await this.$store.dispatch('cluster/find', {
+        const app = await this.$store.dispatch(`${ this.inStore }/find`, {
           type:      CATALOG.APP,
           id:        `${ this.value.metadata.namespace }/${ this.value.metadata.name }`,
         });
@@ -500,7 +503,7 @@ export default {
         await this.repo.waitForOperation(operationId);
 
         // Dynamically use store decided when loading catalog (covers standard user case when there's not cluster)
-        this.operation = await this.$store.dispatch(`cluster/find`, {
+        this.operation = await this.$store.dispatch(`${ this.inStore }/find`, {
           type: CATALOG.OPERATION,
           id:   operationId
         });
@@ -704,9 +707,11 @@ export default {
           type: CATALOG.APP,
           id:   `${ APP_NAMESPACE }/${ APP_NAME }`
         });
+
+        this.chartVersion = get(app, 'spec.chart.metadata.version') || '';
       } catch (error) {}
 
-      const value = await this.$store.dispatch('cluster/create', {
+      const value = await this.$store.dispatch(`cluster/create`, {
         type:     'chartInstallAction',
         metadata: {
           namespace: APP_NAMESPACE,
@@ -829,12 +834,12 @@ export default {
 
     const globalMonitoringClusterId = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID)?.value || '';
     const currentClusterId = enabledGlobalMonitoring ? globalMonitoringClusterId : this.$route.params.cluster;
-    const currentCluster = this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId);
+    const currentCluster = currentClusterId ? this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId) : this.currentCluster2;
 
     this.currentCluster = currentCluster;
 
     if (currentCluster?.metadata?.state?.name !== 'active') {
-      this.$set(this, 'warnings', [this.t('globalMonitoringPage.globalMonitoringClusterUnavailable', { clusterName: currentCluster.nameDisplay || currentClusterId } )]);
+      this.$set(this, 'warnings', [this.t('globalMonitoringPage.globalMonitoringClusterUnavailable', { clusterName: currentCluster?.nameDisplay || currentClusterId } )]);
 
       return;
     }
@@ -960,6 +965,7 @@ export default {
               option-key="value"
               :chart="chart"
               :ui="get(versionInfo, 'values.ui') || {}"
+              :version="chartVersion"
               @updateVersion="updateVersion"
               @updateWarning="updateWarning"
             />
