@@ -160,7 +160,7 @@ export default {
         </tr>
       </table>
     </template>
-    <template v-if="downloadCli.length">
+    <!-- <template v-if="downloadCli.length">
       <h3 class="pt-40">
         {{ t('about.downloadCLI.title') }}
       </h3>
@@ -176,7 +176,7 @@ export default {
           </td>
         </tr>
       </table>
-    </template>
+    </template> -->
   </div>
 </template>
 
