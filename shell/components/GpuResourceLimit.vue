@@ -42,6 +42,30 @@
             />
           </div>
         </template>
+        <template v-else-if="gpuReservationMode === 'device'">
+          <div class="row">
+            <div class="col span-6">
+              <LabeledSelect
+                v-model="gpuDevice.name"
+                :label="t('gpuReservation.resourceName')"
+                :mode="mode"
+                :options="gpuResourceNames"
+                @change="updateGpuDevice('name', $event)"
+              />
+            </div>
+            <div class="col span-6">
+              <UnitInput
+                v-model="gpuDevice.value"
+                :suffix="t('gpuReservation.unit')"
+                :placeholder="t('gpuReservation.placeholder')"
+                :label="t('gpuReservation.set')"
+                :mode="mode"
+                min="1"
+                @input="updateGpuDevice('value', $event)"
+              />
+            </div>
+          </div>
+        </template>
       </div>
       <div v-if="showVgpu" class="col span-6">
         <div class="mb-10">
@@ -63,11 +87,13 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { RadioGroup } from '@components/Form/Radio';
 import UnitInput from '@shell/components/form/UnitInput';
 import { Banner } from '@components/Banner';
 import { _VIEW } from '@shell/config/query-params';
 import { mapFeature, VIRTAITECH_GPU_SERVICE_UI } from '@shell/store/features';
+import LabeledSelect from '@shell/components/form/LabeledSelect';
 
 export default {
   props: {
@@ -84,12 +110,13 @@ export default {
   },
   data() {
     const {
-      limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu
+      limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu, limitGpuDevice, requestGpuDevice
     } = this.value;
 
     let gpuReservationMode = 'set';
     let gpuShared = null;
     let gpuSet = null;
+    const gpuDevice = { ...limitGpuDevice };
 
     if (limitsGpuShared && requestsGpuShared) {
       gpuReservationMode = 'shared';
@@ -97,6 +124,8 @@ export default {
     } else if (limitsGpu && requestsGpu) {
       gpuReservationMode = 'set';
       gpuSet = requestsGpu;
+    } else if (limitGpuDevice.name && requestGpuDevice.name) {
+      gpuReservationMode = 'device';
     }
 
     return {
@@ -109,14 +138,20 @@ export default {
         {
           label: this.t('gpuReservation.set'),
           value: 'set',
+        },
+        {
+          label: this.t('gpuReservation.devices'),
+          value: 'device',
         }
       ],
       gpuShared,
       gpuSet,
+      gpuDevice,
       vGpus: limitsVgpu,
     };
   },
   computed: {
+    ...mapGetters(['currentCluster']),
     isView() {
       return this.mode === _VIEW;
     },
@@ -134,6 +169,14 @@ export default {
 
         return t;
       }, []);
+    },
+    gpuResourceNames() {
+      const deviceList = this.currentCluster?.metadata?.annotations?.['gpu.pandaria.io/devicelist']?.split(',')?.filter(item => item?.trim()) ?? [];
+
+      return deviceList.map(d => ({
+        label: d,
+        value: d
+      }));
     }
   },
   methods: {
@@ -149,6 +192,19 @@ export default {
         limitsGpu:   v,
         requestsGpu: v,
         limitsVgpu:  this.vGpus,
+      });
+    },
+    updateGpuDevice(k, v) {
+      this.$emit('input', {
+        limitGpuDevice: {
+          ...this.gpuDevice,
+          [k]: v,
+        },
+        requestGpuDevice: {
+          ...this.gpuDevice,
+          [k]: v,
+        },
+        limitsVgpu: this.vGpus,
       });
     },
     updateVgpus(v) {
@@ -182,6 +238,7 @@ export default {
     RadioGroup,
     UnitInput,
     Banner,
+    LabeledSelect,
   }
 };
 </script>

@@ -417,6 +417,25 @@ export default {
     flatGpuResources: {
       get() {
         const { limits = {}, requests = {} } = this.container.resources || {};
+        const limitGpuDevices = Object.entries(limits).filter(([k]) => k.startsWith('nvidia.com/') && k !== GPU_KEY);
+        const requestGpuDevices = Object.entries(requests).filter(([k]) => k.startsWith('nvidia.com/') && k !== GPU_KEY);
+        const limitGpuDevice = {
+          name:  '',
+          value: '',
+        };
+        const requestGpuDevice = {
+          name:  '',
+          value: ''
+        };
+
+        if (limitGpuDevices.length > 0) {
+          limitGpuDevice.name = limitGpuDevices[0][0];
+          limitGpuDevice.value = limitGpuDevices[0][1];
+        }
+        if (requestGpuDevices.length > 0) {
+          requestGpuDevice.name = requestGpuDevices[0][0];
+          requestGpuDevice.value = requestGpuDevices[0][1];
+        }
 
         return {
           limitsGpuShared:   limits[GPU_SHARED_KEY],
@@ -424,11 +443,13 @@ export default {
           limitsVgpu:        limits[VGPU_KEY],
           requestsGpuShared: requests[GPU_SHARED_KEY],
           requestsGpu:       requests[GPU_KEY],
+          limitGpuDevice,
+          requestGpuDevice,
         };
       },
       set(neu) {
         const {
-          limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu
+          limitsGpuShared, limitsGpu, limitsVgpu, requestsGpuShared, requestsGpu, limitGpuDevice = {}, requestGpuDevice = {}
         } = neu;
         const scheduler = this.podTemplateSpec.scheduling?.scheduler;
         const { limits = {}, requests = {} } = this.container.resources || {};
@@ -438,12 +459,16 @@ export default {
             ...requests,
             [GPU_SHARED_KEY]: requestsGpuShared,
             [GPU_KEY]:        requestsGpu,
+
+            [limitGpuDevice.name]: limitGpuDevice.value
           },
           limits: {
             ...limits,
             [GPU_SHARED_KEY]: limitsGpuShared,
             [GPU_KEY]:        limitsGpu,
-            [VGPU_KEY]:       limitsVgpu
+            [VGPU_KEY]:       limitsVgpu,
+
+            [requestGpuDevice.name]: requestGpuDevice.value
           }
         };
 
