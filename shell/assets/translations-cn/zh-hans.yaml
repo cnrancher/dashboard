@@ -3267,7 +3267,7 @@ navLink:
       description:
         label: 链接描述
       iconSrc:
-        label: 添加镜像
+        label: 添加图片
 networkpolicy:
   egress:
     label: Egress 规则

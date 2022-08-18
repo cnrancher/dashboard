@@ -405,7 +405,7 @@ export default {
           const groupSlug = obj.normalizedGroup;
 
           const entry = {
-            name:        `link-${ obj._key }`,
+            name:        obj.isIframe ? `link-${ obj._key }-${ encodeURIComponent(obj.iframeSrc) }` : `link-${ obj._key }`,
             link:        obj.link,
             target:      obj.actualTarget,
             label:       obj.labelDisplay,
