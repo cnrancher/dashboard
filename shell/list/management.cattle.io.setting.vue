@@ -95,7 +95,7 @@ export default {
             <span v-if="setting.fromEnv" class="modified">Set by Environment Variable</span>
             <span v-else-if="setting.customized" class="modified">Modified</span>
           </h1>
-          <h2 v-html="t(`advancedSettings.descriptions.${setting.id}`, null, true)"></h2>
+          <h2 v-html="t(`advancedSettings.descriptions.${setting.id}`)"></h2>
         </div>
         <div v-if="setting.hasActions" class="action">
           <button aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-sm role-multi-action actions" @click="showActionMenu($event, setting)">
