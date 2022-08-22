@@ -623,13 +623,13 @@ asyncButton:
     description: 由於編排已暫停，新的修改不會部署。要部署新修改，請恢復編排。
   refresh:
     action: ''
-    actionIcon: 刷新
+    actionIcon: refresh
     error: ''
-    errorIcon: 錯誤
+    errorIcon: error
     success: ''
-    successIcon: 勾選
+    successIcon: checkmark
     waiting: ''
-    waitingIcon: 刷新
+    waitingIcon: refresh
   remove:
     action: 移除
     success: 已移除
