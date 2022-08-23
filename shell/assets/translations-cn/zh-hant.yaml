@@ -7716,6 +7716,8 @@ rancher-nvidia-k8s-device-plugin:
     sharedAccess:
       label: 啓用共享訪問
       tip: 使用 CUDA Time-Slicing 共享訪問 GPU。 <a href="https://github.com/nvidia/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing" target="_blank" rel="noopener noreferrer nofollow">瞭解更多</a>
+    addConfig: 添加配置
+    removeConfig: 刪除配置
   gfdOptions:
     enabled:
       label: 啓用 GPU 特性發現

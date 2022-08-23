@@ -7465,6 +7465,8 @@ rancher-nvidia-k8s-device-plugin:
     sharedAccess:
       label: Enable Shared Access
       tip: Shared Access to GPUs with CUDA Time-Slicing. <a href="https://github.com/nvidia/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing" target="_blank" rel="noopener noreferrer nofollow">Learn More</a>
+    addConfig: Add Config
+    removeConfig: Remove Config
   gfdOptions:
     enabled:
       label: GPU Feature Discovery Enabled

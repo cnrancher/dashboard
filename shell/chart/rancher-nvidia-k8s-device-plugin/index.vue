@@ -242,7 +242,7 @@ export default {
         return t;
       }, {});
     },
-    addConfig(idx) {
+    addConfig() {
       const configs = this.configs;
 
       if (configs.length === 0) {
@@ -263,22 +263,22 @@ export default {
 
         return;
       }
-      if (configs[idx]) {
-        const c = cloneDeep(configs[idx]);
-        const name = `config${ ++this.lastIdx }`;
+      // if (configs[idx]) {
+      //   const c = cloneDeep(configs[idx]);
+      //   const name = `config${ ++this.lastIdx }`;
 
-        c.name = name;
-        c.id = name;
-        configs.push(c);
-        this.$set(this.sharedAccessEnabledMap, c.id, false);
-        this.$nextTick(() => {
-          if ( this.$refs.configs?.select ) {
-            this.$refs.configs.select(name);
-          }
-        });
+      //   c.name = name;
+      //   c.id = name;
+      //   configs.push(c);
+      //   this.$set(this.sharedAccessEnabledMap, c.id, false);
+      //   this.$nextTick(() => {
+      //     if ( this.$refs.configs?.select ) {
+      //       this.$refs.configs.select(name);
+      //     }
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
       const name = `config${ ++this.lastIdx }`;
       const c = {
         name,
@@ -365,13 +365,22 @@ export default {
         <Tabbed
           ref="configs"
           :side-tabs="true"
-          :show-tabs-add-remove="!isView"
-          @addTab="addConfig($event)"
-          @removeTab="removeConfig($event)"
           @changed="handleConfigTabChange"
         >
+          <template #tab-row-extras>
+            <div class="side-tablist-controls">
+              <button v-if="!isView" type="button" class="btn-sm role-link" @click="addConfig">
+                {{ t('rancher-nvidia-k8s-device-plugin.devicePluginOptions.addConfig') }}
+              </button>
+            </div>
+          </template>
           <template v-for="(c, index) in configs">
             <Tab :key="c.id" :name="c.id" :label="c.name" :weight="-index">
+              <template #tab-header-right class="tab-content-controls">
+                <button v-if="c.id !== 'default' && !isView" type="button" class="btn-sm role-link" @click="removeConfig(index)">
+                  {{ t('rancher-nvidia-k8s-device-plugin.devicePluginOptions.removeConfig') }}
+                </button>
+              </template>
               <div v-if="c.id !== 'default'" class="row mb-10">
                 <div class="col span-6">
                   <LabeledInput
@@ -534,3 +543,9 @@ export default {
     </Tab>
   </div>
 </template>
+<style scoped>
+.side-tablist-controls {
+  border-top: 1px solid var(--border);
+  padding: 15px;
+}
+</style>
