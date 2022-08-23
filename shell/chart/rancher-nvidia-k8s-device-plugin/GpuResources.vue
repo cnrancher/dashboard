@@ -105,7 +105,7 @@ export default {
         </div>
         <div :key="i+'value'" class="kv-item value">
           <input
-            v-model="row.replicas"
+            v-model.number="row.replicas"
             :disabled="isView"
             type="number"
             @input="queueUpdate"
