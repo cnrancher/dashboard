@@ -159,7 +159,7 @@ export default {
         this.loadedCredentialIdFor = this.credentialId;
       }
 
-      if (!findBy(this.locationOptions, 'name', this.value.location)) {
+      if (!this.value.location || !findBy(this.locationOptions, 'name', this.value.location)) {
         this.locationOptions?.length && this.setLocation(this.locationOptions[this.locationOptions.length - 1]);
       }
 
@@ -195,7 +195,7 @@ export default {
   },
 
   created() {
-    if (this.mode === 'create') {
+    if (this.mode === 'create' || !this.value.nsg) {
       merge(this.value, this.defaultConfig);
 
       this.value.nsg = `rancher-managed-${ randomStr(8) }`;
