@@ -46,6 +46,7 @@ import { BEFORE_SAVE_HOOKS } from '@shell/mixins/child-hook';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import formRulesGenerator from '@shell/utils/validators/formRules';
 import { SETTING } from '@shell/config/settings';
+import { TYPES as SECRET_TYPES } from '@shell/models/secret';
 import debounce from 'lodash/debounce';
 
 const TAB_WEIGHT_MAP = {
@@ -117,6 +118,15 @@ export default {
     mode: {
       type:    String,
       default: 'create',
+    },
+
+    createOption: {
+      default: (text) => {
+        if (text) {
+          return { metadata: { name: text } };
+        }
+      },
+      type: Function
     },
   },
 
@@ -531,6 +541,12 @@ export default {
       } else {
         return this.allSecrets;
       }
+    },
+
+    imagePullNamespacedSecrets() {
+      const namespace = this.value?.metadata?.namespace;
+
+      return this.allSecrets.filter(secret => secret.metadata.namespace === namespace && (secret._type === SECRET_TYPES.DOCKER || secret._type === SECRET_TYPES.DOCKER_JSON));
     },
 
     namespacedConfigMaps() {
