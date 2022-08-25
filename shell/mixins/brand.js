@@ -12,6 +12,8 @@ export default {
         this.apps = await this.$store.dispatch('management/findAll', { type: CATALOG.APP });
       }
     } catch (e) {}
+    this.globalSettings = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.SETTING });
+
     const uiFaviconSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FAVICON);
 
     this.uiFaviconSetting = uiFaviconSetting;
@@ -20,7 +22,8 @@ export default {
 
   data() {
     return {
-      apps: [],
+      apps:           [],
+      globalSettings: [],
 
       uiFaviconSetting: null,
       uiFaviconPending: true,
@@ -28,10 +31,6 @@ export default {
   },
 
   computed: {
-    globalSettings() {
-      return this.$store.getters['management/all'](MANAGEMENT.SETTING);
-    },
-
     brand() {
       const setting = findBy(this.globalSettings, 'id', SETTING.BRAND);
 
