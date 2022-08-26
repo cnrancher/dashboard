@@ -1605,6 +1605,7 @@ cluster:
         kubeControllerManagerTitle: 補充的 Controller Manager 參數
         kubeApiServerTitle: 補充的 API server 參數
         kubeSchedulerTitle: 補充的 Scheduler 參數
+        kubePlaceholder: 例如： max-pods=110
     agentArgs:
       label: 如果內核參數與預期的 Kubelet 默認值不同，則拋出錯誤。
   banner:

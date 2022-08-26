@@ -2109,6 +2109,7 @@ export default {
                   :mode="mode"
                   :add-label="t('cluster.advanced.argInfo.machineSelector.listLabel')"
                   :initial-empty-row="!!row.value.machineLabelSelector"
+                  :value-placeholder="t('cluster.advanced.argInfo.machineSelector.kubePlaceholder')"
                 />
               </template>
             </ArrayListGrouped>
