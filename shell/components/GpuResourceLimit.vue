@@ -182,21 +182,31 @@ export default {
   methods: {
     updateGpuShared(v) {
       this.$emit('input', {
+        limitsGpu:         null,
+        requestsGpu:       null,
+        limitGpuDevice:    { name: this.gpuDevice.name },
+        requestGpuDevice:  { name: this.gpuDevice.name },
         limitsGpuShared:   v,
         requestsGpuShared: v,
-        limitsVgpu:        this.vGpus,
       });
     },
     updateGpuSet(v) {
       this.$emit('input', {
-        limitsGpu:   v,
-        requestsGpu: v,
-        limitsVgpu:  this.vGpus,
+        limitGpuDevice:    { name: this.gpuDevice.name },
+        requestGpuDevice:  { name: this.gpuDevice.name },
+        limitsGpuShared:   null,
+        requestsGpuShared: null,
+        limitsGpu:         v,
+        requestsGpu:       v,
       });
     },
     updateGpuDevice(k, v) {
       this.$emit('input', {
-        limitGpuDevice: {
+        limitsGpu:         null,
+        requestsGpu:       null,
+        limitsGpuShared:   null,
+        requestsGpuShared: null,
+        limitGpuDevice:    {
           ...this.gpuDevice,
           [k]: v,
         },
@@ -204,32 +214,26 @@ export default {
           ...this.gpuDevice,
           [k]: v,
         },
-        limitsVgpu: this.vGpus,
       });
     },
     updateVgpus(v) {
-      this.$emit('input', {
-        limitsGpu:         this.gpuSet,
-        requestsGpu:       this.gpuSet,
-        limitsGpuShared:   this.gpuShared,
-        requestsGpuShared: this.gpuShared,
-        limitsVgpu:        v,
-      });
+      this.$emit('input', { limitsVgpu: v });
     }
   },
   watch: {
     gpuReservationMode(m) {
       if (m === 'shared') {
-        this.$emit('input', {
-          limitsGpuShared:   this.gpuShared,
-          requestsGpuShared: this.gpuShared,
-          limitsVgpu:        this.vGpus,
-        });
+        this.updateGpuShared(this.gpuShared);
       } else if (m === 'set') {
+        this.updateGpuSet(this.gpuSet);
+      } else if (m === 'device') {
         this.$emit('input', {
-          limitsGpu:   this.gpuSet,
-          requestsGpu: this.gpuSet,
-          limitsVgpu:  this.vGpus,
+          limitsGpu:         null,
+          requestsGpu:       null,
+          limitsGpuShared:   null,
+          requestsGpuShared: null,
+          limitGpuDevice:    { ...this.gpuDevice },
+          requestGpuDevice:  { ...this.gpuDevice },
         });
       }
     }

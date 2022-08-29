@@ -86,6 +86,27 @@ export default {
         id:   SETTING.BRAND,
         opt:  { url: `/v3/settings/${ SETTING.BRAND }` }
       });
+
+      disabledEncryption = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.BRAND,
+        opt:  { url: `/v3/settings/${ SETTING.DISABLE_PWD_ENCRYPT }` }
+      });
+      uiLoginLandscape = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.BRAND,
+        opt:  { url: `/v3/settings/${ SETTING.UI_LOGIN_LANDSCAPE }` }
+      });
+      footerText = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.BRAND,
+        opt:  { url: `/v3/settings/${ SETTING.FOOTER_TEXT }` }
+      });
+      footerUrl = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.BRAND,
+        opt:  { url: `/v3/settings/${ SETTING.FOOTER_URL }` }
+      });
     }
 
     if (plSetting.value?.length && plSetting.value !== getVendor()) {
