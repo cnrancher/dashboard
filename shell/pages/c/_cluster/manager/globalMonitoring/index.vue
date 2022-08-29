@@ -5,7 +5,7 @@ import { mapGetters } from 'vuex';
 import { mapPref, DIFF } from '@shell/store/prefs';
 import { Banner } from '@components/Banner';
 import {
-  MANAGEMENT, NODE, CATALOG, OPAQUE, NORMAN, POD
+  MANAGEMENT, NODE, CATALOG, NORMAN, POD
 } from '@shell/config/types';
 import { NAMESPACE } from '@shell/config/query-params';
 import ThanosCatalog from '@shell/components/ThanosCatalog';
@@ -23,6 +23,7 @@ import { sortBy } from '@shell/utils/sort';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { base64Encode } from '@shell/utils/crypto';
 import { allHash } from '@shell/utils/promise';
+import { SECRET_TYPES as TYPES } from '@shell/config/secret';
 
 const GLOBAL_MONITORING_TOKEN = 'Global Monitoring Token';
 const APP_NAME = 'global-monitoring';
@@ -550,8 +551,8 @@ export default {
             url:    `${ prefix }/v1/secrets`,
             method: 'POST',
             data:   {
-              _type:    OPAQUE,
-              type:     OPAQUE,
+              _type:    TYPES.OPAQUE,
+              type:     TYPES.OPAQUE,
               metadata: {
                 name:      THANOS_SIDECAR_TLS,
                 namespace: CATTLE_MONITORING_SYSTEM_NAMESPACE,
@@ -587,7 +588,7 @@ export default {
             url:    `${ prefix }/v1/secrets`,
             method: 'POST',
             data:   {
-              type:     OPAQUE,
+              type:     TYPES.OPAQUE,
               metadata: {
                 name:      OBJSTORE_CONFIG_GLOBAL_MONITORING,
                 namespace: CATTLE_MONITORING_SYSTEM_NAMESPACE,
