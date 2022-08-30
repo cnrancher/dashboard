@@ -7731,3 +7731,5 @@ editGpuDevicePluginConfigDialog:
   config:
     label: 配置名称
     placeholder: 请选择一个配置...
+  errors:
+    noPermission: 当前用户没有权限修改配置

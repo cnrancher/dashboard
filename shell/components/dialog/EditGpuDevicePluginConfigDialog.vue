@@ -146,7 +146,11 @@ export default {
         this.close();
       } catch (err) {
         buttonDone(false);
-        this.errors = [stringify(err)];
+        if (err.status === 403) {
+          this.errors = [this.t('editGpuDevicePluginConfigDialog.errors.noPermission')];
+        } else {
+          this.errors = [stringify(err)];
+        }
       }
       this.loading = false;
     },

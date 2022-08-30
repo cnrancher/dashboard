@@ -7480,3 +7480,5 @@ editGpuDevicePluginConfigDialog:
   config:
     label: Config
     placeholder: Please Select A Config...
+  errors:
+    noPermission: The current user does not have permission to modify the configuration
