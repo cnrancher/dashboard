@@ -104,7 +104,19 @@ export default {
         });
       }
       this.clusterRegisterBeforeHook(wrapFn, ...args);
-    }
+    },
+
+    generateName(row) {
+      const hostnameReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
+      const match = hostnameReg.exec(row?.value?.hostname) || [];
+      const hostname = match[0];
+
+      if (hostname) {
+        return `${ hostname }-`;
+      } else {
+        return 'registryconfig-auth-';
+      }
+    },
   }
 };
 </script>
@@ -137,7 +149,7 @@ export default {
               :vertical="true"
               :namespace="value.metadata.namespace"
               :mode="mode"
-              generate-name="registryconfig-auth-"
+              :generate-name="generateName(row)"
             />
           </div>
           <div class="col span-6">
