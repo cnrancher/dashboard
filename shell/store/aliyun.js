@@ -72,6 +72,18 @@ export const getters = {
         Max: 32768,
         Min: 20,
       },
+      openPort:               [
+        '6443/tcp',
+        '2379/tcp',
+        '2380/tcp',
+        '8472/udp',
+        '4789/udp',
+        '9796/tcp',
+        '10256/tcp',
+        '10250/tcp',
+        '10251/tcp',
+        '10252/tcp',
+      ],
     };
   },
 

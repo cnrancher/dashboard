@@ -8,6 +8,7 @@ import KeyValue from '@shell/components/form/KeyValue.vue';
 import UnitInput from '@shell/components/form/UnitInput';
 import RadioGroup from '@components/Form/Radio/RadioGroup.vue';
 import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
+import ArrayList from '@shell/components/form/ArrayList';
 import { NORMAN } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 import { sortBy } from '@shell/utils/sort';
@@ -59,7 +60,7 @@ const periodMonth = ['1', '2', '3', '6', '12', '24', '36', '48', '60'];
 
 export default {
   components: {
-    Banner, Loading, LabeledInput, LabeledSelect, Checkbox, RadioGroup, UnitInput, KeyValue
+    Banner, Loading, LabeledInput, LabeledSelect, Checkbox, RadioGroup, UnitInput, KeyValue, ArrayList
   },
 
   mixins: [CreateEditView],
@@ -83,6 +84,15 @@ export default {
     disabled: {
       type:    Boolean,
       default: false
+    },
+
+    createOption: {
+      default: (text) => {
+        if (text) {
+          return text;
+        }
+      },
+      type: Function
     },
   },
 
@@ -178,6 +188,9 @@ export default {
       }
       if (!this.value?.instanceChargeType) {
         this.$set(this.value, 'instanceChargeType', this.defaultValue?.instanceChargeType);
+      }
+      if (!this.value?.openPort || !this.value?.openPort.length) {
+        this.$set(this.value, 'openPort', this.defaultValue?.openPort);
       }
 
       this.initTags();
@@ -278,11 +291,9 @@ export default {
       }
     },
     'securityGroupMode'(val) {
-      // this.value.securityGroup = val === 'default' ? DEFAULT_GROUP : null;
-
       if (val === 'default') {
         this.value.securityGroup = DEFAULT_GROUP;
-      } else if (this.value?.securityGroup && !findBy(this.securityGroupOptions, 'value', this.value.securityGroup )) {
+      } else if (this.value?.securityGroup === DEFAULT_GROUP && !findBy(this.securityGroupOptions, 'value', this.value.securityGroup )) {
         this.value.securityGroup = null;
       }
     },
@@ -310,7 +321,7 @@ export default {
         this.value.vswitchId = this.defaultValue.vswitchId;
       }
 
-      if (this.value?.securityGroup && findBy(this.securityGroupOptions, 'value', this.value.securityGroup )) {
+      if (this.value?.securityGroup && (findBy(this.securityGroupOptions, 'value', this.value.securityGroup) || this.value?.securityGroup !== DEFAULT_GROUP)) {
         this.securityGroupMode = 'custom';
       } else {
         this.securityGroupMode = 'default';
@@ -1034,6 +1045,21 @@ export default {
         </div>
 
         <div class="row mt-20">
+          <div class="col span-6">
+            <ArrayList
+              v-model="value.openPort"
+              table-class="fixed"
+              :mode="mode"
+              :title="t('cluster.machineConfig.azure.openPort.label')"
+              :add-label="t('cluster.machineConfig.azure.openPort.add')"
+              :show-protip="true"
+              :protip="t('cluster.machineConfig.azure.openPort.help')"
+              :disabled="disabled"
+            />
+          </div>
+        </div>
+
+        <div class="row mt-20">
           <div class="col span-12">
             <h3>
               {{ t('cluster.machineConfig.aliyunecs.securityGroup.title') }}
@@ -1057,6 +1083,7 @@ export default {
               :options="securityGroupOptions"
               :searchable="true"
               :taggable="true"
+              :create-option="createOption"
             />
           </div>
         </div>
