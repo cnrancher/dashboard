@@ -1096,6 +1096,7 @@ cluster:
       windowsNotReady: The cluster must be up and running with Linux etcd, control plane, and worker nodes before the registration command for adding Windows workers will display.
       windowsWarning: Workload pods, including some deployed by Rancher charts, will be scheduled on both Linux and Windows nodes by default. Edit NodeSelector in the chart to direct them to be placed onto a compatible node.
       insecure: "Insecure: Select this to skip TLS verification if your server has a self-signed certificate."
+      windowsDeprecatedForRKE1: Windows support is being deprecated for RKE1. We suggest migrating to RKE2.
   credential:
     banner:
       createCredential: |-
@@ -1632,6 +1633,7 @@ cluster:
     warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
     os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
     rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
+    desiredNodeGroupWarning: There are 0 nodes available to run the cluster agent. The cluster will not become active until at least one node is available.
   machinePool:
     name:
       label: Pool Name
@@ -1678,7 +1680,7 @@ cluster:
     autoReplace:
       label: Auto Replace
       toolTip: If greater than 0, nodes that are unreachable for this duration will be automatically deleted and replaced.
-      unit: "Minutes"
+      unit: "Seconds"
   managementTimeout: The cluster to become available. It's possible the cluster was created. We suggest checking the clusters page before trying to create another.
   memberRoles:
     removeMessage: 'Note: Removing a user will not remove their project permissions'
@@ -1889,6 +1891,11 @@ cluster:
     machineProvider: Machine Provider
     machines: Machines
     provisioner: Provisioner
+    rkeTemplate: RKE Template
+  copiedConfig: Copied KubeConfig to Clipboard
+  explore: Explore
+  exploreHarvester: Explore
+  rkeTemplateUpgrade: Template revision {name} available for upgrade
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
@@ -3757,6 +3764,9 @@ persistentVolumeClaim:
     storageClass: Storage Class
     requestStorage: Request Storage
     persistentVolume: Persistent Volume
+    tooltips:
+      noPersistentVolume: You don't have permission to list Persistent Volumes, enter a name manually
+      noStorageClass: You don't have permission to list Storage Classes, enter a name manually
   customize:
     label: Customize
     accessModes:
@@ -3805,6 +3815,9 @@ prefs:
     'false': Show Releases Only
     label: Helm Charts
   advancedTooltip: Enables 'View in API' option and keyboard shortcut to toggle light or dark theme (shift+t). This setting also reveals namespaces that are managed by Rancher and are not meant to be manually edited or deleted.
+  displaySettings:
+    detail: Change the way information is displayed in the UI.
+    title: Display Settings
 principal:
   loading: Loading&hellip;
   error: Unable to fetch principal info
@@ -3978,6 +3991,7 @@ promptRemove:
   confirmName: "Enter <b>{nameToMatch}</b> below to confirm:"
   deleteAssociatedNamespaces: 'Also delete the namespaces in this project:'
   willDeleteAssociatedNamespaces: 'This will also delete all namespaces in the project: '
+  confirmRelatedResource: Deleting the {type} will remove all the resources on this particular {type} and this is not revertable, are you sure you want to continue deleting {names}?
 promptRemoveApp:
   removeCrd: "Delete the CRD associated with this app"
 promptRestore:
@@ -4498,6 +4512,9 @@ sortableTable:
       =1 {{count} {count, plural, =1 {{singularLabel}} other {{pluralLabel}}}}
       other {{from} - {to} of {count} {pluralLabel}}}
   search: Filter
+  bulkActions:
+    collapsed:
+      label: Actions
 storageClass:
   actions:
     setAsDefault: Set as Default
@@ -6866,6 +6883,7 @@ advancedSettings:
     ui-brand: Folder name for an alternative theme defined in '/assets/brand'
     ui-session-logout-minutes: User will automatically logout without any operation after the configured time (in minutes)
     kubeconfig-default-token-ttl-minutes: TTL (in minutes) applied on all kubeconfig tokens. When set to 0, the token never expires.
+    password-min-length: Define minimum characters required for an user password.
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:
@@ -7401,7 +7419,7 @@ performance:
   description: 'Performance settings allow the behavior of the UI to be configured when dealing with many resources in a cluster. These settings only apply to the following resources: Pods, Deployments, Cron Jobs, Daemon Sets, Jobs, Stateful Sets, Replica Sets, Replication Controllers, Workloads and Secrets.'
   incrementalLoad:
     checkboxLabel: Enable incremental loading
-    description: When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources.
+    description: 'When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources. This setting only applies to the following resources: Pods, Deployments, Cron Jobs, Daemon Sets, Jobs, Stateful Sets, Replica Sets, Replication Controllers, Workloads and Secrets.'
     inputLabel: Resource Threshold
     label: Incremental Loading
     setting: You can configure the threshold above which incremental loading will be used.
@@ -7409,11 +7427,16 @@ performance:
   manualRefresh:
     buttonTooltip: Refresh list
     checkboxLabel: Enable manual refresh of data for lists
-    description: When enabled list data will not auto-update but instead the user must manually trigger a list-view refresh.
+    description: 'When enabled, list data will not auto-update but instead the user must manually trigger a list-view refresh. This setting only applies to the following resources: Pods, Deployments, Cron Jobs, Daemon Sets, Jobs, Stateful Sets, Replica Sets, Replication Controllers, Workloads and Secrets.'
     inputLabel: Resource Threshold
     label: Manual Refresh
     setting: You can configure a threshold above which manual refresh will be enabled.
+    banner: This setting is experimental and may be removed or updated in future versions.
   settingName: Performance
+  websocketNotification:
+    checkboxLabel: Disable websocket notifications
+    description: When checked, websocket notifications will not appear when the UI detects a disconnection.
+    label: Websocket Notifications
 resourceLoadingIndicator:
   loading: Loading
 rancher-nvidia-k8s-device-plugin:
@@ -7487,3 +7510,12 @@ editGpuDevicePluginConfigDialog:
     placeholder: Please Select A Config...
   errors:
     noPermission: The current user does not have permission to modify the configuration
+harvesterManager:
+  cluster:
+    description: Harvester is a modern Hyperconverged infrastructure (HCI) solution built for bare metal servers using enterprise-grade open source technologies including Kubernetes, Kubevirt and Longhorn.
+    label: Harvester Clusters
+    learnMore: Learn more about Harvester from the <a target="_blank" href="https://harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester Web Site</a> or read the the <a target="_blank" href="https://docs.harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester Docs</a>
+    none: There are no Harvester Clusters
+  manage: Manage
+  plugins:
+    loadError: Error loading harvester plugin

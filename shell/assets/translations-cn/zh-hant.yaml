@@ -90,6 +90,8 @@ generic:
   moreInfo: 更多信息
   clearAll: 清除全部
   readFromFolder: 從文件夾讀取
+  and: ' 和 '
+  comma: ，
 locale:
   en-us: English
   zh-hans: 简体中文
@@ -210,7 +212,7 @@ product:
 suffix:
   percent: "%"
   milliCpus: milli CPU
-  cores: 核心
+  cores: 核
   cpus: CPU
   gpus: GPU
   ib: iB
@@ -254,6 +256,25 @@ about:
     title: 鏡像列表
   downloadCLI:
     title: CLI 下載
+  diagnostic:
+    checkboxLabel: 發出其它請求
+    checkboxTooltip: 用前 10 個資源的響應時間補充診斷數據，可能需要一些的時間才能完成。
+    logs:
+      subtitle: 最新日誌
+    resourceCounts:
+      subtitle: 資源數量
+    systemInformation:
+      browserLanguage: 瀏覽器語言
+      browserUserAgent: 用戶瀏覽器
+      cookieEnabled: 啓用 Cookie
+      deviceMemory: 設備內存
+      hardwareConcurrency: 硬件併發
+      memJsHeapLimit: JS 堆內存大小限制
+      memTotalJsHeapSize: JS 堆內存總大小
+      memUsedJsHeapSize: 已使用的 JS 堆內存
+      os: 操作系統
+      subtitle: 系統信息
+    title: 診斷
 accountAndKeys:
   title: 賬號 & API 密鑰
   account:
@@ -591,7 +612,7 @@ asyncButton:
   download:
     action: 下載
     success: 正在保存
-    waiting: 下載中&hellip;
+    waiting: 正在下載&hellip;
   drain:
     action: 清空
     success: 已清空
@@ -674,6 +695,10 @@ asyncButton:
     action: 運行
     success: 已完成
     waiting: 正在運行&hellip;
+  diagnostic:
+    action: 下載數據
+    success: 正在保存
+    waiting: 正在下載&hellip;
 backupRestoreOperator:
   backupFilename: 備份文件名
   deleteTimeout:
@@ -1080,6 +1105,7 @@ cluster:
       windowsNotReady: 在用於添加 Windows worker 的註冊命令顯示之前，集羣必須已啓動並運行 Linux ETCD，Control Plane，以及 worker 節點。
       windowsWarning: 工作負載 Pod（包括由 Rancher Chart 部署的 Pod）將默認調度到 Linux 和 Windows 節點上。編輯 Chart 中的 NodeSelector 以將它們放置到兼容的節點上。
       insecure: "不安全：如果你的服務器具有自簽名證書，選擇此項以跳過 TLS 驗證。"
+      windowsDeprecatedForRKE1: RKE1 已棄用 Windows 支持。建議你遷移到 RKE2。
   credential:
     banner:
       createCredential: |-
@@ -1255,10 +1281,14 @@ cluster:
       label: 私有鏡像倉庫
       placeholder: '例如: index.docker.io'
       title: 私有鏡像倉庫
+    warningBanner: 不要導入已連接到另一個 Rancher 實例的集羣，避免損壞數據。
   importAction: 導入已有集羣
   kubernetesVersion:
     label: Kubernetes 版本
     experimental: 實驗功能
+    deprecated: 已棄用
+    deprecatedPatchWarning: 建議爲每個 Kubernetes 次要版本使用最新的補丁版本，已棄用的補丁版本可能對遷移有用。
+    deprecatedPatches: 顯示已棄用的 Kubernetes 補丁版本
   toolsTip: 使用新集羣工具來管理和安裝 Monitoring、Logging 等工具。
   legacyWarning: 舊版功能開關已開啓，但是不是所有舊版功能都在 Kubernetes 1.21+ 中支持。
   log:
@@ -1564,7 +1594,7 @@ cluster:
         title: 安全組
         vpcId: '（先選擇一個 VPC/子網）'
         mode:
-          default: '標準：自動創建並使用一個 "{defaultGroup}"; 安全組'
+          default: '標準：自動創建並使用一個 "{defaultGroup}" 安全組'
           custom: '選擇一個或多個現有的安全組：'
       volumeType:
         label: EBS 根卷類型
@@ -1867,9 +1897,14 @@ cluster:
     machineProvider: 主機提供商
     machines: 主機
     provisioner: 提供商
+    rkeTemplate: RKE 模板
   managementTimeout: 集羣變成可用。可能已創建了集羣。建議在創建另一個集羣之前檢查集羣頁面。
   validation:
     iamInstanceProfileName: 如果選擇了 Amazon 雲提供商，則必須爲每個主機池定義“IAM 實例配置文件名稱”。
+  copiedConfig: 已將 KubeConfig 複製到剪切板
+  explore: 瀏覽
+  exploreHarvester: 瀏覽
+  rkeTemplateUpgrade: 模板修訂版 {name} 可用於升級
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{total} {units} {suffix} 中的 {useful}"
@@ -1947,6 +1982,7 @@ cruResource:
   reviewForm: "繼續編輯 YAML"
   reviewYaml: "繼續編輯 YAML"
   previewYaml: 以 YAML 文件編輯
+  showYaml: 以 YAML 形式查看
 detailText:
   collapse: 隱藏
   binary: '<二進制數據: {n, number} 字節>'
@@ -2000,7 +2036,7 @@ fleet:
     collapseAll: 收起所有
   cluster:
     summary: 資源摘要
-    nonReady: 非就緒包
+    nonReady: 非就緒 Bundle
   clusters:
     harvester: |-
       還有 {count, plural,
@@ -2016,9 +2052,10 @@ fleet:
   bundles:
     harvester: |-
       {count, plural,
-      =1 {1個包未顯示，因爲它屬於不能與持續交付一起使用的 Harvester 集羣。}
-      other {#個包未顯示，因爲它屬於不能與持續交付一起使用的 Harvester 集羣。}
+      =1 {1 個 Bundle 未顯示，因爲它屬於不能與持續交付一起使用的 Harvester 集羣。}
+      other {# 個 Bundle 未顯示，因爲它屬於不能與持續交付一起使用的 Harvester 集羣。}
       }
+    resources: 資源
   fleetSummary:
     noClustersGitRepo: 這個 Git 倉庫不針對任何集羣
     state:
@@ -2052,12 +2089,12 @@ fleet:
       addRepo: 添加倉庫
       noRepos: 未添加任何倉庫
     ref:
-      label: 監視
+      label: Watch
       branch: 分支
-      revision: 修改
+      revision: 修訂
       branchLabel: 分支名稱
       branchPlaceholder: 例如：master
-      revisionLabel: 標籤或 Commit Hash
+      revisionLabel: Tag 或 Commit Hash
       revisionPlaceholder: 例如：v1.0.0
     serviceAccount:
       label: 服務賬號名稱
@@ -2089,6 +2126,18 @@ fleet:
       cluster: 沒有可用的集羣
     workspace:
       label: 工作空間
+    add:
+      steps:
+        repoInfo:
+          description: Fleet 將持續監控下方配置的 Git 倉庫，並將倉庫中包含的資源同步到配置的目標。
+          label: 倉庫詳情
+          subtext: 定義倉庫詳情
+          title: 指定要添加到 Fleet 的 Git 倉庫
+        targetInfo:
+          description: 你可以配置哪些集羣將用作與倉庫資源同步的目標。
+          label: 目標詳情
+          subtext: 定義目標詳情
+          title: 指定要與倉庫同步的目標
   clusterGroup:
     selector:
       label: 集羣選擇器
@@ -2287,9 +2336,12 @@ ingress:
     port:
       label: 端口
       placeholder: 例如：80 或 http
+      notInt: 端口必須是整數
+      required: 端口是必填的
     targetService:
       label: 目標服務
       doesntExist: 你選擇的服務不存在
+      required: 目標服務是必填的
     warning: "警告：默認後端將全局用於整個集羣"
   rules:
     addPath: 添加路徑
@@ -2320,6 +2372,9 @@ ingress:
     defaultCertificate: 默認
   target:
     default: 默認
+  ingressClass:
+    label: IngressClass
+  rulesOrBackendSpecified: 必須指定默認後端或規則
 internalExternalIP:
   none: 無
 istio:
@@ -2505,6 +2560,7 @@ labels:
   addAnnotation: 添加註釋
   labels:
     title: 標籤
+    fleetClusterTooltip: 標籤更改應用到管理集羣並同步到 Fleet 集羣。
   annotations:
     title: 註釋
 landing:
@@ -2830,7 +2886,7 @@ members:
     custom:
       label: 自定義
       description: 爲該用戶自定義角色。
-  localClusterWarning: 注意：這是 Rancher 用來存儲數據的集羣。只有管​​理員才應該對該集羣有寫權限。能夠寫入此集羣的用戶可以授權自己訪問由該安裝管理的其他集羣。
+  localClusterWarning: 注意：這是 Rancher 用來存儲數據的集羣。只有管理員才應該對該集羣有寫權限。能夠寫入此集羣的用戶可以授權自己訪問該安裝的任何內容。
 membershipEditor:
   label: 成員
   user: 用戶名
@@ -3703,6 +3759,9 @@ persistentVolumeClaim:
     storageClass: 存儲類
     requestStorage: 需要的存儲大小
     persistentVolume: 持久卷
+    tooltips:
+      noPersistentVolume: 沒有列出持久卷的權限，請手動輸入名稱。
+      noStorageClass: 沒有列出存儲類的權限，請手動輸入名稱。
   customize:
     label: 自定義
     accessModes:
@@ -3754,7 +3813,7 @@ prefs:
     'true': 包括預發佈版本
     'false': 只顯示正式版本
     label: Helm Chart
-  advancedTooltip: 啓用“在 API 中查看”選項並使用鍵盤快捷鍵來切換淺色或深色主題 (shift+t)
+  advancedTooltip: 啓用“在 API 中查看”選項並使用鍵盤快捷鍵來切換淺色或深色主題 (shift+t)。此設置還顯示了由 Rancher 管理的命名空間，不要手動編輯或刪除這些命名空間。
 principal:
   loading: 正在加載&hellip;
   error: 無法獲取信息
@@ -3926,6 +3985,9 @@ promptRemove:
   attemptingToRemove: "你正在試圖刪除 {type}"
   protip: "提示：按住 {alternateLabel} 鍵的同時單擊刪除，以繞過此確認。"
   confirmName: "在下方輸入 <b>{nameToMatch}</b> 以確認："
+  confirmRelatedResource: 刪除 {type} 將刪除這個特定 {type} 上的所有資源，這是不可恢復的，您確定要繼續刪除 {names} 嗎？
+  deleteAssociatedNamespaces: 同時刪除此項目中的命名空間：
+  willDeleteAssociatedNamespaces: 項目中的所有命名空間也都會被刪除：
 promptRemoveApp:
   removeCrd: "刪除與此應用關聯的 CRD"
 promptRestore:
@@ -4276,6 +4338,9 @@ secret:
     'kubernetes.io/tls':
       description: 存儲 TLS 證書和密鑰
       docLink: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
+    custom:
+      description: 使用自定義類型創建密文
+  customType: 自定義類型
 selectOrCreateAuthSecret:
   label: 身份驗證
   options:
@@ -4421,7 +4486,7 @@ setup:
 sortableTable:
   actionAvailability:
     selected: "已選擇 {actionable} 項"
-    some: "影響 {total} 中的 {actionable} 項"
+    some: "影響 {total} 項中的 {actionable} 項"
   noData: 沒有匹配項
   noRows: 沒有可顯示的內容。
   noActions: 沒有可執行的操作。
@@ -4734,7 +4799,7 @@ tableHeaders:
     projectDefault: 項目創建者的默認角色
   branch: 分支
   builtIn: 內置
-  bundlesReady: 就緒包
+  bundlesReady: 就緒 Bundle
   bundleDeploymentsReady: Deployment
   builtin: 內置
   chart: Chart
@@ -4918,6 +4983,7 @@ tableHeaders:
   receivers: 接收器
   registrationNamespace: 註冊命名空間
   routes: 路由
+  ingressClass: IngressClass
 target:
   router:
     label: 路由
@@ -5002,6 +5068,8 @@ validation:
       startHyphen: '"{key}" 不能以連字符“-”開始'
       startNumber: '"{key}" 不能以數字開始'
       tooLongLabel: '"{key}" 的長度不能超過{max}個字符'
+      endDot: '"{key}" 不能以點“.”結束'
+      startDot: '"{key}" 不能以點“.”開始'
   flowOutput:
     both: 需要選擇 "輸出" 或 "集羣輸出"。
     global: 需要選擇“集羣輸出”。
@@ -5025,6 +5093,7 @@ validation:
     exactly: '"{key}" 需要設爲 {val}'
     max: '"{key}" 最多可以是 {val}'
     min: '"{key}" 至少需要是 {val}'
+    requiredInt: '"{key}" 必須是整數'
   podAffinity:
     affinityTitle: Pod 親和性
     antiAffinityTitle: Pod 反親和性
@@ -5048,6 +5117,7 @@ validation:
           labels: '規則組{groupIndex}的規則{ruleIndex}至少需要一個標籤。建議使用嚴重程度作爲標籤。'
           recordName: '規則組{groupIndex}的規則{ruleIndex}需要一個時間序列名稱。'
         singleEntry: '規則組{index}至少需要有一個告警規則或一個記錄規則。'
+    noEdit: 名稱中的字符無效，可能無法編輯此 PrometheusRule。
   required: '"{key}" 是必填項。'
   invalid: '無效的 "{key}"'
   requiredOrOverride: '"{key}" 是必填項，或必須允許覆蓋。'
@@ -5065,9 +5135,11 @@ validation:
         required: '端口規則 [{position}] - 端口名稱是必填項。'
       nodePort:
         requiredInt: '端口規則 [{position}] - 如果包含節點端口，節點端口必須是整數。'
+        between: 端口規則 [{position}] - 節點端口的取值範圍是：1-65535
       port:
         required: '端口規則 [{position}] - 端口是必填項，'
         requiredInt: '端口規則 [{position}] - 如果包含端口，端口必須是整數。'
+        between: 端口規則 [{position}] - 端口的取值範圍是：1-65535
       targetPort:
         between: '端口規則 [{position}] - 目標端口的取值範圍是：1-65535'
         iana: '端口規則 [{position}] - 目標端口必須是 IANA 服務名稱或整數'
@@ -5088,11 +5160,16 @@ validation:
       match: 必須選擇至少一個匹配或匹配正則表達式。
       interval: '"{key}" 必須是以數字後跟單位（如 1h, 2m, 30s）的格式。'
   tab: 此選項卡中的一個或多個字段包含表單驗證錯誤
+  noUpperCase: “{key}” 中的字母數字字符必須爲小寫
+  path: '"{key}" 必須是絕對路徑'
 wizard:
   previous: 上一步
   finish: 完成
   next: 下一步
   step: "步驟 {number}"
+  create: 創建
+  edit: 編輯
+  view: 查看
 wm:
   connection:
     connected: 已連接
@@ -5309,11 +5386,22 @@ workload:
       status: 狀態
       volumeClaimTemplates: 卷聲明模板
       upgrading: 擴縮容和升級策略
+      pods: Pod
     terminationState: '最後狀態：以 {lsExitCode}: {lsDescription} 終止，以 {lsStartedAt} 開始，以 {lsFinishedAt} 結束'
+    addContainer: 添加容器
   cronSchedule: 調度
   detail:
     pods:
       title: Pod
+    cannotFindIngresses: 找不到將流量轉發到在該工作負載中選擇 Pod 的 Service 的 Ingress。
+    cannotFindServices: 找不到從該工作負載中選擇 Pod 的 Service。
+    cannotViewIngresses: 沒有列出 Ingress 的權限。
+    cannotViewIngressesBecauseCannotViewServices: 沒有查看 Service 的權限，因此無法找到相關的 Ingress。
+    cannotViewServices: 沒有列出 Service 的權限。
+    ingressListCaption: 以下 Ingress 將流量轉發到從該工作負載中選擇 Pod 的 Service：
+    ingresses: Ingress
+    serviceListCaption: 以下 Service 從該工作負載中選擇 Pod：
+    services: 服務
   detailTop:
     node: 節點
     podIP: Pod IP
@@ -5617,6 +5705,11 @@ workload:
       label: 終止寬限期
       tip: 終止 Pod 前所需的等待時間
     title: 正在升級
+  tabs:
+    labels:
+      containers: 容器
+      deployment: Deployment
+      pod: Pod
 harvester:
   modal:
     backup:
@@ -6634,8 +6727,8 @@ typeLabel:
     }
   fleet.cattle.io.bundle: |-
     {count, plural,
-      one { 包 }
-      other { 包 }
+      one { Bundle }
+      other { Bundle }
     }
   fleet.cattle.io.clusterregistrationtoken: |-
     {count, plural,
@@ -6837,9 +6930,9 @@ advancedSettings:
     'auth-user-info-resync-cron': '重新同步驗證提供程序組成員的默認 cron 調度。'
     'cluster-template-enforcement': '非管理員只能通過預先批准的 RKE 模板啓動集羣。'
     'auth-user-session-ttl-minutes': '用戶認證會話的自定義 TTL（單位：分鐘）。'
-    'auth-token-max-ttl-minutes': '身份驗證 Token 的自定義最大 TTL（單位：分鐘）。'
-    'kubeconfig-generate-token': '自動爲用戶生成 Kubeconfig Token。'
-    'kubeconfig-token-ttl-minutes': 'Kubeconfig Token 的自定義最大 TTL（單位：分鐘）。'
+    'auth-token-max-ttl-minutes': '所有身份驗證 Token 的最大 TTL（單位：分鐘）。如果設置爲 0，則 Token 永不過期。'
+    'kubeconfig-generate-token': '請求 kubeconfig 時自動爲用戶生成 Token。'
+    'kubeconfig-token-ttl-minutes': '在 CLI 中生成的 Token TTL。已棄用：此設置將被刪除，kubeconfig-default-token-ttl-minutes 將用於所有 kubeconfig Token。'
     'rke-metadata-config': '配置 RKE 元數據刷新參數。'
     'ui-banners': '分類橫幅用於在頁眉、頁腳或兩者中顯示自定義的固定橫幅。'
     'ui-consent-banner': '橫幅用於在登錄期間，向用戶展示自定義同意橫幅。'
@@ -6879,6 +6972,7 @@ advancedSettings:
     ui-session-logout-minutes: 用戶超過配置時間沒有任何操作將自動註銷(以分鐘爲單位)。
     custom-notifications: 編輯自定義通知
     harv-release-download-url: 此設置用於配置<code>升級版本下載</code>的 URL 地址。Harvester 將從該 URL 託管的 (<code>$URL</code>/<code>$VERSION</code>/version.yaml) 文件中獲取 ISO URL 和校驗和值。
+    kubeconfig-default-token-ttl-minutes: 應用於所有 kubeconfig Token 的 TTL（單位：分鐘）。如果設置爲 0，則 Token 永不過期。
   editHelp:
     'ui-banners': 此設置使用包含 3 個根參數的 JSON 對象，分別是<code>banner</code>、<code>showHeader</code>和<code>showFooter</code>。<code>banner</code> 是包含 <code>textColor</code>，<code>background</code>和<code>text</code>的對象，其中<code>textColor</code> 和 <code>background</code>的值可以是任何有效的 CSS 顏色值。
   enum:
@@ -7738,3 +7832,37 @@ editGpuDevicePluginConfigDialog:
     placeholder: 請選擇一個配置...
   errors:
     noPermission: 當前用戶沒有權限修改配置
+growl:
+  clearAll: 清除全部通知
+  disconnected:
+    message: 與 {url} 的連接意外斷開 {time}，正在重試...
+    title: Websocket 斷開連接
+harvesterManager:
+  cluster:
+    description: Harvester 是一個採用企業級開源技術，包括Kubernetes、Kubevirt和Longhorn，爲裸金屬服務器打造的現代超融合基礎設施（HCI）解決方案。
+    label: Harvester 集羣
+    learnMore: 訪問 <a target="_blank" href="https://harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester 網站</a> 或閱讀 <a target="_blank" href="https://docs.harvesterhci.io/" rel="noopener noreferrer nofollow">Harvester 官方文檔</a>，以瞭解更多關於 Harvester 的信息。
+    none: 不存在 Harvester 集羣
+  manage: 管理
+managementNode:
+  customName: 自定義名稱
+performance:
+  banner: 這些設置是實驗性的，可能會在後續版本中刪除或更新。
+  description: 性能設置允許你在需要處理大量集羣資源時配置 UI 的行爲。設置僅適用於以下資源：Pod、Deployment、CronJob、DaemonSet、Job、StatefulSet、ReplicaSet、Replication Controller、Workload 和 Secret。
+  incrementalLoad:
+    checkboxLabel: 啓用增量加載
+    description: 啓用後，資源會更快出現，但可能需要更長的時間來加載整個資源集。
+    inputLabel: 資源閾值
+    label: 增量加載
+    setting: 你可以配置一個閾值，高於該閾值時則使用增量加載。
+  label: UI 性能設置
+  manualRefresh:
+    buttonTooltip: 刷新列表
+    checkboxLabel: 啓用列表數據的手動刷新
+    description: 啓用後，列表數據不會自動更新，用戶必須手動刷新列表視圖。
+    inputLabel: 資源閾值
+    label: 手動刷新
+    setting: 你可以配置一個閾值，高於該閾值時則啓用手動刷新。
+  settingName: 性能
+resourceLoadingIndicator:
+  loading: 正在加載
