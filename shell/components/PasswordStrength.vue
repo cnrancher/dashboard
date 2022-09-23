@@ -15,8 +15,8 @@
   </div>
 </template>
 <script>
-
-const MIN_LENGTH = 12;
+import { MANAGEMENT } from '@shell/config/types';
+import { SETTING } from '@shell/config/settings';
 
 export default {
   props: {
@@ -26,7 +26,9 @@ export default {
     }
   },
   data() {
-    return { minLength: MIN_LENGTH };
+    const minLength = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.CATTLE_PASSWORD_MIN_LENGTH)?.value ?? 12;
+
+    return { minLength };
   },
   computed: {
     strength() {
