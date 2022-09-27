@@ -3,6 +3,12 @@ import Workload from './workload';
 
 export default class Deployment extends Workload {
   get replicaSetId() {
+    const pods = this.pods;
+
+    if (pods.length) {
+      return pods?.[0]?.ownersByType?.ReplicaSet?.[0]?.name;
+    }
+
     const set = this.metadata?.relationships?.find((relationship) => {
       return relationship.rel === 'owner' &&
             relationship.toType === WORKLOAD_TYPES.REPLICA_SET;
