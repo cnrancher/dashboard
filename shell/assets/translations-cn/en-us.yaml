@@ -1902,6 +1902,7 @@ cluster:
   explore: Explore
   exploreHarvester: Explore
   rkeTemplateUpgrade: Template revision {name} available for upgrade
+  k8sAuditLog: View API Server Audit Log
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"

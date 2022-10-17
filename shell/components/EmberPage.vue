@@ -525,6 +525,10 @@ export default {
       const iframeEl = findEmberPage();
 
       iframeEl?.contentWindow?.ls('user-language')?.sideLoadLanguage(this.locale);
+      iframeEl?.contentWindow.postMessage({
+        action: 'set-lang',
+        name:   this.locale
+      });
     }
   }
 };

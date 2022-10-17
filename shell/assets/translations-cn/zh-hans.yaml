@@ -1912,6 +1912,7 @@ cluster:
   explore: 浏览
   exploreHarvester: 浏览
   rkeTemplateUpgrade: 模板修订版 {name} 可用于升级
+  k8sAuditLog: 查看 API Server 审计日志
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{total} {units} {suffix} 中的 {useful}"

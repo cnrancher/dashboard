@@ -41,13 +41,19 @@ export default {
 
     currentPage() {
       return this.$route.params.page;
+    },
+    forceNew() {
+      const page = this.currentPage;
+      const pagePath = this.pages[page];
+
+      return pagePath?.startsWith('/meta/auditui/');
     }
   },
 };
 </script>
 
 <template>
-  <EmberPage v-if="path" :src="path" />
+  <EmberPage v-if="path" :src="path" :force-new="forceNew" />
   <div v-else>
     <h1>{{ t('generic.notFound') }}</h1>
     <h2>{{ currentPage }}</h2>
