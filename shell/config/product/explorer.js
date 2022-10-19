@@ -351,7 +351,7 @@ export function init(store) {
     name:        'navlink-iframe',
     namespaced: false,
     icon:       'globe',
-    route:      { name: 'c-cluster-legacy-navLinks-page' },
+    route:      { name: 'c-cluster-explorer-navLinks-page' },
     overview:   true,
     exact:      true
   });

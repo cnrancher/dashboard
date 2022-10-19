@@ -94,7 +94,7 @@ export default {
       if (row.isIframe) {
         this.$router.push({
           page:    'iframe',
-          name:   'c-cluster-legacy-navLinks-page',
+          name:   'c-cluster-explorer-navLinks-page',
           params: { cluster: this.$route.params.cluster },
           query:  { link: row.iframeSrc }
         });
