@@ -68,7 +68,7 @@ export default {
 
     Object.assign(this, hash);
 
-    await this.$store.dispatch('catalog/load', { inStore: 'cluster' });
+    await this.$store.dispatch('catalog/load', { inStore: this.inStore });
     try {
       if (!!this.chart) {
         if (!this.version?.version) {
@@ -176,7 +176,7 @@ export default {
     },
     'value.metadata.namespace'(neu, old) {
       if (neu) {
-        const ns = this.$store.getters['cluster/byId'](NAMESPACE, this.value.metadata.namespace);
+        const ns = this.$store.getters[`${ this.inStore }/byId`](NAMESPACE, this.value.metadata.namespace);
 
         const project = ns?.metadata.annotations?.[PROJECT];
 
@@ -191,9 +191,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      allCharts: 'catalog/charts', loadingErrors: 'catalog/errors', inStore: 'catalog/inStore'
-    }),
+    ...mapGetters({ allCharts: 'catalog/charts', loadingErrors: 'catalog/errors' }),
+
+    inStore() {
+      const currentCluster = this.currentCluster;
+
+      return currentCluster.id === 'local' ? 'management' : 'cluster';
+    },
+
     formYamlOptions() {
       const options = [];
 
@@ -704,7 +709,7 @@ export default {
       let app = {};
 
       try {
-        app = await this.$store.dispatch('cluster/find', {
+        app = await this.$store.dispatch(`${ this.inStore }/find`, {
           type: CATALOG.APP,
           id:   `${ APP_NAMESPACE }/${ APP_NAME }`
         });
@@ -712,7 +717,7 @@ export default {
         this.chartVersion = get(app, 'spec.chart.metadata.version') || '';
       } catch (error) {}
 
-      const value = await this.$store.dispatch(`cluster/create`, {
+      const value = await this.$store.dispatch(`${ this.inStore }/create`, {
         type:     'chartInstallAction',
         metadata: {
           namespace: APP_NAMESPACE,
@@ -730,14 +735,14 @@ export default {
       }));
 
       if (!this?.value?.global?.cattle?.clusterId) {
-        set(this, 'value.global.cattle.clusterId', this.currentCluster.id || 'local');
+        set(this, 'value.global.cattle.clusterId', this.currentCluster?.id || 'local');
       }
 
       this.initServerUrl();
     },
 
     disableGlobalMonitoringV1(buttonCb) {
-      this.$store.dispatch('cluster/promptModal', {
+      this.$store.dispatch(`${ this.inStore }/promptModal`, {
         component: 'GenericPrompt',
         resources: {
           applyMode:   'disable',
@@ -835,7 +840,7 @@ export default {
 
     const globalMonitoringClusterId = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID)?.value || '';
     const currentClusterId = enabledGlobalMonitoring ? globalMonitoringClusterId : this.$route.params.cluster;
-    const currentCluster = currentClusterId ? this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId) : this.currentCluster2;
+    const currentCluster = currentClusterId ? this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId) : this.currentCluster;
 
     this.currentCluster = currentCluster;
 
