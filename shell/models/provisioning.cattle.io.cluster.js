@@ -789,16 +789,15 @@ export default class ProvCluster extends SteveModel {
   }
 
   viewK8sAuditLog() {
+    const type1 = this.machineProvider && this.machineProviderDisplay;
+    const type2 = this.isCustom ? 'custom' : '';
+    const type3 = this.mgmt?.providerForEmberParam === 'import' ? 'imported' : '';
     const r = {
       name:   `c-cluster-manager-pages-page`,
-      params: {
-        // product:   'legacy',
-        // cluster:   this.metadata.name,
-        // resource:  this.type,
-        // namespace: this.metadata?.namespace,
-        page: 'k8s-cluster-audit-log'
-      },
-      query: { cluster: this.metadata.name }
+      params: { page: 'k8s-cluster-audit-log' },
+      query:  {
+        cluster: this.metadata.name, clusterName: this.displayName, clusterType: type1 || type2 || type3
+      }
     };
 
     this.currentRouter().push(r);
