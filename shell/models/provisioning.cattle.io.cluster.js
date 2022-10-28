@@ -796,7 +796,7 @@ export default class ProvCluster extends SteveModel {
       name:   `c-cluster-manager-pages-page`,
       params: { page: 'k8s-cluster-audit-log' },
       query:  {
-        cluster: this.metadata.name, clusterName: this.displayName, clusterType: type1 || type2 || type3
+        cluster: this.metadata.name, clusterName: this.nameDisplay, clusterType: type1 || type2 || type3
       }
     };
 
