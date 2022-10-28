@@ -293,6 +293,7 @@ export default {
 
         // Ensure iframe gets the latest theme if it has changed
         this.notifyTheme(this.theme);
+        this.syncLocale();
 
         const currentUrl = iframeEl.contentWindow.location.pathname;
         const src = this.trimURL(this.src);
