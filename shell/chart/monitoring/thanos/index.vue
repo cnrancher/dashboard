@@ -1,7 +1,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import { RadioGroup } from '@components/Form/Radio';
-import { set } from '@shell/utils/object';
+import { set, get } from '@shell/utils/object';
+import { isEqual } from 'lodash';
 
 export default {
   components: { RadioGroup },
@@ -41,7 +42,7 @@ export default {
         secretName:  'thanos-sidecar-tls'
       }
     }];
-    const relabelings = [{
+    const nodeExporterRelabelings = [{
       sourceLabels: ['__meta_kubernetes_pod_host_ip'],
       targetLabel:  'hostip',
       action:       'replace',
@@ -55,13 +56,59 @@ export default {
       replacement:  '$1',
     }];
 
+    const hardenedKubeletEndpointsRelabelings = [{
+      sourceLabels: ['__meta_kubernetes_pod_name'],
+      targetLabel:  'pod',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$1',
+    }, {
+      sourceLabels: ['__meta_kubernetes_namespace'],
+      targetLabel:  'namespace',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$',
+    }];
+    const k3sServerEndpointsRelabelings = [{
+      sourceLabels: ['__meta_kubernetes_pod_name'],
+      targetLabel:  'pod',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$1',
+    }, {
+      sourceLabels: ['__meta_kubernetes_namespace'],
+      targetLabel:  'namespace',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$',
+    }];
+    const kubeletCAdvisorRelabelings = [{
+      sourceLabels: ['__metrics_path__'],
+      targetLabel:  'metrics_path',
+    }, {
+      sourceLabels: ['__meta_kubernetes_pod_name'],
+      targetLabel:  'pod',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$1',
+    }, {
+      sourceLabels: ['__meta_kubernetes_namespace'],
+      targetLabel:  'namespace',
+      action:       'replace',
+      regex:        '(.+)',
+      replacement:  '$',
+    }];
+
     const sidecarEnabled = !!this.value.prometheus.prometheusSpec.thanos?.image;
     const tlsEnabeled = (this.mode === 'create' && !this.value.prometheus.prometheusSpec.externalLabels.prometheus_from) ? true : !!this.value.prometheus.prometheusSpec.thanos?.grpcServerTlsConfig;
 
     return {
       sidecar: sidecarEnabled,
       tls:     sidecarEnabled && tlsEnabeled,
-      relabelings,
+      nodeExporterRelabelings,
+      hardenedKubeletEndpointsRelabelings,
+      k3sServerEndpointsRelabelings,
+      kubeletCAdvisorRelabelings,
       volumes,
       thanos,
       containers,
@@ -69,11 +116,41 @@ export default {
   },
   computed: {
     ...mapGetters(['currentCluster']),
-    metricRelabelings() {
+    nodeExporterMetricRelabelings() {
       return [{
         sourceLabels: ['node'],
         targetLabel:  'node_id',
         action:       'replace',
+        regex:        '(.+)',
+        replacement:  `${ this.currentCluster.spec.displayName }:$1`,
+      }];
+    },
+    hardenedKubeletMetricEndpointsRelabelings() {
+      return [{
+        sourceLabels: ['namespace', 'pod'],
+        targetLabel:  'pod_id',
+        action:       'replace',
+        separator:    ':',
+        regex:        '(.+)',
+        replacement:  `${ this.currentCluster.spec.displayName }:$1`,
+      }];
+    },
+    k3sServerMetricEndpointsRelabelings() {
+      return [{
+        sourceLabels: ['namespace', 'pod'],
+        targetLabel:  'pod_id',
+        action:       'replace',
+        separator:    ':',
+        regex:        '(.+)',
+        replacement:  `${ this.currentCluster.spec.displayName }:$1`,
+      }];
+    },
+    kubeletCAdvisorMetricRelabelings() {
+      return [{
+        sourceLabels: ['namespace', 'pod'],
+        targetLabel:  'pod_id',
+        action:       'replace',
+        separator:    ':',
         regex:        '(.+)',
         replacement:  `${ this.currentCluster.spec.displayName }:$1`,
       }];
@@ -132,14 +209,12 @@ export default {
       return {
         on:  {
           'prometheus.prometheusSpec.externalLabels.prometheus_from': this.currentCluster.spec.displayName,
-          'nodeExporter.serviceMonitor.metricRelabelings':              [
-            ...this.value.nodeExporter.serviceMonitor.metricRelabelings,
-            ...this.metricRelabelings,
-          ],
-          'nodeExporter.serviceMonitor.relabelings':                    [
-            ...this.value.nodeExporter.serviceMonitor.relabelings,
-            ...this.relabelings,
-          ]
+          'nodeExporter.serviceMonitor.metricRelabelings':            this.getInitYaml('nodeExporter.serviceMonitor.metricRelabelings', this.nodeExporterMetricRelabelings),
+          'nodeExporter.serviceMonitor.relabelings':                  this.getInitYaml('nodeExporter.serviceMonitor.relabelings', this.nodeExporterRelabelings),
+          'k3sServer.serviceMonitor.endpoints':                       this.getEndpoints('k3sServer.serviceMonitor.endpoints', this.k3sServerEndpointsRelabelings, this.k3sServerMetricEndpointsRelabelings),
+          'hardenedKubelet.serviceMonitor.endpoints':                 this.getEndpoints('hardenedKubelet.serviceMonitor.endpoints', this.hardenedKubeletEndpointsRelabelings, this.hardenedKubeletMetricEndpointsRelabelings),
+          'kubelet.serviceMonitor.cAdvisorMetricRelabelings':         this.kubeletCAdvisorMetricRelabelings,
+          'kubelet.serviceMonitor.cAdvisorRelabelings':               this.kubeletCAdvisorRelabelings,
         },
         off: {}
       };
@@ -169,6 +244,46 @@ export default {
         set(this.value, item, this[`${ option }Yaml`][this[option] === false ? 'off' : 'on'][item]);
       });
     },
+    getInitYaml(key, value) {
+      const origin = get(this.value, key) || [];
+
+      return this.insertUniqueObject(origin, value);
+    },
+    getEndpoints(key, iRelabelings, iMetricRelabelings) {
+      const group = get(this.value, key);
+
+      return group.map((e) => {
+        if (e.path === '/metrics/cadvisor') {
+          let relabelings = e.relabelings || [];
+          let metricRelabelings = e.metricRelabelings || [];
+
+          relabelings = this.insertUniqueObject(relabelings, iRelabelings);
+          metricRelabelings = this.insertUniqueObject(metricRelabelings, iMetricRelabelings);
+
+          return {
+            ...e,
+            relabelings,
+            metricRelabelings,
+          };
+        }
+
+        return e;
+      });
+    },
+
+    insertUniqueObject(arr1, arr2) {
+      const out = arr1;
+
+      arr2.forEach((obj2) => {
+        if (arr1.find(obj1 => isEqual(obj1, obj2))) {
+          return;
+        }
+
+        out.push(obj2);
+      });
+
+      return out;
+    }
   },
   mounted() {
     this.initThanos();
