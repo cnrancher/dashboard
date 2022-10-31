@@ -8,6 +8,9 @@ import { Banner } from '@components/Banner';
 import Tolerations from '@shell/components/form/Tolerations';
 import Reservation from '@shell/components/Reservation.vue';
 import { ToggleSwitch } from '@components/Form/ToggleSwitch';
+import { RadioGroup } from '@components/Form/Radio';
+import ArrayList from '@shell/components/form/ArrayList.vue';
+import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import { random32 } from '@shell/utils/string';
 import { uniqBy } from 'lodash';
 import GlobalDashboard from './GlobalDashboard';
@@ -69,6 +72,10 @@ export default {
       type:    String,
       default: '',
     },
+    globalMonitoringSettings: {
+      type:     Object,
+      default:  () => ({}),
+    },
   },
   components: {
     Tab,
@@ -82,9 +89,14 @@ export default {
     GlobalDashboard,
     ObjectStorage,
     Certificate,
+    RadioGroup,
+    LabeledInput,
+    ArrayList,
   },
 
   data() {
+    const apiToken = this.value.ui.apiToken;
+
     return {
       thanosQuery:      THANOS_QUERY,
       serviceTypes:     SERVICE_TYPES,
@@ -93,6 +105,10 @@ export default {
       clusterId:        '',
       originUi:         {},
       queryTolerations: [],
+      useDefaultToken:  !apiToken,
+
+      otherClusterStores: [],
+      downstreamClusters: [],
     };
   },
 
@@ -114,11 +130,41 @@ export default {
         value: v.version,
       })).sort();
     },
+    apiToken: {
+      get() {
+        return this.value.ui?.apiToken;
+      },
+      set(value) {
+        if (this.useDefaultToken) {
+          this.value.ui.apiToken = '';
+        }
+
+        this.value.ui.apiToken = value;
+      }
+    },
   },
 
   methods: {
     updateClusterStore() {
-      this.$set(this.value.thanos.query, 'stores', this.clusters.filter(c => !!c.monitoringEabled).map(s => s.monitoringNodeIp));
+      let out = [];
+      const enabledClusters = this.downstreamClusters.filter(c => !!c.monitoringEabled);
+      const clusterStores = enabledClusters.map(s => s.clusterStore || s.monitoringNodeIp);
+      const otherClusterStores = this.otherClusterStores;
+
+      out = [...clusterStores, ...otherClusterStores];
+
+      this.$set(this.value.thanos.query, 'stores', out);
+      this.$emit('updateGlobalMonitoringSettings', {
+        ...this.globalMonitoringSettings,
+        otherClusterStores,
+        enabledClusters: enabledClusters.map((c) => {
+          return {
+            address:      c.clusterStore || c.monitoringNodeIp,
+            id:           c.id,
+            customStore:  !!c.clusterStore
+          };
+        })
+      });
     },
     updateCluster(clusterId) {
       this.$router.push({
@@ -127,11 +173,19 @@ export default {
       });
     },
     validate() {
+      const errors = this.value.errors || [];
+
+      if (!this.useDefaultToken && !this.value.ui.apiToken) {
+        errors.push(this.t('validation.required', { key: this.t('globalMonitoringPage.token.custom.label') }, true));
+      }
+
+      this.value.errors = errors;
+
       if (this.$refs.objectStorage) {
         this.$refs.objectStorage.validate();
       }
     },
-    updatecCustomAnswers() {
+    updateCustomAnswers() {
       const ui = this.removeCustomAnswers();
 
       Object.keys(this.customAnswers).forEach((key) => {
@@ -167,24 +221,74 @@ export default {
         return item;
       }));
     },
+    updateApiToken() {
+      if (this.useDefaultToken) {
+        this.$set(this.value.ui, 'apiToken', '');
+      }
+    },
     initTolerations() {
       this.$set(this, 'queryTolerations', this.value.thanos.query.tolerations.map((item) => {
         item.vKey = random32();
 
         return item;
       }));
-    }
+    },
+    initOtherClusterStores() {
+      let out = [];
+      const stores = this.value.thanos.query.stores;
+
+      if (!stores || !stores.length) {
+        this.otherClusterStores = [];
+
+        return;
+      }
+
+      out = this.globalMonitoringSettings.otherClusterStores || [];
+
+      this.$set(this, 'otherClusterStores', out);
+    },
+    initDownstreamClusters() {
+      const out = [];
+      const enabledClusters = this.globalMonitoringSettings.enabledClusters;
+
+      this.clusters.forEach((c) => {
+        if (!enabledClusters) {
+          out.push({ ...c });
+
+          return ;
+        }
+        const obj = { ...c };
+        const enabled = enabledClusters.find(e => e.id === c.id);
+
+        if (enabled) {
+          if (enabled.customStore) {
+            obj.clusterStore = enabled.address;
+          }
+          obj.monitoringEabled = true;
+        } else {
+          obj.monitoringEabled = false;
+        }
+        out.push(obj);
+      });
+
+      this.downstreamClusters = out;
+    },
+    removeAddress(cluster) {
+      cluster.enabledCustomStore = false;
+      cluster.clusterStore = '';
+    },
   },
 
   mounted() {
     if (this?.chart?.id) {
-      this.updateClusterStore();
+      this.initDownstreamClusters();
     }
   },
   created() {
     if (this?.chart?.id) {
       this.getCustomAnswers();
       this.initTolerations();
+      this.initOtherClusterStores();
     }
   }
 };
@@ -221,6 +325,29 @@ export default {
           </div>
         </div>
 
+        <h3>{{ t('globalMonitoringPage.token.label') }}</h3>
+        <div class="row mb-20">
+          <div class="col span-6">
+            <RadioGroup
+              v-model="useDefaultToken"
+              name="defaultTokenEnabled"
+              :mode="mode"
+              :labels="[t('generic.yes'), t('generic.no')]"
+              :options="[true, false]"
+              @input="updateApiToken"
+            />
+          </div>
+          <div v-if="!useDefaultToken" class="col span-6">
+            <LabeledInput
+              v-model="apiToken"
+              required
+              :mode="mode"
+              :label="t('globalMonitoringPage.token.custom.label')"
+              :placeholder="t('globalMonitoringPage.token.custom.placeholder')"
+            />
+          </div>
+        </div>
+
         <template v-if="chart.id">
           <h3>{{ t('globalMonitoringPage.enableMonitoring.title') }}</h3>
           <Banner
@@ -229,7 +356,7 @@ export default {
             color="warning"
             :label="t('globalMonitoringPage.enableMonitoring.warning')"
           />
-          <table class="sortable-table enable-monitoring" width="100%">
+          <table class="sortable-table enable-monitoring mb-20" width="100%">
             <thead>
               <tr>
                 <th class="cluster" align="left">
@@ -238,10 +365,13 @@ export default {
                 <th class="button" align="left" width="100">
                   {{ t('globalMonitoringPage.enableActionLabel') }}
                 </th>
+                <th class="button" align="left" width="260">
+                  {{ t('globalMonitoringPage.customAddress.header') }}
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="c in clusters" :key="c.id">
+              <tr v-for="c in downstreamClusters" :key="c.id">
                 <td>{{ c.spec.displayName }} </td>
                 <td>
                   <ToggleSwitch
@@ -250,10 +380,27 @@ export default {
                     @input="updateClusterStore"
                   />
                 </td>
+                <td>
+                  <LabeledInput
+                    v-model="c.clusterStore"
+                    :mode="mode"
+                    :placeholder="t('globalMonitoringPage.customAddress.placeholder')"
+                    @input="updateClusterStore"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
         </template>
+
+        <ArrayList
+          v-model="otherClusterStores"
+          :title="t('globalMonitoringPage.customAddress.otherHeader')"
+          :mode="mode"
+          :value-placeholder="t('globalMonitoringPage.customAddress.placeholder')"
+          :add-label="t('globalMonitoringPage.customAddress.add')"
+          @input="updateClusterStore"
+        />
       </Tab>
       <template v-if="!!chart.id">
         <Tab name="thanos" label-key="globalMonitoringPage.thanos.title" :weight="98">
@@ -334,7 +481,7 @@ export default {
               :read-allowed="false"
               :protip="true"
               :add-label="t('globalMonitoringPage.customAnswers.addAnswerLabel')"
-              @input="updatecCustomAnswers"
+              @input="updateCustomAnswers"
             />
           </div>
         </Tab>

@@ -7260,6 +7260,16 @@ globalMonitoringDashboard:
 globalMonitoringPage:
   header: Global Monitoring (Experimental)
   cluster: Global Monitoring Cluster
+  token:
+    label: Use default token
+    custom: 
+      label: Custom token
+      placeholder: Please configure a custom token
+  customAddress: 
+    add: Add Address
+    otherHeader: Customize other addresses
+    header: Custom Address
+    placeholder: e.g. 172.17.0.1:30901
   enableMonitoring:
     title: Monitoring Store
     cluster: Cluster

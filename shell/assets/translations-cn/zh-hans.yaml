@@ -7592,6 +7592,16 @@ globalMonitoringDashboard:
 globalMonitoringPage:
   header: 全局监控（实验性）
   cluster: 全局监控所在集群
+  token:
+    label: 使用默认 token
+    custom: 
+      label: 自定义 token
+      placeholder: 请配置自定义 token
+  customAddress: 
+    add: 添加地址
+    otherHeader: 自定义其他地址
+    header: 自定义地址
+    placeholder: 例如：172.17.0.1:30901
   enableMonitoring:
     title: 监控端点
     cluster: 集群

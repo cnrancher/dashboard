@@ -7591,6 +7591,16 @@ globalMonitoringDashboard:
     description: 集羣組件系統
 globalMonitoringPage:
   cluster: 全局監控所在集羣
+  token:
+    label: 使用默認 token
+    custom: 
+      label: 自定義 token
+      placeholder: 請配置自定義 token
+  customAddress: 
+    add: 添加地址
+    otherHeader: 自定義其他地址
+    header: 自定義地址
+    placeholder: 例如：172.17.0.1:30901
   enableMonitoring:
     title: 監控端點
     cluster: 集羣

@@ -74,6 +74,7 @@ export const SETTING = {
   GLOBAL_MONITORING_ENABLED:            'global-monitoring-enabled',
   GLOBAL_MONITORING_ENABLED_V2:         'global-monitoring-enabled-v2',
   GLOBAL_MONITORING_CLUSTER_ID:         'global-monitoring-cluster-id',
+  GLOBAL_MONITORING_V2:                 'global-monitoring-v2',
   DISABLE_PASSWORD_ENCRYPT:             'disable-password-encrypt',
   DOWNLOAD_FILE_SIZE_LIMIT:             'download-file-size-limit',
   PANDARIA_ENABLE_HEALTHCHECK_API:      'pandaria-enable-healthcheck-api',

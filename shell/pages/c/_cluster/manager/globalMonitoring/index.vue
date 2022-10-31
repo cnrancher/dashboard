@@ -61,6 +61,7 @@ export default {
   async fetch() {
     const hash = await allHash({
       originClusters:                  this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER }),
+      globalMonitoringV2Settings:      fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_V2, '{}'),
       globalMonitoringEnabledStting:   fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED_V2, 'false'),
       globalMonitoringEnabledSttingV1: fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED, 'false'),
       globalMonitoringClusterId:       fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_CLUSTER_ID, ''),
@@ -86,8 +87,12 @@ export default {
       console.error('Unable to fetch VersionInfo: ', e); // eslint-disable-line no-console
     }
 
+    const globalMonitoringSettingsJson = this.globalMonitoringV2Settings?.value;
+
+    this.updateGlobalMonitoringSettings(JSON.parse(globalMonitoringSettingsJson));
     await this.initFormValue();
     await this.initCluster();
+    this.initApiToken();
 
     this.$store.dispatch('management/find', {
       type: MANAGEMENT.SETTING,
@@ -120,6 +125,8 @@ export default {
       version:                         {},
       globalMonitoringEnabledStting:   {},
       globalMonitoringEnabledSttingV1: {},
+      otherClusterStores:              [],
+      globalMonitoringSettings:        {},
       disabledV1Done:                  false,
 
       formYamlOption:      VALUES_STATE.FORM,
@@ -128,6 +135,9 @@ export default {
       originalYamlValues:  null,
       showValuesComponent: true,
       confirmDisable:      false,
+      customCmdOpts:       { ...defaultCmdOpts },
+      value:               {},
+      versionInfo:         {},
       defaultCmdOpts:      {
         cleanupOnFail: false,
         crds:          true,
@@ -139,9 +149,6 @@ export default {
         timeout:       600,
         historyMax:    5,
       },
-      customCmdOpts: { ...defaultCmdOpts },
-      value:         {},
-      versionInfo:   {},
     };
   },
   watch: {
@@ -196,7 +203,11 @@ export default {
     inStore() {
       const currentCluster = this.currentCluster;
 
-      return currentCluster.id === 'local' ? 'management' : 'cluster';
+      if (currentCluster && currentCluster.id !== 'local') {
+        return 'cluster';
+      } else {
+        return 'management';
+      }
     },
 
     formYamlOptions() {
@@ -308,6 +319,9 @@ export default {
       if (this.$refs.yaml) {
         this.$refs.yaml.updateValue(value);
       }
+    },
+    updateGlobalMonitoringSettings(value) {
+      this.$set(this, 'globalMonitoringSettings', value);
     },
     cancel() {
       this.$emit('cancel');
@@ -428,6 +442,7 @@ export default {
 
     done() {
       this.setGlobalMonitoringEnabledSetting('true');
+      this.setGlobalMonitoringV2Setting(this.getGlobalMonitoringV2Setting());
       this.setGlobalMonitoringClusterId(this.value.global.cattle.clusterId);
       if (this.value.thanos.tls.enabled) {
         this.updateDownStreamClusterSecret();
@@ -443,7 +458,7 @@ export default {
 
         await this.applyHooks(BEFORE_SAVE_HOOKS);
 
-        await this.initApiToken();
+        await this.setApiToken();
 
         const { errors, input } = this.actionInput(isUpgrade);
 
@@ -519,8 +534,9 @@ export default {
       } catch (error) {
         // The wait times out eventually, move on...
       }
-
+      this.removeHistoryApiToken();
       this.setGlobalMonitoringEnabledSetting('false');
+      this.setGlobalMonitoringV2Setting('{}');
     },
 
     setGlobalMonitoringEnabledSetting(value) {
@@ -532,6 +548,22 @@ export default {
     setGlobalMonitoringClusterId(value) {
       this.$set(this.globalMonitoringClusterId, 'value', value);
       this.globalMonitoringClusterId.save();
+    },
+    setGlobalMonitoringV2Setting(value) {
+      this.$set(this.globalMonitoringV2Settings, 'value', value);
+      this.globalMonitoringV2Settings.save();
+    },
+    getGlobalMonitoringV2Setting() {
+      const obj = this.globalMonitoringSettings;
+      const useDefaultToken = this.$refs.thanosCatalog.useDefaultToken;
+
+      obj.useDefaultToken = useDefaultToken;
+      obj.clusterId = this.value.global.cattle.clusterId;
+      obj.enabled = 'true';
+
+      this.$set(this, 'globalMonitoringSettings', obj);
+
+      return JSON.stringify(obj);
     },
 
     updateSecretThanosSidecarTls(prefix) {
@@ -667,7 +699,12 @@ export default {
       }
     },
 
-    async initApiToken() {
+    async setApiToken() {
+      const useDefaultToken = this.$refs.thanosCatalog.useDefaultToken;
+
+      if (!useDefaultToken) {
+        return;
+      }
       await this.removeHistoryApiToken();
 
       const token = await this.$store.dispatch('rancher/request', {
@@ -686,18 +723,22 @@ export default {
 
     async initCluster() {
       const nodes = await this.$store.dispatch('rancher/findAll', { type: NODE }, { root: true });
+      const enabledClustersBySetting = this.globalMonitoringSettings.enabledClusters || [];
       const clusters = this.originClusters.filter(c => c.metadata.state.name === 'active' || c.id === this.currentCluster.id).map((cluster) => {
         const node = nodes.find((node) => {
           return node.id.indexOf(cluster.id) === 0;
         });
 
+        const currentClusterSetting = enabledClustersBySetting.find(obj => obj.id === cluster.id);
+
         const address = node?.ipAddress;
         const monitoringNodeIp = address ? `${ address }:30901` : '';
 
         cluster.monitoringNodeIp = monitoringNodeIp;
-        cluster.monitoringEabled = !this.existing || (this.value?.thanos?.query?.stores && this.value.thanos.query.stores.includes(monitoringNodeIp));
+        cluster.monitoringEabled = !this.existing || !!currentClusterSetting;
         cluster.value = cluster.id;
         cluster.label = cluster.spec.displayName;
+        cluster.clusterStore = currentClusterSetting?.customStore ? currentClusterSetting.address : '';
 
         return cluster;
       });
@@ -739,6 +780,14 @@ export default {
       }
 
       this.initServerUrl();
+    },
+
+    initApiToken() {
+      const useDefaultToken = this.globalMonitoringSettings?.useDefaultToken;
+
+      if (useDefaultToken) {
+        this.$set(this.value.ui, 'apiToken', '');
+      }
     },
 
     disableGlobalMonitoringV1(buttonCb) {
@@ -972,8 +1021,10 @@ export default {
               :chart="chart"
               :ui="get(versionInfo, 'values.ui') || {}"
               :version="chartVersion"
+              :global-monitoring-settings="globalMonitoringSettings"
               @updateVersion="updateVersion"
               @updateWarning="updateWarning"
+              @updateGlobalMonitoringSettings="updateGlobalMonitoringSettings"
             />
           </template>
           <template v-else>

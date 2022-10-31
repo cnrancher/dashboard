@@ -25,7 +25,7 @@ export default {
 
   methods: {
     validate() {
-      const errors = [];
+      const errors = this.value.errors || [];
 
       Object.keys(this.answers).forEach((key) => {
         if (!get(this.value, this.answers[key])) {
