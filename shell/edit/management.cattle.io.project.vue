@@ -6,7 +6,7 @@ import FormValidation from '@shell/mixins/form-validation';
 import CruResource from '@shell/components/CruResource';
 import Labels from '@shell/components/form/Labels';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import ResourceQuota from '@shell/components/form/ResourceQuota/Project';
+import ResourceQuota from '@shell/components/form/ResourceQuota/ProjectQuota';
 import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import Tab from '@shell/components/Tabbed/Tab';
 import Tabbed from '@shell/components/Tabbed';
