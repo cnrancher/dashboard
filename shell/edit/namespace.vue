@@ -16,7 +16,6 @@ import ResourceQuota from '@shell/components/form/ResourceQuota/NamespaceQuota';
 import Loading from '@shell/components/Loading';
 import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/product/harvester-manager';
-import { allHash } from '@shell/utils/promise';
 
 export default {
   components: {
@@ -36,16 +35,11 @@ export default {
 
   async fetch() {
     if (this.$store.getters['management/schemaFor'](MANAGEMENT.PROJECT)) {
-      const hash = await allHash({
-        projects:       this.$store.dispatch('management/findAll', { type: MANAGEMENT.PROJECT }),
-        storageClasses: this.$store.dispatch('cluster/findAll', { type: STORAGE_CLASS })
-      });
-
-      this.projects = hash.projects;
-      this.storageClasses = hash.storageClasses;
+      this.projects = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.PROJECT });
 
       this.project = this.projects.find(p => p.id.includes(this.projectName));
     }
+    this.storageClasses = await this.$store.dispatch('cluster/findAll', { type: STORAGE_CLASS });
   },
 
   data() {
@@ -66,6 +60,7 @@ export default {
       projectName,
       HARVESTER_TYPES,
       RANCHER_TYPES,
+      storageClasses:          []
     };
   },
 
@@ -189,7 +184,7 @@ export default {
             </p>
           </div>
         </div>
-        <ResourceQuota v-model="value" :mode="mode" :project="project" :types="isHarvester ? HARVESTER_TYPES : RANCHER_TYPES" />
+        <ResourceQuota v-model="value" :mode="mode" :project="project" :types="isHarvester ? HARVESTER_TYPES : RANCHER_TYPES" :storage-classes="storageClasses" />
       </Tab>
       <Tab v-if="showContainerResourceLimit" :weight="0" name="container-resource-limit" :label="t('namespace.containerResourceLimit')">
         <ContainerResourceLimit
