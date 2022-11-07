@@ -1,10 +1,14 @@
 <script>
 import EmbeddedPageView from '@shell/components/EmberPageView';
+import { MANAGEMENT } from '@shell/config/types';
+import { SETTING } from '@shell/config/settings';
 
 export default {
   components: { EmbeddedPageView },
 
   data() {
+    const auditLogServerUrl = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
+
     return {
       PAGES: {
         'rke-drivers':           '/n/drivers/cluster',

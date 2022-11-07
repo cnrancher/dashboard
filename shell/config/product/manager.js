@@ -3,11 +3,13 @@ import {
   CAPI,
   CATALOG,
   NORMAN,
+  MANAGEMENT,
   HCI
 } from '@shell/config/types';
 import { MULTI_CLUSTER } from '@shell/store/features';
 import { DSL } from '@shell/store/type-map';
 import { BLANK_CLUSTER } from '@shell/store';
+import { SETTING } from '@shell/config/settings';
 
 export const NAME = 'manager';
 
