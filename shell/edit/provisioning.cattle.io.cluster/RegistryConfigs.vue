@@ -30,6 +30,11 @@ export default {
       required: true,
     },
 
+    registryHost: {
+      type:     String,
+      required: true,
+    },
+
     clusterRegisterBeforeHook: {
       // We use this hook instead of the create hook from the CreateEditView
       // mixin because this is a form within a form, therefore we
@@ -104,7 +109,18 @@ export default {
         });
       }
       this.clusterRegisterBeforeHook(wrapFn, ...args);
-    }
+    },
+    generateName(row) {
+      const hostname = row?.value?.hostname;
+
+      if (hostname) {
+        return `${ hostname }-`;
+      } else if (this.registryHost) {
+        return `${ this.registryHost }-`;
+      } else {
+        return 'registryconfig-auth-';
+      }
+    },
   }
 };
 </script>
@@ -137,7 +153,7 @@ export default {
               :vertical="true"
               :namespace="value.metadata.namespace"
               :mode="mode"
-              generate-name="registryconfig-auth-"
+              :generate-name="generateName(row)"
             />
           </div>
           <div class="col span-6">
