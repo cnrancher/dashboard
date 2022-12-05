@@ -1133,6 +1133,13 @@ cluster:
       secretKey:
         label: SecretKey
         placeholder: 你的 ACK 密文密鑰
+    tke:
+      accessKeyId:
+        label: 訪問密鑰 ID
+        placeholder: 你的 騰訊雲 訪問密鑰 ID
+      accessKeySecret:
+        label: 訪問密鑰 Secret
+        placeholder: 你的 騰訊雲 訪問密鑰 Secret
     aws:
       accessKey:
         label: 訪問密鑰
@@ -1767,6 +1774,8 @@ cluster:
     s3: S3 兼容
     softlayer: IBM 雲
     tencenttke: 騰訊雲 TKE
+    tkeoperatorsetting: 騰訊雲 TKE
+    tke: Tencent
     upcloud: UpCloud
     vmwarevsphere: VMware vSphere
     zstack: ZStack
