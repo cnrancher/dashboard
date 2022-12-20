@@ -3197,7 +3197,6 @@ monitoringReceiver:
     add:
       aliyunSMS: Aliyun SMS
       dingTalk: Ding Talk
-      msTeams: MS Teams
       serviceNow: Service Now
     aliyunSMS:
       accessKeyIdLabel: Access Key
@@ -3211,7 +3210,7 @@ monitoringReceiver:
       signatureNamePlaceholder: e.g. mysign
       templateCodeLabel: Template Code
       templateCodePlaceholder: e.g. mytemplate
-    banner: To use Ding Talk, AliCloud SMS or MS Teams you will need to have <pre class="inline-block m-0 p-0 vertical-middle">pandaria-alerting-drivers</pre> installed first.
+    banner: To use Ding Talk or AliCloud SMS you will need to have <pre class="inline-block m-0 p-0 vertical-middle">pandaria-alerting-drivers</pre> installed first.
     dingTalk:
       secretLabel: Secret
       secretPlaceholder: Only for webhook with sign enabled
