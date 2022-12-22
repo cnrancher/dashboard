@@ -10,6 +10,7 @@ import { WORKLOAD_TYPES } from '@shell/config/types';
 import { diffFrom } from '@shell/utils/time';
 import { mapGetters } from 'vuex';
 import { ACTIVELY_REMOVE, NEVER_ADD } from '@shell/utils/create-yaml';
+import pickBy from 'lodash/pickBy';
 
 const HIDE = [
   'metadata.labels.pod-template-hash',
@@ -25,6 +26,15 @@ const REMOVE_KEYS = REMOVE.reduce((obj, item) => {
 
   return obj;
 }, {});
+
+const IGNORED_ANNOTATIONS = [
+  'kubectl.kubernetes.io/last-applied-configuration',
+  'deployment.kubernetes.io/revision',
+  'deployment.kubernetes.io/revision-history',
+  'deployment.kubernetes.io/desired-replicas',
+  'deployment.kubernetes.io/max-replicas',
+  'deprecated.deployment.rollback.to',
+];
 
 export default {
   components: {
@@ -48,6 +58,7 @@ export default {
       revisions:          [],
       editorMode:         EDITOR_MODES.DIFF_CODE,
       showDiff:           false,
+      ignoredAnnotations: IGNORED_ANNOTATIONS,
     };
   },
   computed: {
@@ -81,7 +92,10 @@ export default {
           value: {
             metadata: {
               creationTimestamp: null,
-              labels:            { 'workload.user.cattle.io/workloadselector': this.selectedRevision.spec.template.metadata.labels['workload.user.cattle.io/workloadselector'] }
+              labels:            pickBy(this.selectedRevision.spec.template.metadata?.labels, (value, key) => key !== 'pod-template-hash'),
+              annotations:       pickBy(this.selectedRevision.spec.template.metadata?.annotations, (value, key) => {
+                return !this.ignoredAnnotations.includes(key);
+              }),
             },
             spec: this.selectedRevision.spec.template.spec
           }
