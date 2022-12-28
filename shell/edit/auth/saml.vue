@@ -207,7 +207,7 @@ export default {
           <div class="row">
             <Checkbox v-model="showLdap" :mode="mode" :label="t('authConfig.saml.showLdap')" />
           </div>
-          <div class="row mt-20 mb-20">
+          <div class="mt-20 mb-20">
             <config v-if="showLdap" v-model="model.openLdapConfig" :type="NAME" :mode="mode" />
           </div>
         </div>
