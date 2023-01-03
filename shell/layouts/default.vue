@@ -289,7 +289,7 @@ export default {
 
     async currentProduct(a, b) {
       if ( !isEqual(a, b) ) {
-        if (a.inStore !== b.inStore || a.inStore !== 'cluster' ) {
+        if ((a.inStore !== b.inStore || a.inStore !== 'cluster') && this.clusterId && a.name) {
           const route = {
             name:   'c-cluster-product',
             params: {
@@ -324,6 +324,9 @@ export default {
 
   methods: {
     async setClusterAsLastRoute() {
+      if (!this.clusterId || this.clusterId === '_') {
+        return;
+      }
       const route = {
         name:   this.$route.name,
         params: {
