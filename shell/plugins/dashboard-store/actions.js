@@ -437,7 +437,7 @@ export default {
     if (headWarnings) {
       ctx.dispatch('growl/warning', {
         title:   `${ capitalize(data?.type) }: ${ data?.metadata.name }`,
-        message: headWarnings,
+        message: decodeURIComponent(headWarnings.replace(/\+/g, '%20')),
         timeout: 0,
       }, { root: true });
     }
