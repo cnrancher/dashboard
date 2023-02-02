@@ -182,7 +182,7 @@ nav:
     projects: 镜像管理
   auditLog: 审计日志
   quotas: 配额
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局监控
     dashboard: Dashboard
 product:
@@ -253,6 +253,10 @@ about:
     linux: Linux
   downloadImageList:
     title: 镜像列表
+    tokenTips: "Github Token: 非必填字段，用于追加RPM GC私有项目(AUDITLOG_SERVER，AUDITLOG_FLUENTBIT，GPU_SCHEDULER，GPU_DEVICE_PLUGIN)相关镜像。"
+    accessToken:
+      label: Github 令牌
+      placeholder: 访问令牌
   downloadCLI:
     title: CLI 下载
   diagnostic:
@@ -7168,13 +7172,13 @@ formReservation:
     label: '{component} Memory 预留'
     placeholder: '例如: 1000'
 globalMonitoringDashboard:
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局监控
     description: 多集群监控
-  grafana: 
+  grafana:
     label: Grafana
     description: Metrics 仪表盘
-  thanos: 
+  thanos:
     label: Prometheus Thanos
     description: 集群组件系统
 globalMonitoringPage:
@@ -7182,10 +7186,10 @@ globalMonitoringPage:
   cluster: 全局监控所在集群
   token:
     label: 使用默认 token
-    custom: 
+    custom:
       label: 自定义 token
       placeholder: 请配置自定义 token
-  customAddress: 
+  customAddress:
     add: 添加地址
     otherHeader: 自定义其他地址
     header: 自定义地址
@@ -7198,7 +7202,7 @@ globalMonitoringPage:
   customAnswers:
     title: 自定义应答
     detail: 配置自定义的应答。
-    answer: 
+    answer:
       label: 应答
     addAnswerLabel: 添加应答
   noAvailableClusters: 没有可用集群，请先添加一个集群。
@@ -7327,19 +7331,19 @@ globalMonitoringPage:
   grafana:
     header: 监控大屏
     detail: 全局 Grafana 和{appName}监控大屏的配置。
-    title: 
+    title:
       label: 标题
       placeholder: 例如 grafana
-    tabTitle: 
+    tabTitle:
       label: 选项卡标题
       placeholder: 例如 grafana
-    logo: 
+    logo:
       label: logo
       placeholder: 请输入 logo 地址
-    favicon: 
+    favicon:
       label: favicon
       placeholder: 请输入 favicon 地址
-    serverUrl: 
+    serverUrl:
       label: serverUrl
       placeholder: 例如 http://rancher.cattle-system
     enablePersistence:
@@ -7360,7 +7364,7 @@ globalMonitoringPage:
     loadBalancer: 4 层负载均衡
   tls:
     header: 证书
-    serverName: 
+    serverName:
       label: Server Name
     ca:
       label: CA 证书

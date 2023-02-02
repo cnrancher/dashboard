@@ -6,11 +6,14 @@ import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { getVendor } from '@shell/config/private-label';
 import { downloadFile } from '@shell/utils/download';
+import PromptModal from '@shell/components/PromptModal';
 
 export default {
   layout:     'plain',
-  components: { BackLink, Loading },
-  mixins:     [BackRoute],
+  components: {
+    BackLink, Loading, PromptModal
+  },
+  mixins: [BackRoute],
   async fetch() {
     this.settings = await this.$store.dispatch(`management/findAll`, { type: MANAGEMENT.SETTING });
   },
@@ -39,7 +42,7 @@ export default {
     downloads() {
       return [
         this.createOSOption('about.os.mac', 'icon-apple', this.settings?.find(s => s.id === SETTING.CLI_URL.DARWIN)?.value, null),
-        this.createOSOption('about.os.linux', 'icon-linux', this.settings?.find(s => s.id === SETTING.CLI_URL.LINUX)?.value, this.downloadLinuxImages),
+        this.createOSOption('about.os.linux', 'icon-linux', this.settings?.find(s => s.id === SETTING.CLI_URL.LINUX)?.value, this.downloadLinuxImages, this.showDownloadModal),
         this.createOSOption('about.os.windows', 'icon-windows', this.settings?.find(s => s.id === SETTING.CLI_URL.WINDOWS)?.value, this.downloadWindowsImages)
       ];
     },
@@ -51,7 +54,7 @@ export default {
     }
   },
   methods: {
-    createOSOption(label, icon, cliLink, imageList) {
+    createOSOption(label, icon, cliLink, imageList, showDownloadModal) {
       const slash = cliLink?.lastIndexOf('/');
 
       return {
@@ -59,18 +62,15 @@ export default {
         icon,
         imageList,
         cliLink,
-        cliFile: slash >= 0 ? cliLink.substr(slash + 1, cliLink.length - 1) : cliLink
+        cliFile: slash >= 0 ? cliLink.substr(slash + 1, cliLink.length - 1) : cliLink,
+        showDownloadModal
       };
     },
 
-    async downloadLinuxImages() {
-      const res = await this.$store.dispatch('management/request', { url: '/v3/kontainerdrivers/rancher-images' });
+    async downloadLinuxImages(token = '') {
+      const res = await this.$store.dispatch('management/request', { url: `/v3/kontainerdrivers/rancher-images${ token ? `?token=${ token }` : '' }` });
 
-      try {
-        await downloadFile(`.rancher-linux-images.txt`, res.data);
-      } catch (error) {
-        this.$store.dispatch('growl/fromError', { title: 'Error downloading Linux image list', err: error }, { root: true });
-      }
+      await downloadFile(`.rancher-linux-images.txt`, res.data);
     },
 
     async downloadWindowsImages() {
@@ -82,6 +82,12 @@ export default {
         this.$store.dispatch('growl/fromError', { title: 'Error downloading Windows image list', err: error }, { root: true });
       }
     },
+    showDownloadModal(imageList) {
+      this.$store.dispatch('management/promptModal', {
+        resources: [imageList],
+        component: 'DownloadImageListDialog'
+      });
+    }
   }
 };
 </script>
@@ -177,7 +183,7 @@ export default {
           <td>
             <a
               v-if="d.imageList"
-              @click="d.imageList"
+              @click="d.showDownloadModal ? d.showDownloadModal(d) : d.imageList()"
             >
               {{ t('asyncButton.download.action') }}
             </a>
@@ -209,6 +215,7 @@ export default {
         </tr>
       </table>
     </template>
+    <PromptModal />
   </div>
 </template>
 

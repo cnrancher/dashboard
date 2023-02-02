@@ -178,7 +178,7 @@ nav:
     projects: Image Management
   auditLog: Audit Log
   quotas: Quotas
-  globalMonitoring: 
+  globalMonitoring:
     label: Global Monitoring
     dashboard: Dashboard
 product:
@@ -247,6 +247,10 @@ about:
     linux: Linux
   downloadImageList:
     title: Image Lists
+    tokenTips: "Github Token: Non-required field for appending RPM GC private project (AUDITLOG_SERVER, AUDITLOG_FLUENTBIT, GPU_SCHEDULER, GPU_DEVICE_PLUGIN) related images."
+    accessToken:
+      label: Github Token
+      placeholder: Access Token
   downloadCLI:
     title: CLI Downloads
   diagnostic:
@@ -6797,13 +6801,13 @@ formReservation:
     label: '{component} Memory Reservation'
     placeholder: e.g. 1000
 globalMonitoringDashboard:
-  globalMonitoring: 
+  globalMonitoring:
     label: Global Monitoring
     description: Global Monitoring
-  grafana: 
+  grafana:
     label: Grafana
     description: Metrics Dashboards
-  thanos: 
+  thanos:
     label: Prometheus Thanos
     description: Cluster Component System
 globalMonitoringPage:
@@ -6811,10 +6815,10 @@ globalMonitoringPage:
   cluster: Global Monitoring Cluster
   token:
     label: Use default token
-    custom: 
+    custom:
       label: Custom token
       placeholder: Please configure a custom token
-  customAddress: 
+  customAddress:
     add: Add Address
     otherHeader: Customize other addresses
     header: Custom Address
@@ -6838,7 +6842,7 @@ globalMonitoringPage:
   customAnswers:
     title: Custom Answers
     detail: Configure custom answers.
-    answer: 
+    answer:
       label: Answers
     addAnswerLabel: Add Answer
   nodeSelector:
@@ -6955,19 +6959,19 @@ globalMonitoringPage:
         placeholder: "e.g. 0"
   grafana:
     header: Global Dashboard
-    title: 
+    title:
       label: Title
       placeholder: e.g. grafana
-    tabTitle: 
+    tabTitle:
       label: Tab Title
       placeholder: e.g. grafana
-    logo: 
+    logo:
       label: logo
       placeholder: Please enter the logo address
-    favicon: 
+    favicon:
       label: favicon
       placeholder: Please enter the favicon address
-    serverUrl: 
+    serverUrl:
       label: serverUrl
       placeholder: e.g. http://rancher.cattle-system
     detail: Global Grafana and {appName} Global Dashboard configuration.
@@ -6996,7 +7000,7 @@ globalMonitoringPage:
       placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'
     key:
       label: Private Key
-      placeholder:  Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
+      placeholder: Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
     ca:
       label: CA Certificate
       placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'

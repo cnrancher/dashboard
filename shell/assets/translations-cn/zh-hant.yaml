@@ -182,7 +182,7 @@ nav:
     projects: 鏡像管理
   auditLog: 審計日誌
   quotas: 配額
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局監控
     dashboard: Dashboard
 product:
@@ -253,6 +253,10 @@ about:
     linux: Linux
   downloadImageList:
     title: 鏡像列表
+    tokenTips: "Github Token: 非必填字段，用於追加RPM GC私有項目(AUDITLOG_SERVER，AUDITLOG_FLUENTBIT，GPU_SCHEDULER，GPU_DEVICE_PLUGIN)相關鏡像。"
+    accessToken:
+      label: Github 令牌
+      placeholder: 訪問令牌
   downloadCLI:
     title: CLI 下載
   diagnostic:
@@ -7168,23 +7172,23 @@ formReservation:
     label: "{component} Memory 預留"
     placeholder: "例如: 1000"
 globalMonitoringDashboard:
-  globalMonitoring: 
+  globalMonitoring:
     label: 全局監控
     description: 多集羣監控
-  grafana: 
+  grafana:
     label: Grafana
     description: Metrics 儀表盤
-  thanos: 
+  thanos:
     label: Prometheus Thanos
     description: 集羣組件系統
 globalMonitoringPage:
   cluster: 全局監控所在集羣
   token:
     label: 使用默認 token
-    custom: 
+    custom:
       label: 自定義 token
       placeholder: 請配置自定義 token
-  customAddress: 
+  customAddress:
     add: 添加地址
     otherHeader: 自定義其他地址
     header: 自定義地址
@@ -7197,7 +7201,7 @@ globalMonitoringPage:
   customAnswers:
     detail: 配置自定義的應答。
     title: 自定義應答
-    answer: 
+    answer:
       label: 應答
     addAnswerLabel: 添加應答
   disable: 禁用
@@ -7208,19 +7212,19 @@ globalMonitoringPage:
   grafana:
     header: 監控大屏
     detail: 全局 Grafana 和{appName}監控大屏的配置。
-    title: 
+    title:
       label: 標題
       placeholder: 例如 grafana
-    tabTitle: 
+    tabTitle:
       label: 選項卡標題
       placeholder: 例如 grafana
-    logo: 
+    logo:
       label: logo
       placeholder: 請輸入 logo 地址
-    favicon: 
+    favicon:
       label: favicon
       placeholder: 請輸入 favicon 地址
-    serverUrl: 
+    serverUrl:
       label: serverUrl
       placeholder: 例如 http://rancher.cattle-system
     enableGrafanaSidecar:
@@ -7360,7 +7364,7 @@ globalMonitoringPage:
   version: 全局監控版本
   tls:
     header: 證書
-    serverName: 
+    serverName:
       label: Server Name
     ca:
       label: CA 證書
