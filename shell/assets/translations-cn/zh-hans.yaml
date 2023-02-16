@@ -1981,6 +1981,7 @@ containerResourceLimit:
   maxMemory: 最大内存
   minCpu: 最小 CPU
   minMemory: 最小内存
+  error: '{key1}的值必须小于或等于{key2}的值。'
 cruResource:
   backToForm: 返回表单编辑
   backBody: 返回表单编辑不会保留对 YAML 做出的所有更改
