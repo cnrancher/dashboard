@@ -4508,6 +4508,10 @@ servicesPage:
       abbrv: NP
       description: "Exposes the service on each node's IP at a static port (the `NodePort`). You'll be able to contact this type of service, from outside the cluster, by requesting `&lt;NodeIP&gt;:&lt;NodePort&gt;`."
       label: Node Port
+    externalIP:
+      label: External IP
+      description: Maps the service to the external IP addresses
+      abbrv: EIP
   typeOpts:
     label: Service Type
   harvester:
