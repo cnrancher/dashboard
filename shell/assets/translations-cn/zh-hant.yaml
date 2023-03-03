@@ -1775,7 +1775,7 @@ cluster:
     softlayer: IBM 雲
     tencenttke: 騰訊雲 TKE
     tkeoperatorsetting: 騰訊雲 TKE
-    tke: Tencent
+    tke: TKE
     upcloud: UpCloud
     vmwarevsphere: VMware vSphere
     zstack: ZStack
