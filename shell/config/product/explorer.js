@@ -244,7 +244,7 @@ export function init(store) {
   });
 
   virtualType({
-    label:       store.getters['i18n/t']('members.clusterMembers'),
+    labelKey:   'members.clusterMembers',
     group:      'cluster',
     namespaced:  false,
     name:        VIRTUAL_TYPES.CLUSTER_MEMBERS,
@@ -274,7 +274,7 @@ export function init(store) {
   });
 
   virtualType({
-    label:            store.getters['i18n/t']('projectNamespaces.label'),
+    labelKey:         'projectNamespaces.label',
     group:            'cluster',
     icon:             'globe',
     namespaced:       false,
@@ -302,7 +302,7 @@ export function init(store) {
     showMenuFun(state, getters, rootState, rootGetters) {
       return rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
     },
-    label:            store.getters['i18n/t']('nav.auditLog'),
+    labelKey:          'nav.auditLog',
     group:            'cluster',
     icon:             'globe',
     namespaced:       false,
