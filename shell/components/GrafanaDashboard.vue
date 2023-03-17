@@ -54,14 +54,11 @@ export default {
     }
   },
   watch: {
-    currentUrl() {
+    currentUrl(neu) {
+      // Should consider changing `this.graphWindow?.angular` to something like `!loaded && !error`
+      // https://github.com/rancher/dashboard/pull/5802
       if (this.graphHistory && this.graphWindow?.angular) {
-        const angularElement = this.graphWindow.angular.element(this.graphDocument.querySelector('.grafana-app'));
-        const injector = angularElement.injector();
-
-        this.graphHistory.pushState({}, '', this.currentUrl);
-        injector.get('$route').updateParams(this.computeParams());
-        injector.get('$route').reload();
+        this.graphWindow.location.replace(neu);
       }
     },
 
@@ -222,9 +219,16 @@ export default {
 
 <template>
   <div class="grafana-graph">
-    <Banner v-if="error" color="error" style="z-index: 1000">
+    <Banner
+      v-if="error"
+      color="error"
+      style="z-index: 1000"
+    >
       <div class="text-center">
-        {{ t('grafanaDashboard.failedToLoad') }} <a href="#" @click="reload">{{ t('grafanaDashboard.reload') }}</a>
+        {{ t('grafanaDashboard.failedToLoad') }} <a
+          href="#"
+          @click="reload"
+        >{{ t('grafanaDashboard.reload') }}</a>
       </div>
     </Banner>
     <iframe
@@ -238,8 +242,15 @@ export default {
     <div v-if="loading">
       <Loading />
     </div>
-    <div v-if="!loading && !error" class="external-link">
-      <a :href="grafanaUrl" target="_blank" rel="noopener noreferrer nofollow">{{ t('grafanaDashboard.grafana') }} <i class="icon icon-external-link" /></a>
+    <div
+      v-if="!loading && !error"
+      class="external-link"
+    >
+      <a
+        :href="grafanaUrl"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >{{ t('grafanaDashboard.grafana') }} <i class="icon icon-external-link" /></a>
     </div>
   </div>
 </template>

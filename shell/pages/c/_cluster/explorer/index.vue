@@ -483,7 +483,12 @@ export default {
         </Tab>
       </Tabbed>
     </div>
-    <Tabbed v-if="hasMetricsTabs" class="mt-30">
+    <Tabbed
+      v-if="hasMetricsTabs"
+      default-tab="cluster-metrics"
+      :use-hash="false"
+      class="mt-30"
+    >
       <Tab v-if="showClusterMetrics" name="cluster-metrics" :label="t('clusterIndexPage.sections.clusterMetrics.label')" :weight="2">
         <template #default="props">
           <DashboardMetrics
@@ -557,7 +562,7 @@ export default {
 }
 
 .etcd-metrics ::v-deep .external-link {
-  top: -102px;
+  top: -107px;
 }
 
 .cluster-tools-tip {

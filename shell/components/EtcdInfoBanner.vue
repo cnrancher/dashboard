@@ -26,7 +26,11 @@ export default {
 
 <template>
   <Loading v-if="$fetchState.pending" />
-  <Banner v-else class="banner" color="info">
+  <Banner
+    v-else
+    class="banner"
+    color="info"
+  >
     <div class="datum">
       <label>{{ t('etcdInfoBanner.hasLeader') }}</label> {{ hasLeader }}
     </div>
@@ -47,6 +51,7 @@ export default {
 
         .datum {
             text-align: center;
+            margin-right: 5px;
         }
 
         & ::v-deep label {
