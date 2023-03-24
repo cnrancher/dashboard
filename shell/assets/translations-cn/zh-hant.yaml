@@ -4482,7 +4482,7 @@ servicesPage:
     clusterIp:
       abbrv: IP
       description: 在集羣內網 IP 上公開服務。如果選擇此值，服務只能從集羣內部訪問。這是默認類型。
-      label: 集羣 IP
+      label: Cluster IP
     externalName:
       abbrv: EN
       description: "將服務與`externalName`字段的內容（如 foo.bar.example.com）進行映射，返回一個帶有其值的 CNAME 記錄。沒有設置任何形式的代理。"
