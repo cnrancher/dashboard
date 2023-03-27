@@ -312,6 +312,7 @@ export default {
       resetValues:         false,
       openApi:             true,
       wait:                true,
+      debug:               false,
       timeout:       600,
       historyMax:    5,
     };
@@ -1472,6 +1473,7 @@ export default {
         <div><Checkbox v-if="existing" v-model="customCmdOpts.resetValues" :label="t('catalog.install.helm.resetValues')" /></div>
         <div><Checkbox v-if="!existing" v-model="customCmdOpts.openApi" :label="t('catalog.install.helm.openapi')" /></div>
         <div><Checkbox v-model="customCmdOpts.wait" :label="t('catalog.install.helm.wait')" /></div>
+        <div><Checkbox v-model="customCmdOpts.debug" label="Debug" /></div>
         <div style="display: block; max-width: 400px;" class="mt-10">
           <UnitInput
             v-model.number="customCmdOpts.timeout"
