@@ -24,6 +24,7 @@ import { haveV1Monitoring } from '@shell/utils/monitoring';
 
 const NODE_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-detail-1/rancher-node-detail?orgId=1';
 const NODE_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-1/rancher-node?orgId=1';
+const NODE_GPU_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-gpu-node/rancher-nvidia-dcgm-exporter-dashboard?orgId=1';
 
 export default {
   name: 'DetailNode',
@@ -50,6 +51,7 @@ export default {
 
   async fetch() {
     this.showMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [NODE_METRICS_DETAIL_URL, NODE_METRICS_SUMMARY_URL]);
+    this.showGpuMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [NODE_GPU_METRICS_SUMMARY_URL]);
 
     if (haveV1Monitoring(this.$store.getters)) {
       const v3Nodes = await this.$store.dispatch('rancher/request', {
@@ -93,7 +95,9 @@ export default {
       podTableHeaders: this.$store.getters['type-map/headersFor'](podSchema),
       NODE_METRICS_DETAIL_URL,
       NODE_METRICS_SUMMARY_URL,
-      showMetrics:     false
+      NODE_GPU_METRICS_SUMMARY_URL,
+      showMetrics:     false,
+      showGpuMetrics:  false,
     };
   },
 
@@ -161,6 +165,14 @@ export default {
 
     graphVars() {
       return { instance: `${ this.value.internalIp }:9796` };
+    },
+
+    gpuGraphVars() {
+      return { instance: this.value.metadata?.name };
+    },
+
+    hasGpu() {
+      return this.value?.labels['gpu.pandaria.io/monitoring-enabled'] === 'true' && this.showGpuMetrics;
     }
   },
 
@@ -228,8 +240,10 @@ export default {
             v-if="props.active"
             :detail-url="NODE_METRICS_DETAIL_URL"
             :summary-url="NODE_METRICS_SUMMARY_URL"
+            :gpu-summary-url="NODE_GPU_METRICS_SUMMARY_URL"
+            :has-gpu="hasGpu"
             :vars="graphVars"
-            graph-height="825px"
+            :gpu-vars="gpuGraphVars"
           />
         </template>
       </Tab>
