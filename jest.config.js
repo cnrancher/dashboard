@@ -14,8 +14,11 @@ module.exports = {
     '@shell/(.*)':      '<rootDir>/shell/$1',
     '@pkg/(.*)':        '<rootDir>/shell/pkg/$1',
     '@components/(.*)': '<rootDir>/pkg/rancher-components/src/components/$1',
+    '^~shell/(.*)':     '<rootDir>/shell/$1',
   },
   transform: {
+    // process js with `jest-svg-transformer`
+    '^.+\\.svg$':  '<rootDir>/svgTransform',
     // process js with `babel-jest`
     '^.+\\.js$':   '<rootDir>/node_modules/babel-jest',
     // process `*.vue` files with `vue-jest`
