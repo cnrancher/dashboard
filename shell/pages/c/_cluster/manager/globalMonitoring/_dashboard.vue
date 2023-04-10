@@ -1,9 +1,8 @@
 <script>
 import { MANAGEMENT, CATALOG } from '@shell/config/types';
 import LazyImage from '@shell/components/LazyImage';
-import { SETTING } from '@shell/config/settings';
+import { SETTING, getGlobalMonitoringV2Setting } from '@shell/config/settings';
 import { compare } from '@shell/utils/version';
-import { mapGetters } from 'vuex';
 
 const APP_NAME = 'global-monitoring';
 const APP_NAMESPACE = 'cattle-global-monitoring';
@@ -18,6 +17,13 @@ export default {
         id:   `${ APP_NAMESPACE }/${ APP_NAME }`
       });
     } catch (error) {}
+
+    const monitoringSettings = getGlobalMonitoringV2Setting(this.$store.getters);
+    const currentClusterId = monitoringSettings.clusterId || this.$route.params.cluster;
+    const currentCluster = this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId);
+
+    this.currentCluster = currentCluster;
+    this.monitoringSettings = monitoringSettings;
   },
 
   data() {
@@ -28,11 +34,12 @@ export default {
         grafana:      false,
         prometheus:   false,
       },
+      monitoringSettings: {},
+      currentCluster:     {},
     };
   },
 
   computed: {
-    ...mapGetters({ inStore: 'catalog/inStore' }),
     appVersion() {
       return this.app?.versionDisplay;
     },
@@ -41,13 +48,12 @@ export default {
       const globalMonitoringSrc = require('~shell/assets/images/providers/global-monitoring.svg');
       const grafanaSrc = require('~shell/assets/images/providers/grafana.svg');
       const thanosSrc = require('~shell/assets/images/providers/thanos.svg');
-      const clusterId = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID)?.value || '';
-      const enabled = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
+      const { clusterId, enabled } = this.monitoringSettings;
       const serverUrlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SERVER_URL) || {};
       let thanosUrl = `${ serverUrlSetting.value }/k8s/clusters/${ clusterId }/api/v1/namespaces/cattle-global-monitoring/services/http:access-thanos:80/proxy/`;
 
       if (compare(this.appVersion, '0.0.2') > 0) {
-        thanosUrl = '/global-monitoring/v2/graph';
+        thanosUrl = `${ serverUrlSetting.value }/global-monitoring/v2/graph`;
       }
 
       return [
@@ -76,7 +82,17 @@ export default {
           link:        thanosUrl,
         },
       ];
-    }
+    },
+
+    inStore() {
+      const currentCluster = this.currentCluster;
+
+      if (currentCluster && currentCluster.id !== 'local') {
+        return 'cluster';
+      } else {
+        return 'management';
+      }
+    },
   }
 };
 </script>
@@ -89,7 +105,10 @@ export default {
           <t k="monitoring.overview.title" />
         </h1>
         <div>
-          <t k="monitoring.overview.subtitle" :raw="true" />
+          <t
+            k="monitoring.overview.subtitle"
+            :raw="true"
+          />
         </div>
       </div>
     </header>
@@ -122,7 +141,7 @@ export default {
                   <i class="icon icon-external-link" />
                 </div>
               </div>
-              <hr />
+              <hr>
               <div class="description">
                 <span>
                   <t :k="fel.description" />

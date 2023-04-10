@@ -4,18 +4,17 @@ import Tab from '@shell/components/Tabbed/Tab';
 import { _EDIT } from '@shell/config/query-params';
 import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
 import KeyValue from '@shell/components/form/KeyValue.vue';
-import { Banner } from '@components/Banner';
 import Tolerations from '@shell/components/form/Tolerations';
 import Reservation from '@shell/components/Reservation.vue';
-import { ToggleSwitch } from '@components/Form/ToggleSwitch';
 import { RadioGroup } from '@components/Form/Radio';
-import ArrayList from '@shell/components/form/ArrayList.vue';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import { random32 } from '@shell/utils/string';
 import { uniqBy } from 'lodash';
 import GlobalDashboard from './GlobalDashboard';
 import ObjectStorage from './ObjectStorage';
 import Certificate from './Certificate';
+import MonitoringStore from './MonitoringStore';
+import { MANAGEMENT } from '@shell/config/types';
 
 const THANOS_QUERY = 'Thanos Query';
 const CLUSTER_IP = 'ClusterIP';
@@ -43,7 +42,7 @@ export default {
       type:    String,
       default: _EDIT
     },
-    existing: {
+    installed: {
       type:    Boolean,
       default: false,
     },
@@ -56,13 +55,8 @@ export default {
       required: true,
     },
     chart: {
-      type:     Object,
-      default:  () => ({}),
-    },
-    clusters: {
-      type:     Array,
-      default:  () => ([]),
-      required: true,
+      type:    Object,
+      default: () => ({}),
     },
     optionLabel: {
       type:    String,
@@ -72,30 +66,33 @@ export default {
       type:    String,
       default: '',
     },
-    globalMonitoringSettings: {
+    monitoringSettings: {
       type:     Object,
       default:  () => ({}),
+      required: true,
     },
   },
   components: {
     Tab,
     Tabbed,
     LabeledSelect,
-    Banner,
     KeyValue,
     Tolerations,
     Reservation,
-    ToggleSwitch,
     GlobalDashboard,
     ObjectStorage,
     Certificate,
     RadioGroup,
     LabeledInput,
-    ArrayList,
+    MonitoringStore,
+  },
+
+  async fetch() {
+    this.originClusters = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
   },
 
   data() {
-    const apiToken = this.value.ui.apiToken;
+    const apiToken = this.value.ui?.apiToken || '';
 
     return {
       thanosQuery:      THANOS_QUERY,
@@ -106,9 +103,7 @@ export default {
       originUi:         {},
       queryTolerations: [],
       useDefaultToken:  !apiToken,
-
-      otherClusterStores: [],
-      downstreamClusters: [],
+      originClusters:   [],
     };
   },
 
@@ -145,27 +140,6 @@ export default {
   },
 
   methods: {
-    updateClusterStore() {
-      let out = [];
-      const enabledClusters = this.downstreamClusters.filter(c => !!c.monitoringEabled);
-      const clusterStores = enabledClusters.map(s => s.clusterStore || s.monitoringNodeIp);
-      const otherClusterStores = this.otherClusterStores;
-
-      out = [...clusterStores, ...otherClusterStores];
-
-      this.$set(this.value.thanos.query, 'stores', out);
-      this.$emit('updateGlobalMonitoringSettings', {
-        ...this.globalMonitoringSettings,
-        otherClusterStores,
-        enabledClusters: enabledClusters.map((c) => {
-          return {
-            address:      c.clusterStore || c.monitoringNodeIp,
-            id:           c.id,
-            customStore:  !!c.clusterStore
-          };
-        })
-      });
-    },
     updateCluster(clusterId) {
       this.$router.push({
         name:   this.$route.name,
@@ -226,6 +200,7 @@ export default {
         this.$set(this.value.ui, 'apiToken', '');
       }
     },
+
     initTolerations() {
       this.$set(this, 'queryTolerations', this.value.thanos.query.tolerations.map((item) => {
         item.vKey = random32();
@@ -233,62 +208,12 @@ export default {
         return item;
       }));
     },
-    initOtherClusterStores() {
-      let out = [];
-      const stores = this.value.thanos.query.stores;
-
-      if (!stores || !stores.length) {
-        this.otherClusterStores = [];
-
-        return;
-      }
-
-      out = this.globalMonitoringSettings.otherClusterStores || [];
-
-      this.$set(this, 'otherClusterStores', out);
-    },
-    initDownstreamClusters() {
-      const out = [];
-      const enabledClusters = this.globalMonitoringSettings.enabledClusters;
-
-      this.clusters.forEach((c) => {
-        if (!enabledClusters) {
-          out.push({ ...c });
-
-          return ;
-        }
-        const obj = { ...c };
-        const enabled = enabledClusters.find(e => e.id === c.id);
-
-        if (enabled) {
-          if (enabled.customStore) {
-            obj.clusterStore = enabled.address;
-          }
-          obj.monitoringEabled = true;
-        } else {
-          obj.monitoringEabled = false;
-        }
-        out.push(obj);
-      });
-
-      this.downstreamClusters = out;
-    },
-    removeAddress(cluster) {
-      cluster.enabledCustomStore = false;
-      cluster.clusterStore = '';
-    },
   },
 
-  mounted() {
-    if (this?.chart?.id) {
-      this.initDownstreamClusters();
-    }
-  },
   created() {
     if (this?.chart?.id) {
       this.getCustomAnswers();
       this.initTolerations();
-      this.initOtherClusterStores();
     }
   }
 };
@@ -296,16 +221,23 @@ export default {
 
 <template>
   <div>
-    <Tabbed :side-tabs="true" default-tab="general">
-      <Tab name="general" :label="t('monitoring.tabs.general')" :weight="99">
+    <Tabbed
+      :side-tabs="true"
+      default-tab="general"
+    >
+      <Tab
+        name="general"
+        :label="t('monitoring.tabs.general')"
+        :weight="99"
+      >
         <div class="row mb-20">
           <div class="col span-6">
             <LabeledSelect
               v-model="value.global.cattle.clusterId"
               :mode="mode"
-              :disabled="existing"
+              :disabled="installed"
               required
-              :options="clusters"
+              :options="originClusters.map(c=>{c.value=c.id; return c;})"
               option-key="id"
               option-label="spec.displayName"
               :label="t('globalMonitoringPage.cluster')"
@@ -337,7 +269,10 @@ export default {
               @input="updateApiToken"
             />
           </div>
-          <div v-if="!useDefaultToken" class="col span-6">
+          <div
+            v-if="!useDefaultToken"
+            class="col span-6"
+          >
             <LabeledInput
               v-model="apiToken"
               required
@@ -348,63 +283,21 @@ export default {
           </div>
         </div>
 
-        <template v-if="chart.id">
-          <h3>{{ t('globalMonitoringPage.enableMonitoring.title') }}</h3>
-          <Banner
-            :closable="true"
-            class="cluster-tools-tip"
-            color="warning"
-            :label="t('globalMonitoringPage.enableMonitoring.warning')"
-          />
-          <table class="sortable-table enable-monitoring mb-20" width="100%">
-            <thead>
-              <tr>
-                <th class="cluster" align="left">
-                  {{ t('globalMonitoringPage.enableMonitoring.cluster') }}
-                </th>
-                <th class="button" align="left" width="100">
-                  {{ t('globalMonitoringPage.enableActionLabel') }}
-                </th>
-                <th class="button" align="left" width="260">
-                  {{ t('globalMonitoringPage.customAddress.header') }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="c in downstreamClusters" :key="c.id">
-                <td>{{ c.spec.displayName }} </td>
-                <td>
-                  <ToggleSwitch
-                    v-model="c.monitoringEabled"
-                    :labels="[false, true]"
-                    @input="updateClusterStore"
-                  />
-                </td>
-                <td>
-                  <LabeledInput
-                    v-model="c.clusterStore"
-                    :mode="mode"
-                    :placeholder="t('globalMonitoringPage.customAddress.placeholder')"
-                    @input="updateClusterStore"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </template>
-
-        <ArrayList
-          v-model="otherClusterStores"
-          :title="t('globalMonitoringPage.customAddress.otherHeader')"
+        <MonitoringStore
+          v-if="!!chart.id"
+          ref="monitoringStore"
+          v-model="value"
           :mode="mode"
-          :value-placeholder="t('globalMonitoringPage.customAddress.placeholder')"
-          :add-label="t('globalMonitoringPage.customAddress.add')"
-          @input="updateClusterStore"
+          :installed="installed"
+          :monitoring-settings="monitoringSettings"
         />
       </Tab>
       <template v-if="!!chart.id">
-        <Tab name="thanos" label-key="globalMonitoringPage.thanos.title" :weight="98">
-          <h2>{{ t('globalMonitoringPage.thanos.title') }}</h2>
+        <Tab
+          name="thanos"
+          label-key="globalMonitoringPage.thanos.title"
+          :weight="98"
+        >
           <Reservation
             :value="value"
             :component="thanosQuery"
@@ -425,7 +318,10 @@ export default {
 
           <div class="mb-20">
             <h3 class="mb-20">
-              <t k="formScheduling.toleration.workloadTitle" :workload="thanosQuery" />
+              <t
+                k="formScheduling.toleration.workloadTitle"
+                :workload="thanosQuery"
+              />
             </h3>
             <div class="row">
               <Tolerations
@@ -449,7 +345,11 @@ export default {
             </div>
           </div>
         </Tab>
-        <Tab name="store" label-key="globalMonitoringPage.store.title" :weight="97">
+        <Tab
+          name="store"
+          label-key="globalMonitoringPage.store.title"
+          :weight="97"
+        >
           <ObjectStorage
             ref="objectStorage"
             :value="value"
@@ -457,22 +357,32 @@ export default {
             @updateWarning="$emit('updateWarning')"
           />
         </Tab>
-        <Tab name="grafana" label-key="globalMonitoringPage.grafana.header" :weight="96">
+        <Tab
+          name="grafana"
+          label-key="globalMonitoringPage.grafana.header"
+          :weight="96"
+        >
           <GlobalDashboard
             :value="value"
             :mode="mode"
             @updateWarning="$emit('updateWarning')"
           />
         </Tab>
-        <Tab name="ceritificate" label-key="globalMonitoringPage.tls.header" :weight="95">
+        <Tab
+          name="ceritificate"
+          label-key="globalMonitoringPage.tls.header"
+          :weight="95"
+        >
           <Certificate
             :value="value"
             :mode="mode"
           />
         </Tab>
-        <Tab name="customAnswers" label-key="globalMonitoringPage.customAnswers.title" :weight="94">
-          <h2>{{ t('globalMonitoringPage.customAnswers.title') }}</h2>
-
+        <Tab
+          name="customAnswers"
+          label-key="globalMonitoringPage.customAnswers.title"
+          :weight="94"
+        >
           <h3>{{ t('globalMonitoringPage.customAnswers.answer.label') }}</h3>
           <div class="row mb-20">
             <KeyValue
@@ -489,13 +399,3 @@ export default {
     </Tabbed>
   </div>
 </template>
-
-<style lang="scss" scoped>
-  .enable-monitoring {
-    th {
-      padding: 8px 5px;
-      font-weight: 400;
-      border: 0;
-    }
-  }
-</style>

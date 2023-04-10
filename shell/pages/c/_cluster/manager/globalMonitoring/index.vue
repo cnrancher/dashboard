@@ -4,9 +4,7 @@ import jsyaml from 'js-yaml';
 import { mapGetters } from 'vuex';
 import { mapPref, DIFF } from '@shell/store/prefs';
 import { Banner } from '@components/Banner';
-import {
-  MANAGEMENT, NODE, CATALOG, NORMAN, POD
-} from '@shell/config/types';
+import { MANAGEMENT, CATALOG, NORMAN, POD } from '@shell/config/types';
 import { NAMESPACE } from '@shell/config/query-params';
 import ThanosCatalog from '@shell/components/ThanosCatalog';
 import ButtonGroup from '@shell/components/ButtonGroup';
@@ -17,13 +15,12 @@ import ChildHook, { BEFORE_SAVE_HOOKS, AFTER_SAVE_HOOKS } from '@shell/mixins/ch
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { CATALOG as CATALOG_ANNOTATIONS, PROJECT } from '@shell/config/labels-annotations';
 import { diff, get, set } from '@shell/utils/object';
-import { SETTING, fetchOrCreateSetting } from '@shell/config/settings';
+import { SETTING, getGlobalMonitoringV2Setting, DEFAULT_GMV2_SETTING, setSetting } from '@shell/config/settings';
 import { delay, mergeWith, isArray, throttle } from 'lodash';
-import { sortBy } from '@shell/utils/sort';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { base64Encode } from '@shell/utils/crypto';
-import { allHash } from '@shell/utils/promise';
 import { SECRET_TYPES as TYPES } from '@shell/config/secret';
+import { monitoringStatus } from '@shell/utils/global-monitoring';
 
 const GLOBAL_MONITORING_TOKEN = 'Global Monitoring Token';
 const APP_NAME = 'global-monitoring';
@@ -32,7 +29,6 @@ const THANOS_SIDECAR_TLS = 'thanos-sidecar-tls';
 const OBJSTORE_CONFIG_GLOBAL_MONITORING = 'objstore-config-global-monitoring';
 const CATTLE_MONITORING_SYSTEM_NAMESPACE = 'cattle-monitoring-system';
 const GLOBAL_PROMETHEUS_POD_NAME = 'prometheus-rancher-monitoring-prometheus-0';
-
 const MONITORING_STORE = ['grafana.resources.core', 'thanos.compact.resources', 'thanos.query.resources', 'thanos.store.resources'];
 const MONITORING_STORE_WITHOUT_OBJSTORAGE = ['grafana.resources.core', 'thanos.query.resources'];
 
@@ -59,16 +55,6 @@ export default {
   ],
 
   async fetch() {
-    const hash = await allHash({
-      originClusters:                  this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER }),
-      globalMonitoringV2Settings:      fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_V2, '{}'),
-      globalMonitoringEnabledStting:   fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED_V2, 'false'),
-      globalMonitoringEnabledSttingV1: fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED, 'false'),
-      globalMonitoringClusterId:       fetchOrCreateSetting(this.$store, SETTING.GLOBAL_MONITORING_CLUSTER_ID, ''),
-    });
-
-    Object.assign(this, hash);
-
     await this.$store.dispatch('catalog/load', { inStore: this.inStore });
     try {
       if (!!this.chart) {
@@ -77,21 +63,16 @@ export default {
         }
 
         this.versionInfo = await this.$store.dispatch('catalog/getVersionInfo', {
-          repoType:      this.chart.repoType,
-          repoName:      this.chart.repoName,
-          chartName:     this.chart.chartName,
-          versionName:   this.version.version || '',
+          repoType:    this.chart.repoType,
+          repoName:    this.chart.repoName,
+          chartName:   this.chart.chartName,
+          versionName: this.version.version || '',
         });
       }
     } catch (e) {
       console.error('Unable to fetch VersionInfo: ', e); // eslint-disable-line no-console
     }
-
-    const globalMonitoringSettingsJson = this.globalMonitoringV2Settings?.value;
-
-    this.updateGlobalMonitoringSettings(JSON.parse(globalMonitoringSettingsJson));
     await this.initFormValue();
-    await this.initCluster();
     this.initApiToken();
 
     this.$store.dispatch('management/find', {
@@ -116,18 +97,13 @@ export default {
     };
 
     return {
-      chartVersion:                    '',
-      errors:                          [],
-      warnings:                        [],
-      clusters:                        [],
-      currentCluster:                  {},
-      originClusters:                  [],
-      version:                         {},
-      globalMonitoringEnabledStting:   {},
-      globalMonitoringEnabledSttingV1: {},
-      otherClusterStores:              [],
-      globalMonitoringSettings:        {},
-      disabledV1Done:                  false,
+      chartVersion:       '',
+      errors:             [],
+      warnings:           [],
+      currentCluster:     {},
+      version:            {},
+      monitoringSettings: {},
+      disabledV1Done:     false,
 
       formYamlOption:      VALUES_STATE.FORM,
       showDiff:            false,
@@ -192,13 +168,10 @@ export default {
         }
       }
     },
-
-    'originClusters'(neu, old) {
-      this.initCluster();
-    }
   },
   computed: {
     ...mapGetters({ allCharts: 'catalog/charts', loadingErrors: 'catalog/errors' }),
+    ...monitoringStatus(this),
 
     inStore() {
       const currentCluster = this.currentCluster;
@@ -304,14 +277,6 @@ export default {
 
       return need;
     },
-
-    haveV1GlobalMonitoring() {
-      return this.globalMonitoringEnabledSttingV1?.value === 'true';
-    },
-
-    existing() {
-      return this.globalMonitoringEnabledStting.value === 'true' || this.haveV1GlobalMonitoring;
-    },
   },
   methods: {
     get,
@@ -319,9 +284,6 @@ export default {
       if (this.$refs.yaml) {
         this.$refs.yaml.updateValue(value);
       }
-    },
-    updateGlobalMonitoringSettings(value) {
-      this.$set(this, 'globalMonitoringSettings', value);
     },
     cancel() {
       this.$emit('cancel');
@@ -440,12 +402,15 @@ export default {
       }
     },
 
-    done() {
-      this.setGlobalMonitoringEnabledSetting('true');
-      this.setGlobalMonitoringV2Setting(this.getGlobalMonitoringV2Setting());
-      this.setGlobalMonitoringClusterId(this.value.global.cattle.clusterId);
+    done(settings) {
+      setSetting(this.$store, SETTING.GLOBAL_MONITORING_V2, JSON.stringify(settings));
+      setSetting(this.$store, SETTING.GLOBAL_MONITORING_CLUSTER_ID, settings.clusterId);
+      this.monitoringStatus = true;
       if (this.value.thanos.tls.enabled) {
         this.updateDownStreamClusterSecret();
+      }
+      if (settings.useDefaultToken) {
+        this.value.ui.apiToken = '';
       }
     },
     async save(btnCb) {
@@ -454,7 +419,8 @@ export default {
       delete this.value.errors;
 
       try {
-        const isUpgrade = this.existing;
+        const isUpgrade = this.monitoringStatus.installed;
+        const settings = this.getSetting();
 
         await this.applyHooks(BEFORE_SAVE_HOOKS);
 
@@ -494,7 +460,7 @@ export default {
         await this.applyHooks(AFTER_SAVE_HOOKS);
 
         btnCb(true);
-        this.done();
+        this.done(settings);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error(err);
@@ -513,8 +479,8 @@ export default {
     async disableMonitoring() {
       try {
         const app = await this.$store.dispatch(`${ this.inStore }/find`, {
-          type:      CATALOG.APP,
-          id:        `${ this.value.metadata.namespace }/${ this.value.metadata.name }`,
+          type: CATALOG.APP,
+          id:   `${ this.value.metadata.namespace }/${ this.value.metadata.name }`,
         });
 
         const res = await app.doAction('uninstall', {});
@@ -535,35 +501,39 @@ export default {
         // The wait times out eventually, move on...
       }
       this.removeHistoryApiToken();
-      this.setGlobalMonitoringEnabledSetting('false');
-      this.setGlobalMonitoringV2Setting('{}');
+
+      const settings = {
+        ...DEFAULT_GMV2_SETTING,
+        clusterId: this.currentCluster.id,
+        enabled:   'false'
+      };
+
+      setSetting(this.$store, SETTING.GLOBAL_MONITORING_V2, JSON.stringify(settings));
+      this.$set(this, 'monitoringSettings', settings);
+      this.monitoringStatus = false;
     },
 
-    setGlobalMonitoringEnabledSetting(value) {
-      this.$set(this.globalMonitoringEnabledStting, 'value', value);
+    getSetting() {
+      const obj = this.monitoringSettings;
+      const useDefaultToken = this.getUseDefaultToken();
 
-      return this.globalMonitoringEnabledStting.save();
-    },
-
-    setGlobalMonitoringClusterId(value) {
-      this.$set(this.globalMonitoringClusterId, 'value', value);
-      this.globalMonitoringClusterId.save();
-    },
-    setGlobalMonitoringV2Setting(value) {
-      this.$set(this.globalMonitoringV2Settings, 'value', value);
-      this.globalMonitoringV2Settings.save();
-    },
-    getGlobalMonitoringV2Setting() {
-      const obj = this.globalMonitoringSettings;
-      const useDefaultToken = this.$refs.thanosCatalog.useDefaultToken;
-
-      obj.useDefaultToken = useDefaultToken;
+      obj.useDefaultToken = useDefaultToken.toString();
       obj.clusterId = this.value.global.cattle.clusterId;
       obj.enabled = 'true';
 
-      this.$set(this, 'globalMonitoringSettings', obj);
+      return obj;
+    },
 
-      return JSON.stringify(obj);
+    getUseDefaultToken() {
+      if (this.showValuesComponent) {
+        const useDefaultToken = this.$refs.thanosCatalog.useDefaultToken;
+
+        return useDefaultToken;
+      } else {
+        const apiToken = this.value.ui.apiToken;
+
+        return !apiToken;
+      }
     },
 
     updateSecretThanosSidecarTls(prefix) {
@@ -637,29 +607,30 @@ export default {
       });
     },
     updateDownStreamClusterSecret() {
-      this.clusters.forEach((c) => {
-        if (c.monitoringEabled && this.value?.thanos?.tls?.enabled) {
-          const prefix = c.id === 'local' ? '' : `/k8s/clusters/${ c.id }`;
+      if (!this.value?.thanos?.tls?.enabled ) {
+        return;
+      }
+      this.monitoringSettings.enabledClusters.forEach((c) => {
+        const prefix = c.id === 'local' ? '' : `/k8s/clusters/${ c.id }`;
 
-          this.$store.dispatch('management/request', { url: `${ prefix }/v1/namespaces/${ CATTLE_MONITORING_SYSTEM_NAMESPACE }` }).then(() => {
-            this.updateSecretThanosSidecarTls(prefix);
-            this.updateSecretObjstoreConfigGlobalMonitoring(prefix);
-          }).catch((errNs) => {
-            if (errNs.status === 404) {
-              this.$store.dispatch('management/request', {
-                url:    `${ prefix }/v1/namespaces`,
-                method: 'POST',
-                data:   {
-                  type:     MANAGEMENT.NAMESPACE,
-                  metadata: { name: CATTLE_MONITORING_SYSTEM_NAMESPACE },
-                },
-              }).then((res) => {
-                this.updateSecretThanosSidecarTls(prefix);
-                this.updateSecretObjstoreConfigGlobalMonitoring(prefix);
-              });
-            }
-          });
-        }
+        this.$store.dispatch('management/request', { url: `${ prefix }/v1/namespaces/${ CATTLE_MONITORING_SYSTEM_NAMESPACE }` }).then(() => {
+          this.updateSecretThanosSidecarTls(prefix);
+          this.updateSecretObjstoreConfigGlobalMonitoring(prefix);
+        }).catch((errNs) => {
+          if (errNs.status === 404) {
+            this.$store.dispatch('management/request', {
+              url:    `${ prefix }/v1/namespaces`,
+              method: 'POST',
+              data:   {
+                type:     MANAGEMENT.NAMESPACE,
+                metadata: { name: CATTLE_MONITORING_SYSTEM_NAMESPACE },
+              },
+            }).then((res) => {
+              this.updateSecretThanosSidecarTls(prefix);
+              this.updateSecretObjstoreConfigGlobalMonitoring(prefix);
+            });
+          }
+        });
       });
 
       delay(() => {
@@ -700,11 +671,12 @@ export default {
     },
 
     async setApiToken() {
-      const useDefaultToken = this.$refs.thanosCatalog.useDefaultToken;
+      const useDefaultToken = this.getUseDefaultToken();
 
       if (!useDefaultToken) {
         return;
       }
+
       await this.removeHistoryApiToken();
 
       const token = await this.$store.dispatch('rancher/request', {
@@ -719,31 +691,6 @@ export default {
       });
 
       this.$set(this.value.ui, 'apiToken', token.token);
-    },
-
-    async initCluster() {
-      const nodes = await this.$store.dispatch('rancher/findAll', { type: NODE }, { root: true });
-      const enabledClustersBySetting = this.globalMonitoringSettings.enabledClusters || [];
-      const clusters = this.originClusters.filter(c => c.metadata.state.name === 'active' || c.id === this.currentCluster.id).map((cluster) => {
-        const node = nodes.find((node) => {
-          return node.id.indexOf(cluster.id) === 0;
-        });
-
-        const currentClusterSetting = enabledClustersBySetting.find(obj => obj.id === cluster.id);
-
-        const address = node?.ipAddress;
-        const monitoringNodeIp = address ? `${ address }:30901` : '';
-
-        cluster.monitoringNodeIp = monitoringNodeIp;
-        cluster.monitoringEabled = !this.existing || !!currentClusterSetting;
-        cluster.value = cluster.id;
-        cluster.label = cluster.spec.displayName;
-        cluster.clusterStore = currentClusterSetting?.customStore ? currentClusterSetting.address : '';
-
-        return cluster;
-      });
-
-      this.clusters = sortBy(clusters, 'label');
     },
 
     async initFormValue() {
@@ -781,12 +728,43 @@ export default {
 
       this.initServerUrl();
     },
+    initServerUrl() {
+      this.serverUrlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SERVER_URL) || {};
 
+      this.value.ui && this.serverUrlSetting.value && this.$set(this.value.ui, 'serverUrl', this.serverUrlSetting.value);
+    },
     initApiToken() {
-      const useDefaultToken = this.globalMonitoringSettings?.useDefaultToken;
+      const useDefaultToken = this.monitoringSettings?.useDefaultToken === 'true';
 
       if (useDefaultToken) {
         this.$set(this.value.ui, 'apiToken', '');
+      }
+    },
+    initGlobalMonitoringRoute() {
+      const monitoringSettings = getGlobalMonitoringV2Setting(this.$store.getters);
+      const installedClusterId = monitoringSettings.clusterId;
+      const currentClusterId = this.monitoringStatus.installed ? installedClusterId : this.getRouteParamsClusterId();
+      const currentCluster = this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId);
+
+      this.currentCluster = currentCluster;
+      this.monitoringSettings = monitoringSettings;
+
+      if (currentCluster?.metadata?.state?.name !== 'active') {
+        this.$set(this, 'warnings', [this.t('globalMonitoringPage.globalMonitoringClusterUnavailable', { clusterName: currentCluster?.nameDisplay || currentClusterId } )]);
+
+        return;
+      }
+
+      if (this.monitoringStatus.installed && this.$route.params.cluster !== installedClusterId) {
+        delay(() => {
+          this.$router.replace({
+            name:   this.$route.name,
+            params: {
+              ...this.$route.params,
+              cluster: currentClusterId
+            }
+          });
+        }, 1000);
       }
     },
 
@@ -806,8 +784,7 @@ export default {
               method:  'DELETE',
               headers: { 'x-api-action-links': 'actionLinks' }
             }).then(() => {
-              this.globalMonitoringEnabledSttingV1.value = 'false';
-              this.globalMonitoringEnabledSttingV1.save();
+              setSetting(this.$store, SETTING.GLOBAL_MONITORING_ENABLED, 'false');
 
               this.$set(this, 'disabledV1Done', true);
               this.$emit('update', { ready: true, hidden: true });
@@ -820,12 +797,6 @@ export default {
         },
       });
       buttonCb(true);
-    },
-
-    initServerUrl() {
-      this.serverUrlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SERVER_URL) || {};
-
-      this.value.ui && this.serverUrlSetting.value && this.$set(this.value.ui, 'serverUrl', this.serverUrlSetting.value);
     },
 
     validate() {
@@ -841,7 +812,7 @@ export default {
     getStoreWarnings() {
       const warnings = [];
 
-      if ( this.existing ) {
+      if ( this.monitoringStatus.installed ) {
         // Ignore the limits on upgrade (or if asked by query) and don't show any warnings
       } else {
         const needCpu = this.needCpu;
@@ -872,6 +843,11 @@ export default {
 
       this.$set(this, 'warnings', warnings);
     },
+    getRouteParamsClusterId() {
+      const params = this.$route.params.cluster;
+
+      return params === '_' ? 'local' : params;
+    },
 
     reloadPage() {
       this.$router.go(0);
@@ -883,40 +859,14 @@ export default {
   },
 
   created() {
-    const haveV1GlobalMonitoring = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED)?.value === 'true';
-    const haveV2GlobalMonitoring = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
-    const enabledGlobalMonitoring = haveV1GlobalMonitoring || haveV2GlobalMonitoring;
-
-    const globalMonitoringClusterId = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_CLUSTER_ID)?.value || '';
-    const currentClusterId = enabledGlobalMonitoring ? globalMonitoringClusterId : this.$route.params.cluster;
-    const currentCluster = currentClusterId ? this.$store.getters['management/byId'](MANAGEMENT.CLUSTER, currentClusterId) : this.currentCluster;
-
-    this.currentCluster = currentCluster;
-
-    if (currentCluster?.metadata?.state?.name !== 'active') {
-      this.$set(this, 'warnings', [this.t('globalMonitoringPage.globalMonitoringClusterUnavailable', { clusterName: currentCluster?.nameDisplay || currentClusterId } )]);
-
-      return;
-    }
-
-    if (enabledGlobalMonitoring && this.$route.params.cluster !== globalMonitoringClusterId) {
-      delay(() => {
-        this.$router.replace({
-          name:   this.$route.name,
-          params: {
-            ...this.$route.params,
-            cluster: currentClusterId
-          }
-        });
-      }, 1000);
-    }
+    this.initGlobalMonitoringRoute();
   },
 };
 </script>
 
 <template>
   <Loading v-if="$fetchState.pending" />
-  <div v-else-if="haveV1GlobalMonitoring || disabledV1Done">
+  <div v-else-if="monitoringStatus.v1 || disabledV1Done">
     <header>
       <div class="title">
         <h1>
@@ -965,7 +915,10 @@ export default {
       </template>
     </div>
   </div>
-  <section v-else class="dashboard">
+  <section
+    v-else
+    class="dashboard"
+  >
     <header>
       <div class="title">
         <h1>
@@ -999,8 +952,7 @@ export default {
           inactive-class="bg-disabled btn-sm"
           active-class="bg-primary btn-sm"
         />
-        <div class="chart__values__controls--spacer">
-        </div>
+        <div class="chart__values__controls--spacer" />
         <ButtonGroup
           v-if="showDiff"
           v-model="diffMode"
@@ -1015,16 +967,14 @@ export default {
             <ThanosCatalog
               ref="thanosCatalog"
               v-model="value"
-              :existing="existing"
-              :clusters="clusters"
+              :installed="monitoringStatus.installed"
               option-key="value"
               :chart="chart"
               :ui="get(versionInfo, 'values.ui') || {}"
               :version="chartVersion"
-              :global-monitoring-settings="globalMonitoringSettings"
+              :monitoring-settings="monitoringSettings"
               @updateVersion="updateVersion"
               @updateWarning="updateWarning"
-              @updateGlobalMonitoringSettings="updateGlobalMonitoringSettings"
             />
           </template>
           <template v-else>
@@ -1043,19 +993,24 @@ export default {
     </template>
 
     <div>
-      <Banner v-for="(err,idx) in errors" :key="idx" color="error" :label="err" />
+      <Banner
+        v-for="(err,idx) in errors"
+        :key="idx"
+        color="error"
+        :label="err"
+      />
     </div>
 
     <div class="controls-container pt-20">
       <button
-        v-if="existing && confirmDisable"
+        v-if="monitoringStatus.installed && confirmDisable"
         class="mr-10 btn bg-error"
         @click="disableMonitoring"
       >
         {{ t('globalMonitoringPage.confirmDisable') }}
       </button>
       <button
-        v-else-if="existing"
+        v-else-if="monitoringStatus.installed"
         class="mr-10 btn bg-error"
         @click="promptDisableMonitoring"
       >

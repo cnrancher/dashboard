@@ -172,7 +172,10 @@ export default {
         />
       </div>
     </div>
-    <div v-if="value.grafana.persistence.enabled" class="row mb-20">
+    <div
+      v-if="value.grafana.persistence.enabled"
+      class="row mb-20"
+    >
       <div class="col span-6">
         <LabeledInput
           v-model="value.grafana.persistence.size"
@@ -234,7 +237,10 @@ export default {
 
     <div class="mb-20">
       <h3 class="mb-20">
-        <t k="formScheduling.toleration.workloadTitle" workload="Grafana" />
+        <t
+          k="formScheduling.toleration.workloadTitle"
+          workload="Grafana"
+        />
       </h3>
       <div class="row">
         <Tolerations

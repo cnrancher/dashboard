@@ -98,7 +98,11 @@ export default {
             :label="t('globalMonitoringPage.tls.key.label')"
             :placeholder="t('globalMonitoringPage.tls.key.placeholder')"
           />
-          <FileSelector class="btn btn-sm bg-primary mt-10" :label="t('generic.readFromFile')" @selected="onFileSelectedKey" />
+          <FileSelector
+            class="btn btn-sm bg-primary mt-10"
+            :label="t('generic.readFromFile')"
+            @selected="onFileSelectedKey"
+          />
         </div>
         <div class="col span-6">
           <LabeledInput
@@ -108,7 +112,11 @@ export default {
             :label="t('globalMonitoringPage.tls.cert.label')"
             :placeholder="t('globalMonitoringPage.tls.cert.placeholder')"
           />
-          <FileSelector class="btn btn-sm bg-primary mt-10" :label="t('generic.readFromFile')" @selected="onFileSelectedCert" />
+          <FileSelector
+            class="btn btn-sm bg-primary mt-10"
+            :label="t('generic.readFromFile')"
+            @selected="onFileSelectedCert"
+          />
         </div>
       </div>
       <div class="row mb-10">
@@ -120,7 +128,11 @@ export default {
             :label="t('globalMonitoringPage.tls.ca.label')"
             :placeholder="t('globalMonitoringPage.tls.ca.placeholder')"
           />
-          <FileSelector class="btn btn-sm bg-primary mt-10" :label="t('generic.readFromFile')" @selected="onFileSelectedCa" />
+          <FileSelector
+            class="btn btn-sm bg-primary mt-10"
+            :label="t('generic.readFromFile')"
+            @selected="onFileSelectedCa"
+          />
         </div>
       </div>
     </template>

@@ -274,7 +274,11 @@ export default {
         />
       </div>
     </Tab>
-    <Tab name="thanos" :label="t('monitoring.tabs.thanos')" :weight="96">
+    <Tab
+      name="thanos"
+      :label="t('monitoring.tabs.thanos')"
+      :weight="96"
+    >
       <div>
         <Thanos
           v-model="value"

@@ -46,7 +46,11 @@ export default {
           :label="t('globalMonitoringPage.store.gcs.serviceAccount.label')"
           :placeholder="t('globalMonitoringPage.store.gcs.serviceAccount.placeholder')"
         />
-        <FileSelector class="btn btn-sm bg-primary mt-10" :label="t('generic.readFromFile')" @selected="onFileSelected" />
+        <FileSelector
+          class="btn btn-sm bg-primary mt-10"
+          :label="t('generic.readFromFile')"
+          @selected="onFileSelected"
+        />
       </div>
     </div>
   </div>

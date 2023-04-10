@@ -8,7 +8,7 @@ import {
 } from '@shell/config/types';
 import { MULTI_CLUSTER } from '@shell/store/features';
 import { DSL } from '@shell/store/type-map';
-import { SETTING } from '@shell/config/settings';
+import { SETTING, getGlobalMonitoringV2Setting } from '@shell/config/settings';
 import { BLANK_CLUSTER } from '@shell/store';
 
 export const NAME = 'manager';
@@ -204,7 +204,9 @@ export function init(store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return rootState.auth?.isAdmin && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.GLOBAL_MONITORING_ENABLED_V2)?.value === 'true';
+      const setting = getGlobalMonitoringV2Setting(rootGetters);
+
+      return rootState.auth?.isAdmin && setting.enabled === 'true';
     },
     label:      'Global Monitoring',
     labelKey:   'nav.globalMonitoring.dashboard',
