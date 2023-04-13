@@ -15,6 +15,7 @@ import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
 import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
 import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
+import AESEncrypt from '@shell/utils/aes-encrypt';
 
 const getPackageFromRoute = (route) => {
   if (!route?.meta) {
@@ -420,13 +421,13 @@ async function findMe(store) {
   return me;
 }
 
-async function tryInitialSetup(store, password = 'admin') {
+export async function tryInitialSetup(store, password = 'admin') {
   try {
     const res = await store.dispatch('auth/login', {
       provider: 'local',
       body:     {
         username: 'admin',
-        password
+        password: encryptPassword(store, password)
       },
     });
 
@@ -436,4 +437,14 @@ async function tryInitialSetup(store, password = 'admin') {
 
     return false;
   }
+}
+
+export function encryptPassword(store, password) {
+  const disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PASSWORD_ENCRYPT);
+
+  if (disabledEncryption?.value === 'true') {
+    return password;
+  }
+
+  return AESEncrypt(password.trim());
 }
