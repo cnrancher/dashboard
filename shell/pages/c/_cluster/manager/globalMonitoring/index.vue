@@ -202,7 +202,10 @@ export default {
         break;
       case VALUES_STATE.DIFF:
         // Show the YAML diff
-        this.valuesYaml = jsyaml.dump(this.value || {});
+        if (old === VALUES_STATE.FORM) {
+          this.valuesYaml = jsyaml.dump(this.value || {});
+        }
+
         this.showAsForm = false;
         this.updateValue(this.valuesYaml);
         this.showDiff = true;
@@ -473,9 +476,6 @@ export default {
 
     actionInput(isUpgrade) {
       const fromChart = jsyaml.load(this.originalYamlValues) || {};
-
-      // originalYamlValues youwenti
-
       const errors = [];
 
       if ( this.showingYaml ) {
@@ -633,7 +633,7 @@ export default {
 
       const settings = {
         ...DEFAULT_GMV2_SETTING,
-        clusterId: this.currentCluster.id,
+        clusterId: this.currentCluster?.id || 'local',
         enabled:   'false'
       };
 
@@ -717,7 +717,6 @@ export default {
         return;
       }
       query.enabledClusterStores.forEach((c) => {
-      // this.monitoringSettings.enabledClusters.forEach((c) => {
         const prefix = c.id === 'local' ? '' : `/k8s/clusters/${ c.id }`;
 
         this.$store.dispatch('management/request', { url: `${ prefix }/v1/namespaces/${ CATTLE_MONITORING_SYSTEM_NAMESPACE }` }).then(() => {
@@ -817,7 +816,7 @@ export default {
         global:  {},
         ui:      {},
         grafana: {},
-        thanos:  {},
+        thanos:  { query: {} },
         ...(JSON.parse(JSON.stringify(this.versionInfo?.values || {}))),
       });
 
@@ -949,7 +948,7 @@ export default {
     reloadPage() {
       this.$router.go(0);
     },
-    fvGetPathValues(path) { //
+    fvGetPathValues(path) {
       const relevantRuleset = this.fvRulesets.find(ruleset => ruleset.path === path);
 
       if (!relevantRuleset) {
