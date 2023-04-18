@@ -71,14 +71,6 @@ export default {
       this.uiLinkColor = Color(hash.uiLinkColorSetting.value).hex();
       this.customizeLinkColor = true;
     }
-    if (hash.uiFaviconSetting.value) {
-      try {
-        this.uiFavicon = hash.uiFaviconSetting.value;
-
-        this.customizeFavicon = true;
-      } catch {}
-    }
-
     if (hash.uiLoginLandscapeSetting.value) {
       try {
         this.uiLoginLandscape = hash.uiLoginLandscapeSetting.value;
@@ -199,12 +191,6 @@ export default {
         this.uiLinkColorSetting.value = Color(this.uiLinkColor).rgb().string();
       } else {
         this.uiLinkColorSetting.value = null;
-      }
-
-      if (this.customizeFavicon) {
-        this.uiFaviconSetting.value = this.uiFavicon;
-      } else {
-        this.uiFaviconSetting.value = '';
       }
 
       if (this.customizeLoginLandscape) {
