@@ -1062,6 +1062,7 @@ export default {
         noHooks:   this.cmdOptions.hooks === false,
         timeout:   this.cmdOptions.timeout > 0 ? `${ this.cmdOptions.timeout }s` : null,
         wait:      this.cmdOptions.wait === true,
+        debug:     this.cmdOptions.debug === true,
         namespace: form.metadata.namespace,
         projectId: this.project,
       };
