@@ -78,7 +78,7 @@ export default {
       :label="t('globalMonitoringPage.tls.warning')"
     />
     <div class="row mb-20">
-      <div class="col span-6">
+      <div class="col span-6" data-testid="input-config-tls">
         <RadioGroup
           v-model="value.thanos.tls.enabled"
           name="objectStorageEnabled"
@@ -90,7 +90,7 @@ export default {
     </div>
     <template v-if="value.thanos.tls.enabled">
       <div class="row mb-10">
-        <div class="col span-6">
+        <div class="col span-6" data-testid="input-config-tls_key">
           <LabeledInput
             v-model="tls.key"
             :mode="mode"
@@ -104,7 +104,7 @@ export default {
             @selected="onFileSelectedKey"
           />
         </div>
-        <div class="col span-6">
+        <div class="col span-6" data-testid="input-config-tls_cert">
           <LabeledInput
             v-model="tls.cert"
             :mode="mode"
@@ -120,7 +120,7 @@ export default {
         </div>
       </div>
       <div class="row mb-10">
-        <div class="col span-6">
+        <div class="col span-6" data-testid="input-config-tls_ca">
           <LabeledInput
             v-model="tls.ca"
             :mode="mode"

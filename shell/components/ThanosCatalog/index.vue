@@ -50,10 +50,6 @@ export default {
       type:     Object,
       required: true,
     },
-    originalValues: {
-      type:     Object,
-      required: true,
-    },
     chart: {
       type:    Object,
       default: () => ({}),
@@ -171,7 +167,10 @@ export default {
         :error="tabErrors.general"
       >
         <div class="row mb-20">
-          <div class="col span-6">
+          <div
+            class="col span-6"
+            data-testid="input-config-clusterId"
+          >
             <LabeledSelect
               v-model="value.global.clusterId"
               :mode="mode"
@@ -185,7 +184,7 @@ export default {
               @input="updateCluster"
             />
           </div>
-          <div class="col span-6">
+          <div class="col span-6" data-testid="input-config-version">
             <LabeledSelect
               v-model="value.global.version"
               :mode="mode"
@@ -200,7 +199,7 @@ export default {
 
         <h3>{{ t('globalMonitoringPage.token.label') }}</h3>
         <div class="row mb-20">
-          <div class="col span-6">
+          <div class="col span-6" data-testid="input-config-defaultApiToken">
             <RadioGroup
               v-model="value.ui.defaultApiToken"
               name="defaultTokenEnabled"
@@ -213,6 +212,7 @@ export default {
           <div
             v-if="!value.ui.defaultApiToken"
             class="col span-6"
+            data-testid="input-config-apiToken"
           >
             <LabeledInput
               v-model="value.ui.apiToken"
