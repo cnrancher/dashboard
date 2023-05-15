@@ -338,7 +338,7 @@ export default {
       this.getStoreWarnings();
 
       const storeEnabled = this.value?.thanos?.store?.enabled;
-      const useDefaultToken = this.value.ui.defaultApiToken;
+      const useDefaultToken = this.value?.ui?.defaultApiToken;
       const keys = {
         general: ['global.clusterId'],
         thanos:  [...this.reservationRequiredKeys['thanos']],
@@ -817,6 +817,10 @@ export default {
           namespace: APP_NAMESPACE,
           name:      APP_NAME,
         },
+        global:  {},
+        ui:      {},
+        grafana: {},
+        thanos:  {},
         ...(JSON.parse(JSON.stringify(this.versionInfo?.values || {}))),
       });
 
@@ -848,7 +852,7 @@ export default {
       this.value.ui && this.serverUrlSetting.value && this.$set(this.value.ui, 'serverUrl', this.serverUrlSetting.value);
     },
     initApiToken() {
-      if (!!this.value.ui.defaultApiToken || this.value.ui.defaultApiToken === undefined) {
+      if (!!this.value?.ui?.defaultApiToken || this.value?.ui?.defaultApiToken === undefined) {
         this.$set(this.value.ui, 'apiToken', '');
         this.$set(this.value.ui, 'defaultApiToken', true);
       }
