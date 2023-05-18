@@ -1728,6 +1728,7 @@ cluster:
       private: Pull images for {vendor} from a private registry
       advanced: Configure advanced containerd mirroring and registry authentication options
   provider:
+    ack: ACK
     ackoperatorsetting: Alibaba ACK
     alibaba: Alibaba
     aliyunecs: Aliyun ECS

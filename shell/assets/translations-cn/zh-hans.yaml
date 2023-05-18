@@ -1734,6 +1734,7 @@ cluster:
       private: 从私有仓库中为 {vendor} 拉取镜像
       advanced: 配置高级容器 Mirror 和仓库验证选项
   provider:
+    ack: ACK
     ackoperatorsetting: Alibaba ACK
     alibaba: Alibaba
     aliyunecs: Aliyun ECS
