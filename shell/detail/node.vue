@@ -120,7 +120,7 @@ export default {
       return null;
     },
     memoryUnits() {
-      const exponent = exponentNeeded(this.value.ramCapacity, 1024);
+      const exponent = exponentNeeded(this.value.ramAllocatable, 1024);
 
       return `${ UNITS[exponent] }iB`;
     },
@@ -219,7 +219,7 @@ export default {
     </div>
     <div class="mt-20 resources">
       <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.cpu')" :capacity="value.cpuCapacity" :used="value.cpuUsage" />
-      <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.memory')" :capacity="value.ramCapacity" :used="value.ramUsage" :units="memoryUnits" :number-formatter="memoryFormatter" />
+      <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.memory')" :capacity="value.ramAllocatable" :used="value.ramUsage" :units="memoryUnits" :number-formatter="memoryFormatter" />
       <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.pods')" :capacity="value.podCapacity" :used="value.podConsumed" />
     </div>
     <div class="spacer"></div>
