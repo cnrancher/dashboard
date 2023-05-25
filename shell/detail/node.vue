@@ -178,9 +178,12 @@ export default {
 
   methods: {
     memoryFormatter(value) {
+      const exponent = exponentNeeded(this.value.ramAllocatable, 1024);
       const formatOptions = {
-        addSuffix:  false,
-        increment:  1024,
+        addSuffix:   false,
+        increment:   1024,
+        maxExponent: exponent,
+        minExponent: exponent,
       };
 
       return formatSi(value, formatOptions);
@@ -221,6 +224,30 @@ export default {
       <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.cpu')" :capacity="value.cpuCapacity" :used="value.cpuUsage" />
       <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.memory')" :capacity="value.ramAllocatable" :used="value.ramUsage" :units="memoryUnits" :number-formatter="memoryFormatter" />
       <ConsumptionGauge :resource-name="t('node.detail.glance.consumptionGauge.pods')" :capacity="value.podCapacity" :used="value.podConsumed" />
+      <div>
+        <ConsumptionGauge v-if="value.podRequests.cpu" :capacity="value.cpuCapacity" :used="value.cpuReservationUsage">
+          <template #title="{amountTemplateValues, formattedPercentage}">
+            <span>{{ t('node.detail.glance.consumptionGauge.reserved') }}</span>
+            <span>{{ t('node.detail.glance.consumptionGauge.consumption', amountTemplateValues) }} <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}</span></span>
+          </template>
+        </ConsumptionGauge>
+      </div>
+      <div>
+        <ConsumptionGauge v-if="value.podRequests.memory" :capacity="value.ramAllocatable" :used="value.ramReservationUsage" :units="memoryUnits" :number-formatter="memoryFormatter">
+          <template #title="{amountTemplateValues, formattedPercentage}">
+            <span>{{ t('node.detail.glance.consumptionGauge.reserved') }}</span>
+            <span>{{ t('node.detail.glance.consumptionGauge.consumption', amountTemplateValues) }} <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}</span></span>
+          </template>
+        </ConsumptionGauge>
+      </div>
+      <div>
+        <!-- <ConsumptionGauge v-if="value.podRequests.pods" :capacity="value.podCapacity" :used="value.podReservationUsage">
+          <template #title="{amountTemplateValues, formattedPercentage}">
+            <span>{{ t('node.detail.glance.consumptionGauge.reserved') }}</span>
+            <span>{{ t('node.detail.glance.consumptionGauge.consumption', amountTemplateValues) }} <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}</span></span>
+          </template>
+        </ConsumptionGauge> -->
+      </div>
     </div>
     <div class="spacer"></div>
     <ResourceTabs v-model="value" :mode="mode">
@@ -288,12 +315,10 @@ export default {
 
 <style lang="scss" scoped>
 .resources {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   flex-direction: row;
   justify-content: space-between;
-
-  & > * {
-    width: 30%;
-  }
+  gap: 20px 4%;
 }
 </style>
