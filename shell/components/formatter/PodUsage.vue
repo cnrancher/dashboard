@@ -18,13 +18,15 @@ export default {
   },
   computed: {
     podUsage() {
-      const { podCapacity, podConsumed } = this.row;
+      const podCapacity = this.row.podCapacity;
+      const podConsumed = this.row.podConsumed;
 
       return {
         total: podCapacity,
         used:  podConsumed,
       };
     },
+
     podPercentage() {
       const podCapacity = this.row.podCapacity;
       const podConsumed = this.row.podConsumed;

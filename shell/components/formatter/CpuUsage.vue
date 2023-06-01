@@ -38,10 +38,7 @@ export default {
       };
     },
     usagePercentage() {
-      const cpuCapacity = this.row.cpuCapacity;
-      const cpuUsage = this.row.cpuUsage;
-
-      return formatPercent((cpuUsage * 100) / cpuCapacity);
+      return formatPercent(this.value);
     },
     reservedPercentage() {
       const cpuCapacity = this.row.cpuCapacity;
@@ -60,10 +57,7 @@ export default {
 
 <template>
   <div>
-    <div v-if="value === '0'">
-      {{ t('node.detail.glance.consumptionGauge.used') }}: N/A
-    </div>
-    <div v-else>
+    <div>
       {{ t('node.detail.glance.consumptionGauge.used') }}: {{ t('node.detail.glance.consumptionGauge.amount', cpuUsage) }} &nbsp; ({{ usagePercentage }})
     </div>
     <div v-if="row.podRequests.cpu">

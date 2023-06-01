@@ -42,10 +42,7 @@ export default {
       };
     },
     usagePercentage() {
-      const ramAllocatable = this.row.ramAllocatable;
-      const ramUsage = this.row.ramUsage;
-
-      return formatPercent((ramUsage * 100) / ramAllocatable);
+      return formatPercent(this.value);
     },
     reservedPercentage() {
       const ramAllocatable = this.row.ramAllocatable;
@@ -59,10 +56,7 @@ export default {
 
 <template>
   <div>
-    <div v-if="value === '0'">
-      {{ t('node.detail.glance.consumptionGauge.used') }}: N/A
-    </div>
-    <div v-else>
+    <div>
       {{ t('node.detail.glance.consumptionGauge.used') }}: {{ t('node.detail.glance.consumptionGauge.amount', memoryUsage) }} &nbsp; ({{ usagePercentage }})
     </div>
     <div v-if="row.podRequests.memory">
