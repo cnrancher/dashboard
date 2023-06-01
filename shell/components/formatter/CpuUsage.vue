@@ -41,19 +41,11 @@ export default {
       const cpuCapacity = this.row.cpuCapacity;
       const cpuUsage = this.row.cpuUsage;
 
-      if (!cpuUsage || !cpuCapacity) {
-        return '0';
-      }
-
       return formatPercent((cpuUsage * 100) / cpuCapacity);
     },
     reservedPercentage() {
       const cpuCapacity = this.row.cpuCapacity;
       const cpuReservationUsage = this.row.cpuReservationUsage;
-
-      if (!cpuReservationUsage || !cpuCapacity) {
-        return '0';
-      }
 
       return formatPercent((cpuReservationUsage * 100) / cpuCapacity);
     }
@@ -68,7 +60,7 @@ export default {
 
 <template>
   <div>
-    <div v-if="usagePercentage === '0'">
+    <div v-if="value === '0'">
       {{ t('node.detail.glance.consumptionGauge.used') }}: N/A
     </div>
     <div v-else>
