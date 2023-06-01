@@ -22,24 +22,13 @@ export default {
       const ramAllocatable = this.row.ramAllocatable;
       const ramUsage = this.row.ramUsage;
 
-      const usage = createMemoryValues(ramAllocatable, ramUsage);
-
-      return {
-        ...usage,
-        used: usage.useful,
-        unit: usage.units
-      };
+      return createMemoryValues(ramAllocatable, ramUsage);
     },
     memoryReserved() {
       const ramAllocatable = this.row.ramAllocatable;
       const ramReservationUsage = this.row.ramReservationUsage;
-      const usage = createMemoryValues(ramAllocatable, ramReservationUsage);
 
-      return {
-        ...usage,
-        used: usage.useful,
-        unit: usage.units
-      };
+      return createMemoryValues(ramAllocatable, ramReservationUsage);
     },
     usagePercentage() {
       return formatPercent(this.value);
@@ -57,10 +46,10 @@ export default {
 <template>
   <div>
     <div>
-      {{ t('node.detail.glance.consumptionGauge.used') }}: {{ t('node.detail.glance.consumptionGauge.amount', memoryUsage) }} &nbsp; ({{ usagePercentage }})
+      {{ t('node.detail.glance.consumptionGauge.used') }}: {{ memoryUsage.useful }} / {{ memoryUsage.total }}  {{ memoryUsage.units }} &nbsp; ({{ usagePercentage }})
     </div>
     <div v-if="row.podRequests.memory">
-      {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ t('node.detail.glance.consumptionGauge.amount', memoryReserved) }} &nbsp; ({{ reservedPercentage }})
+      {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ memoryReserved.useful }} / {{ memoryReserved.total }} {{ memoryReserved.units }} &nbsp; ({{ reservedPercentage }})
     </div>
     <div></div>
   </div>

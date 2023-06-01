@@ -17,26 +17,6 @@ export default {
     },
   },
   computed: {
-    cpuUsage() {
-      const cpuCapacity = this.row.cpuCapacity;
-      const cpuUsage = this.row.cpuUsage;
-
-      return {
-        total: this.numberFormatter(cpuCapacity),
-        used:  this.numberFormatter(cpuUsage),
-        unit:  ''
-      };
-    },
-    cpuReserved() {
-      const cpuCapacity = this.row.cpuCapacity;
-      const cpuReservationUsage = this.row.cpuReservationUsage;
-
-      return {
-        total: this.numberFormatter(cpuCapacity),
-        used:  this.numberFormatter(cpuReservationUsage),
-        unit:  ''
-      };
-    },
     usagePercentage() {
       return formatPercent(this.value);
     },
@@ -58,10 +38,10 @@ export default {
 <template>
   <div>
     <div>
-      {{ t('node.detail.glance.consumptionGauge.used') }}: {{ t('node.detail.glance.consumptionGauge.amount', cpuUsage) }} &nbsp; ({{ usagePercentage }})
+      {{ t('node.detail.glance.consumptionGauge.used') }}: {{ numberFormatter(row.cpuUsage) }} / {{ numberFormatter(row.cpuCapacity) }} &nbsp; ({{ usagePercentage }})
     </div>
     <div v-if="row.podRequests.cpu">
-      {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ t('node.detail.glance.consumptionGauge.consumption', cpuReserved) }} &nbsp; ({{ reservedPercentage }})
+      {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ numberFormatter(row.cpuReservationUsage) }} / {{ numberFormatter(row.cpuCapacity) }} &nbsp; ({{ reservedPercentage }})
     </div>
   </div>
 </template>
