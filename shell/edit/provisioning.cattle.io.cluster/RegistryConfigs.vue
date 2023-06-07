@@ -7,6 +7,7 @@ import SelectOrCreateAuthSecret from '@shell/components/form/SelectOrCreateAuthS
 import CreateEditView from '@shell/mixins/create-edit-view';
 import SecretSelector from '@shell/components/form/SecretSelector';
 import { SECRET_TYPES as TYPES } from '@shell/config/secret';
+import { base64Encode } from '@shell/utils/crypto';
 
 export default {
   components: {
@@ -89,6 +90,7 @@ export default {
   // },
 
   methods: {
+    base64Encode,
     update() {
       const configs = {};
 
@@ -123,11 +125,11 @@ export default {
       const hostname = row?.value?.hostname;
 
       if (hostname) {
-        return `${ hostname }-`;
+        return `${ hostname }`;
       } else if (this.registryHost) {
-        return `${ this.registryHost }-`;
+        return `${ this.registryHost }`;
       } else {
-        return 'registryconfig-auth-';
+        return '';
       }
     },
   }
@@ -173,7 +175,8 @@ export default {
               :vertical="true"
               :namespace="value.metadata.namespace"
               :mode="mode"
-              :generate-name="generateName(row)"
+              generate-name="registryconfig-auth-"
+              :display-name="base64Encode(generateName(row))"
             />
           </div>
           <div class="col span-6">
