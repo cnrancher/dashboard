@@ -5,7 +5,7 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { AUTH_TYPE, NORMAN, SECRET } from '@shell/config/types';
 import { SECRET_TYPES } from '@shell/config/secret';
-import { base64Encode } from '@shell/utils/crypto';
+import { base64Decode, base64Encode } from '@shell/utils/crypto';
 import { addObjects, insertAt } from '@shell/utils/array';
 import { sortBy } from '@shell/utils/sort';
 
@@ -57,6 +57,11 @@ export default {
     generateName: {
       type:    String,
       default: 'auth-',
+    },
+
+    displayName: {
+      type:     String,
+      required: true,
     },
 
     allowNone: {
@@ -230,8 +235,10 @@ export default {
 
           return true;
         }).map((x) => {
+          const displayNameByHostName = base64Decode(x.metadata?.annotations?.['display-name'] || '');
+
           return {
-            label: `${ x.metadata.name } (${ x.subTypeDisplay }: ${ x.dataPreview })`,
+            label: `${ displayNameByHostName || x.metadata.name } (${ x.subTypeDisplay }: ${ x.dataPreview })`,
             group: x.metadata.namespace,
             value: x.id,
           };
@@ -414,7 +421,8 @@ export default {
           type:     SECRET,
           metadata: {
             namespace:    this.namespace,
-            generateName: this.generateName
+            generateName: this.generateName,
+            annotations:  { 'display-name': this.displayName }
           },
         });
 

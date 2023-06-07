@@ -885,11 +885,7 @@ export default {
     },
 
     generateName() {
-      if (this.registryHost) {
-        return `${ this.registryHost }-`;
-      } else {
-        return 'registryconfig-auth-';
-      }
+      return this.registryHost || '';
     },
   },
 
@@ -977,6 +973,7 @@ export default {
   },
 
   methods: {
+    base64Encode,
     nlToBr,
     set,
 
@@ -2135,7 +2132,8 @@ export default {
             :allow-rke="true"
             :vertical="true"
             :namespace="value.metadata.namespace"
-            :generate-name="generateName"
+            generate-name="registryconfig-auth-"
+            :display-name="base64Encode(generateName)"
           />
           <template v-else-if="registryMode === ADVANCED">
             <RegistryMirrors
