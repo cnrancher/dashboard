@@ -786,11 +786,7 @@ export default {
     },
 
     generateName() {
-      if (this.registryHost) {
-        return `${ this.registryHost }-`;
-      } else {
-        return 'registryconfig-auth-';
-      }
+      return this.registryHost || '';
     },
 
     unsupportedCloudProvider() {
@@ -887,6 +883,7 @@ export default {
   },
 
   methods: {
+    base64Encode,
     set,
 
     /**
@@ -2667,7 +2664,8 @@ export default {
                 :allow-rke="true"
                 :vertical="true"
                 :namespace="value.metadata.namespace"
-                :generate-name="generateName"
+                generate-name="registryconfig-auth-"
+                :display-name="base64Encode(generateName)"
               />
             </div>
           </div>
