@@ -647,8 +647,31 @@ export const actions = {
 
     if (res.globalRoleBindings && getters['auth/me']?.id) {
       const id = getters['auth/me']?.id;
-      const admin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'admin');
-      const readOnlyAdmin = res.globalRoleBindings.find(binding => id === binding.userName && binding.globalRoleName === 'read-only-pandaria');
+      const adminGlobalRoleBindings = res.globalRoleBindings.filter(binding => binding.globalRoleName === 'admin');
+      const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter(binding => binding.globalRoleName === 'read-only-pandaria');
+      let admin = adminGlobalRoleBindings.find(grb => grb?.userName === id);
+      let readOnlyAdmin = readOnlyAdminGlobalRoleBindings.find(grb => grb?.userName === id);
+      const agrbs = adminGlobalRoleBindings.filter(grb => grb?.groupPrincipalName);
+      const roagrbs = readOnlyAdminGlobalRoleBindings.filter(grb => grb?.groupPrincipalName);
+
+      if ((!readOnlyAdmin || !admin) && (roagrbs.length > 0 || agrbs.length > 0)) {
+        const promises = {};
+
+        if (agrbs.length > 0) {
+          promises['admins'] = Promise.all(agrbs.map( grb => dispatch('rancher/find', { type: NORMAN.PRINCIPAL, id: grb.groupPrincipalName }, { root: true })));
+        }
+        if (roagrbs.length > 0) {
+          promises['readOnlyAdmins'] = Promise.all(roagrbs.map(grb => dispatch('rancher/find', { type: NORMAN.PRINCIPAL, id: grb.groupPrincipalName }, { root: true })));
+        }
+        const resp = await allHash(promises);
+
+        if (!admin && agrbs.length > 0) {
+          admin = resp.admins.find(p => p.me === true);
+        }
+        if (!readOnlyAdmin && roagrbs.length > 0) {
+          readOnlyAdmin = resp.readOnlyAdmins.find(p => p.me === true);
+        }
+      }
 
       if (admin) {
         commit('auth/setAdmin', true);
