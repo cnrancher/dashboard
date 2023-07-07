@@ -1,6 +1,9 @@
 import Service from '@shell/edit/service.vue';
 import { CLUSTERIP, EXTERNALIP } from '@shell/models/service';
 import { shallowMount } from '@vue/test-utils';
+jest.mock('@shell/plugins/steve/web-worker.steve-sub-worker.js', () => {
+  return () => {};
+});
 
 describe('edit: service', () => {
   it('should return the correct value for the computed prop isExternalIP', () => {
@@ -28,7 +31,8 @@ describe('edit: service', () => {
       directives: { cleanHtml: jest.fn() },
       propsData:  {
         value: {
-          spec: {
+          customValidationErrors: jest.fn(() => []),
+          spec:                   {
             type:      CLUSTERIP,
             clusterIP: 'None'
           },
