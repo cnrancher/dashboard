@@ -544,7 +544,7 @@ export default {
       setSetting(this.$store, SETTING.GLOBAL_MONITORING_CLUSTER_ID, this.value.global.clusterId);
       this.monitoringStatus = true;
       if (this.value.thanos.tls.enabled) {
-        this.updateDownStreamClusterSecret();
+        this.updateDownStreamClusterSecret(this.value.thanos.query);
       }
       if (this.value.ui.defaultApiToken) {
         this.value.ui.apiToken = '';
@@ -715,11 +715,11 @@ export default {
         }
       });
     },
-    updateDownStreamClusterSecret() {
-      if (!this.value?.thanos?.tls?.enabled ) {
+    updateDownStreamClusterSecret(query) {
+      if (!this.value?.thanos?.tls?.enabled || !query?.enabledClusterStores || !query.enabledClusterStores.length ) {
         return;
       }
-      this.query.enabledClusterStores.forEach((c) => {
+      query.enabledClusterStores.forEach((c) => {
       // this.monitoringSettings.enabledClusters.forEach((c) => {
         const prefix = c.id === 'local' ? '' : `/k8s/clusters/${ c.id }`;
 
