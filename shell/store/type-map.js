@@ -940,6 +940,9 @@ export const getters = {
 
   headersFor(state, getters, rootState, rootGetters) {
     return (schema) => {
+      if (!schema) {
+        return [];
+      }
       const attributes = schema.attributes || {};
       const columns = attributes.columns || [];
       const typeOptions = getters['optionsFor'](schema);
