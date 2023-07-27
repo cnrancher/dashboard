@@ -1,5 +1,6 @@
 <script>
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
+import { NODE as NODE_TYPE, MANAGEMENT } from '@shell/config/types';
 
 export default {
   props: {
@@ -36,6 +37,13 @@ export default {
       };
 
       return { name, params };
+    },
+    hasPermission() {
+      if (this.type === NODE_TYPE) {
+        return this.$store.getters['management/schemaFor'](MANAGEMENT.NODE);
+      }
+
+      return true;
     }
   }
 };
@@ -43,8 +51,14 @@ export default {
 
 <template>
   <span v-if="value">
-    <nuxt-link :to="url">
+    <nuxt-link
+      v-if="hasPermission"
+      :to="url"
+    >
       {{ value }}
     </nuxt-link>
+    <template v-else>
+      {{ value }}
+    </template>
   </span>
 </template>
