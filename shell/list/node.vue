@@ -44,7 +44,7 @@ export default {
       hash.normanNodes = this.$store.dispatch('rancher/findAll', { type: NORMAN.NODE });
     }
 
-    if (this.$store.getters[`rancher/schemaFor`](NORMAN.NODE)) {
+    if (this.$store.getters[`rancher/schemaFor`](NORMAN.NODE) && this.$store.getters[`management/schemaFor`](MANAGEMENT.NODE)) {
       hash.mgmtNodes = this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
     }
 
