@@ -23,6 +23,7 @@ import { SECRET_TYPES as TYPES } from '@shell/config/secret';
 import { monitoringStatus } from '@shell/utils/global-monitoring';
 import FormValidation from '@shell/mixins/form-validation';
 import { OBJECT_STORAGE_PROVIDERS } from '@shell/components/ThanosCatalog/ObjectStorage.vue';
+import ChartReadme from '@shell/components/ChartReadme';
 
 const GLOBAL_MONITORING_TOKEN = 'Global Monitoring Token';
 const APP_NAME = 'global-monitoring';
@@ -50,6 +51,7 @@ export default {
     YamlEditor,
     AsyncButton,
     IconMessage,
+    ChartReadme,
   },
 
   mixins: [
@@ -181,6 +183,9 @@ export default {
           return rules;
         }, [])
       ],
+      showSlideIn:   false,
+      hasReadme:     true,
+      firstLoadDiff: true,
     };
   },
   watch: {
@@ -202,13 +207,19 @@ export default {
         break;
       case VALUES_STATE.DIFF:
         // Show the YAML diff
-        if (old === VALUES_STATE.FORM) {
+        if (old === VALUES_STATE.FORM && this.firstLoadDiff) {
+          this.firstLoadDiff = false;
           this.valuesYaml = jsyaml.dump(this.value || {});
+          this.showAsForm = false;
+          setTimeout(() => {
+            this.updateValue(this.valuesYaml);
+            this.showDiff = true;
+          }, 500);
+        } else {
+          this.showAsForm = false;
+          this.updateValue(this.valuesYaml);
+          this.showDiff = true;
         }
-
-        this.showAsForm = false;
-        this.updateValue(this.valuesYaml);
-        this.showDiff = true;
 
         break;
       }
@@ -1092,6 +1103,16 @@ export default {
               :editor-mode="editorMode"
               :hide-preview-buttons="true"
             />
+            <div
+              class="slideIn"
+              :class="{'hide': false, 'slideIn__show': showSlideIn}"
+            >
+              <ChartReadme
+                v-if="hasReadme"
+                :version-info="versionInfo"
+                class="chart-content__tabs"
+              />
+            </div>
           </template>
         </div>
       </div>
