@@ -2,6 +2,7 @@
 import { Diff2Html } from 'diff2html';
 import { createPatch } from 'diff';
 import $ from 'jquery';
+import DOMPurify from 'dompurify';
 
 export default {
   props: {
@@ -90,6 +91,10 @@ export default {
 
       container.css('height', `${ Math.max(0, desired) }px`);
     },
+  },
+
+  created() {
+    DOMPurify.setConfig({ ADD_ATTR: ['target'] });
   },
 };
 </script>
