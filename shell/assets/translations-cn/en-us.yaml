@@ -2175,6 +2175,7 @@ cluster:
     template:
       title: Containerd Config Template
     title: Custome Containerd Config
+    tips: The config.toml.tmpl on the host will not be cleaned up automatically after canceling the setting and will need to be removed manually.
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
