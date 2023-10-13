@@ -252,5 +252,9 @@ export default {
   align-items: center;
   flex-direction: row;
   gap: 10px;
+
+  & > button {
+    padding: 0px 8px;
+  }
 }
 </style>
