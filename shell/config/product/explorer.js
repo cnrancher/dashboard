@@ -22,8 +22,7 @@ import {
 } from '@shell/config/table-headers';
 
 import { DSL } from '@shell/store/type-map';
-import { SETTING } from '@shell/config/settings';
-import { FLAT_NETWORKS_UI_EXTENSION, AUDIT_LOG_UI_EXTENSION } from '@shell/store/features';
+import { FLAT_NETWORKS_UI_EXTENSION } from '@shell/store/features';
 
 export const NAME = 'explorer';
 
@@ -339,28 +338,6 @@ export function init(store) {
     route:            { name: 'c-cluster-product-namespaces' },
     exact:            true,
   });
-
-  // cluster audit-log start
-  virtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['features/get'](AUDIT_LOG_UI_EXTENSION) && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
-    },
-    labelKey:         'nav.auditLog',
-    group:            'cluster',
-    icon:             'globe',
-    namespaced:       false,
-    ifRancherCluster: true,
-    name:             'cluster-audit-log',
-    weight:           98,
-    route:            {
-      name:   'c-cluster-legacy-auditLog-page',
-      params: {
-        cluster: 'local', page: 'cluster-audit-log', product: NAME
-      }
-    },
-    exact: true,
-  });
-  // cluster audit-log end
 
   // macvlan
   virtualType({

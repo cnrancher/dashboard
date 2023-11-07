@@ -1,5 +1,4 @@
 import { IF_HAVE } from '@shell/store/type-map';
-import { AUDIT_LOG_UI_EXTENSION } from '@shell/store/features';
 
 export function init($plugin, store) {
   const MANAGER_RESOURCE_NAME = 'global-audit-log-extension';
@@ -10,9 +9,6 @@ export function init($plugin, store) {
 
   // global audit log start
   managerVirtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return rootGetters['features/get'](AUDIT_LOG_UI_EXTENSION);
-    },
     ifHave:     IF_HAVE.ADMIN,
     labelKey:   'auditLog.title',
     name:       MANAGER_RESOURCE_NAME,
@@ -36,9 +32,6 @@ export function init($plugin, store) {
 
   // cluster audit-log start
   explorerVirtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return rootGetters['features/get'](AUDIT_LOG_UI_EXTENSION);
-    },
     labelKey:         'auditLog.title',
     group:            'cluster',
     icon:             'globe',

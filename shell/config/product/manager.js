@@ -6,10 +6,10 @@ import {
   HCI,
   MANAGEMENT
 } from '@shell/config/types';
-import { MULTI_CLUSTER, AUDIT_LOG_UI_EXTENSION } from '@shell/store/features';
+import { MULTI_CLUSTER } from '@shell/store/features';
 import { DSL } from '@shell/store/type-map';
 import { BLANK_CLUSTER } from '@shell/store/store-types.js';
-import { SETTING, getGlobalMonitoringV2Setting } from '@shell/config/settings';
+import { getGlobalMonitoringV2Setting } from '@shell/config/settings';
 
 export const NAME = 'manager';
 
@@ -170,26 +170,6 @@ export function init(store) {
     'image-repo-logs',
   ], 'imageRepo');
   // image repo end
-
-  // global audit log start
-  virtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['features/get'](AUDIT_LOG_UI_EXTENSION) && rootGetters['management/byId'](MANAGEMENT.SETTING, SETTING.AUDIT_LOG_SERVER_URL)?.value;
-    },
-    label:      'Audit Log',
-    labelKey:   'nav.auditLog',
-    name:       'global-audit-log',
-    group:      'Root',
-    namespaced: false,
-    icon:       'globe',
-    route:      { name: 'c-cluster-manager-pages-page', params: { cluster: 'local', page: 'global-audit-log' } },
-    exact:      false
-  });
-
-  basicType([
-    'global-audit-log',
-  ]);
-  // global audit log end
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
