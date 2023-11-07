@@ -85,6 +85,10 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/auth/verify.vue' /* webpackChunkName: "pages/auth/verify" */)),
     name:      'auth-verify'
   }, {
+    path:      '/auth/verify-cas',
+    component: () => interopDefault(import('../pages/auth/verify-cas.vue' /* webpackChunkName: "pages/auth/verify-cas" */)),
+    name:      'auth-verify-cas'
+  }, {
     path:      '/rio/mesh',
     component: () => interopDefault(import('../pages/rio/mesh.vue' /* webpackChunkName: "pages/rio/mesh" */)),
     name:      'rio-mesh'
