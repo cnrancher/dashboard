@@ -150,7 +150,6 @@ import { sortBy } from '@shell/utils/sort';
 
 import { haveV1Monitoring, haveV2Monitoring } from '@shell/utils/monitoring';
 import { NEU_VECTOR_NAMESPACE } from '@shell/config/product/neuvector';
-import { FLAT_NETWORKS_UI_EXTENSION } from '@shell/store/features';
 
 export const MACVLAN_PRODUCT_NAME = 'macvlan.cluster.cattle.io.macvlansubnet';
 
@@ -938,14 +937,6 @@ export const getters = {
           }
 
           out[id] = item;
-        }
-      }
-
-      if (out[MACVLAN_PRODUCT_NAME]) {
-        const macvlanFeauter = rootGetters['features/get'](FLAT_NETWORKS_UI_EXTENSION);
-
-        if (!macvlanFeauter) {
-          delete out[MACVLAN_PRODUCT_NAME];
         }
       }
 

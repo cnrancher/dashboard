@@ -1,12 +1,11 @@
 import { MACVLAN_PRODUCT_NAME } from './config/macvlan-types';
-import { FLAT_NETWORKS_UI_EXTENSION } from '@shell/store/features';
 
 export function init($plugin, store) {
   const { virtualType, basicType, configureType } = $plugin.DSL(store, 'explorer');
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['cluster/schemaFor'](MACVLAN_PRODUCT_NAME) && rootGetters['features/get'](FLAT_NETWORKS_UI_EXTENSION);
+      return !rootGetters['cluster/schemaFor'](MACVLAN_PRODUCT_NAME);
     },
     labelKey:   'macvlan.nav.label',
     name:       'macvlan-install',

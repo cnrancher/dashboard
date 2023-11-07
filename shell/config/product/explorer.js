@@ -22,7 +22,6 @@ import {
 } from '@shell/config/table-headers';
 
 import { DSL } from '@shell/store/type-map';
-import { FLAT_NETWORKS_UI_EXTENSION } from '@shell/store/features';
 
 export const NAME = 'explorer';
 
@@ -337,21 +336,6 @@ export function init(store) {
     weight:           98,
     route:            { name: 'c-cluster-product-namespaces' },
     exact:            true,
-  });
-
-  // macvlan
-  virtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['features/get'](FLAT_NETWORKS_UI_EXTENSION);
-    },
-    label:      'macvlan',
-    labelKey:   'nav.vlanSubnet.label',
-    name:       'macvlan-subnet',
-    group:      'cluster',
-    namespaced: false,
-    icon:       'globe',
-    route:      { name: 'c-cluster-legacy-pages-page', params: { cluster: 'local', page: 'cluster-vlansubnet' } },
-    exact:      true
   });
 
   // NavLinks iframe
