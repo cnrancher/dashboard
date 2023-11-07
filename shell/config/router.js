@@ -19,11 +19,6 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path:      '/c/:cluster/legacy/auditLog/:page',
-    component: () => interopDefault(import('../pages/c/_cluster/legacy/auditLog/_page.vue' /* webpackChunkName: "pages/c/_cluster/legacy/auditLog/_page" */)),
-    name:      'c-cluster-legacy-auditLog-page',
-    params:    { product: 'explorer' }
-  }, {
     path:      '/c/:cluster/legacy/resourceQuota/:page',
     component: () => interopDefault(import('../pages/c/_cluster/legacy/resourceQuota/_page.vue' /* webpackChunkName: "pages/c/_cluster/legacy/resourceQuota/_page" */)),
     name:      'c-cluster-legacy-resourceQuota-page',
