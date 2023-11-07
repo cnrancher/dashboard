@@ -83,6 +83,10 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/auth/verify.vue' /* webpackChunkName: "pages/auth/verify" */)),
     name:      'auth-verify'
   }, {
+    path:      '/auth/verify-cas',
+    component: () => interopDefault(import('../pages/auth/verify-cas.vue' /* webpackChunkName: "pages/auth/verify-cas" */)),
+    name:      'auth-verify-cas'
+  }, {
     path:      '/docs/toc',
     component: () => interopDefault(import('../pages/docs/toc.js' /* webpackChunkName: "pages/docs/toc" */)),
     name:      'docs-toc'
