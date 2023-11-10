@@ -43,6 +43,9 @@ export default {
     try {
       parsed = JSON.parse(base64Decode((stateStr)));
     } catch (err) {
+      if (window.opener) {
+        return;
+      }
       const out = store.getters['i18n/t'](`login.error`);
 
       console.error('Failed to parse nonce'); // eslint-disable-line no-console
