@@ -5,7 +5,7 @@ export function init($plugin, store) {
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['cluster/schemaFor'](MACVLAN_PRODUCT_NAME);
+      return !!rootGetters['cluster/schemaFor'](MACVLAN_PRODUCT_NAME);
     },
     labelKey:   'macvlan.nav.label',
     name:       'macvlan-install',
