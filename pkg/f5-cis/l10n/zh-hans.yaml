@@ -1,0 +1,348 @@
+typeLabel:
+  cis.f5.com.virtualserver: Virtual Server
+  cis.f5.com.transportserver: Transport Server
+  cis.f5.com.tlsprofile: TLS 配置文件
+  cis.f5.com.policy: Policy
+  cis.f5.com.externaldns: 外部 DNS
+  cis.f5.com.ingresslink: Ingress Link
+product:
+  F5CISExtension: F5 CIS
+f5cis:
+  productLabel: F5 CIS
+  tableHeaders:
+    tlsProfileName: TLS 配置文件名称
+    httpTraffic: HTTP 流量
+    ipamLabel: IPAM Label
+    IPAMVSAddress: IPAMVS 地址
+    virtualServerAddress: 虚拟服务器地址
+    virtualServerPort: 虚拟服务器端口
+    pool: Pool
+    poolPort: Pool Port
+    domainName: 域名
+    createdOn: 创建时间
+  installView:
+    label: 安装 Chart
+    title: F5 CIS 应用安装
+    tips: 跳转到 F5 CIS 应用安装页面。
+    appInstall:
+      button: 安装 F5 CIS
+  virtualServer:
+    label: 虚拟服务器
+    pool:
+      addPool: 添加 Pool
+      removePool: 删除 Pool
+    titles:
+      general: 通用
+      serviceAddress: Service Address
+      profiles: Profiles
+      monitor: Monitor
+      alternateBackend: Alternate Backend
+    form:
+      virtualServerAddress:
+        label: Virtual Server Address
+      virtualServerHTTPPort:
+        label: Virtual Server HTTP Port
+      virtualServerHTTPSPort:
+        label: Virtual Server HTTPS Port
+      virtualServerName:
+        label: Virtual Server Name
+      waf:
+        label: Waf
+      tlsProfileName:
+        label: TLS Profile Name
+      snat:
+        label: SNAT
+        options:
+          auto: Auto
+          none: None
+      rewriteAppRoot:
+        label: Rewrite App Root
+      profileMultiplex:
+        label: Profile Multiplex
+      botDefense:
+        label: Bot Defense
+      host:
+        label: Host
+      dos:
+        label: Dos
+      hostGroup:
+        label: Host Group
+      httpMrfRoutingEnabled:
+        label: Http Mrf Routing
+        options:
+          enabled: Enabled
+          disabled: Disabled
+      httpTraffic:
+        label: Http Traffic
+        options:
+          allow: allow HTTP (default)
+          none: only HTTPs
+          redirect: redirect HTTP to HTTPS
+      ipamLabel:
+        label: IPAM Label
+      partition:
+        label: Partition
+      persistenceProfile:
+        label: Persistence Profile
+      policyName:
+        label: Policy Name
+      iRules:
+        label: iRules
+        addLabel: add iRules
+      allowVlans:
+        label: Allow Vlans
+        addLabel: Add Vlans
+      additionalVirtualServerAddresses:
+        label: Additional Virtual Server Addresses
+        addLabel: Add Addresses
+      allowSourceRange:
+        label: Allow Source Range
+        addLabel: Add Source Range
+      serviceAddress:
+        addLabel: Add Service Address
+      arpEnabled:
+        label: ARP
+        options:
+          enabled: Enabled
+          disabled: Disabled
+      icmpEcho:
+        label: ICMP Echo
+        options:
+          enable: Enable
+          disable: Disable
+          selective: Selective
+      routeAdvertisement:
+        label: Route Advertisement
+        options:
+          enable: Enable
+          disable: Disable
+          selective: Selective
+          always: Always
+          any: Any
+          all: All
+      spanningEnabled:
+        label: Spanning Enabled
+        options:
+          enabled: Enabled
+          disabled: Disabled
+      trafficGroup:
+        label: Traffic Group
+      profiles:
+        titles:
+          http2: HTTP2
+          tcp: TCP
+        http2:
+          client: Client
+          server: Server
+        tcp:
+          client: Client
+          server: Server
+      pool:
+        name:
+          label: Name
+        path:
+          label: Path
+        hostRewrite:
+          label: Host Rewrite
+        loadBalancingMethod:
+          label: Load Balancing Method
+        nodeMemberLabel:
+          label: Node Member Label
+        reselectTries:
+          label: Reselect Tries                
+        rewrite:
+          label: Rewrite
+        serviceName:
+          label: Service Name
+        serviceNamespace:
+          label: Service Namespace 
+        serciePort:
+          label: Service Port
+        serviceDownAction:
+          label: Service Down Action
+        waf:
+          label: WAF
+        weight:
+          label: Weight
+        monitor:
+          addLabel: Add Monitor
+          type:
+            label: Type
+          interval:
+            label: Interval
+          reference:
+            label: Reference
+          name:
+            label: Name
+          recv:
+            label: Recv
+          send:
+            label: Send
+          targetPort:
+            label: Target Port
+          timeout:
+            label: Timeout
+        alternateBackend:
+          addLabel: Add Alternate Backend
+          weight:
+            label: Weight
+  transportServer:
+    label: Transport Server
+    titles:
+      general: General
+      serviceAddress: Service Address
+      profiles: Profiles
+      monitor: Monitor
+    form:
+      type:
+        label: Type
+        options:
+          tcp: TCP
+          udp: UDP
+          sctp: SCTP
+      allowVlans:
+        label: Allow VLANs
+        add: Add VLANs
+      dos:
+        label: DOS
+      host:
+        label: Host
+      hostGroup:
+        label: Host Group
+      iRules:
+        label: iRules
+        addLabel: Add iRule
+      ipamLabel:
+        label: IPAM Label
+      mode:
+        label: Mode
+        options:
+          standard: Standard
+          performance: Performance
+      partition:
+        label: Partition
+      persistenceProfile:
+        label: Persistence Profile
+      policyName:
+        label: Policy Name
+      profileL4:
+        label: Profile L4
+      snat:
+        label: SNAT
+      virtualServerAddress:
+        label: Virtual Server Address
+      virtualServerName:
+        label: Virtual Server Name
+      virtualServerPort:
+        label: Virtual Server Port
+      serviceAddress:
+        addLabel: Add Service Address
+      arpEnabled:
+        label: ARP
+        options:
+          enabled: Enabled
+          disabled: Disabled
+      icmpEcho:
+        label: ICMP Echo
+        options:
+          enable: Enable
+          disable: Disable
+          selective: Selective
+      routeAdvertisement:
+        label: Route Advertisement
+        options:
+          enable: Enable
+          disable: Disable
+          selective: Selective
+          always: Always
+          any: Any
+          all: All
+      spanningEnabled:
+        label: Spanning Enabled
+        options:
+          enabled: Enabled
+          disabled: Disabled
+      trafficGroup:
+        label: Traffic Group
+      profiles:
+        titles:
+          tcp: TCP
+        tcp:
+          client: Client
+          server: Server
+      pool:
+        name:
+          label: Name
+        loadBalancingMethod:
+          label: Load Balancing Method
+        nodeMemberLabel:
+          label: Node Member Label
+        reselectTries:
+          label: Reselect Tries                
+        serviceName:
+          label: Service Name
+        serviceNamespace:
+          label: Service Namespace 
+        serciePort:
+          label: Service Port
+        serviceDownAction:
+          label: Service Down Action
+        monitor:
+          addLabel: Add Monitor
+          type:
+            label: Type
+          interval:
+            label: Interval
+          reference:
+            label: Reference
+          name:
+            label: Name
+          recv:
+            label: Recv
+          send:
+            label: Send
+          targetPort:
+            label: Target Port
+          timeout:
+            label: Timeout
+    pool:
+      label: Pool
+  tlsProfile:
+    label: TLS Profile
+    titles:
+      hosts: Hosts
+      tls: TLSs
+    form:
+      hosts:
+        label: Hosts
+        addLabel: Add Host
+      reference:
+        label: Reference
+        options:
+          bigip: Big IP
+          secret: Secret
+          hybrid: Hybrid
+      termination:
+        label: Termination
+        options:
+          edge: Edge
+          reencrypt: Reen Crypt
+          passthrough: Pass Through
+      clientSSL:
+        label: Client SSL
+      clientSSLs:
+        label: Client SSLs
+        addLabel: Add Client SSL
+      serverSSL:
+        label: Server SSL
+      serverSSLs:
+        label: Server SSLs
+        addLabel: Add Server SSL
+  policy:
+    label: Policy
+  externaldns: 
+    label: External DNS
+  ingressLink:
+    label: Ingress Link
+  errors:
+    required: "{name} is required"

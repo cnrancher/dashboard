@@ -1793,6 +1793,9 @@ function stringToRegex(str) {
 }
 
 function ifHave(getters, option) {
+  if (typeof option === 'function') {
+    return option(getters);
+  }
   switch (option) {
   case IF_HAVE.V2_MONITORING: {
     return haveV2Monitoring(getters);
