@@ -1,12 +1,12 @@
 typeLabel:
   macvlan.cluster.cattle.io.macvlansubnet: |-
     {count, plural,
-      one { Flat Network(Experimental) }
-      other { Flat Networks(Experimental) }
+      one { Flat Network }
+      other { Flat Networks }
     }
 macvlan:
   nav:
-    label: Flat Network(Experimental)
+    label: Flat Network
   chart:
     title: Rancher Macvlan
     description: 'Macvlan is a virtual networking technology that allows a host to have multiple MAC addresses and create virtual networks in a physical network. Macvlan is achieved by splitting a regular network interface into multiple virtual interfaces, each with a different MAC address. The advantage of Macvlan is that it can achieve virtual isolation in the network and in the same physical network.'

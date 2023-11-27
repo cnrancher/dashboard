@@ -1,12 +1,12 @@
 typeLabel:
   macvlan.cluster.cattle.io.macvlansubnet: |-
     {count, plural,
-      one { 扁平網絡(實驗性) }
-      other { 扁平網絡(實驗性) }
+      one { 扁平網絡 }
+      other { 扁平網絡 }
     }
 macvlan:
   nav:
-    label: 扁平網絡(實驗性)
+    label: 扁平網絡
   chart:
     title: Rancher Macvlan
     description: 'Macvlan 是一種虛擬網絡技術，它允許一個主機擁有多個 MAC 地址，允許在一個物理網絡中創建虛擬網絡。Macvlan 通過將一個普通的網絡接口分割為多個虛擬接口來實現，這些虛擬接口擁有不同的 MAC 地址。Macvlan 的優勢在於可以在網絡中實現虛擬隔離，並且在同一物理網絡中。'
