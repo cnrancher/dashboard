@@ -7,7 +7,8 @@ auditLog:
         tips: '您可以选择在使用 HA 方式部署 Rancher Prime 的同时部署审计日志组件，或者手动部署审计日志组件。有关详细的部署流程，请参考 <a target="_blank" rel="noopener noreferrer nofollow" href="https://ee.docs.rancher.cn/docs/logging/audit/installation">Rancher Prime</a> 文档。'
         address:
           label: 设置 auditlog-server-url 值
-          tips: Rancher Prime 使用审计日志服务进行日志查询，请设置已部署的审计日志服务的地址。 
+          tips: Rancher Prime 使用审计日志服务进行日志查询，请设置已部署的审计日志服务的地址。
+        skipAppInstall: 跳过应用安装
       installAuditLogCollector:
         label: 安装 K8s 日志采集应用
         stepLabel: App 安装

@@ -7,6 +7,7 @@ import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import { Banner } from '@components/Banner';
+import { stringify } from '@shell/utils/error';
 
 const URL_DOMAIN_REG = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
 const URL_REG = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
@@ -30,6 +31,11 @@ export default {
     auditLogSetting: {
       type:     Object,
       required: true
+    },
+    skipAppInstallSetting: {
+      type:     Object,
+      default:  null,
+      required: false
     }
   },
   data() {
@@ -58,8 +64,9 @@ export default {
 
     return {
       steps,
-      errors: [],
+      errors:  [],
       url,
+      loading: false,
     };
   },
   computed: {
@@ -71,6 +78,23 @@ export default {
     }
   },
   methods: {
+    async handleSkipAppInstall() {
+      this.loading = true;
+      try {
+        if (this.steps.find((s) => s.name === 'deploymentComponents')) {
+          await this.saveAuditLogSetting();
+        }
+        const skipAppInstallSetting = await this.$store.dispatch(`management/clone`, { resource: this.skipAppInstallSetting });
+        const v = JSON.parse(skipAppInstallSetting.value);
+
+        v[this.clusterId] = true;
+        skipAppInstallSetting.value = JSON.stringify(v);
+        await skipAppInstallSetting.save();
+      } catch (err) {
+        this.errors = [stringify(err)];
+      }
+      this.loading = false;
+    },
     async saveAuditLogSetting() {
       const url = this.url.trim();
       const [whitelistSetting, auditLogSetting] = await Promise.all([
@@ -84,6 +108,7 @@ export default {
       whitelistSetting.value = [...new Set(values)].filter((v) => v).join(',');
 
       auditLogSetting.value = url;
+
       await Promise.all([whitelistSetting.save(), auditLogSetting.save()]);
     },
     async finish(btnCb) {
@@ -99,10 +124,13 @@ export default {
     },
     async chartRoute() {
       if (this.steps.find((s) => s.name === 'deploymentComponents')) {
+        this.loading = true;
         try {
           await this.saveAuditLogSetting();
+          this.loading = false;
         } catch (err) {
           this.errors = [err];
+          this.loading = false;
 
           return;
         }
@@ -153,7 +181,7 @@ export default {
       if (v?.trim() === '') {
         this.errors = [this.t('auditLog.errors.required', { key: 'auditlog-server-url' })];
       }
-    }
+    },
   },
   components: {
     Wizard, LabeledInput, Banner
@@ -214,13 +242,23 @@ export default {
           >
             <div v-clean-html="t('auditLog.installView.steps.installAuditLogCollector.deploymentTips')" />
           </Banner>
-          <div class="flex justify-center">
+          <div class="flex justify-center gap-20 mt-20">
             <button
-              class="btn role-primary mt-20"
+              class="btn role-primary"
+              :disabled="loading"
               @click.prevent="chartRoute"
             >
               {{ t("auditLog.installView.steps.installAuditLogCollector.label") }}
             </button>
+            <template v-if="k8sAuditLog">
+              <button
+                class="btn role-secondary"
+                :disabled="loading"
+                @click.prevent="handleSkipAppInstall"
+              >
+                {{ t("auditLog.installView.steps.deploymentCompoents.skipAppInstall") }}
+              </button>
+            </template>
           </div>
         </div>
       </template>
@@ -233,6 +271,10 @@ export default {
 }
 .justify-center {
   justify-content: center;
+}
+
+.gap-20 {
+  gap: 20px;
 }
 ::v-deep .controls-row {
   position: relative;

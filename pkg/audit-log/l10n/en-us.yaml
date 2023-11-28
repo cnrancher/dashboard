@@ -8,6 +8,7 @@ auditLog:
         address:
           label: Set the auditlog-server-url value
           tips: Rancher Prime performs log queries by accessing the Audit Log Service, set the address of the deployed Audit Log Service. 
+        skipAppInstall: Skip App Install
       installAuditLogCollector:
         label: Install the rancher-k8s-auditlog-collector
         stepLabel: App Install
