@@ -24,3 +24,5 @@ export const HTTP_CODE = [
   '504',
   '505',
 ];
+
+export const SKIP_APP_INSTALL_SETTING = 'auditlog-skip-app-install';
