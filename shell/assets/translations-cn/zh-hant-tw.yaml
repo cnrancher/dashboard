@@ -4671,8 +4671,9 @@ rbac:
       clustertemplaterevisions-create:
         label: 創建 RKE 模板修訂版
       read-only-pandaria:
-        description: 已棄用：只讀管理員可以訪問所有下游集群中的所有資源，但不能訪問local集群
-        label: 只讀管理員(已棄用)
+        description: 只讀管理員可以訪問所有下游集群中的所有資源，但不能訪問local集群
+        label: 只讀管理員
+        deprecation: '警告：從 Rancher 2.8.0 起，只讀管理員角色 v1 已被棄用，並將在未來的版本中移除。'
       global-read-only:
         description: 只讀管理員可以訪問所有下游集群中的所有資源，但不能訪問local集群
         label: 只讀管理員 v2

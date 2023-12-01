@@ -369,6 +369,11 @@ export default {
                   v-clean-html="t('rbac.globalRoles.role.restricted-admin.deprecation', { releaseNotesUrl }, true)"
                   class="deprecation-notice"
                 />
+                <p
+                  v-else-if="role.id === 'read-only-pandaria'"
+                  v-clean-html="t('rbac.globalRoles.role.read-only-pandaria.deprecation')"
+                  class="deprecation-notice"
+                />
               </div>
             </div>
           </template>
