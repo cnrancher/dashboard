@@ -4694,8 +4694,11 @@ rbac:
       clustertemplaterevisions-create:
         label: Create RKE Template Revisions
       read-only-pandaria:
+        description: Deprecated a read-only administrator can access all resources in all downstream clusters, but cannot access the local cluster
+        label: Read-Only Administrator(Deprecated)
+      global-read-only:
         description: A read-only administrator can access all resources in all downstream clusters, but cannot access the local cluster
-        label: Read-Only Administrator
+        label: Read-Only Administrator v2
     notBound: 'No users bound <i class="icon icon-checkmark" style="margin-left: 5px"></i>'
     unableToCheck: Unable to check if any user is bound to the role(s). Please try again.
     usersBound: |-

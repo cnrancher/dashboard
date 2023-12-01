@@ -798,9 +798,10 @@ export const actions = {
     }
 
     if (res.globalRoleBindings && getters['auth/me']?.id) {
+      const readOnlyAdminRoles = ['read-only-pandaria', 'global-read-only'];
       const id = getters['auth/me']?.id;
       const adminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'admin');
-      const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'read-only-pandaria');
+      const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => readOnlyAdminRoles.includes(binding.globalRoleName));
       let admin = adminGlobalRoleBindings.find((grb) => grb?.userName === id);
       let readOnlyAdmin = readOnlyAdminGlobalRoleBindings.find((grb) => grb?.userName === id);
       const agrbs = adminGlobalRoleBindings.filter((grb) => grb?.groupPrincipalName);

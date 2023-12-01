@@ -85,6 +85,7 @@ export default {
         'user',
         'user-base',
         'read-only-pandaria',
+        'global-read-only'
       ],
       globalRoleBindings:    null,
       sortedRoles:           null,
@@ -181,11 +182,25 @@ export default {
         }
       }
 
+      if (!this.selectedRoles.includes('read-only-pandaria')) {
+        const ropRoleIndex = this.sortedRoles['global']?.findIndex((r) => r.id === 'read-only-pandaria') ?? -1;
+
+        if (ropRoleIndex !== -1) {
+          this.sortedRoles['global']?.splice(ropRoleIndex, 1);
+        }
+      }
       // Force an update to pump out the initial state
       this.checkboxChanged();
     },
     checkboxChanged() {
-      const addRoles = this.selectedRoles
+      const selectedRoles = this.selectedRoles;
+      const rodRoleIndex1 = selectedRoles.indexOf('global-read-only');
+      const rodRoleIndex2 = selectedRoles.indexOf('read-only-pandaria');
+
+      if (rodRoleIndex1 !== -1 && rodRoleIndex2 !== -1) {
+        selectedRoles.splice(Math.min(rodRoleIndex1, rodRoleIndex2), 1);
+      }
+      const addRoles = selectedRoles
         .filter((selected) => !this.startingSelectedRoles.find((startingRole) => startingRole.roleId === selected));
       const removeBindings = this.startingSelectedRoles
         .filter((startingRole) => !this.selectedRoles.find((selected) => selected === startingRole.roleId))

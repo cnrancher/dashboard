@@ -4671,8 +4671,11 @@ rbac:
       clustertemplaterevisions-create:
         label: 創建 RKE 模板修訂版
       read-only-pandaria:
+        description: 已棄用：只讀管理員可以訪問所有下游集羣中的所有資源，但不能訪問local集羣
+        label: 只讀管理員(已棄用)
+      global-read-only:
         description: 只讀管理員可以訪問所有下游集羣中的所有資源，但不能訪問local集羣
-        label: 只讀管理員
+        label: 只讀管理員 v2
     notBound: '沒有綁定的用戶 <i class="icon icon-checkmark" style="margin-left: 5px"></i>'
     unableToCheck: 無法檢查是否存在綁定了該角色的用戶，請重試。
     usersBound: |-
