@@ -58,8 +58,6 @@ export function init(store) {
     'cluster-dashboard',
     'projects-namespaces',
     'namespaces',
-    'macvlan-subnet',
-    'cluster-audit-log',
     NODE,
     VIRTUAL_TYPES.CLUSTER_MEMBERS,
     EVENT,
