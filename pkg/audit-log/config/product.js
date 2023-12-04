@@ -1,5 +1,3 @@
-import { IF_HAVE } from '@shell/store/type-map';
-
 export function init($plugin, store) {
   const MANAGER_RESOURCE_NAME = 'global-audit-log-extension';
   const EXPLORER_RESOURCE_NAME = 'cluster-audit-log-extension';
@@ -9,7 +7,9 @@ export function init($plugin, store) {
 
   // global audit log start
   managerVirtualType({
-    ifHave:     IF_HAVE.ADMIN,
+    showMenuFun(state, getters, rootState, rootGetters) {
+      return rootGetters['auth/isReadOnlyAdmin'] || rootGetters['auth/isAdmin'];
+    },
     labelKey:   'auditLog.title',
     name:       MANAGER_RESOURCE_NAME,
     group:      'Root',
