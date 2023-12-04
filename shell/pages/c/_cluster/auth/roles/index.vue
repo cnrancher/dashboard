@@ -105,7 +105,7 @@ export default {
     ...mapGetters(['releaseNotesUrl']),
 
     globalResources() {
-      return this.globalRoles;
+      return this.globalRoles?.filter((r) => r.id !== 'read-only-pandaria');
     },
 
     clusterResources() {
