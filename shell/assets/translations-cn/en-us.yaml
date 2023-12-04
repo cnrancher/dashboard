@@ -4696,7 +4696,7 @@ rbac:
       read-only-pandaria:
         description: A Readonly Administrator v1 can access all resources in all downstream clusters, but cannot access the local cluster
         label: Readonly Administrator v1
-        deprecation: 'Warning: The read-only administrator role has been deprecated as of Rancher 2.8.0 and will be removed in a future release'
+        deprecation: 'Warning: The read-only administrator role v1 has been deprecated as of Rancher 2.8.0 and will be removed in a future release'
       global-read-only:
         description: A read-only administrator can access all resources in all downstream clusters, but cannot access the local cluster
         label: Read-Only Administrator
