@@ -37,9 +37,6 @@ export function init(store) {
   });
 
   virtualType({
-    showMenuFun(state, getters, rootState, rootGetters) {
-      return !rootGetters['auth/isReadOnlyAdmin'];
-    },
     labelKey:   'auth.config.label',
     icon:       'lock',
     namespaced: false,
