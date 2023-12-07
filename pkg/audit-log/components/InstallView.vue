@@ -85,7 +85,7 @@ export default {
           await this.saveAuditLogSetting();
         }
         const skipAppInstallSetting = await this.$store.dispatch(`management/clone`, { resource: this.skipAppInstallSetting });
-        const v = JSON.parse(skipAppInstallSetting.value);
+        const v = JSON.parse(skipAppInstallSetting.value || '{}');
 
         v[this.clusterId] = true;
         skipAppInstallSetting.value = JSON.stringify(v);
