@@ -3,6 +3,7 @@ import ProvCluster from '@shell/models/provisioning.cattle.io.cluster';
 import { DEFAULT_WORKSPACE, HCI, MANAGEMENT } from '@shell/config/types';
 import { HARVESTER_NAME, HARVESTER_NAME as VIRTUAL } from '@shell/config/features';
 import { SETTING } from '@shell/config/settings';
+import { SPOOFED_PREFIX } from '@shell/store/type-map';
 
 export default class HciCluster extends ProvCluster {
   get stateObj() {
@@ -28,6 +29,14 @@ export default class HciCluster extends ProvCluster {
 
   get canEdit() {
     return false;
+  }
+
+  get canDelete() {
+    return super.canDelete && !this.linkFor('remove')?.includes(SPOOFED_PREFIX);
+  }
+
+  get canUpdate() {
+    return super.canUpdate && !this.linkFor('update')?.includes(SPOOFED_PREFIX);
   }
 
   cachedHarvesterClusterVersion = '';
