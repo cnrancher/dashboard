@@ -31,8 +31,12 @@ export default {
   mixins: [CreateEditView],
 
   async fetch() {
-    this.nodeDrivers = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_DRIVER });
-    this.kontainerDrivers = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.KONTAINER_DRIVER });
+    if (this.$store.getters['management/schemaFor'](MANAGEMENT.NODE_DRIVER)) {
+      this.nodeDrivers = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_DRIVER });
+    }
+    if (this.$store.getters['management/schemaFor'](MANAGEMENT.KONTAINER_DRIVER)) {
+      this.kontainerDrivers = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.KONTAINER_DRIVER });
+    }
     this.operatorDrivers = await this.$store.dispatch('rancher/request', { url: `v3/${ NORMAN.OPERATOR_SETTINGS }` }).then((res) => res.data).catch(() => ([]));
 
     // Force reload the cloud cred schema and any missing subtypes because there aren't change events sent when drivers come/go
@@ -78,9 +82,9 @@ export default {
 
   data() {
     return {
-      nodeDrivers:      null,
-      kontainerDrivers: null,
-      operatorDrivers:  null,
+      nodeDrivers:      [],
+      kontainerDrivers: [],
+      operatorDrivers:  [],
     };
   },
 

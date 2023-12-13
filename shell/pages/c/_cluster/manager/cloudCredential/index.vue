@@ -2,7 +2,7 @@
 import Loading from '@shell/components/Loading';
 import ResourceTable from '@shell/components/ResourceTable';
 import Masthead from '@shell/components/ResourceList/Masthead';
-import { NORMAN, SECRET } from '@shell/config/types';
+import { MANAGEMENT, NORMAN, SECRET } from '@shell/config/types';
 import { AGE_NORMAN, DESCRIPTION, ID_UNLINKED, NAME_UNLINKED } from '@shell/config/table-headers';
 
 export default {
@@ -58,6 +58,10 @@ export default {
         },
       };
     },
+
+    canCreate() {
+      return !!(this.$store.getters['management/schemaFor'](MANAGEMENT.NODE_DRIVER) || this.$store.getters['management/schemaFor'](MANAGEMENT.KONTAINER_DRIVER));
+    }
   },
 
   mounted() {
@@ -70,6 +74,7 @@ export default {
   <Loading v-if="$fetchState.pending" />
   <div v-else>
     <Masthead
+      :is-creatable="canCreate"
       :schema="schema"
       :resource="resource"
       :create-location="createLocation"

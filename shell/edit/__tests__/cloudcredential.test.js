@@ -24,6 +24,11 @@ describe('fetch: cloudcredential', () => {
             }
           });
         },
+        getters: {
+          'management/schemaFor'() {
+            return {};
+          }
+        }
       },
     };
 
