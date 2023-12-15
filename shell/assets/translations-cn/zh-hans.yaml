@@ -4671,7 +4671,7 @@ rbac:
         label: 创建 RKE 模板修订版
       read-only-pandaria:
         description: 只读管理员 v1 可以访问所有下游集群中的所有资源，但不能访问local集群
-        label: 只读管理员
+        label: 只读管理员 v1
         deprecation: '警告：从 Rancher 2.8.0 起，只读管理员 v1 已被弃用，并将在未来的版本中移除。'
       global-read-only:
         description: 只读管理员可以访问所有下游集群中的所有资源，但不能访问local集群
