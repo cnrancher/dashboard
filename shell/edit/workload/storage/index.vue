@@ -7,10 +7,11 @@ import CodeMirror from '@shell/components/CodeMirror';
 import jsyaml from 'js-yaml';
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import { randomStr } from '@shell/utils/string';
+import { Banner } from '@components/Banner';
 
 export default {
   components: {
-    ArrayListGrouped, ButtonDropdown, Mount, CodeMirror
+    ArrayListGrouped, ButtonDropdown, Mount, CodeMirror, Banner
   },
 
   props: {
@@ -253,6 +254,9 @@ export default {
 
 <template>
   <div>
+    <Banner color="info">
+      {{ t('workload.storage.podVolumeTips') }}
+    </Banner>
     <!-- Storage Volumes -->
     <ArrayListGrouped
       :key="value.volumes.length"
