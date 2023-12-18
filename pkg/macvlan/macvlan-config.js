@@ -14,10 +14,7 @@ export function init($plugin, store) {
     icon:       'folder',
     route:      {
       name:   `${ MACVLAN_PRODUCT_NAME }-c-cluster-resource-install`,
-      params: {
-        product:  'explorer',
-        resource: MACVLAN_PRODUCT_NAME
-      }
+      params: { product: 'explorer' }
     },
     exact: true
   });

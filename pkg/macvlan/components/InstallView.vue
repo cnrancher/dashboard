@@ -11,11 +11,8 @@ export default {
 
   async fetch() {
     this.reloadReady = false;
-
-    if ( !this.hasSchema ) {
-      await this.$store.dispatch(`${ this.currentProduct.inStore }/findAll`, { type: CATALOG.CLUSTER_REPO });
-      await this.refreshCharts(1);
-    }
+    await this.$store.dispatch(`${ this.currentProduct.inStore }/findAll`, { type: CATALOG.CLUSTER_REPO });
+    await this.refreshCharts(1);
   },
 
   data() {
