@@ -74,7 +74,9 @@ export default {
     ...mapGetters({ t: 'i18n/t' }),
 
     filteredRows() {
-      return this.rows.filter((x) => x.name !== 'fleet');
+      const hideFeatureIds = ['audit-log-ui-extension', 'flat-networks-ui-extension'];
+
+      return this.rows.filter((x) => x.name !== 'fleet').filter((f) => !hideFeatureIds.includes(f.id));
     },
 
     promptForUrl() {
