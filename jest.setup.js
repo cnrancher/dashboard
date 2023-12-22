@@ -6,6 +6,10 @@ import vSelect from 'vue-select';
 
 import Vue from 'vue';
 
+import { TextEncoder, TextDecoder } from 'util';
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 Vue.config.productionTip = false;
 Vue.use(VTooltip).use(VModal);
 Vue.component('v-select', vSelect);
