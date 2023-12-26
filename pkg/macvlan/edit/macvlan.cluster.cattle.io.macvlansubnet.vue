@@ -282,6 +282,18 @@ export default {
 
         return;
       }
+      // remove unused fields
+      this.$delete(this.config, 'id');
+      this.$delete(this.config, 'links');
+      this.$delete(this.config, 'type');
+      this.$delete(this.config, '__clone');
+      const metadata = this.config.metadata;
+
+      if (metadata) {
+        this.$delete(metadata, 'state');
+        this.$delete(metadata, 'relationships');
+        this.$delete(metadata, 'fields');
+      }
 
       this.$store.dispatch(`macvlan/${ this.isEdit ? 'update' : 'create' }Macvlan`, {
         cluster: this.currentCluster.id,
