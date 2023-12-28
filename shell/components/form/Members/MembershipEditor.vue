@@ -217,7 +217,7 @@ export default {
     <template #add>
       <button
         type="button"
-        class="btn role-primary mt-10"
+        class="btn btn-sm role-primary mt-10"
         @click="addMember"
       >
         {{ t('generic.add') }}
@@ -232,7 +232,7 @@ export default {
         <button
           type="button"
           :disabled="isView"
-          class="btn role-link"
+          class="btn btn-sm role-link"
           @click="remove"
         >
           <i class="icon icon-trash" />
@@ -241,7 +241,7 @@ export default {
           v-if="editMemberDialogName"
           type="button"
           :disabled="isView"
-          class="btn role-link"
+          class="btn btn-sm role-link"
           @click="editMember(row, remove)"
         >
           <i class="icon icon-edit" />
