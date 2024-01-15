@@ -144,13 +144,7 @@ export default {
     <template v-if="specific">
       <div class="key-to-path mb-10">
         <div>{{ t('workload.storage.keyToPath.key.label') }}<span class="text-error">*</span></div>
-        <div>
-          {{ t('workload.storage.keyToPath.path.label') }}<span class="text-error">*</span>
-          <i
-            v-clean-tooltip="t('workload.storage.keyToPath.path.tips')"
-            class="icon icon-info"
-          />
-        </div>
+        <div>{{ t('workload.storage.keyToPath.path.label') }}<span class="text-error">*</span></div>
         <div>{{ t('workload.storage.keyToPath.mode.label') }}</div>
         <div />
       </div>
