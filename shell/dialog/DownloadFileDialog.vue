@@ -9,10 +9,12 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import PercentageBar from '@shell/components/PercentageBar';
 import { get, set } from '@shell/utils/object';
 import { downloadFile } from '@shell/utils/download';
+import { Checkbox } from '@components/Form/Checkbox';
+
 export default {
   name:       'HotplugModal',
   components: {
-    AsyncButton, Card, LabeledInput, LabeledSelect, Banner, PercentageBar
+    AsyncButton, Card, LabeledInput, LabeledSelect, Banner, PercentageBar, Checkbox
   },
   props: {
     resources: {
@@ -34,6 +36,7 @@ export default {
       percent:            -1,
       total:              -1,
       largeFileSize:      false,
+      windows:            false,
       inProgressFunction: null,
       downloadLink,
       containers,
@@ -94,6 +97,7 @@ export default {
           const body = JSON.stringify({
             containerName: get(this, 'currentContainer'),
             filePath,
+            windows:       this.windows,
           });
 
           set(this, 'inProgressFunction', (resp) => {
@@ -149,6 +153,7 @@ export default {
             data:   JSON.stringify({
               containerName: get(this, 'currentContainer'),
               filePath,
+              windows:       this.windows,
             }),
           }).then((data) => {
             this.$store.dispatch('growl/fromError', { title: 'Error', err: 'If the browser version is low, there may be errors when downloading' }, { root: true });
@@ -190,6 +195,7 @@ export default {
         class="mt-20"
         required
       />
+      <Checkbox v-model="windows" class="check mt-20" type="checkbox" label="Windows" />
       <div v-if="largeFileSize">
         <Banner color="warning" :label="t('modalDownLoadFileComponent.notice')" />
       </div>
