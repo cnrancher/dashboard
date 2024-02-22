@@ -15,6 +15,10 @@ import DefaultBackend from './DefaultBackend';
 import Certificates from './Certificates';
 import Rules from './Rules';
 import IngressClass from './IngressClass';
+import ClientCertAuth from './ClientCertAuth';
+import IngressGeneralSettings from './IngressGeneralSettings';
+import IngressCorsSettings from './IngressCorsSettings';
+import { Banner } from '@components/Banner';
 
 export default {
   name:       'CRUIngress',
@@ -28,7 +32,11 @@ export default {
     Rules,
     Tab,
     Tabbed,
-    Error
+    Error,
+    ClientCertAuth,
+    Banner,
+    IngressGeneralSettings,
+    IngressCorsSettings
   },
   mixins: [CreateEditView, FormValidation],
   props:  {
@@ -86,7 +94,8 @@ export default {
         },
         { path: 'spec.tls.hosts', rules: ['required', 'wildcardHostname'] }
       ],
-      fvReportedValidationPaths: ['spec.rules.http.paths.backend.service.port.number', 'spec.rules.http.paths.path', 'spec.rules.http.paths.backend.service.name']
+      fvReportedValidationPaths: ['spec.rules.http.paths.backend.service.port.number', 'spec.rules.http.paths.path', 'spec.rules.http.paths.backend.service.name'],
+      annotationError:           false
     };
   },
   computed: {
@@ -186,7 +195,26 @@ export default {
 
         set(this.value.spec, path, null);
       }
+      const errors = this.validateAnnotations();
+
+      if (errors.length > 0) {
+        this.annotationError = true;
+        throw errors;
+      } else {
+        this.annotationError = false;
+      }
     },
+    validateAnnotations() {
+      const errors = [];
+
+      ['ingressClientCertAuth', 'ingressGeneralSettings', 'ingressCorsSettings'].forEach((k) => {
+        const e = this.$refs[k]?.validate() ?? [];
+
+        errors.push(...e);
+      });
+
+      return errors;
+    }
   }
 };
 </script>
@@ -260,12 +288,41 @@ export default {
         :label="t('ingress.ingressClass.label')"
         name="ingress-class"
         :weight="1"
+        :error="annotationError"
       >
         <IngressClass
           v-model="value"
           :mode="mode"
           :ingress-classes="ingressClasses"
         />
+
+        <div class="mt-20">
+          <Banner
+            color="info"
+          >
+            <div v-clean-html="t('ingress.ingressNginxClassWarning')" />
+          </Banner>
+          <ClientCertAuth
+            ref="ingressClientCertAuth"
+            v-model="value"
+            class="mb-20"
+            :mode="mode"
+            :certificates="certificates"
+          />
+          <hr>
+          <IngressGeneralSettings
+            ref="ingressGeneralSettings"
+            v-model="value"
+            class="mb-20"
+            :mode="mode"
+          />
+          <hr>
+          <IngressCorsSettings
+            ref="ingressCorsSettings"
+            v-model="value"
+            :mode="mode"
+          />
+        </div>
       </Tab>
       <Tab
         v-if="!isView"

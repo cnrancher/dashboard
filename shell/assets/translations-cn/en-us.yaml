@@ -2757,6 +2757,85 @@ ingress:
     default: Default
   rulesOrBackendSpecified: Either Default Backend or Rules must be specified
   description: Ingresses route incoming traffic from the internet to Services within the cluster based on the hostname and path specified in the request. You can expose multiple Services on the same external IP address and port.
+  ingressNginxClassWarning: The following advanced options are available only for the ingress nginx class.
+  formSslClientAuth:
+    title: Client Certificate Authentication
+    detail: Configure to enable client certificate authentication.
+    strategy:
+      off: OFF
+      on: ON
+      optional: Optional
+      optionalNoCA: Optional No Ca
+    secret:
+      title: secret
+      detail: This secret must have a file named ca.crt containing the full Certificate Authority chain ca.crt that is enabled to authenticate against this Ingress.
+      required: To enable client certificate authentication, please select secret.
+    depth:
+      title: depth
+      detail: The validation depth between the provided client certificate and the Certification Authority chain.
+      placeholder: "e.g. 1"
+    errorPage:
+      title: Redirect address
+      detail: The URL/Page that user should be redirected in case of a Certificate Authentication Error
+      placeholder: "e.g. example.com"
+  formIngressCorsSetting:
+    title: Enable CORS
+    detail: To enable Cross-Origin Resource Sharing (CORS) in an Ingress rule.
+    corsAllowMethod:
+      title: Allow Methods
+      required: Please select allowed methods
+    corsAllowHeader:
+      title: Allow Headers
+      placeholder: e.g. X-Forwarded-For
+      detail: Multiple Allow-Headers can be set, separated by ',', and accepts letters, numbers, _ and -.
+    corsExposeHeader:
+      title: Expose Headers
+      placeholder: e.g. *
+      detail: Multiple Expose-Headers can be set, separated by ',', and accepts letters, numbers, _, - and *.
+    corsAllowOrigin:
+      title: Origin
+      placeholder: e.g. *
+      detail: Multiple Origin can be set, separated by ',', and single level wildcard subdomains can be supported.
+    corsAllowCredential:
+      title: Allow Credential
+    corsMaxAge:
+      title: Cache time (s)
+      placeholder: e.g. 600
+  formIngressGeneralSetting:
+    title: Ingress common configuration
+    detail: Customize specific Ingress behavior
+    permanentRedirect:
+      title: Permanent Redirect URL
+      placeholder: e.g. https://example.com
+      detail: Will redirect everything to the new URL.
+    permanentRedirectCode:
+      title: Permanent Redirect Code
+      placeholder: e.g. 308
+      detail: Permanent Redirect Code, default 301。
+    rewriteTarget:
+      title: Rewrite Target
+      placeholder: e.g. /
+      detail: The exposed URL in the backend service differs from the specified path in the Ingress rule, set the path expected by the service.
+    proxyBodySize:
+      title: Maximum limit of client body (m)
+      placeholder: e.g. 8
+      detail: Customize the maximum allowed value of the client request body to prevent 413 errors.
+    proxyBuffering:
+      title: Enable Proxy Buffering
+    proxyBufferSize:
+      title: Custom Proxy Buffering Size (k)
+      placeholder: e.g. 4
+    whitelist:
+      title: Whitelist source range
+      placeholder: e.g. 10.0.0.0/24,172.10.0.1
+      detail: Specify the allowed client IP source range. The value is a comma separated list of CIDR.
+      formalError: White list input format error.
+    limitRps:
+      title: Rate Limiting
+      placeholder: e.g. 100
+      detail: "Number of requests accepted from a given IP each second. When clients exceed this limit, limit-req-status-code default: 503 is returned."
+    sslRedirect:
+      title: http redirect https
 internalExternalIP:
   none: None
 istio:
