@@ -234,6 +234,10 @@ const supportAccountSyncAuthModes = [
     rancherAuthMode: 'openldap_user_uid',
     harborAuthMode:  'ldap_auth',
   },
+  {
+    rancherAuthMode: 'keycloakoidc_user',
+    harborAuthMode:  'db_auth',
+  },
 ];
 
 const urlReg = /^http(s)?:\/\/.+/i;
