@@ -2453,6 +2453,85 @@ ingress:
   ingressClass:
     label: IngressClass
   rulesOrBackendSpecified: 必須指定默認後端或規則
+  ingressNginxClassWarning: 只有 ingress nginx class 才可以使用以下高級選項。
+  formSslClientAuth:
+    title: 客戶端證書認證
+    detail: 配置用於啟用客戶端證書身份驗證。
+    strategy:
+      off: 不啟用
+      on: 啟用嚴格模式
+      optional: 僅攔截非CA簽名證書
+      optionalNoCA: 不做攔截，僅發送驗證結果到上游服務
+    secret:
+      title: 密文
+      detail: 此密文必須是一個鍵名為ca.crt的文件，其中包含完整的證書頒發機構鏈ca.crt，可以針對此 Ingress 進行身份驗證。
+      required: 啟用客戶端證書驗證，請選擇密文。
+    depth:
+      title: depth
+      detail: 提供的客戶端證書和證書頒發機構鏈之間的驗證深度。
+      placeholder: 例如：1
+    errorPage:
+      title: 重定向地址
+      detail: 發生證書身份驗證錯誤時將重定向用戶的訪問地址。
+      placeholder: 例如：example.com
+  formIngressCorsSetting:
+    title: 跨域設置
+    detail: 在 Ingress 規則中啟用跨域資源共享 (CORS)
+    corsAllowMethod:
+      title: 允許 Methods
+      required: 請選擇 允許 Methods
+    corsAllowHeader:
+      title: 允許 Headers
+      placeholder: 例如：X-Forwarded-For
+      detail: 允許 Headers可以設置多個，以英文逗號(,)分隔，接受字母、數字、_ 和 -。
+    corsExposeHeader:
+      title: 暴露 Headers
+      placeholder: 例如：*
+      detail: 暴露 Headers可以設置多個，以英文逗號(,)分隔，接受字母、數字、_、- 和 *。
+    corsAllowOrigin:
+      title: 來源
+      placeholder: 例如：*
+      detail: 來源可以設置多個，以英文逗號(,)分隔, 可支持單級通配符子域。
+    corsAllowCredential:
+      title: 允許傳遞憑證
+    corsMaxAge:
+      title: 緩存時間（單位：秒）
+      placeholder: 例如：600
+  formIngressGeneralSetting:
+    title: Ingress 常用配置
+    detail: 自定義特定的 Ingress 行為
+    permanentRedirect:
+      title: 永久重定向 URL
+      placeholder: 例如：https://example.com
+      detail: 將資源重定向到新的 URL。
+    permanentRedirectCode:
+      title: 永久重定向狀態碼
+      placeholder: 例如：308
+      detail: 永久重定向的狀態碼，默認值 301。
+    rewriteTarget:
+      title: 後端重寫
+      placeholder: 例如：/
+      detail: 當後端服務中暴露的 URL 與 Ingress 規則中指定的路徑不同時，修改為服務預期的路徑。
+    proxyBodySize:
+      title: 客戶端正文最大限制 (單位：m)
+      placeholder: 例如：8
+      detail: 自定義客戶端請求體允許的最大值，防止出現 413 錯誤。
+    proxyBuffering:
+      title: 啟用 Proxy buffering
+    proxyBufferSize:
+      title: 自定義 Proxy buffering 大小（單位：k）
+      placeholder: 例如：4
+    whitelist:
+      title: 白名單
+      placeholder: 例如：10.0.0.0/24,172.10.0.1
+      detail: 指定允許訪問的客戶端 IP 源範圍。該值是一個逗號分隔的 CIDR 列表。
+      formalError: 白名單輸入格式錯誤。
+    limitRps:
+      title: 請求速率限制
+      placeholder: 例如：100
+      detail: 每個客戶端每秒允許發送的請求數。當超過此限制時，將返回限制請求狀態碼，默認 503。
+    sslRedirect:
+      title: http 重定向 https
 internalExternalIP:
   none: 無
 istio:
