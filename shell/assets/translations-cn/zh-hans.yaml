@@ -2453,6 +2453,85 @@ ingress:
   ingressClass:
     label: IngressClass
   rulesOrBackendSpecified: 必须指定默认后端或规则
+  ingressNginxClassWarning: 只有 ingress nginx class 才可以使用以下高级选项。
+  formSslClientAuth:
+    title: 客户端证书认证
+    detail: 配置用于启用客户端证书身份验证。
+    strategy:
+      off: 不启用
+      on: 启用严格模式
+      optional: 仅拦截非CA签名证书
+      optionalNoCA: 不做拦截，仅发送验证结果到上游服务
+    secret:
+      title: 密文
+      detail: 此密文必须是一个键名为ca.crt的文件，其中包含完整的证书颁发机构链ca.crt，可以针对此 Ingress 进行身份验证。
+      required: 启用客户端证书验证，请选择密文。
+    depth:
+      title: depth
+      detail: 提供的客户端证书和证书颁发机构链之间的验证深度。
+      placeholder: 例如：1
+    errorPage:
+      title: 重定向地址
+      detail: 发生证书身份验证错误时将重定向用户的访问地址。
+      placeholder: 例如：example.com
+  formIngressCorsSetting:
+    title: 跨域设置
+    detail: 在 Ingress 规则中启用跨域资源共享 (CORS)
+    corsAllowMethod:
+      title: 允许 Methods
+      required: 请选择 允许 Methods
+    corsAllowHeader:
+      title: 允许 Headers
+      placeholder: 例如：X-Forwarded-For
+      detail: 允许 Headers可以设置多个，以英文逗号(,)分隔，接受字母、数字、_ 和 -。
+    corsExposeHeader:
+      title: 暴露 Headers
+      placeholder: 例如：*
+      detail: 暴露 Headers可以设置多个，以英文逗号(,)分隔，接受字母、数字、_、- 和 *。
+    corsAllowOrigin:
+      title: 来源
+      placeholder: 例如：*
+      detail: 来源可以设置多个，以英文逗号(,)分隔, 可支持单级通配符子域。
+    corsAllowCredential:
+      title: 允许传递凭证
+    corsMaxAge:
+      title: 缓存时间（单位：秒）
+      placeholder: 例如：600
+  formIngressGeneralSetting:
+    title: Ingress 常用配置
+    detail: 自定义特定的 Ingress 行为
+    permanentRedirect:
+      title: 永久重定向 URL
+      placeholder: 例如：https://example.com
+      detail: 将资源重定向到新的 URL。
+    permanentRedirectCode:
+      title: 永久重定向状态码
+      placeholder: 例如：308
+      detail: 永久重定向的状态码，默认值 301。
+    rewriteTarget:
+      title: 后端重写
+      placeholder: 例如：/
+      detail: 当后端服务中暴露的 URL 与 Ingress 规则中指定的路径不同时，修改为服务预期的路径。
+    proxyBodySize:
+      title: 客户端正文最大限制 (单位：m)
+      placeholder: 例如：8
+      detail: 自定义客户端请求体允许的最大值，防止出现 413 错误。
+    proxyBuffering:
+      title: 启用 Proxy buffering
+    proxyBufferSize:
+      title: 自定义 Proxy buffering 大小（单位：k）
+      placeholder: 例如：4
+    whitelist:
+      title: 白名单
+      placeholder: 例如：10.0.0.0/24,172.10.0.1
+      detail: 指定允许访问的客户端 IP 源范围。该值是一个逗号分隔的 CIDR 列表。
+      formalError: 白名单输入格式错误。
+    limitRps:
+      title: 请求速率限制
+      placeholder: 例如：100
+      detail: 每个客户端每秒允许发送的请求数。当超过此限制时，将返回限制请求状态码，默认 503。
+    sslRedirect:
+      title: http 重定向 https
 internalExternalIP:
   none: 无
 istio:
