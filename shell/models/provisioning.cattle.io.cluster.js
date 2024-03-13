@@ -125,6 +125,18 @@ export default class ProvCluster extends SteveModel {
         enabled: !isLocal && this.mgmt,
       },
       {
+        action:  'suspend',
+        label:   this.$rootGetters['i18n/t']('cluster.k3s.actions.suspend.label'),
+        icon:    'icon icon-edit',
+        enabled: !isLocal && this.mgmt?.hasAction('suspend'),
+      },
+      {
+        action:  'resume',
+        label:   this.$rootGetters['i18n/t']('cluster.k3s.actions.resume.label'),
+        icon:    'icon icon-edit',
+        enabled: !isLocal && this.mgmt?.hasAction('resume'),
+      },
+      {
         action:  'openShell',
         label:   this.$rootGetters['i18n/t']('nav.shell'),
         icon:    'icon icon-terminal',
@@ -883,5 +895,47 @@ export default class ProvCluster extends SteveModel {
 
   get hasError() {
     return this.status?.conditions?.some((condition) => condition.error === true);
+  }
+
+  suspend() {
+    this.$dispatch('promptModal', {
+      resources: [this.mgmt],
+      component: 'SuspendClusterDialog'
+    });
+  }
+
+  resume() {
+    this.$dispatch('promptModal', {
+      resources: [this.mgmt],
+      component: 'ResumeClusterDialog'
+    });
+  }
+
+  get isSuspended() {
+    return this.mgmt?.metadata?.annotations?.['mcm.pandaria.io/cluster-pause'] === 'true';
+  }
+
+  get stateBackground() {
+    if (this.isSuspended) {
+      return 'bg-warning';
+    }
+
+    return super.stateBackground;
+  }
+
+  get stateDisplay() {
+    if (this.isSuspended) {
+      return 'Paused';
+    }
+
+    return super.stateDisplay;
+  }
+
+  get stateDescription() {
+    if (this.isSuspended) {
+      return '';
+    }
+
+    return super.stateDescription;
   }
 }

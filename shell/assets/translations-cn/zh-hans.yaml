@@ -2188,6 +2188,13 @@ cluster:
       metrics-server: Metrics Server
       servicelb: Klipper 服务 LB
       traefik: Traefik Ingress
+    actions:
+      suspend:
+        label: 暂停集群
+        confirm: 你确定要暂停{name}集群吗？
+      resume:
+        label: 恢复集群
+        confirm: 你确定要恢复{name}集群吗？
   customContainerdConfig:
     machineSelector:
       label: 添加主机选择器
