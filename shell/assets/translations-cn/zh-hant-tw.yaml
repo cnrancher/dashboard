@@ -2113,6 +2113,13 @@ cluster:
       metrics-server: 'Metrics Server'
       servicelb: 'Klipper 服務 LB'
       traefik: 'Traefik Ingress'
+    actions:
+      suspend:
+        label: 暫停集群
+        confirm: 你確定要暫停{name}集群嗎？
+      resume:
+        label: 恢復集群
+        confirm: 你確定要恢復{name}集群嗎？
   selectCredential:
     genericDescription: "{vendor} 沒有此驅動的內置支持。請查閱驅動的官方文檔，以瞭解身份認證所需的字段。"
   snapshot:

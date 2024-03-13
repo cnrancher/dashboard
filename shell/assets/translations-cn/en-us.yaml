@@ -2103,6 +2103,13 @@ cluster:
       metrics-server: 'Metrics Server'
       servicelb: 'Klipper Service LB'
       traefik: 'Traefik Ingress'
+    actions:
+      suspend:
+        label: Suspend Cluster
+        confirm: Are You Sure You Want To Suspend The {name} Cluster?
+      resume:
+        label: Resume Cluster
+        confirm: Are You Sure You Want To Resume The {name} Cluster?
   selectCredential:
     genericDescription: "{vendor} has no built-in support for this driver.  We've taken a guess, but consult the driver's documentation for the fields required for authentication."
   snapshot:
