@@ -41,7 +41,7 @@ export default {
     ];
 
     set(this.value, 'backend', this.value.backend || {});
-    set(this.value, 'path', this.value.path || '');
+    set(this.value, 'path', this.value.path || '/');
     set(this.value, 'pathType', this.value.pathType || pathTypes[0]);
     set(this.value.backend, this.ingress.serviceNamePath, get(this.value.backend, this.ingress.serviceNamePath) || '');
     set(this.value.backend, this.ingress.servicePortPath, get(this.value.backend, this.ingress.servicePortPath) || '');
