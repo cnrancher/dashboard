@@ -9,16 +9,12 @@ describe('component: EditConnectModeDialog', () => {
         resources: [
           {
             id:       'test',
-            metadata: { name: 'test' }
+            metadata: { name: 'test' },
+            doAction: jest.fn(() => Promise.resolve({}))
           }
         ]
       },
-      mocks: {
-        $store: {
-          dispatch: jest.fn(() => Promise.resolve({})),
-          getters:  { 'i18n/t': jest.fn() }
-        }
-      }
+      mocks: { $store: { getters: { 'i18n/t': jest.fn() } } }
     });
 
     await wrapper.setData({ errors: ['error'] });
@@ -37,16 +33,12 @@ describe('component: EditConnectModeDialog', () => {
         resources: [
           {
             id:       'test',
-            metadata: { name: 'test' }
+            metadata: { name: 'test' },
+            doAction: jest.fn(() => Promise.reject(new Error('error')))
           }
         ]
       },
-      mocks: {
-        $store: {
-          dispatch: jest.fn(() => Promise.reject(new Error('error'))),
-          getters:  { 'i18n/t': jest.fn() }
-        }
-      }
+      mocks: { $store: { getters: { 'i18n/t': jest.fn() } } }
     });
 
     await wrapper.setData({ mode: { apiEndpoints: ['test'] } });
@@ -82,15 +74,15 @@ describe('component: EditConnectModeDialog', () => {
       type:    'connectionConfig'
     };
     const localThis = {
-      $store: {
-        dispatch() {
-          return Promise.resolve(resp);
-        }
-      },
       updateStatusMap:    updateStatusMapMock,
       connectModeLoading: false,
       mode:               {},
-      errors:             []
+      errors:             [],
+      cluster:            {
+        doAction() {
+          return Promise.resolve(resp);
+        }
+      }
     };
 
     await EditConnectModeDialog.fetch.call(localThis);
@@ -112,7 +104,12 @@ describe('component: EditConnectModeDialog', () => {
       updateStatusMap:    updateStatusMapMock,
       connectModeLoading: false,
       mode:               {},
-      errors:             []
+      errors:             [],
+      cluster:            {
+        doAction() {
+          return Promise.reject(errorMessage);
+        }
+      }
     };
 
     await EditConnectModeDialog.fetch.call(localThis);
@@ -123,23 +120,18 @@ describe('component: EditConnectModeDialog', () => {
   it('should save cluster connect mode', async() => {
     const requestMock = jest.fn();
     const doneMock = jest.fn();
+    const restartModck = jest.fn(() => Promise.resolve({}));
     const localThis = {
-      $store:  { dispatch: requestMock },
       loading: false,
       errors:  [],
-      cluster: { id: 'test' },
-      mode:    {}
+      cluster: { id: 'test', doAction: requestMock },
+      mode:    {},
+      $store:  { dispatch: restartModck }
     };
 
     await EditConnectModeDialog.methods.save.call(localThis, doneMock);
-
-    expect(requestMock.mock.calls).toHaveLength(2);
-    expect(requestMock.mock.calls[0][1]).toStrictEqual({
-      url:    `/v3/clusters/${ localThis.cluster.id }?action=editConnectionConfig`,
-      data:   {},
-      method: 'post'
-    });
-    expect(requestMock.mock.calls[1][1]).toStrictEqual({
+    expect(requestMock).toHaveBeenCalledWith('editConnectionConfig', {});
+    expect(restartModck).toHaveBeenCalledWith('rancher/request', {
       url:    `/mcm/restart/${ localThis.cluster.id }`,
       method: 'get'
     });
@@ -150,10 +142,9 @@ describe('component: EditConnectModeDialog', () => {
     const requestMock = jest.fn(() => Promise.reject(errorMessage));
     const doneMock = jest.fn();
     const localThis = {
-      $store:  { dispatch: requestMock },
       loading: false,
       errors:  [],
-      cluster: { id: 'test' },
+      cluster: { id: 'test', doAction: requestMock },
       mode:    {}
     };
 
@@ -196,18 +187,13 @@ describe('component: EditConnectModeDialog', () => {
       errors:          [],
       loading:         false,
       testSuccess:     false,
-      $store:          { dispatch: requestMock },
-      cluster:         { id: 'test' },
+      cluster:         { id: 'test', doAction: requestMock },
       updateStatusMap: updateStatusMapMock
     };
 
     await EditConnectModeDialog.methods.validate.call(localThis, doneMock);
 
-    expect(requestMock).toHaveBeenCalledWith('rancher/request', {
-      url:    `/v3/clusters/test?action=validateConnectionConfig`,
-      method: 'post',
-      data:   localThis.mode,
-    });
+    expect(requestMock).toHaveBeenCalledWith('validateConnectionConfig', localThis.mode);
     expect(localThis.errors).toStrictEqual([resp.endpointStatus[1].error]);
     expect(localThis.testSuccess).toBe(false);
     expect(doneMock).toHaveBeenCalledWith(false);
@@ -239,18 +225,13 @@ describe('component: EditConnectModeDialog', () => {
       errors:          [],
       loading:         false,
       testSuccess:     false,
-      $store:          { dispatch: requestMock },
-      cluster:         { id: 'test' },
+      cluster:         { id: 'test', doAction: requestMock },
       updateStatusMap: updateStatusMapMock
     };
 
     await EditConnectModeDialog.methods.validate.call(localThis, doneMock);
 
-    expect(requestMock).toHaveBeenCalledWith('rancher/request', {
-      url:    `/v3/clusters/test?action=validateConnectionConfig`,
-      method: 'post',
-      data:   localThis.mode,
-    });
+    expect(requestMock).toHaveBeenCalledWith('validateConnectionConfig', localThis.mode);
     expect(localThis.errors).toHaveLength(0);
     expect(localThis.testSuccess).toBe(true);
     expect(doneMock).toHaveBeenCalledWith(true);
