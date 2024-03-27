@@ -61,9 +61,14 @@ export default {
 
         return;
       }
+      const store = this.$store;
 
-      this.resources.forEach((r) => {
-        r.doAction('resume');
+      this.resources.forEach(async(r) => {
+        const inStore = store.getters['currentStore'](r);
+        const c = await store.dispatch(`${ inStore }/clone`, { resource: r });
+
+        c.spec['cluster-pause'] = false;
+        c.save();
       });
 
       this.close();

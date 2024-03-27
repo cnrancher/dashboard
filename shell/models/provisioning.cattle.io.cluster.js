@@ -128,13 +128,13 @@ export default class ProvCluster extends SteveModel {
         action:  'suspend',
         label:   this.$rootGetters['i18n/t']('cluster.k3s.actions.suspend.label'),
         icon:    'icon icon-edit',
-        enabled: !isLocal && this.mgmt?.hasAction('suspend'),
+        enabled: !isLocal && (this.spec?.['cluster-pause'] ?? false) === false
       },
       {
         action:  'resume',
         label:   this.$rootGetters['i18n/t']('cluster.k3s.actions.resume.label'),
         icon:    'icon icon-edit',
-        enabled: !isLocal && this.mgmt?.hasAction('resume'),
+        enabled: !isLocal && this.spec?.['cluster-pause'] === true
       },
       {
         action:  'openShell',
@@ -899,20 +899,20 @@ export default class ProvCluster extends SteveModel {
 
   suspend() {
     this.$dispatch('promptModal', {
-      resources: [this.mgmt],
+      resources: [this],
       component: 'SuspendClusterDialog'
     });
   }
 
   resume() {
     this.$dispatch('promptModal', {
-      resources: [this.mgmt],
+      resources: [this],
       component: 'ResumeClusterDialog'
     });
   }
 
   get isSuspended() {
-    return this.mgmt?.metadata?.annotations?.['mcm.pandaria.io/cluster-pause'] === 'true';
+    return this.spec?.['cluster-pause'] === true;
   }
 
   get stateBackground() {
