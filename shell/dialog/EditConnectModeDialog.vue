@@ -162,10 +162,7 @@ export default {
   async fetch() {
     this.connectModeLoading = true;
     try {
-      const connectMode = await this.$store.dispatch('rancher/request', {
-        url:    `/v3/clusters/${ this.cluster?.id }?action=viewConnectionConfig`,
-        method: 'post',
-      });
+      const connectMode = await this.cluster.doAction('viewConnectionConfig');
 
       if (!connectMode.apiEndpoints) {
         connectMode.apiEndpoints = [];
@@ -181,6 +178,7 @@ export default {
     cluster() {
       return this.resources[0];
     },
+
   },
   methods: {
     confirm(result) {
@@ -207,13 +205,12 @@ export default {
     async save(buttonDone) {
       this.loading = true;
       try {
+        const id = this.cluster?.apiVersion === 'provisioning.cattle.io/v1' ? this.cluster?.status?.clusterName : this.cluster?.id;
+
+        await this.cluster.doAction('editConnectionConfig', this.mode);
+
         await this.$store.dispatch('rancher/request', {
-          url:    `/v3/clusters/${ this.cluster?.id }?action=editConnectionConfig`,
-          method: 'post',
-          data:   this.mode,
-        });
-        await this.$store.dispatch('rancher/request', {
-          url:    `/mcm/restart/${ this.cluster?.id }`,
+          url:    `/mcm/restart/${ id }`,
           method: 'get',
         });
         buttonDone(true);
@@ -239,11 +236,7 @@ export default {
       const apiEndpoints = [...(this.mode.apiEndpoints || [])];
 
       try {
-        const { endpointStatus = [] } = await this.$store.dispatch('rancher/request', {
-          url:    `/v3/clusters/${ this.cluster?.id }?action=validateConnectionConfig`,
-          method: 'post',
-          data:   this.mode,
-        });
+        const { endpointStatus = [] } = await this.cluster.doAction('validateConnectionConfig', this.mode);
 
         if (endpointStatus.some((s) => !s.status)) {
           this.errors = [...new Set(endpointStatus.filter((s) => !s.status).map((s) => s.error))];

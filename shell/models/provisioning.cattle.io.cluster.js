@@ -888,7 +888,7 @@ export default class ProvCluster extends SteveModel {
 
   editConnectMode() {
     this.$dispatch('promptModal', {
-      resources: [this.mgmt],
+      resources: [this],
       component: 'EditConnectModeDialog'
     });
   }
