@@ -113,11 +113,7 @@ export default {
         return;
       }
       try {
-        const connectMode = await this.$store.dispatch('rancher/request', {
-          url:    `/v3/clusters/${ this.cluster?.id }?action=viewConnectionConfig`,
-          method: 'post',
-          signal
-        });
+        const connectMode = await this.cluster.doAction('viewConnectionConfig', undefined, { signal });
 
         this.connectMode = connectMode;
         this.errors = [];

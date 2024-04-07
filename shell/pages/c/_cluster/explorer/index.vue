@@ -361,7 +361,7 @@ export default {
     },
 
     showConnectMode() {
-      return this.currentCluster?.id !== 'local';
+      return this.provisioningCluster && this.currentCluster?.id !== 'local';
     },
 
     hasDescription() {
@@ -376,7 +376,13 @@ export default {
           resource: 'event',
         }
       };
-    }
+    },
+
+    provisioningCluster() {
+      const out = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster?.metadata?.name);
+
+      return out;
+    },
   },
 
   methods: {
@@ -427,7 +433,7 @@ export default {
 
     editConnectMode() {
       this.$store.dispatch('cluster/promptModal', {
-        resources: [this.currentCluster],
+        resources: [this.provisioningCluster],
         component: 'EditConnectModeDialog'
       });
     }
@@ -646,7 +652,7 @@ export default {
           :label="t('clusterConnectMode.title')"
           :weight="0"
         >
-          <ConnectMode :cluster="currentCluster" />
+          <ConnectMode :cluster="provisioningCluster" />
         </Tab>
       </Tabbed>
     </div>
