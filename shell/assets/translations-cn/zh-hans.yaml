@@ -2759,7 +2759,7 @@ ingress:
       detail: 提供的客户端证书和证书颁发机构链之间的验证深度。
       placeholder: 例如：1
     errorPage:
-      title: 重定向地址
+      title: 认证错误重定向地址
       detail: 发生证书身份验证错误时将重定向用户的访问地址。
       placeholder: 例如：example.com
   formIngressCorsSetting:
