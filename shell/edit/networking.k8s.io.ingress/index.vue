@@ -165,6 +165,9 @@ export default {
         value: ingressClass.metadata.name,
       }));
     },
+    namespaceSecrets() {
+      return this.filterByCurrentResourceNamespace(this.allSecrets);
+    }
   },
   created() {
     this.$set(this.value, 'spec', this.value.spec || {});
@@ -307,7 +310,7 @@ export default {
             v-model="value"
             class="mb-20"
             :mode="mode"
-            :certificates="certificates"
+            :namespace-secrets="namespaceSecrets"
           />
           <hr>
           <IngressGeneralSettings
