@@ -75,7 +75,7 @@ export default {
         return {};
       },
     },
-    certificates: {
+    namespaceSecrets: {
       type:    Array,
       default: () => [],
     },
@@ -156,9 +156,9 @@ export default {
       }
     },
     certsOptions() {
-      return this.certificates.map(c => ({
-        label: c,
-        value: c
+      return this.namespaceSecrets.filter(item => !!item?.data?.['ca.crt']).map(c => ({
+        value: c.id,
+        label: `${ c.metadata.name }(${ c.metadata.namespace })`
       }));
     },
     authTlsErrorPage: {
