@@ -2786,7 +2786,7 @@ ingress:
       detail: The validation depth between the provided client certificate and the Certification Authority chain.
       placeholder: "e.g. 1"
     errorPage:
-      title: Redirect address
+      title: Authentication Error Redirect URL
       detail: The URL/Page that user should be redirected in case of a Certificate Authentication Error
       placeholder: "e.g. example.com"
   formIngressCorsSetting:
