@@ -264,7 +264,7 @@ export default {
         if (!v) {
           this.$delete(this.value?.metadata?.annotations, PERMANENT_REDIRECT_CODE);
         } else {
-          this.$set(this.value.metadata.annotations, PERMANENT_REDIRECT_CODE, v);
+          this.$set(this.value.metadata.annotations, PERMANENT_REDIRECT_CODE, `${ v }`);
         }
       }
     },
@@ -294,7 +294,7 @@ export default {
         if (!v) {
           this.$delete(this.value?.metadata?.annotations, LIMIT_RPS);
         } else {
-          this.$set(this.value.metadata.annotations, LIMIT_RPS, v);
+          this.$set(this.value.metadata.annotations, LIMIT_RPS, `${ v }`);
         }
       }
     }

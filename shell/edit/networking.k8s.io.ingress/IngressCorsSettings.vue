@@ -261,7 +261,7 @@ export default {
         if (!v) {
           this.$delete(this.value.metadata.annotations, CORS_MAX_AGE);
         } else {
-          this.$set(this.value.metadata.annotations, CORS_MAX_AGE, v);
+          this.$set(this.value.metadata.annotations, CORS_MAX_AGE, `${ v }`);
         }
       }
     }
