@@ -142,7 +142,7 @@ export default {
     },
     authTlsVerifyDepth: {
       get() {
-        return this.value?.metadata?.annotations?.[AUTH_TLS_VERIFY_DEPTH] ?? 1;
+        return this.value?.metadata?.annotations?.[AUTH_TLS_VERIFY_DEPTH] ?? '1';
       },
       set(v) {
         if (!this.value?.metadata?.annotations) {
@@ -151,7 +151,7 @@ export default {
         if (!v) {
           this.$delete(this.value.metadata.annotations, AUTH_TLS_VERIFY_DEPTH);
         } else {
-          this.$set(this.value.metadata.annotations, AUTH_TLS_VERIFY_DEPTH, v);
+          this.$set(this.value.metadata.annotations, AUTH_TLS_VERIFY_DEPTH, `${ v }`);
         }
       }
     },
