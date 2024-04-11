@@ -165,13 +165,13 @@ export default {
     },
     corsAllowMethods: {
       get() {
-        return this.value?.metadata?.annotations?.[CORS_ALLOW_METHODS]?.split(',').map((m) => m?.trim() ) ?? [];
+        return this.value?.metadata?.annotations?.[CORS_ALLOW_METHODS]?.split(',').map((m) => m?.trim() ) ?? this.corsAllowMethodsOptions.map((m) => m.value);
       },
       set(v) {
         if (!this.value?.metadata?.annotations) {
           this.$set(this.value.metadata, 'annotations', {});
         }
-        if (v?.length === 0) {
+        if (v?.length === 0 || v?.length === this.corsAllowMethodsOptions.length) {
           this.$delete(this.value.metadata.annotations, CORS_ALLOW_METHODS);
         } else {
           this.$set(this.value.metadata.annotations, CORS_ALLOW_METHODS, v.join(','));
