@@ -203,7 +203,7 @@ export default {
         if (!this.value?.metadata?.annotations) {
           this.$set(this.value.metadata, 'annotations', {});
         }
-        if (!v?.trim() === 'off') {
+        if (v?.trim() === 'off') {
           this.$delete(this.value.metadata.annotations, PROXY_BUFFERING);
           this.$delete(this.value.metadata.annotations, PROXY_BUFFER_SIZE);
         } else {
