@@ -55,6 +55,13 @@ export default {
       default() {
         return {};
       }
+    },
+    managementCluster: {
+      type:    Object,
+      require: true,
+      default() {
+        return {};
+      }
     }
   },
   data() {
@@ -88,7 +95,7 @@ export default {
       return this.connectMode.apiEndpoints;
     },
     apiEndpoint() {
-      return this.cluster?.status?.apiEndpoint;
+      return this.managementCluster?.status?.apiEndpoint;
     },
     timeout() {
       const timeout = this.connectMode?.timeout;

@@ -652,7 +652,10 @@ export default {
           :label="t('clusterConnectMode.title')"
           :weight="0"
         >
-          <ConnectMode :cluster="provisioningCluster" />
+          <ConnectMode
+            :cluster="provisioningCluster"
+            :management-cluster="currentCluster"
+          />
         </Tab>
       </Tabbed>
     </div>
