@@ -14,7 +14,7 @@
     >
       <div class="endpoint">
         <div
-          v-if="statusMap[scope.row.value] && statusMap[scope.row.value].status === false"
+          v-if="statusMap[scope.row.value] && statusMap[scope.row.value].error"
           v-tooltip="statusMap[scope.row.value] && statusMap[scope.row.value].error || ''"
         >
           <i class="text-error icon icon-info icon-lg" />
