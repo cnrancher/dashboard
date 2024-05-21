@@ -23,6 +23,10 @@ export default class ClusterManagerCreateRke2CustomPagePo extends ClusterManager
     return PagePo.goTo(`${ ClusterManagerCreatePagePo.url(clusterId) }?type=digitalocean#basic`);
   }
 
+  goToDigitalOceanCreation(): Cypress.Chainable<Cypress.AUTWindow> {
+    return PagePo.goTo(`${ ClusterManagerCreatePagePo.url }?type=digitalocean#basic`);
+  }
+
   title(): Cypress.Chainable<string> {
     return this.self().find('.primaryheader h1').invoke('text');
   }
