@@ -792,15 +792,30 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const cni = this.serverConfig.cni; // force this property to recalculate if cni was changed away from cilium and chartValues['rke-cilium'] deleted
 
-        return this.userChartValues[this.chartVersionKey('rke2-cilium')]?.cilium?.ipv6?.enabled || false;
+        const chart = this.userChartValues[this.chartVersionKey('rke2-cilium')];
+
+        return chart?.cilium?.ipv6?.enabled || chart?.ipv6?.enabled || false;
       },
       set(val) {
         const name = this.chartVersionKey('rke2-cilium');
         const values = this.userChartValues[name];
+        // RKE2 older than 1.23.5 uses different Helm chart values structure - need to take that into account
+        const version = this.selectedVersion.value;
+        let ciliumValues = {};
 
-        set(this, 'userChartValues', {
-          ...this.userChartValues,
-          [name]: {
+        if (semver.gt(version, '1.23.5')) {
+          // New style
+          ciliumValues = {
+            ...values,
+            ipv6: {
+              ...values?.ipv6,
+              enabled: val
+            }
+          };
+          delete ciliumValues.cilium;
+        } else {
+          // Old style
+          ciliumValues = {
             ...values,
             cilium: {
               ...values?.cilium,
@@ -809,7 +824,13 @@ export default {
                 enabled: val
               }
             }
-          }
+          };
+          delete ciliumValues.ipv6;
+        }
+
+        set(this, 'userChartValues', {
+          ...this.userChartValues,
+          [name]: { ...ciliumValues }
         });
       }
     },
@@ -925,13 +946,18 @@ export default {
       }
     },
 
-    selectedVersion() {
+    selectedVersion(neu, old) {
       this.versionInfo = {}; // Invalidate cache such that version info relevent to selected kube version is updated
 
       // Allow time for addonNames to update... then fetch any missing addons
       this.$nextTick(() => this.initAddons());
       if (this.mode === _CREATE) {
         this.initServerAgentArgs();
+      }
+
+      if (neu?.value !== old?.value && this.ciliumIpv6) {
+        // Re-assign so that the setter updates the structure for the new k8s version if needed
+        this.ciliumIpv6 = !!this.ciliumIpv6;
       }
     },
 
