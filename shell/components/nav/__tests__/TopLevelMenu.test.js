@@ -1,5 +1,6 @@
 import TopLevelMenu from '@shell/components/nav/TopLevelMenu.vue';
 import { EXPLORER_HARVESTER_CLUSTER } from '@shell/store/features';
+import { VIRTUAL_HARVESTER_PROVIDER } from '@shell/config/types';
 
 describe('component: TopLevelMenu', () => {
   it('should enalble explorerHarvesterCluster feature', () => {
@@ -41,7 +42,8 @@ describe('component: TopLevelMenu', () => {
     const getFeature = jest.fn(() => false);
     const harvester = {
       isHarvester: true,
-      id:          'harvester'
+      id:          'harvester',
+      status:      { provider: VIRTUAL_HARVESTER_PROVIDER }
     };
     const localThis = {
       explorerHarvesterClusterEnabled: false,
