@@ -426,6 +426,8 @@ export default {
     if (!this.value.spec) {
       const spec = cloneDeep(specTemplate);
 
+      spec.pool.serviceNamespace = this.value?.metadata?.namespace ?? '';
+
       this.$set(this.value, 'spec', spec);
     }
 
