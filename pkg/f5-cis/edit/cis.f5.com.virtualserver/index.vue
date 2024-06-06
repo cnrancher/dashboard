@@ -436,8 +436,8 @@ export default {
     },
     tlsProfileNameOptions() {
       return this.tlsProfiles.map((p) => ({
-        name:  p.metadata.name,
-        label: p.metadata.name
+        label: p.metadata.name,
+        value: p.metadata.name
       }));
     },
     icmpEchoOptions() {
