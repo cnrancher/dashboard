@@ -27,7 +27,7 @@ f5cis:
     appInstall:
       button: 安装 F5 CIS
   virtualServer:
-    label: 虚拟服务器
+    label: Virtual Server
     pool:
       addPool: 添加 Pool
       removePool: 删除 Pool
