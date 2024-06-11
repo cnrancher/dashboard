@@ -108,7 +108,7 @@ export default {
   watch: {
 
     namespace(val) {
-      this.serviceName = '';
+      this.service = '';
       this.servicePort = '';
       this.$emit('update-namespace', val);
       this.$emit('update-service', '');
