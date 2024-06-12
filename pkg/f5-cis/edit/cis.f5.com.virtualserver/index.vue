@@ -102,9 +102,9 @@
       </Tab>
       <Tab
         v-for="(p, i) in value.spec.pools"
-        :key="p[idKey]"
+        :key="p[idKey] ?? p.name"
         :label="p.name ? p.name : 'pool-' + i"
-        :name="'name-' + p[idKey]"
+        :name="'name-' + (p[idKey] ?? p.name)"
         :weight="-p[idKey]"
         :error="!!p[errorKey]"
       >
