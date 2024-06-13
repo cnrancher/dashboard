@@ -226,10 +226,11 @@ export const harborAPI = (spec = { harborVersion: '', harborServer: '' }) => {
     if (p) {
       data.password = disabledEncryption?.value === 'true' ? p : AESEncrypt(p.trim());
     }
+    data.actionName = 'setharborauth';
     const userId = store.getters['auth/me']?.id;
 
     return store.dispatch('management/request', {
-      url:    `/v3/users/${ userId }?action=setharborauth`,
+      url:    `/v1/management.cattle.io.users/${ userId }?action=harbor`,
       method: 'POST',
       data
     });
@@ -645,12 +646,13 @@ export const harborAPI = (spec = { harborVersion: '', harborServer: '' }) => {
     const disabledEncryption = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PASSWORD_ENCRYPT);
     const data = {
       ...params,
+      actionName:  'updateharborauth',
       newPassword: disabledEncryption?.value === 'true' ? params.oldPassword : AESEncrypt(params.newPassword.trim()),
       oldPassword: disabledEncryption?.value === 'true' ? params.oldPassword : AESEncrypt(params.oldPassword.trim())
     };
 
     return store.dispatch('management/request', {
-      url:     `/v3/users/${ userId }?action=updateharborauth`,
+      url:     `/v1/management.cattle.io.users/${ userId }?action=harbor`,
       headers: { 'X-API-Harbor-Admin-Header': store.getters['auth/isAdmin'] },
       method:  'POST',
       data
@@ -705,10 +707,15 @@ export const harborAPI = (spec = { harborVersion: '', harborServer: '' }) => {
       return;
     }
 
+    const userId = store.getters['auth/me']?.id;
+
     return store.dispatch('management/request', {
-      url:    `/v3/users?action=syncharboruser`,
+      url:    `/v1/management.cattle.io.users/${ userId }?action=harbor`,
       method: 'POST',
-      data
+      data:   {
+        ...data,
+        actionName: 'syncharboruser',
+      }
     });
   };
 
@@ -750,14 +757,17 @@ export const harborAPI = (spec = { harborVersion: '', harborServer: '' }) => {
       versionSettingP
     ]);
 
+    const userId = store.getters['auth/me']?.id;
+
     await store.dispatch('management/request', {
-      url:    `/v3/users?action=saveharborconfig`,
+      url:    `/v1/management.cattle.io.users/${ userId }?action=harbor`,
       method: 'POST',
       data:   {
-        serverURL: url.replace(/\/+$/, ''),
-        username:  u,
-        password:  disabledEncryption?.value === 'true' ? p : AESEncrypt(p.trim()),
-        version:   v,
+        serverURL:  url.replace(/\/+$/, ''),
+        username:   u,
+        password:   disabledEncryption?.value === 'true' ? p : AESEncrypt(p.trim()),
+        version:    v,
+        actionName: 'saveharborconfig',
       }
     });
     serverSetting.value = url.replace(/\/+$/, '');

@@ -10,14 +10,9 @@ export function init($plugin, store) {
     group:      'Root',
     namespaced: false,
     icon:       'globe',
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-manager-config`,
-      params: {
-        cluster: 'local', product: 'manager', resource: 'provisioning.cattle.io.cluster'
-      }
-    },
-    exact:  true,
-    weight: 100,
+    route:      { name: `${ PRODUCT_NAME }-c-cluster-manager-config` },
+    exact:      true,
+    weight:     100,
   });
 
   virtualType({
@@ -30,13 +25,9 @@ export function init($plugin, store) {
     group:      'Root',
     namespaced: false,
     icon:       'globe',
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-manager-project`,
-      path:   '/:product/c/:cluster/manager/project',
-      params: { cluster: 'local' }
-    },
-    exact:  true,
-    weight: 99,
+    route:      { name: `${ PRODUCT_NAME }-c-cluster-manager-project` },
+    exact:      true,
+    weight:     99,
   });
 
   virtualType({
@@ -49,13 +40,9 @@ export function init($plugin, store) {
     group:      'Root',
     namespaced: false,
     icon:       'globe',
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-manager-log`,
-      path:   '/:product/c/:cluster/manager/log',
-      params: { cluster: 'local' }
-    },
-    exact:  true,
-    weight: 98,
+    route:      { name: `${ PRODUCT_NAME }-c-cluster-manager-log` },
+    exact:      true,
+    weight:     98,
   });
 
   basicType([

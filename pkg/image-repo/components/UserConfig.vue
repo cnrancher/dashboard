@@ -507,11 +507,11 @@ export default {
         this.requiredAuth = false;
         cb(true);
       } catch (err) {
-        if (err?.status === 410) {
+        if (err?.status === 500) {
           this.requiredAuth = true;
           const message = err?.message;
 
-          if (message?.indexOf('"code":401') !== -1) {
+          if (message?.indexOf('401') !== -1) {
             this.errors = [this.t('harborConfig.validate.pwdError')];
           } else {
             this.errors = [stringify(err)];
