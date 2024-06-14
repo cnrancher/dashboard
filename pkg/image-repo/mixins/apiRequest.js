@@ -28,7 +28,7 @@ export default {
       const harborAPIRequest = harborAPI({ store: this.$store });
 
       if (this.harborServerSetting?.value) {
-        harborAPIRequest.initAPIRequest(this.harborVersionSetting?.value ?? '', this.harborServerSetting.value);
+        harborAPIRequest.initAPIRequest(this.harborVersionSetting?.value || 'v1', this.harborServerSetting.value);
       }
 
       return harborAPIRequest;

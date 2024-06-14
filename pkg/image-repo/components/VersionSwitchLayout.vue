@@ -27,7 +27,7 @@ export default {
   mixins:   [apiRequest],
   computed: {
     version() {
-      return this.harborVersionSetting?.value ?? 'v1';
+      return this.harborVersionSetting?.value || 'v1';
     },
   },
   components: { Loading }
