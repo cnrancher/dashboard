@@ -26,7 +26,7 @@ export function init($plugin, store) {
     namespaced: false,
     icon:       'globe',
     route:      { name: `${ PRODUCT_NAME }-c-cluster-manager-project` },
-    exact:      true,
+    exact:      false,
     weight:     99,
   });
 

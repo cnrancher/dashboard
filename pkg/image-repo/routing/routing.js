@@ -2,8 +2,8 @@ import { PRODUCT_NAME } from '../config/image-repo.js';
 import Config from '../pages/c/_cluster/manager/image/config.vue';
 import Project from '../pages/c/_cluster/manager/image/project.vue';
 import Log from '../pages/c/_cluster/manager/image/log.vue';
-import ProjectDetailV2 from '../pages/c/_cluster/manager/image/projectDetail/_id.vue';
-import ProjectImageDetailV2 from '../pages/c/_cluster/manager/image/projectDetail/image/_imageId.vue';
+import ProjectDetail from '../pages/c/_cluster/manager/image/projectDetail/_id.vue';
+import ProjectImageDetail from '../pages/c/_cluster/manager/image/projectDetail/image/_imageId.vue';
 
 const routes = [{
   name:      `${ PRODUCT_NAME }-c-cluster-manager-config`,
@@ -16,14 +16,16 @@ const routes = [{
   component: Project
 },
 {
-  name:      `${ PRODUCT_NAME }-c-cluster-manager-project-detail-v2`,
+  name:      `${ PRODUCT_NAME }-c-cluster-manager-project-detail`,
   path:      `/${ PRODUCT_NAME }/c/:cluster/:product/project/:id`,
-  component: ProjectDetailV2
+  component: ProjectDetail,
+  meta:      { parentRouteName: `${ PRODUCT_NAME }-c-cluster-manager-project` }
 },
 {
-  name:      `${ PRODUCT_NAME }-c-cluster-manager-project-detail-image-v2`,
+  name:      `${ PRODUCT_NAME }-c-cluster-manager-project-detail-image`,
   path:      `/${ PRODUCT_NAME }/c/:cluster/:product/project/:id/:roleId/image/:imageName`,
-  component: ProjectImageDetailV2
+  component: ProjectImageDetail,
+  meta:      { parentRouteName: `${ PRODUCT_NAME }-c-cluster-manager-project` }
 },
 {
   name:      `${ PRODUCT_NAME }-c-cluster-manager-log`,

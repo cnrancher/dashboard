@@ -148,7 +148,7 @@ export default {
     rows() {
       return this.images.map((image) => {
         const to = {
-          name:   `${ PRODUCT_NAME }-c-cluster-manager-project-detail-image-v2`,
+          name:   `${ PRODUCT_NAME }-c-cluster-manager-project-detail-image`,
           params: {
             id:        this.project.project_id,
             roleId:    this.project.current_user_role_id,

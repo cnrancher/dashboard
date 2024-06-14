@@ -195,7 +195,7 @@ export default {
     rows() {
       return this.projects.map((project) => {
         const to = {
-          name:   `${ PRODUCT_NAME }-c-cluster-manager-project-detail-v2`,
+          name:   `${ PRODUCT_NAME }-c-cluster-manager-project-detail`,
           params: { id: project.project_id }
         };
 
