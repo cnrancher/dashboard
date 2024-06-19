@@ -266,6 +266,7 @@ suffix:
       =1 { Time }
       other { Times }
     }
+  ago: ago
 ##############################
 # Components & Pages
 ##############################
@@ -5665,6 +5666,9 @@ tableHeaders:
   lastSeenTooltip: The time at which the most recent occurrence of this event was recorded
   constraint: Constraint
   template: Template
+  userDeletedIn: Delete After
+  userDisabledIn: Disable After
+  userLastLogin: Last Login
 target:
   router:
     label: Router
@@ -5715,6 +5719,10 @@ user:
         placeholder: e.g. This account is for John Smith
   list:
     errorRefreshingGroupMemberships: Error refreshing group memberships
+  state:
+    active: Enabled
+    inactive: Disabled
+    unknown: Unknown
 validation:
   noUpperCase: 'Alphanumeric characters in "{key}" must be lowercase'
   arrayLength:
