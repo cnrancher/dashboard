@@ -30,6 +30,12 @@ export default {
 
       return createMemoryValues(ramAllocatable, ramReservationUsage);
     },
+    memoryLimit() {
+      const ramAllocatable = this.row.ramAllocatable;
+      const ramLimit = this.row.ramLimit;
+
+      return createMemoryValues(ramAllocatable, ramLimit);
+    },
     usagePercentage() {
       return formatPercent(this.value);
     },
@@ -39,6 +45,13 @@ export default {
 
       return formatPercent((ramReservationUsage * 100) / ramAllocatable);
     },
+
+    limitPercentage() {
+      const ramAllocatable = this.row.ramAllocatable;
+      const ramLimit = this.row.ramLimit;
+
+      return formatPercent((ramLimit * 100) / ramAllocatable);
+    }
   }
 };
 </script>
@@ -51,6 +64,8 @@ export default {
     <div v-if="row.podRequests.memory">
       {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ memoryReserved.useful }} / {{ memoryReserved.total }} {{ memoryReserved.units }} &nbsp; ({{ reservedPercentage }})
     </div>
-    <div />
+    <div v-if="row.podLimits.memory">
+      {{ t('node.detail.glance.consumptionGauge.limit') }}: {{ memoryLimit.useful }} / {{ memoryLimit.total }} {{ memoryLimit.units }} &nbsp; ({{ limitPercentage }})
+    </div>
   </div>
 </template>

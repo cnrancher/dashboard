@@ -2221,6 +2221,7 @@ clusterIndexPage:
         {count, plural,
         =1 {核}
         other {核}}
+    limit: 限制
   header: 集羣儀表板
   resourceGauge:
     totalResources: 資源總額
@@ -3971,6 +3972,8 @@ node:
         pods: Pod
         reserved: 已預留
         consumption: "已預留 {total} {unit} 中的 {used}"
+        limit: 限制
+        limited: "限制 {total} {unit} 中的 {used}"
       diskPressure: 磁盤壓力
       kubelet: Kubelet
       memoryPressure: 內存壓力

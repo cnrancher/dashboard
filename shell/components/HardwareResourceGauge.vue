@@ -23,6 +23,11 @@ export default {
     reserved: {
       type:    Object,
       default: null
+    },
+
+    limit: {
+      type:    Object,
+      default: null
     }
   },
   computed: {
@@ -131,6 +136,40 @@ export default {
             </span>
             <span>
               {{ percentage(used) }}
+            </span>
+          </template>
+        </ConsumptionGauge>
+      </div>
+      <div
+        v-if="limit && (limit.total !== undefined && !Number.isNaN(limit.useful))"
+        class="hw-gauge"
+      >
+        <ConsumptionGauge
+          :capacity="limit.total"
+          :used="limit.useful"
+          :color-stops="colorStops"
+        >
+          <template #title>
+            <span>
+              {{ t('clusterIndexPage.hardwareResourceGauge.limit') }}
+              <span class="values text-muted">
+                <span v-if="limit.formattedUseful">
+                  {{ limit.formattedUseful }}
+                </span>
+                <span v-else>
+                  {{ maxDecimalPlaces(limit.useful) }}
+                </span>
+                /
+                <span v-if="limit.formattedTotal">
+                  {{ limit.formattedTotal }}
+                </span>
+                <span v-else>
+                  {{ maxDecimalPlaces(limit.total) }} {{ limit.units }}
+                </span>
+              </span>
+            </span>
+            <span>
+              {{ percentage(limit) }}
             </span>
           </template>
         </ConsumptionGauge>

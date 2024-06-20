@@ -264,6 +264,16 @@ export default {
       };
     },
 
+    cpuLimit() {
+      const total = parseSi(this.currentCluster?.status?.allocatable?.cpu);
+
+      return {
+        total,
+        useful: parseSi(this.currentCluster?.status?.limit?.cpu),
+        units:  this.t('clusterIndexPage.hardwareResourceGauge.units.cores', { count: total })
+      };
+    },
+
     podsUsed() {
       return {
         total:  parseSi(this.currentCluster?.status?.allocatable?.pods || '0'),
@@ -273,6 +283,10 @@ export default {
 
     ramReserved() {
       return createMemoryValues(this.currentCluster?.status?.allocatable?.memory, this.currentCluster?.status?.requested?.memory);
+    },
+
+    ramLimit() {
+      return createMemoryValues(this.currentCluster?.status?.allocatable?.memory, this.currentCluster?.status?.limit?.memory);
     },
 
     metricAggregations() {
@@ -571,12 +585,14 @@ export default {
         :name="t('clusterIndexPage.hardwareResourceGauge.cores')"
         :reserved="cpuReserved"
         :used="cpuUsed"
+        :limit="cpuLimit"
         :units="cpuReserved.units"
       />
       <HardwareResourceGauge
         :name="t('clusterIndexPage.hardwareResourceGauge.ram')"
         :reserved="ramReserved"
         :used="ramUsed"
+        :limit="ramLimit"
         :units="ramReserved.units"
       />
     </div>
