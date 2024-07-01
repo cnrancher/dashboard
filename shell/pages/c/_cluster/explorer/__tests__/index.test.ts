@@ -30,6 +30,7 @@ describe('page: cluster dashboard', () => {
           'cluster/canList':   jest.fn(),
           'cluster/all':       jest.fn(),
           'i18n/exists':       jest.fn(),
+          'management/all':    jest.fn(),
           'i18n/t':            (label: string) => label === 'generic.provisioning' ? '—' : jest.fn()(),
         }
       }

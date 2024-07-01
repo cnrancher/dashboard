@@ -2,9 +2,11 @@ import { mount } from '@vue/test-utils';
 import SelectIconGrid from '@shell/components/SelectIconGrid.vue';
 
 const row = {
+  name:      'test',
   isIframe:  true,
   iframeSrc: 'https://www.baidu.com',
   linkField: 'https://www.baidu.com',
+  icon:      'https://www.baidu.com'
 };
 const CLUSTER = 'local';
 
@@ -19,7 +21,7 @@ describe('component: SelectIconGrid.vue', () => {
       }
     });
 
-    const grid = wrapper.findAll('[data-testid="select-icon-grid-0"]');
+    const grid = wrapper.findAll(`[data-testid="select-icon-grid-test"]`);
 
     expect(grid).toHaveLength(1);
 

@@ -99,7 +99,8 @@ describe('component: rke2, computed: generateName', () => {
             query: { AS: 'yaml' },
           },
           $store: {
-            getters: {
+            dispatch: jest.fn(),
+            getters:  {
               currentStore:                     () => 'current_store',
               'management/schemaFor':           jest.fn(),
               'current_store/all':              jest.fn(),

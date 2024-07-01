@@ -10,7 +10,8 @@ describe('navlink: support labels and iframe', () => {
         $router: { currentRoute: {} },
         $route:  { query: {}, hash: '#labels' },
         $store:  {
-          getters: {
+          dispatch: jest.fn(),
+          getters:  {
             'cluster/all':         () => [],
             'i18n/exists':         (key) => key,
             currentStore:          () => 'cluster',
@@ -18,7 +19,7 @@ describe('navlink: support labels and iframe', () => {
             'type-map/labelFor':   () => 'navlink',
             'type-map/optionsFor': () => {},
             'i18n/t':              (t) => t,
-            currentProduct:        { name: 'explorer' }
+            currentProduct:        { name: 'explorer' },
           }
         }
       }
@@ -36,7 +37,8 @@ describe('navlink: support labels and iframe', () => {
         $router: { currentRoute: {} },
         $route:  { query: {}, hash: '#labels' },
         $store:  {
-          getters: {
+          dispatch: jest.fn(),
+          getters:  {
             'cluster/all':         () => [],
             'i18n/exists':         (key) => key,
             currentStore:          () => 'cluster',

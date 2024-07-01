@@ -1,5 +1,5 @@
-import { tryInitialSetup, encryptPassword } from '@shell/middleware/authenticated.js';
-import AESEncrypt from '@shell/utils/aes-encrypt';
+import { tryInitialSetup, encryptPassword } from '@shell/utils/auth.js';
+import AESEncrypt from '@shell/utils/aes-encrypt.js';
 
 jest.mock('@shell/utils/aes-encrypt', () => {
   return {
