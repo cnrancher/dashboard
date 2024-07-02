@@ -10,6 +10,10 @@ jest.mock('@shell/utils/aes-encrypt', () => {
   };
 });
 
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
+
 describe('component: form/ChangePassword', () => {
   it('shold not encrypt password', () => {
     const localThis = { disabledEncryption: { value: 'true' } };
