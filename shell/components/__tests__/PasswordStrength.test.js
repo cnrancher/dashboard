@@ -1,4 +1,7 @@
 import PasswordStrength from '@shell/components/PasswordStrength.vue';
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
 
 describe('component: PasswordStrength', () => {
   it('should return the correct strength', () => {

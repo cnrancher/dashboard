@@ -7,6 +7,9 @@ jest.mock('@shell/utils/aes-encrypt', () => {
     default:    jest.fn()
   };
 });
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
 
 describe('edit: management.cattle.io.user', () => {
   it('shold not encrypt password', () => {

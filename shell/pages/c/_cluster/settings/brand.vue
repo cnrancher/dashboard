@@ -16,7 +16,6 @@ import { fetchOrCreateSetting } from '@shell/utils/settings';
 import { SETTING } from '@shell/config/settings';
 import { _EDIT, _VIEW } from '@shell/config/query-params';
 import { setFavIcon } from '@shell/utils/favicon';
-import { mapGetters } from 'vuex';
 import TabTitle from '@shell/components/TabTitle';
 
 const Color = require('color');
@@ -138,7 +137,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ theme: 'prefs/theme' }),
     mode() {
       const schema = this.$store.getters[`management/schemaFor`](MANAGEMENT.SETTING);
 
@@ -229,7 +227,7 @@ export default {
           this.uiLoginBackgroundLightSetting.save(),
           this.uiColorSetting.save(),
           this.uiLinkColorSetting.save(),
-          this.uiFaviconSetting.save(),
+          this.uiFaviconSetting.save()
         ]);
         if (this.uiPLSetting.value !== this.vendor) {
           setVendor(this.uiPLSetting.value);
