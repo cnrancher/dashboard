@@ -10,21 +10,25 @@ import LandingPagePreference from '@shell/components/LandingPagePreference';
 import {
   mapPref, THEME, KEYMAP, DATE_FORMAT, TIME_FORMAT, ROWS_PER_PAGE, HIDE_DESC, SHOW_PRE_RELEASE,
   VIEW_IN_API, ALL_NAMESPACES, THEME_SHORTCUT, PLUGIN_DEVELOPER, SCALE_POOL_PROMPT
-  , MENU_MAX_CLUSTERS
+  , MENU_MAX_CLUSTERS, ENABLE_TWO_FACTOR_AUTH
 } from '@shell/store/prefs';
-
+import { SETTING } from '@shell/config/settings';
+import { MANAGEMENT } from '@shell/config/types';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { addObject } from '@shell/utils/array';
 import LocaleSelector from '@shell/components/LocaleSelector';
+import TwoFactorAuth from '@shell/components/TwoFactorAuth/index.vue';
 
 export default {
   layout:     'plain',
   components: {
-    BackLink, ButtonGroup, LabeledSelect, Checkbox, LandingPagePreference, LocaleSelector
+    BackLink, ButtonGroup, LabeledSelect, Checkbox, LandingPagePreference, LocaleSelector, TwoFactorAuth
   },
   mixins: [BackRoute],
   data() {
-    return { admin: isAdminUser(this.$store.getters) };
+    const adminTwoFactorAuthConfig = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
+
+    return { admin: isAdminUser(this.$store.getters), adminTwoFactorAuthConfig };
   },
   computed: {
     keymap:            mapPref(KEYMAP),
@@ -38,6 +42,8 @@ export default {
     showPreRelease:    mapPref(SHOW_PRE_RELEASE),
     pluginDeveloper:   mapPref(PLUGIN_DEVELOPER),
     scalingDownPrompt: mapPref(SCALE_POOL_PROMPT),
+
+    enalbeTwoFactorAuth: mapPref(ENABLE_TWO_FACTOR_AUTH),
 
     ...mapGetters(['isSingleProduct']),
 
@@ -166,7 +172,21 @@ export default {
         this.hideDesc = val;
       }
     },
-  }
+
+    twoFactorAuthConfigOptions() {
+      return this.$store.getters['prefs/options'](ENABLE_TWO_FACTOR_AUTH).map((value) => ({
+        labelKey: `prefs.twoFactorAuthConfig.${ value }`,
+        value
+      }));
+    },
+    adminTwoFactorAuthConfigEnabled() {
+      return this.adminTwoFactorAuthConfig?.value !== 'false';
+    },
+    adminTwoFactorAuthConfigHardenEnabled() {
+      return this.adminTwoFactorAuthConfig?.value === 'harden';
+    }
+  },
+
 };
 </script>
 
@@ -214,6 +234,19 @@ export default {
       <h4 v-t="'prefs.landing.label'" />
       <LandingPagePreference
         data-testid="prefs__landingPagePreference"
+      />
+    </div>
+    <!-- mfa -->
+    <hr>
+    <div
+      v-if="adminTwoFactorAuthConfigEnabled"
+      class="col mt-10 mb-10"
+    >
+      <TwoFactorAuth
+        :enabled="enalbeTwoFactorAuth"
+        :force="adminTwoFactorAuthConfigHardenEnabled"
+        @on-enable-otp="enalbeTwoFactorAuth = true"
+        @on-disable-otp="enalbeTwoFactorAuth = false"
       />
     </div>
     <!-- Display Settings -->

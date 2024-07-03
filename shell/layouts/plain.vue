@@ -7,6 +7,7 @@ import AssignTo from '@shell/components/AssignTo';
 import IndentedPanel from '@shell/components/IndentedPanel';
 import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
+import FixedTips from '@shell/components/FixedTips';
 import GrowlManager from '@shell/components/GrowlManager';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
 import AzureWarning from '@shell/components/auth/AzureWarning';
@@ -27,7 +28,8 @@ export default {
     GrowlManager,
     AwsComplianceBanner,
     AzureWarning,
-    Inactivity
+    Inactivity,
+    FixedTips
   },
 
   middleware: ['authenticated'],
@@ -61,6 +63,7 @@ export default {
 <template>
   <div class="dashboard-root">
     <FixedBanner :header="true" />
+    <FixedTips />
     <AwsComplianceBanner />
     <AzureWarning />
 

@@ -47,7 +47,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl;
+    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl, twoFactorAuthConfig;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -59,7 +59,6 @@ export default {
           load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
         },
       });
-
       firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
@@ -67,6 +66,7 @@ export default {
       uiLoginLandscape = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
       footerText = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
       footerUrl = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
+      twoFactorAuthConfig = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -89,26 +89,31 @@ export default {
 
       disabledEncryption = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.DISABLE_PASSWORD_ENCRYPT,
         opt:  { url: `/v3/settings/${ SETTING.DISABLE_PASSWORD_ENCRYPT }` }
       });
 
       uiLoginLandscape = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.UI_LOGIN_LANDSCAPE,
         opt:  { url: `/v3/settings/${ SETTING.UI_LOGIN_LANDSCAPE }` }
       });
 
       footerText = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.FOOTER_TEXT,
         opt:  { url: `/v3/settings/${ SETTING.FOOTER_TEXT }` }
       });
 
       footerUrl = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.FOOTER_URL,
         opt:  { url: `/v3/settings/${ SETTING.FOOTER_URL }` }
+      });
+      twoFactorAuthConfig = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.TWO_FACTOR_AUTH_CONFIG,
+        opt:  { url: `/v3/settings/${ SETTING.TWO_FACTOR_AUTH_CONFIG }` }
       });
     }
 
@@ -140,6 +145,7 @@ export default {
       footerUrl,
 
       uiLoginLandscape: uiLoginLandscape?.value,
+      twoFactorAuthConfig,
     };
   },
 
@@ -157,11 +163,12 @@ export default {
       loggedOut: this.$route.query[LOGGED_OUT] === _FLAGGED,
       err:       this.$route.query.err,
 
-      providers:          [],
-      providerComponents: [],
-      customLoginError:   {},
-      cooldownTime:       0,
-      cooldownTimer:      null,
+      providers:           [],
+      providerComponents:  [],
+      customLoginError:    {},
+      cooldownTime:        0,
+      cooldownTimer:       null,
+      twoFactorAuthConfig: null
     };
   },
 
@@ -322,6 +329,31 @@ export default {
         } else {
           this.$cookies.remove(USERNAME);
         }
+        // if (this.twoFactorAuthConfig?.value === 'harden') {
+        //   if (this.firstLogin || user[0]?.mustChangePassword) {
+        //     this.$store.dispatch('auth/setInitialPass', this.password);
+        //   }
+        //   const pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ user[0].id }`, method: 'GET' });
+
+        //   if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
+        //     this.$router.replace({ path: '/auth/verify-mfa', query: { provider: 'local', userId: user[0].id } });
+        //   } else {
+        //     this.$router.replace({ path: '/auth/regist-mfa', query: { provider: 'local', userId: user[0].id } });
+        //   }
+
+        //   return;
+        // } else if (this.twoFactorAuthConfig?.value === 'true') {
+        //   const pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ user[0].id }`, method: 'GET' });
+
+        //   if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
+        //     if (this.firstLogin || user[0]?.mustChangePassword) {
+        //       this.$store.dispatch('auth/setInitialPass', this.password);
+        //     }
+        //     this.$router.replace({ path: '/auth/verify-mfa', query: { provider: 'local', userId: user[0].id } });
+
+        //     return;
+        //   }
+        // }
 
         // User logged with local login - we don't do any redirect/reload, so the boot-time plugin will not run again to laod the plugins
         // so we manually load them here - other SSO auth providers bounce out and back to the Dashboard, so on the bounce-back

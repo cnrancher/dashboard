@@ -275,7 +275,8 @@ export default {
     },
 
     done() {
-      this.$router.replace('/');
+      // this.$router.replace('/');
+      this.$router.replace({ name: 'auth-mfa' });
     },
 
     encryptPassword(password) {

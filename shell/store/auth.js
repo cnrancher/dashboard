@@ -414,7 +414,7 @@ export const actions = {
     }
   },
 
-  async logout({ dispatch, commit }, payload) {
+  async logout({ state, dispatch, commit }, payload) {
     if (payload?.provider) {
       try {
         const driver = await dispatch('getAuthProvider', payload.provider);
@@ -429,13 +429,30 @@ export const actions = {
     await this.$plugin.logout();
 
     try {
-      await dispatch('rancher/request', {
+      const promises = [];
+
+      if (state.v3User?.id) {
+        const logoutOtp = dispatch('management/request', {
+          url:                  `/v1/management.cattle.io.users/${ state.v3User?.id }?action=logout`,
+          method:               'post',
+          data:                 {},
+          headers:              { 'Content-Type': 'application/json' },
+          redirectUnauthorized: false,
+        }, { root: true });
+
+        promises.push(logoutOtp);
+      }
+      const logout = dispatch('rancher/request', {
         url:                  '/v3/tokens?action=logout',
         method:               'post',
         data:                 {},
         headers:              { 'Content-Type': 'application/json' },
         redirectUnauthorized: false,
       }, { root: true });
+
+      promises.push(logout);
+
+      await Promise.allSettled(promises);
     } catch (e) {
     }
 
@@ -443,5 +460,11 @@ export const actions = {
 
     commit('loggedOut');
     dispatch('onLogout', null, { root: true });
+  },
+
+  mfa({ rootState }) {
+    const router = rootState.$router;
+
+    router.replace({ name: 'auth-mfa' });
   }
 };

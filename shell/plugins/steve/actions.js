@@ -185,6 +185,9 @@ export default {
         if ( opt.redirectUnauthorized !== false && res.status === 401 ) {
           dispatch('auth/logout', opt.logoutOnError, { root: true });
         }
+        if ( opt.redirectUnauthorized !== false && res.status === 403 ) {
+          dispatch('auth/mfa', opt.logoutOnError, { root: true });
+        }
 
         if ( typeof res.data !== 'undefined' ) {
           out = responseObject(res);

@@ -122,6 +122,8 @@ export const SETTING = {
   USER_LAST_LOGIN_DEFAULT:              'user-last-login-default',
   DISABLE_INACTIVE_USER_AFTER:          'disable-inactive-user-after',
   DELETE_INACTIVE_USER_AFTER:           'delete-inactive-user-after',
+  TWO_FACTOR_AUTH_CONFIG:               'two-factor-authenticator-config',
+  AUTH_USER_OPT_SESSION_TTL_MINUTES:    'auth-user-otp-session-ttl-minutes'
 };
 
 // These are the settings that are allowed to be edited via the UI
@@ -191,6 +193,11 @@ export const ALLOWED_SETTINGS: GlobalSetting = {
     kind:    'enum',
     options: ['external', 'bundled']
   },
+  [SETTING.TWO_FACTOR_AUTH_CONFIG]: {
+    kind:    'enum',
+    options: ['harden', 'true', 'false']
+  },
+  [SETTING.AUTH_USER_OPT_SESSION_TTL_MINUTES]: {}
 };
 
 /**

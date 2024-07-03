@@ -16,6 +16,7 @@ import Header from '@shell/components/nav/Header';
 import Inactivity from '@shell/components/Inactivity';
 import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
+import FixedTips from '@shell/components/FixedTips';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
 import AzureWarning from '@shell/components/auth/AzureWarning';
 import DraggableZone from '@shell/components/DraggableZone';
@@ -49,6 +50,7 @@ export default {
     DraggableZone,
     Inactivity,
     SideNav,
+    FixedTips
   },
 
   mixins: [PageHeaderActions, Brand, BrowserTabVisibility, AutoLogout],
@@ -233,6 +235,7 @@ export default {
 <template>
   <div class="dashboard-root">
     <FixedBanner :header="true" />
+    <FixedTips />
     <AwsComplianceBanner v-if="managementReady" />
     <AzureWarning v-if="managementReady" />
     <div

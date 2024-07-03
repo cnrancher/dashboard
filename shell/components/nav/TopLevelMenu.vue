@@ -5,7 +5,7 @@ import IconOrSvg from '../IconOrSvg';
 import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 import { mapGetters } from 'vuex';
 import { CAPI, MANAGEMENT } from '@shell/config/types';
-import { MENU_MAX_CLUSTERS } from '@shell/store/prefs';
+import { MENU_MAX_CLUSTERS, mapPref, ENABLE_TWO_FACTOR_AUTH } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 import { KEY } from '@shell/utils/platform';
@@ -27,6 +27,7 @@ export default {
   data() {
     const { displayVersion, fullVersion } = getVersionInfo(this.$store);
     const hasProvCluster = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
+    const twoFactorAuthConfig = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
 
     return {
       shown:             false,
@@ -38,6 +39,7 @@ export default {
       emptyCluster:      BLANK_CLUSTER,
       showPinClusters:   false,
       searchActive:      false,
+      twoFactorAuthConfig
     };
   },
 
@@ -51,8 +53,8 @@ export default {
     ...mapGetters(['clusterId']),
     ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'isRancherInHarvester']),
     ...mapGetters({ features: 'features/get' }),
-
-    value: {
+    enalbeTwoFactorAuth: mapPref(ENABLE_TWO_FACTOR_AUTH),
+    value:               {
       get() {
         return this.$store.getters['productId'];
       },
@@ -61,7 +63,7 @@ export default {
     sideMenuStyle() {
       return {
         marginBottom: this.globalBannerSettings?.footerFont,
-        marginTop:    this.globalBannerSettings?.headerFont
+        marginTop:    `${ this.showTwoFactorAuthTips ? `${ parseInt(this.globalBannerSettings?.headerFont) + 2 }em` : this.globalBannerSettings?.headerFont }`
       };
     },
 
@@ -86,6 +88,9 @@ export default {
       }
 
       return undefined;
+    },
+    showTwoFactorAuthTips() {
+      return this.twoFactorAuthConfig?.value === 'true' && this.enalbeTwoFactorAuth === false;
     },
     legacyEnabled() {
       return this.features(LEGACY);

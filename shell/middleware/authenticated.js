@@ -304,6 +304,8 @@ export default async function({
         } else {
           if ( status === 401 ) {
             notLoggedIn();
+          } else if (status === 403) {
+            redirect({ name: 'auth-mfa' });
           } else {
             store.commit('setError', { error: e, locationError: new Error('Auth Middleware') });
             if ( process.server ) {
