@@ -375,18 +375,31 @@ export const actions = {
       }, { redirectUnauthorized: false });
 
       commit('setLoginCooldown', 0);
+
       try {
         const harborServerUrlSetting = await dispatch('management/find', { type: MANAGEMENT.SETTING, id: 'harbor-server-url' }, { root: true });
 
         if (harborServerUrlSetting?.value) {
-          await dispatch('rancher/request', {
-            url:    '/v3/users?action=syncharboruser',
-            method: 'post',
-            data:   {
-              ...body,
-              provider,
-            },
+          const user = await dispatch('rancher/findAll', {
+            type: NORMAN.USER,
+            opt:  {
+              url:    '/v3/users',
+              filter: { me: true },
+              load:   _MULTI
+            }
           }, { root: true });
+
+          if (user?.length > 0 && user[0]?.id) {
+            await dispatch('rancher/request', {
+              url:    `/v1/management.cattle.io.users/${ user[0]?.id }?action=harbor`,
+              method: 'post',
+              data:   {
+                ...body,
+                provider,
+                actionName: 'syncharboruser',
+              },
+            }, { root: true });
+          }
         }
       } catch (error) {
         // eslint-disable-next-line no-console
