@@ -25,6 +25,12 @@ export default {
       const cpuReservationUsage = this.row.cpuReservationUsage;
 
       return formatPercent((cpuReservationUsage * 100) / cpuCapacity);
+    },
+    limitPercentage() {
+      const cpuCapacity = this.row.cpuCapacity;
+      const cpuLimit = this.row.cpuLimit;
+
+      return formatPercent((cpuLimit * 100) / cpuCapacity);
     }
   },
   methods: {
@@ -42,6 +48,9 @@ export default {
     </div>
     <div v-if="row.podRequests.cpu">
       {{ t('node.detail.glance.consumptionGauge.reserved') }}: {{ numberFormatter(row.cpuReservationUsage) }} / {{ numberFormatter(row.cpuCapacity) }} &nbsp; ({{ reservedPercentage }})
+    </div>
+    <div v-if="row.podLimits.cpu">
+      {{ t('node.detail.glance.consumptionGauge.limit') }}: {{ numberFormatter(row.cpuLimit) }} / {{ numberFormatter(row.cpuCapacity) }} &nbsp; ({{ limitPercentage }})
     </div>
   </div>
 </template>

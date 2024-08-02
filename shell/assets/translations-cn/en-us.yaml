@@ -2216,6 +2216,7 @@ clusterIndexPage:
         {count, plural,
         =1 {core}
         other {cores}}
+    limit: Limit
   header: Cluster Dashboard
   resourceGauge:
     totalResources: Total Resources
@@ -3959,6 +3960,8 @@ node:
         pods: PODS
         reserved: Reserved
         consumption: "{used} of {total} {unit}"
+        limit: Limit
+        limited: "{used} of {total} {unit}"
       diskPressure: Disk Pressure
       kubelet: kubelet
       memoryPressure: Memory Pressure
