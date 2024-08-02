@@ -288,6 +288,33 @@ export default {
           </template>
         </ConsumptionGauge> -->
       </div>
+      <div>
+        <ConsumptionGauge
+          v-if="value.podLimits.cpu"
+          :capacity="value.cpuCapacity"
+          :used="value.cpuLimit"
+        >
+          <template #title="{amountTemplateValues, formattedPercentage}">
+            <span>{{ t('node.detail.glance.consumptionGauge.limit') }}</span>
+            <span>{{ t('node.detail.glance.consumptionGauge.limited', amountTemplateValues) }} <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}</span></span>
+          </template>
+        </ConsumptionGauge>
+      </div>
+      <div>
+        <ConsumptionGauge
+          v-if="value.podLimits.memory"
+          :capacity="value.ramAllocatable"
+          :used="value.ramLimit"
+          :units="memoryUnits"
+          :number-formatter="memoryFormatter"
+        >
+          <template #title="{amountTemplateValues, formattedPercentage}">
+            <span>{{ t('node.detail.glance.consumptionGauge.limit') }}</span>
+            <span>{{ t('node.detail.glance.consumptionGauge.limited', amountTemplateValues) }} <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}</span></span>
+          </template>
+        </ConsumptionGauge>
+      </div>
+      <div />
     </div>
     <div class="spacer" />
     <ResourceTabs

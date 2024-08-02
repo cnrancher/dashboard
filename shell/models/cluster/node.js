@@ -203,6 +203,14 @@ export default class ClusterNode extends SteveModel {
     return parseSi(this.podRequests.cpu || '0');
   }
 
+  get cpuLimit() {
+    return parseSi(this.podLimits.cpu || '0');
+  }
+
+  get ramLimit() {
+    return parseSi(this.podLimits.memory || '0');
+  }
+
   get cpuCapacity() {
     return parseSi(this.status.allocatable.cpu);
   }
@@ -271,6 +279,10 @@ export default class ClusterNode extends SteveModel {
 
   get podRequests() {
     return JSON.parse(this.metadata.annotations['management.cattle.io/pod-requests'] || '{}');
+  }
+
+  get podLimits() {
+    return JSON.parse(this.metadata.annotations['management.cattle.io/pod-limits'] || '{}');
   }
 
   get isPidPressureOk() {
