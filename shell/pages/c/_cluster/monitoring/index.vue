@@ -11,7 +11,7 @@ import { getClusterPrefix } from '@shell/utils/grafana';
 import { Banner } from '@components/Banner';
 import LazyImage from '@shell/components/LazyImage';
 import SimpleBox from '@shell/components/SimpleBox';
-import { haveV1MonitoringWorkloads } from '@shell/utils/monitoring';
+// import { haveV1MonitoringWorkloads } from '@shell/utils/monitoring';
 
 const CATTLE_MONITORING_NAMESPACE = 'cattle-monitoring-system';
 
@@ -96,7 +96,8 @@ export default {
       const { $store, externalLinks } = this;
       const currentCluster = this.$store.getters['currentCluster'];
 
-      this.v1Installed = await haveV1MonitoringWorkloads($store);
+      // this.v1Installed = await haveV1MonitoringWorkloads($store);
+      this.v1Installed = true;
       const hash = await allHash({
         endpoints: $store.dispatch('cluster/findAll', { type: ENDPOINTS }),
         app:       $store.dispatch(`cluster/find`, { type: CATALOG.APP, id: 'cattle-monitoring-system/rancher-monitoring' })
