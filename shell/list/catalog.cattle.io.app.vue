@@ -24,7 +24,7 @@ export default {
   },
 
   async fetch() {
-    await this.$store.dispatch('catalog/load');
+    this.$store.dispatch('catalog/load');
 
     await this.$fetchType(this.resource);
   },
