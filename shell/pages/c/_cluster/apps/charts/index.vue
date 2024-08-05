@@ -66,7 +66,8 @@ export default {
           label: 'Featured',
           value: 'featured'
         }
-      ]
+      ],
+      loadedRepoCharts: [],
     };
   },
 
@@ -301,9 +302,6 @@ export default {
       if ( updateAll ) {
         this.allRepos = this.areAllEnabled();
       }
-      this.$nextTick(() => {
-        this.loadRepoCharts();
-      });
     },
 
     selectChart(chart) {
@@ -353,9 +351,21 @@ export default {
 
     loadRepoCharts() {
       const repoNames = this.repoOptions.filter((item) => item.enabled === true).map((item) => item.name);
+      const loadedRepoCharts = this.loadedRepoCharts ?? [];
+      const willLoadRepoNames = repoNames.filter((item) => !loadedRepoCharts.includes(item));
+
+      if (willLoadRepoNames.length === 0) {
+        return;
+      }
+      this.loadedRepoCharts.push(...willLoadRepoNames);
 
       return this.$store.dispatch('catalog/loadChartIndex', {
-        force: true, reset: true, repoNames
+        force: true, reset: true, repoNames: willLoadRepoNames
+      });
+    },
+    handleRepoOptionsClose() {
+      this.$nextTick(() => {
+        this.loadRepoCharts();
       });
     }
   },
@@ -408,6 +418,7 @@ export default {
         class="checkbox-select"
         :close-on-select="false"
         @option:selecting="$event.all ? toggleAll(!$event.enabled) : toggleRepo($event, !$event.enabled) "
+        @close="handleRepoOptionsClose"
       >
         <template #selected-option="selected">
           {{ selected.label }}
