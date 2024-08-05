@@ -16,8 +16,9 @@ export default {
   },
 
   async fetch() {
-    await this.$store.dispatch('catalog/load', { force: true, reset: true });
-
+    // await this.$store.dispatch('catalog/load', { force: true, reset: true });
+    await this.$store.dispatch('catalog/loadRepos');
+    await this.loadRepoCharts();
     const query = this.$route.query;
 
     this.showDeprecated = query[DEPRECATED] === _FLAGGED;
@@ -149,6 +150,14 @@ export default {
 
       this.$router.replace(route);
     },
+
+    loadRepoCharts() {
+      const repoNames = [this.rancherCatalog?.metadata?.name, this.pandariaCatalog?.metadata?.name];
+
+      return this.$store.dispatch('catalog/loadChartIndex', {
+        force: true, reset: true, repoNames
+      });
+    }
   }
 };
 </script>
