@@ -251,7 +251,7 @@ export default {
     async fetchChart() {
       if (this.query.repoName) {
         await this.$store.dispatch('catalog/loadChartIndex', {
-          force: true, reset: true, repoName: this.query.repoName
+          force: true, reset: true, repoNames: [this.query.repoName]
         });
       } else {
         await this.$store.dispatch('catalog/load', { force: true, reset: true }); // not the problem

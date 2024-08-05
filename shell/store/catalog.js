@@ -457,7 +457,7 @@ export const actions = {
   },
 
   async loadChartIndex(ctx, {
-    force, reset, inStore, repoName
+    force, reset, inStore, repoNames
   } = {}) {
     const {
       state, getters, rootGetters, commit, dispatch
@@ -489,23 +489,30 @@ export const actions = {
     commit('setRepos', hash);
 
     const repos = getters['repos'];
-    const repo = repos.find((item) => item.metadata?.name === repoName);
+    const existingRepos = repos.filter((item) => repoNames.includes(item.metadata?.name));
 
-    if (!repo) {
+    if (!existingRepos.length === 0) {
       return;
     }
     const errors = [];
-    const charts = reset ? removeRepoCharts(state.charts, repo) : state.charts;
+    let charts = state.charts;
+
+    if (reset) {
+      existingRepos.forEach((repo) => {
+        charts = removeRepoCharts(state.charts, repo);
+      });
+    }
 
     const loaded = [];
 
     promises = {};
 
-    if ((force === true || !getters.isLoaded(repo)) && repo.canLoad) {
-      console.info('Loading index for repo', repo.name, `(${ repo._key })`); // eslint-disable-line no-console
-      promises[repo._key] = repo.followLink('index');
+    for (const repo of existingRepos) {
+      if ((force === true || !getters.isLoaded(repo)) && repo.canLoad) {
+        console.info('Loading index for repo', repo.name, `(${ repo._key })`); // eslint-disable-line no-console
+        promises[repo._key] = repo.followLink('index');
+      }
     }
-
     const res = await allHashSettled(promises);
 
     for ( const key of Object.keys(res) ) {
@@ -530,6 +537,34 @@ export const actions = {
       errors,
       loaded,
     });
+  },
+  async loadRepos(ctx, { inStore } = {}) {
+    const { rootGetters, commit, dispatch } = ctx;
+
+    const promises = {};
+
+    // Installing an app? This is fine (in cluster store)
+    // Fetching list of cluster templates? This is fine (in management store)
+    // Installing a cluster template? This isn't fine (in cluster store as per installing app, but if there is no cluster we need to default to management)
+    if (!inStore) {
+      inStore = rootGetters['currentCluster'] ? rootGetters['currentProduct'].inStore : 'management';
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.CLUSTER_REPO) ) {
+      promises.cluster = dispatch(`${ inStore }/findAll`, { type: CATALOG.CLUSTER_REPO }, { root: true });
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.REPO) ) {
+      promises.namespaced = dispatch(`${ inStore }/findAll`, { type: CATALOG.REPO }, { root: true });
+    }
+
+    const hash = await allHash(promises);
+
+    // As per comment above, when there are no clusters this will be management. Store it such that it can be used for those cases
+    commit('setInStore', inStore);
+    hash.cluster = hash.cluster.filter((repo) => !(repo?.metadata?.annotations?.[CATALOG_ANNOTATIONS.HIDDEN_REPO] === 'true'));
+
+    commit('setRepos', hash);
   }
 };
 

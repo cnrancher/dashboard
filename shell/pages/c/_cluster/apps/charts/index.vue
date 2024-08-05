@@ -35,7 +35,8 @@ export default {
   },
 
   async fetch() {
-    await this.$store.dispatch('catalog/load', { force: true, reset: true });
+    // await this.$store.dispatch('catalog/load', { force: true, reset: true });
+    await this.$store.dispatch('catalog/loadRepos');
 
     const query = this.$route.query;
 
@@ -44,6 +45,7 @@ export default {
     this.showHidden = query[HIDDEN] === _FLAGGED;
     this.category = query[CATEGORY] || '';
     this.allRepos = this.areAllEnabled();
+    await this.loadRepoCharts();
   },
 
   data() {
@@ -88,6 +90,7 @@ export default {
           color:   r.color,
           weight:  ( r.isRancher ? 1 : ( r.isPartner ? 2 : 3 ) ),
           enabled: !this.hideRepos.includes(r._key),
+          name:    r.metadata.name
         };
       });
 
@@ -233,6 +236,7 @@ export default {
     operatingSystem(os) {
       this.$router.applyQuery({ [OPERATING_SYSTEM]: os || undefined });
     },
+
   },
 
   mounted() {
@@ -297,6 +301,9 @@ export default {
       if ( updateAll ) {
         this.allRepos = this.areAllEnabled();
       }
+      this.$nextTick(() => {
+        this.loadRepoCharts();
+      });
     },
 
     selectChart(chart) {
@@ -343,7 +350,16 @@ export default {
         btnCb(false);
       }
     },
+
+    loadRepoCharts() {
+      const repoNames = this.repoOptions.filter((item) => item.enabled === true).map((item) => item.name);
+
+      return this.$store.dispatch('catalog/loadChartIndex', {
+        force: true, reset: true, repoNames
+      });
+    }
   },
+
 };
 </script>
 
