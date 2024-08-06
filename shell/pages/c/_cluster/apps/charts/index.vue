@@ -417,6 +417,7 @@ export default {
         :value="flattenedRepoNames"
         class="checkbox-select"
         :close-on-select="false"
+        :autoscroll="false"
         @option:selecting="$event.all ? toggleAll(!$event.enabled) : toggleRepo($event, !$event.enabled) "
         @close="handleRepoOptionsClose"
       >
