@@ -274,7 +274,7 @@ export default {
 
       return {
         total,
-        useful: parseSi(this.currentCluster?.status?.limit?.cpu),
+        useful: parseSi(this.currentCluster?.status?.limits?.cpu),
         units:  this.t('clusterIndexPage.hardwareResourceGauge.units.cores', { count: total })
       };
     },
@@ -291,7 +291,7 @@ export default {
     },
 
     ramLimit() {
-      return createMemoryValues(this.currentCluster?.status?.allocatable?.memory, this.currentCluster?.status?.limit?.memory);
+      return createMemoryValues(this.currentCluster?.status?.allocatable?.memory, this.currentCluster?.status?.limits?.memory);
     },
 
     metricAggregations() {
