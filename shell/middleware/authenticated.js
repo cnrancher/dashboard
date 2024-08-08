@@ -508,6 +508,9 @@ export default async function({
     if ( e instanceof ClusterNotFoundError ) {
       return redirect(302, '/home');
     } else {
+      if (e._status === 403) {
+        return redirect({ name: 'auth-mfa' });
+      }
       // Sets error 500 if lost connection to API
       store.commit('setError', { error: e, locationError: new Error(store.getters['i18n/t']('nav.failWhale.authMiddleware')) });
 

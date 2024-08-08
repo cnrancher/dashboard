@@ -40,6 +40,10 @@ export default {
     isBind: {
       type:    Boolean,
       default: false
+    },
+    secret: {
+      type:    String,
+      default: ''
     }
   },
   data() {
@@ -51,7 +55,8 @@ export default {
       form:    {
         passCode:     '',
         recoveryCode: '',
-        ttlMillis:    0
+        ttlMillis:    0,
+        secret:       ''
       },
       disabledEncryption
 
@@ -84,6 +89,7 @@ export default {
       }
       if (this.isBind) {
         data.bind = true;
+        data.secret = this.encryptCode(this.secret);
       }
       try {
         const s = await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: 'auth-user-otp-session-ttl-minutes' });

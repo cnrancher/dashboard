@@ -36,13 +36,13 @@ export default {
     }
 
     if (twoFactorAuthConfig?.value === 'harden') {
-      if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
+      if (pref?.data?.['enable-two-factor-authenticator'] === 'true') {
         redirect({ name: 'auth-verify-mfa', query: { userId: user?.[0]?.id } });
       } else {
         redirect({ name: 'auth-regist-mfa', query: { userId: user?.[0]?.id } });
       }
     } else if (twoFactorAuthConfig?.value === 'true') {
-      if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
+      if (pref?.data?.['enable-two-factor-authenticator'] === 'true') {
         redirect({ name: 'auth-verify-mfa', query: { userId: user?.[0]?.id } });
       }
     } else {

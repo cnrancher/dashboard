@@ -711,6 +711,12 @@ export const actions = {
       rancherSchemas: dispatch('rancher/loadSchemas', true),
     });
 
+    const error = Object.values(res).find((item) => item.status === 'rejected' && item.reason?.status === '403');
+
+    if (error) {
+      return Promise.reject(error.reason);
+    }
+
     const promises = {
       // Clusters guaranteed always available or your money back
       clusters: dispatch('management/findAll', { type: MANAGEMENT.CLUSTER }),

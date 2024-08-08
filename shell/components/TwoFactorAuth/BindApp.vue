@@ -8,11 +8,12 @@
       </div>
       <div>
         <img
+          v-if="imageUrl"
           width="200"
-          :src="`/v1/management.cattle.io.users/${ userId }?link=genQRCode&time=${time}`"
+          :src="imageUrl"
         >
       </div>
-      <div>
+      <div v-show="secret">
         {{ t('mfa.bindApp.manualConfigTips') }} <a
           href="javascript: void(0);"
 
@@ -23,6 +24,7 @@
       </div>
       <VerifyCode
         :is-bind="true"
+        :secret="secret"
         @on-done="handleDone"
         @on-errors="handleError"
       />
@@ -55,15 +57,9 @@
           class="pr-10 pl-10"
         >
           <DetailText
-            :value="form.Secret"
+            :value="secret"
             label-key="mfa.bindApp.secretView.secret"
             class="mt-20"
-          />
-          <Banner
-            v-for="e in errors"
-            :key="e"
-            color="error"
-            :label="e"
           />
         </div>
         <div
@@ -89,6 +85,9 @@ import VerifyCode from './VerifyCode.vue';
 import { stringify } from '@shell/utils/error';
 import DetailText from '@shell/components/DetailText';
 import { Card } from '@components/Card';
+import { NORMAN, MANAGEMENT } from '@shell/config/types';
+import { SETTING } from '@shell/config/settings';
+import qrcode from 'qrcode';
 
 export default {
   components: {
@@ -100,24 +99,45 @@ export default {
       default: null
     }
   },
-  data() {
-    const time = new Date().getTime();
 
+  async created() {
+    try {
+      await this.loadPrincipal();
+      await this.loadBindAppInfo();
+    } catch (error) {
+      this.errors = [stringify(error)];
+    }
+  },
+  data() {
     return {
-      errors:       [],
-      qrCode:       '',
-      form:         { Secret: '' },
-      secretErrors: [],
-      time,
+      errors:    [],
+      secret:    '',
+      imageUrl:  '',
+      principal: null
     };
   },
   computed: {
     userId() {
       return this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
-    }
+    },
+
+    serverUrlSetting() {
+      return this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SERVER_URL);
+    },
   },
 
   methods: {
+    async loadPrincipal() {
+      const principals = await this.$store.dispatch('rancher/findAll', {
+        type: NORMAN.PRINCIPAL,
+        opt:  {
+          url:                  '/v3/principals',
+          redirectUnauthorized: false,
+        }
+      });
+
+      this.principal = principals.find((p) => p.me === true) ?? {};
+    },
     async handleDone() {
       try {
         if (typeof this.handleEnableOtp === 'function') {
@@ -141,22 +161,28 @@ export default {
       this.errors = err.map((e) => stringify(e));
     },
     viewSecret() {
-      this.loadSecretData();
       this.$modal.show('two-factor-secret');
     },
-    async loadSecretData() {
-      const userId = this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
 
-      try {
-        const resp = await this.$store.dispatch('management/request', { url: `/v1/management.cattle.io.users/${ userId }?link=genQRCode&secret=true`, method: 'GET' });
-
-        this.form = resp;
-      } catch (error) {
-        this.secretErrors = [stringify(error)];
-      }
-    },
     close() {
       this.$modal.hide('two-factor-secret');
+    },
+    async loadBindAppInfo() {
+      const buffer = await import('@otplib/preset-browser/buffer');
+
+      if (!window.Buffer) {
+        window.Buffer = buffer.Buffer;
+      }
+      const resp = await import( '@otplib/preset-browser');
+
+      const secret = resp.authenticator.generateSecret();
+      const user = this.principal.loginName;
+      const service = this.serverUrlSetting.value.split('://')[1].replaceAll(':', '.');
+      const otpauth = resp.authenticator.keyuri(user, service, secret);
+      const imageUrl = await qrcode.toDataURL(otpauth);
+
+      this.imageUrl = imageUrl;
+      this.secret = secret;
     }
   },
 

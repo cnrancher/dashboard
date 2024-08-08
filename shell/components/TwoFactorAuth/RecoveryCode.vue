@@ -213,7 +213,7 @@ export default {
       this.errors = [];
       this.loading = true;
       try {
-        const resp = await this.$store.dispatch('management/request', { url: `/v1/management.cattle.io.users/${ userId }?link=recoveryCode&passcode=${ passCode }` });
+        const resp = await this.$store.dispatch('management/request', { url: `/v1/management.cattle.io.users/${ userId }?link=recoveryCode&passcode=${ passCode }`, redirectUnauthorized: false });
 
         this.codes = [resp.Value];
       } finally {
