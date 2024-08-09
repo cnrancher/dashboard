@@ -8536,10 +8536,10 @@ mfa:
   back: 返回登錄頁面
   tips: 使用身份驗證程序或瀏覽器擴展進行掃描
   code:
-    placeholder: xxxxxx
+    placeholder: 驗證碼
     label: 驗證碼
   recoveryCode:
-    placeholder: xxxxx-xxxxx
+    placeholder: 恢復代碼
     label: 恢復代碼
     title: 恢復代碼
     tips: 如果您丟失了設備訪問權，並且無法收到雙因子身份驗證代碼，恢復代碼可用於訪問您的帳戶。

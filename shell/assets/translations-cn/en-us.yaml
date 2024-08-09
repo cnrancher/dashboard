@@ -8329,10 +8329,10 @@ mfa:
   back: Back to Login
   tips: Scanning with authenticator apps or browser extensions
   code:
-    placeholder: xxxxxx
+    placeholder: Authentication code
     label: Authentication code
   recoveryCode:
-    placeholder: xxxxx-xxxxx
+    placeholder: Recovery Code
     label: Recovery Code
     title: Recovery codes
     tips: Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes.

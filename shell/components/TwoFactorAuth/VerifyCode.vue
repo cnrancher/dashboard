@@ -5,6 +5,7 @@
     <LabeledInput
       v-model="form.passCode"
       :label="t('mfa.code.label')"
+      :placeholder="placeholder"
       required
     />
     <AsyncButton
@@ -61,6 +62,15 @@ export default {
       disabledEncryption
 
     };
+  },
+  computed: {
+    placeholder() {
+      if (this.isRecoveryCode) {
+        return this.t('mfa.recoveryCode.placeholder');
+      }
+
+      return this.t('mfa.code.placeholder');
+    }
   },
   methods: {
     validate() {

@@ -8535,10 +8535,10 @@ mfa:
   back: 返回登录页面
   tips: 使用身份验证程序或浏览器扩展进行扫描
   code:
-    placeholder: xxxxxx
+    placeholder: 验证码
     label: 验证码
   recoveryCode:
-    placeholder: xxxxx-xxxxx
+    placeholder: 恢复代码
     label: 恢复代码
     title: 恢复代码
     tips: 如果您丢失了设备访问权，并且无法收到双因子身份验证代码，恢复代码可用于访问您的帐户。
