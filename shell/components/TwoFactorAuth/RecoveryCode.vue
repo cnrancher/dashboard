@@ -179,6 +179,7 @@ export default {
   methods: {
     viewCode() {
       this.errors = [];
+      this.codes = [];
       this.$modal.show('view-recovery-code');
     },
     newCode() {

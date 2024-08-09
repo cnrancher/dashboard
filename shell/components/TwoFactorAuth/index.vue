@@ -119,16 +119,11 @@ export default {
       this.showBindApp = true;
     },
     handleEnableOtp() {
+      this.showBindApp = false;
       this.$emit('on-enable-otp');
     },
     handleEdit() {
       this.edit = true;
-    },
-    handleDialbeOtp() {
-      this.$store.dispatch('cluster/promptModal', {
-        resources: [],
-        component: 'DisableTwoFactorAuthDialog'
-      });
     },
     handleCancel() {
       this.enalbeTwoFactorAuth = this.enabled;
