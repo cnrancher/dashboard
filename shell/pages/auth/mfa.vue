@@ -27,19 +27,14 @@ export default {
         opt:  { url: '/v3/users?me=true', load: _MULTI }
       });
       pref = await store.dispatch('management/request', { url: `/v1/userpreferences/${ user?.[0]?.id }`, method: 'GET' });
-      // twoFactorAuthConfig = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
+      twoFactorAuthConfig = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
+    } catch (e) {
+      // Older versions used Norman API to get these
       twoFactorAuthConfig = await store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.TWO_FACTOR_AUTH_CONFIG,
         opt:  { url: `/v3/settings/${ SETTING.TWO_FACTOR_AUTH_CONFIG }` }
       });
-    } catch (e) {
-      // Older versions used Norman API to get these
-      // twoFactorAuthConfig = await store.dispatch('rancher/find', {
-      //   type: 'setting',
-      //   id:   SETTING.TWO_FACTOR_AUTH_CONFIG,
-      //   opt:  { url: `/v3/settings/${ SETTING.TWO_FACTOR_AUTH_CONFIG }` }
-      // });
     }
 
     if (twoFactorAuthConfig?.value === 'harden') {
