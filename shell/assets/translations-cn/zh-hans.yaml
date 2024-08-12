@@ -8541,7 +8541,7 @@ mfa:
     placeholder: 恢复代码
     label: 恢复代码
     title: 恢复代码
-    tips: 如果您丢失了设备访问权，并且无法收到双因子身份验证代码，恢复代码可用于访问您的帐户。
+    tips: 无法获取双因子身份验证代码？使用恢复代码访问您的帐户。
     viewCode: 单击此处查看恢复代码。
     new: 生成新的恢复代码
     download: 下载
@@ -8557,7 +8557,9 @@ mfa:
     rebindApp: 重新绑定应用
     cancelRebindApp: 取消绑定应用
     title: 扫描二维码
-    tips: 使用身份验证程序或浏览器扩展进行扫描
+    tips:
+      1: 1. 扫描二维码：使用身份验证程序或浏览器扩展程序
+      2: 2. 应用程序中的验证码
     label: 验证码
     manualConfigTips: 无法扫描？您可以手动配置身份验证程序。
     viewSecret: 点击这里查看密文
@@ -8567,5 +8569,6 @@ mfa:
     bindAppTips:
       desc: 您的管理员已打开双因子身份验证，我们强烈建议您对其进行配置！
       link: 进入配置页。
+    appTips: '<a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> 和 <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>等身份验证器应用及浏览器扩展会生成一次性密码，用作登录时的第二因素。'
   errors:
     codeRequired: 需要输入验证码

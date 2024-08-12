@@ -142,6 +142,6 @@ export default {
 </script>
 <style scoped>
 .verify-code__contnet {
-  width: 200px; display: grid; justify-items: center; gap: 8px;
+  width: 220px; display: grid; justify-items: center; gap: 8px;
 }
 </style>

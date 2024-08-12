@@ -8337,7 +8337,7 @@ mfa:
     title: Recovery codes
     tips: Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes.
     viewCode: Click here to view recovery codes.
-    new: Generate new recovery codes 
+    new: Generate new recovery codes
     download: Download
   validating: Validating
   validated: Validated
@@ -8351,7 +8351,9 @@ mfa:
     rebindApp: Re-bind The App
     cancelRebindApp: Cancel Re-bind The App
     title: Scanning the QR code
-    tips: Scanning with authenticator apps or browser extensions
+    tips: 
+      1: 1. Scanning with authenticator apps or browser extensions
+      2: 2. Verify the code from the app
     label: Authentication code
     manualConfigTips: Unable to scan? You can manually configure your authenticator app.
     viewSecret: Click here to view secret.
@@ -8360,6 +8362,7 @@ mfa:
       secret: Secret
     bindAppTips:
       desc: Your administrator has two-factor authentication turned on, and we strongly recommend that you configure it!
-      link:   Go to the configuration page.
+      link: Go to the configuration page.
+    appTips: Authenticator apps like <a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> and <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>, as well as browser extensions, generate one-time passwords for use as a second factor during login.
   errors:
     codeRequired: Authentication code is required

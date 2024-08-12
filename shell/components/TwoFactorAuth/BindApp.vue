@@ -1,10 +1,16 @@
 <template>
   <div>
-    <div class="bind-app__contnet">
-      <div class="text-center">
-        <h5>{{ t('mfa.bindApp.title') }}</h5>
-
-        <p>{{ t('mfa.bindApp.tips') }}</p>
+    <div
+      class="bind-app__contnet"
+      :class="{'bindApp__content--center': center}"
+    >
+      <p
+        v-clean-html="t('mfa.bindApp.appTips', {}, true)"
+        class="mt-20 bind-app__label"
+      />
+      <div>
+        <!-- <h5>{{ t('mfa.bindApp.title') }}</h5> -->
+        <p>{{ t('mfa.bindApp.tips.1') }}</p>
       </div>
       <div>
         <img
@@ -14,7 +20,7 @@
         >
       </div>
       <div v-show="secret">
-        {{ t('mfa.bindApp.manualConfigTips') }} <a
+        <span class="bind-app__label">{{ t('mfa.bindApp.manualConfigTips') }}</span><a
           href="javascript: void(0);"
 
           @click="viewSecret"
@@ -22,6 +28,7 @@
           {{ t('mfa.bindApp.viewSecret') }}
         </a>
       </div>
+      <p>{{ t('mfa.bindApp.tips.2') }}</p>
       <VerifyCode
         :is-bind="true"
         :secret="secret"
@@ -97,6 +104,10 @@ export default {
     handleEnableOtp: {
       type:    Function,
       default: null
+    },
+    center: {
+      type:    Boolean,
+      default: false
     }
   },
 
@@ -191,8 +202,10 @@ export default {
 <style scoped>
 .bind-app__contnet {
   display: grid;
-  justify-items: center;
   gap: 10px;
+}
+.bindApp__content--center {
+  justify-items: center;
 }
 .prompt-two-factor-secret {
   margin: 0;
@@ -208,5 +221,8 @@ export default {
     justify-content: flex-end;
     width: 100%;
   }
+}
+.bind-app__label {
+  color: var(--input-label);
 }
 </style>

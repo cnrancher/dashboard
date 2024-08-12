@@ -8542,7 +8542,7 @@ mfa:
     placeholder: 恢復代碼
     label: 恢復代碼
     title: 恢復代碼
-    tips: 如果您丟失了設備訪問權，並且無法收到雙因子身份驗證代碼，恢復代碼可用於訪問您的帳戶。
+    tips: 無法獲取雙因子身份驗證代碼？使用恢復代碼訪問您的帳戶。
     viewCode: 單擊此處查看恢復代碼。
     new: 生成新的恢復代碼
     download: 下載
@@ -8558,7 +8558,9 @@ mfa:
     rebindApp: 重新綁定應用
     cancelRebindApp: 取消綁定應用
     title: 掃描二維碼
-    tips: 使用身份驗證程序或瀏覽器擴展進行掃描
+    tips:
+      1: 1. 掃描二維碼：使用身份驗證程序或瀏覽器擴展程序
+      2: 2. 應用程序中的驗證碼
     label: 驗證碼
     manualConfigTips: 無法掃描？您可以手動配置身份驗證程序。
     viewSecret: 點擊這裏查看密文
@@ -8568,5 +8570,6 @@ mfa:
     bindAppTips:
       desc: 您的管理員已打開雙因子身份驗證，我們強烈建議您對其進行配置！
       link: 進入配置頁。
+    appTips: '<a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> 和 <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>等身份驗證器應用及瀏覽器擴展會生成一次性密碼，用作登錄時的第二因素。'
   errors:
     codeRequired: 需要輸入驗證碼

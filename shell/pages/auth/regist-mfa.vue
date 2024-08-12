@@ -124,6 +124,7 @@ export default {
         </h1>
 
         <BindApp
+          :center="true"
           class="mt-20"
           @on-done="handleDone"
         />
