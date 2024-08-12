@@ -4399,6 +4399,10 @@ prefs:
   confirmationSetting:
     scalingDownPrompt: 縮減節點池時不要求確認。
     title: 確認設置
+  twoFactorAuthConfig:
+    'true': 啓用
+    'false': 禁用
+    label: 雙因子身份驗證
 principal:
   loading: 正在加載&hellip;
   error: 無法獲取信息
@@ -7278,6 +7282,10 @@ advancedSettings:
     'system-catalog':
       bundled: 'Bundled'
       external: 'External'
+    'two-factor-authenticator-config':
+      harden: '強制'
+      true: '啓用'
+      false: '關閉'
   modified: 已修改
   load:
     waiting: 正在加載&hellip;
@@ -8502,3 +8510,51 @@ gitPicker:
       tooltip: Git 倉庫的用戶名/組織
 logout:
   message: 正在登出...
+mfa:
+  methods:
+    app: 身份驗證程序
+  enable: 啓用
+  disable: 禁用
+  edit: 編輯
+  back: 返回登錄頁面
+  tips: 使用身份驗證程序或瀏覽器擴展進行掃描
+  code:
+    placeholder: 驗證碼
+    label: 驗證碼
+    title: 雙重身份驗證
+    tips: 打開您的雙因素身份驗證器應用程序或瀏覽器擴展程序來查看您的身份驗證碼。
+  recoveryCode:
+    placeholder: 恢復代碼
+    label: 恢復代碼
+    title: 恢復代碼
+    tips: 無法獲取雙因子身份驗證代碼？使用恢復代碼訪問您的帳戶。
+    viewCode: 單擊此處查看恢復代碼。
+    new: 生成新的恢復代碼
+    download: 下載
+  validating: 驗證中
+  validated: 已驗證
+  verify: 驗證
+  backToVerify: 返回驗證頁面
+  disableOTP:
+    label: 禁用 OTP
+    disabling: 禁用中
+    disabled: 已禁用
+  bindApp:
+    rebindApp: 重新綁定應用
+    cancelRebindApp: 取消綁定應用
+    title: 掃描二維碼
+    tips:
+      1: 1. 掃描二維碼：使用身份驗證程序或瀏覽器擴展程序
+      2: 2. 應用程序中的驗證碼
+    label: 驗證碼
+    manualConfigTips: 無法掃描？您可以手動配置身份驗證程序。
+    viewSecret: 點擊這裏查看密文
+    secretView:
+      title: 雙因子密文
+      secret: 密文
+    bindAppTips:
+      desc: 您的管理員已打開雙因子身份驗證，我們強烈建議您對其進行配置！
+      link: 進入配置頁。
+    appTips: '<a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> 和 <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>等身份驗證器應用及瀏覽器擴展會生成一次性密碼，用作登錄時的第二因素。'
+  errors:
+    codeRequired: 需要輸入驗證碼

@@ -2,6 +2,7 @@
 import Header from '@shell/components/nav/Header';
 import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
+import FixedTips from '@shell/components/FixedTips';
 import GrowlManager from '@shell/components/GrowlManager';
 import { mapPref, THEME_SHORTCUT } from '@shell/store/prefs';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
@@ -19,7 +20,8 @@ export default {
     GrowlManager,
     AzureWarning,
     AwsComplianceBanner,
-    Inactivity
+    Inactivity,
+    FixedTips
   },
 
   mixins: [Brand, BrowserTabVisibility, AutoLogout],
@@ -54,6 +56,7 @@ export default {
 <template>
   <div class="dashboard-root">
     <FixedBanner :header="true" />
+    <FixedTips />
     <Inactivity />
     <AwsComplianceBanner />
     <AzureWarning />

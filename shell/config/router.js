@@ -71,6 +71,18 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */)),
     name:      'auth-login'
   }, {
+    path:      '/auth/mfa',
+    component: () => interopDefault(import('../pages/auth/mfa.vue' /* webpackChunkName: "pages/auth/mfa" */)),
+    name:      'auth-mfa'
+  }, {
+    path:      '/auth/verify-mfa',
+    component: () => interopDefault(import('../pages/auth/verify-mfa.vue' /* webpackChunkName: "pages/auth/verify-mfa" */)),
+    name:      'auth-verify-mfa'
+  }, {
+    path:      '/auth/regist-mfa',
+    component: () => interopDefault(import('../pages/auth/regist-mfa.vue' /* webpackChunkName: "pages/auth/regist-mfa" */)),
+    name:      'auth-regist-mfa'
+  }, {
     path:      '/auth/logout',
     component: () => interopDefault(import('../pages/auth/logout.vue' /* webpackChunkName: "pages/auth/logout" */)),
     name:      'auth-logout'
