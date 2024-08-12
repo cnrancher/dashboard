@@ -237,11 +237,11 @@ export default {
       />
     </div>
     <!-- mfa -->
-    <hr>
     <div
       v-if="adminTwoFactorAuthConfigEnabled"
-      class="col mt-10 mb-10"
+      class="mt-10 mb-10"
     >
+      <hr>
       <TwoFactorAuth
         :enabled="enalbeTwoFactorAuth"
         :force="adminTwoFactorAuthConfigHardenEnabled"
