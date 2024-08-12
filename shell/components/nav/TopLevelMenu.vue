@@ -4,7 +4,7 @@ import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
 import IconOrSvg from '../IconOrSvg';
 import { mapGetters } from 'vuex';
 import { CAPI, MANAGEMENT } from '@shell/config/types';
-import { mapPref, MENU_MAX_CLUSTERS } from '@shell/store/prefs';
+import { mapPref, MENU_MAX_CLUSTERS, ENABLE_TWO_FACTOR_AUTH } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 import { KEY } from '@shell/utils/platform';
@@ -25,6 +25,7 @@ export default {
   data() {
     const { displayVersion, fullVersion } = getVersionInfo(this.$store);
     const hasProvCluster = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
+    const twoFactorAuthConfig = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
 
     return {
       shown:         false,
@@ -32,6 +33,7 @@ export default {
       fullVersion,
       clusterFilter: '',
       hasProvCluster,
+      twoFactorAuthConfig
     };
   },
 
@@ -46,11 +48,38 @@ export default {
     ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'isRancherInHarvester']),
     ...mapGetters('type-map', ['activeProducts']),
     ...mapGetters({ features: 'features/get' }),
+    enalbeTwoFactorAuth: mapPref(ENABLE_TWO_FACTOR_AUTH),
 
     value: {
       get() {
         return this.$store.getters['productId'];
       },
+    },
+
+    globalBannerSettings() {
+      const settings = this.$store.getters['management/all'](MANAGEMENT.SETTING);
+      const bannerSettings = settings?.find((s) => s.id === SETTING.BANNERS);
+
+      if (bannerSettings) {
+        const parsed = JSON.parse(bannerSettings.value);
+        const {
+          showFooter, showHeader, bannerFooter, bannerHeader, banner
+        } = parsed;
+        // add defaults to accomodate older JSON structures for banner definitions without breaking the UI
+        // https://github.com/rancher/dashboard/issues/10140
+        const bannerHeaderFontSize = bannerHeader?.fontSize || banner?.fontSize || '14px';
+        const bannerFooterFontSize = bannerFooter?.fontSize || banner?.fontSize || '14px';
+
+        return {
+          headerFont: showHeader === 'true' ? this.pxToEm(bannerHeaderFontSize) : '0px',
+          footerFont: showFooter === 'true' ? this.pxToEm(bannerFooterFontSize) : '0px'
+        };
+      }
+
+      return undefined;
+    },
+    showTwoFactorAuthTips() {
+      return this.twoFactorAuthConfig?.value === 'true' && this.enalbeTwoFactorAuth === false;
     },
 
     legacyEnabled() {
