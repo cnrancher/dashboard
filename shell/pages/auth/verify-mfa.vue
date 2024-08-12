@@ -136,6 +136,7 @@ export default {
         </h1>
 
         <div class="veriry-code mt-20">
+          <h3>{{ t('mfa.code.title') }}</h3>
           <VerifyCode
             :is-recovery-code="isRecoveryCode"
             @on-done="handleDone"
@@ -148,6 +149,11 @@ export default {
             :label="t('mfa.recoveryCode.label')"
             type="checkbox"
           />
+        </div>
+        <div class="mt-20">
+          <p class="text-center veriry-code__tips">
+            {{ t('mfa.code.tips') }}
+          </p>
         </div>
         <Banner
           v-for="e in errors"
@@ -185,6 +191,9 @@ export default {
   .veriry-code {
     display: grid;
     justify-items: center;
+  }
+  .veriry-code__tips {
+    color: var(--input-label);
   }
   .login {
     overflow: hidden;

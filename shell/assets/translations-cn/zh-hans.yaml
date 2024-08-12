@@ -8537,6 +8537,8 @@ mfa:
   code:
     placeholder: 验证码
     label: 验证码
+    title: 双重身份验证
+    tips: 打开您的双因素身份验证器应用程序或浏览器扩展程序来查看您的身份验证码。
   recoveryCode:
     placeholder: 恢复代码
     label: 恢复代码

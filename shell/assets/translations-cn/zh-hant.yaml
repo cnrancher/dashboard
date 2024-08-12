@@ -8538,6 +8538,8 @@ mfa:
   code:
     placeholder: 驗證碼
     label: 驗證碼
+    title: 雙重身份驗證
+    tips: 打開您的雙因素身份驗證器應用程序或瀏覽器擴展程序來查看您的身份驗證碼。
   recoveryCode:
     placeholder: 恢復代碼
     label: 恢復代碼

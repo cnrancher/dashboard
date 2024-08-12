@@ -8331,6 +8331,8 @@ mfa:
   code:
     placeholder: Authentication code
     label: Authentication code
+    title: Two-factor authentication
+    tips: Open your two-factor authenticator app or browser extension to view your authentication code.
   recoveryCode:
     placeholder: Recovery Code
     label: Recovery Code
