@@ -63,7 +63,9 @@ export default {
   },
 
   data() {
-    return { settings: null };
+    const experimentalItems = ['two-factor-authenticator-config'];
+
+    return { settings: null, experimentalItems };
   },
 
   computed: { ...mapGetters({ t: 'i18n/t' }) },
@@ -99,6 +101,7 @@ export default {
         <div class="title">
           <h1>
             {{ setting.id }}
+            <strong v-if="experimentalItems.includes(setting.id)">({{ t('generic.experimental') }})</strong>
             <span
               v-if="setting.fromEnv"
               class="modified"

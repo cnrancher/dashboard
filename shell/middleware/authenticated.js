@@ -316,6 +316,8 @@ export default async function({
         } else {
           if ( status === 401 ) {
             notLoggedIn();
+          } else if (status === 403) {
+            redirect({ name: 'auth-mfa' });
           } else {
             store.commit('setError', { error: e, locationError: new Error('Auth Middleware') });
             if ( process.server ) {
@@ -518,6 +520,9 @@ export default async function({
     if ( e instanceof ClusterNotFoundError ) {
       return redirect(302, '/home');
     } else {
+      if (e._status === 403 && !e?.response?.data?.code) {
+        return redirect({ name: 'auth-mfa' });
+      }
       // Sets error 500 if lost connection to API
       store.commit('setError', { error: e, locationError: new Error(store.getters['i18n/t']('nav.failWhale.authMiddleware')) });
 

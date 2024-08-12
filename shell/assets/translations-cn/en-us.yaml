@@ -4395,6 +4395,10 @@ prefs:
   confirmationSetting:
     scalingDownPrompt: Do not ask for confirmation when scaling down node pools.
     title: Confirmation Setting
+  twoFactorAuthConfig:
+    'true': Enable
+    'false': Disable
+    label: Two Factor Auth
 principal:
   loading: Loading&hellip;
   error: Unable to fetch principal info
@@ -7252,6 +7256,10 @@ advancedSettings:
     'system-catalog':
       bundled: 'Bundled'
       external: 'External'
+    'two-factor-authenticator-config':
+      harden: 'Harden'
+      true: 'Enable'
+      false: 'Close'
   modified: Modified
 featureFlags:
   label: Feature Flags
@@ -8226,3 +8234,51 @@ gitPicker:
       tooltip: Username / Organization of the Git Repository
 logout:
   message: Logging Out...
+mfa:
+  methods:
+    app: authenticator app
+  enable: Enable
+  disable: Disable
+  edit: Edit
+  back: Back to Login
+  tips: Scanning with authenticator apps or browser extensions
+  code:
+    placeholder: Authentication code
+    label: Authentication code
+    title: Two-factor authentication
+    tips: Open your two-factor authenticator app or browser extension to view your authentication code. 
+  recoveryCode:
+    placeholder: Recovery Code
+    label: Recovery Code
+    title: Recovery codes
+    tips: Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes.
+    viewCode: Click here to view recovery codes.
+    new: Generate new recovery codes 
+    download: Download
+  validating: Validating
+  validated: Validated
+  verify: Verify
+  backToVerify: Back to Verify
+  disableOTP:
+    label: Disable OTP
+    disabling: Disabling
+    disabled: Disabled
+  bindApp:
+    rebindApp: Re-bind The App
+    cancelRebindApp: Cancel Re-bind The App
+    title: Scanning the QR code
+    tips: 
+      1: 1. Scanning with authenticator apps or browser extensions
+      2: 2. Verify the code from the app
+    label: Authentication code
+    manualConfigTips: Unable to scan? You can manually configure your authenticator app.
+    viewSecret: Click here to view secret.
+    secretView:
+      title: Your two-factor secret
+      secret: Secret
+    bindAppTips:
+      desc: Your administrator has two-factor authentication turned on, and we strongly recommend that you configure it!
+      link:   Go to the configuration page.
+    appTips: Authenticator apps like <a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> and <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>, as well as browser extensions, generate one-time passwords for use as a second factor during login.
+  errors:
+    codeRequired: Authentication code is required

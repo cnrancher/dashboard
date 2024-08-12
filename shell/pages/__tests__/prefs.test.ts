@@ -30,6 +30,7 @@ describe('page: prefs should', () => {
             'management/schemaFor': jest.fn(),
             isSingleProduct:        jest.fn(),
             'i18n/t':               jest.fn(),
+            'management/byId':      jest.fn(),
           }
         }
       },
@@ -76,6 +77,7 @@ describe('page: prefs should', () => {
             'management/schemaFor': jest.fn(),
             isSingleProduct:        jest.fn(),
             'i18n/t':               jest.fn(),
+            'management/byId':      jest.fn(),
           }
         }
       },

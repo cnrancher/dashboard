@@ -187,6 +187,10 @@ export default {
           dispatch('auth/logout', opt.logoutOnError, { root: true });
         }
 
+        if ( opt.redirectUnauthorized !== false && res.status === 403 && !res?.data?.code) {
+          dispatch('auth/mfa', new Error('need to mfa'), { root: true });
+        }
+
         if ( typeof res.data !== 'undefined' ) {
           out = responseObject(res);
         }

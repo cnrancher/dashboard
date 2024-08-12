@@ -114,7 +114,9 @@ export const SETTING = {
   /**
    * manage rancher repositories in extensions (official, partners repos)
    */
-  ADD_EXTENSION_REPOS_BANNER_DISPLAY:   'display-add-extension-repos-banner'
+  ADD_EXTENSION_REPOS_BANNER_DISPLAY:   'display-add-extension-repos-banner',
+  TWO_FACTOR_AUTH_CONFIG:               'two-factor-authenticator-config',
+  AUTH_USER_OPT_SESSION_TTL_MINUTES:    'auth-user-otp-session-ttl-minutes'
 };
 
 // These are the settings that are allowed to be edited via the UI
@@ -185,6 +187,11 @@ export const ALLOWED_SETTINGS: GlobalSetting = {
     kind:    'enum',
     options: ['external', 'bundled']
   },
+  [SETTING.TWO_FACTOR_AUTH_CONFIG]: {
+    kind:    'enum',
+    options: ['harden', 'true', 'false']
+  },
+  [SETTING.AUTH_USER_OPT_SESSION_TTL_MINUTES]: {}
 };
 
 export const DEFAULT_PERF_SETTING = {

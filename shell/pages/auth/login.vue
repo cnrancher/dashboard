@@ -47,7 +47,7 @@ export default {
       removeObject(providers, 'local');
     }
 
-    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl;
+    let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl, twoFactorAuthConfig;
 
     // Load settings.
     // For newer versions this will return all settings if you are somehow logged in,
@@ -67,6 +67,7 @@ export default {
       uiLoginLandscape = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
       footerText = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
       footerUrl = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
+      twoFactorAuthConfig = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
     } catch (e) {
       // Older versions used Norman API to get these
       firstLoginSetting = await store.dispatch('rancher/find', {
@@ -89,26 +90,32 @@ export default {
 
       disabledEncryption = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.DISABLE_PASSWORD_ENCRYPT,
         opt:  { url: `/v3/settings/${ SETTING.DISABLE_PASSWORD_ENCRYPT }` }
       });
 
       uiLoginLandscape = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.UI_LOGIN_LANDSCAPE,
         opt:  { url: `/v3/settings/${ SETTING.UI_LOGIN_LANDSCAPE }` }
       });
 
       footerText = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.FOOTER_TEXT,
         opt:  { url: `/v3/settings/${ SETTING.FOOTER_TEXT }` }
       });
 
       footerUrl = await store.dispatch('rancher/find', {
         type: 'setting',
-        id:   SETTING.BRAND,
+        id:   SETTING.FOOTER_URL,
         opt:  { url: `/v3/settings/${ SETTING.FOOTER_URL }` }
+      });
+
+      twoFactorAuthConfig = await store.dispatch('rancher/find', {
+        type: 'setting',
+        id:   SETTING.TWO_FACTOR_AUTH_CONFIG,
+        opt:  { url: `/v3/settings/${ SETTING.TWO_FACTOR_AUTH_CONFIG }` }
       });
     }
 
@@ -140,6 +147,7 @@ export default {
       footerUrl,
 
       uiLoginLandscape: uiLoginLandscape?.value,
+      twoFactorAuthConfig,
     };
   },
 
@@ -162,6 +170,8 @@ export default {
       customLoginError:   {},
       cooldownTime:       0,
       cooldownTimer:      null,
+
+      twoFactorAuthConfig: null
     };
   },
 

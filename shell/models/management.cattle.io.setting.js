@@ -24,6 +24,9 @@ export default class Setting extends HybridModel {
     const editAction = out.find((action) => action.action === 'goToEdit');
 
     if (editAction) {
+      if (this.fromEnv) {
+        editAction.enabled = false;
+      }
       editAction.label = this.t('advancedSettings.edit.label');
     }
 
