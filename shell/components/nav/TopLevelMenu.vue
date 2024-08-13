@@ -61,9 +61,11 @@ export default {
     },
 
     sideMenuStyle() {
+      const hf = parseFloat(this.globalBannerSettings?.headerFont);
+
       return {
         marginBottom: this.globalBannerSettings?.footerFont,
-        marginTop:    `${ this.showTwoFactorAuthTips ? `${ parseInt(this.globalBannerSettings?.headerFont) + 2 }em` : this.globalBannerSettings?.headerFont }`
+        marginTop:    `${ this.showTwoFactorAuthTips ? `${ (Number.isNaN(hf) ? 0 : hf) + 2 }em` : this.globalBannerSettings?.headerFont }`
       };
     },
 
