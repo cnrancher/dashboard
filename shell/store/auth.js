@@ -428,31 +428,26 @@ export const actions = {
     // Unload plugins - we will load again on login
     await this.$plugin.logout();
 
-    try {
-      const promises = [];
-
-      if (state.v3User?.id) {
-        const logoutOtp = dispatch('management/request', {
+    if (state.v3User?.id) {
+      try {
+        await dispatch('management/request', {
           url:                  `/v1/management.cattle.io.users/${ state.v3User?.id }?action=logout`,
           method:               'post',
           data:                 {},
           headers:              { 'Content-Type': 'application/json' },
           redirectUnauthorized: false,
         }, { root: true });
+      } catch (e) {}
+    }
 
-        promises.push(logoutOtp);
-      }
-      const logout = dispatch('rancher/request', {
+    try {
+      await dispatch('rancher/request', {
         url:                  '/v3/tokens?action=logout',
         method:               'post',
         data:                 {},
         headers:              { 'Content-Type': 'application/json' },
         redirectUnauthorized: false,
       }, { root: true });
-
-      promises.push(logout);
-
-      await Promise.allSettled(promises);
     } catch (e) {
     }
 
