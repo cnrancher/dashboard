@@ -122,12 +122,13 @@ export default {
         <h1 class="text-center login-welcome">
           {{ t('login.welcome', {vendor}) }}
         </h1>
-
-        <BindApp
-          :center="true"
-          class="mt-20"
-          @on-done="handleDone"
-        />
+        <div class="mt-20 bind-app__container">
+          <BindApp
+            class="bind-app__content"
+            :center="true"
+            @on-done="handleDone"
+          />
+        </div>
 
         <div
           class="mt-20 text-center"
@@ -155,6 +156,13 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+  .bind-app__container {
+    display: flex;
+    justify-content: center;
+  }
+  .bind-app__content {
+    max-width: 600px;
+  }
   .login {
     overflow: hidden;
 
