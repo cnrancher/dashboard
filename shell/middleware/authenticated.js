@@ -508,7 +508,7 @@ export default async function({
     if ( e instanceof ClusterNotFoundError ) {
       return redirect(302, '/home');
     } else {
-      if (e._status === 403) {
+      if (e._status === 403 && !e?.response?.data?.code) {
         return redirect({ name: 'auth-mfa' });
       }
       // Sets error 500 if lost connection to API
