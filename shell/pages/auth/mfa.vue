@@ -1,5 +1,5 @@
 <script>
-import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
+import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import Loading from '@shell/components/Loading';
@@ -22,12 +22,13 @@ export default {
           load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
         },
       });
+
       const v3User = store.getters['auth/v3User'];
 
       if (!v3User) {
         user = await store.dispatch('rancher/findAll', {
           type: NORMAN.USER,
-          opt:  { url: '/v3/users?me=true' }
+          opt:  { url: '/v3/users?me=true', load: _MULTI }
         });
       } else {
         user = [v3User];
@@ -43,7 +44,6 @@ export default {
         opt:  { url: `/v3/settings/${ SETTING.TWO_FACTOR_AUTH_CONFIG }` }
       });
     }
-
     if (twoFactorAuthConfig?.value === 'harden') {
       if (pref?.data?.['enable-two-factor-authenticator'] === 'true') {
         redirect({ name: 'auth-verify-mfa', query: { userId: user?.[0]?.id } });

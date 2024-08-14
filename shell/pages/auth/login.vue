@@ -329,32 +329,6 @@ export default {
         } else {
           this.$cookies.remove(USERNAME);
         }
-        // if (this.twoFactorAuthConfig?.value === 'harden') {
-        //   if (this.firstLogin || user[0]?.mustChangePassword) {
-        //     this.$store.dispatch('auth/setInitialPass', this.password);
-        //   }
-        //   const pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ user[0].id }`, method: 'GET' });
-
-        //   if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
-        //     this.$router.replace({ path: '/auth/verify-mfa', query: { provider: 'local', userId: user[0].id } });
-        //   } else {
-        //     this.$router.replace({ path: '/auth/regist-mfa', query: { provider: 'local', userId: user[0].id } });
-        //   }
-
-        //   return;
-        // } else if (this.twoFactorAuthConfig?.value === 'true') {
-        //   const pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ user[0].id }`, method: 'GET' });
-
-        //   if (pref.data?.['enable-two-factor-authenticator'] === 'true') {
-        //     if (this.firstLogin || user[0]?.mustChangePassword) {
-        //       this.$store.dispatch('auth/setInitialPass', this.password);
-        //     }
-        //     this.$router.replace({ path: '/auth/verify-mfa', query: { provider: 'local', userId: user[0].id } });
-
-        //     return;
-        //   }
-        // }
-
         // User logged with local login - we don't do any redirect/reload, so the boot-time plugin will not run again to laod the plugins
         // so we manually load them here - other SSO auth providers bounce out and back to the Dashboard, so on the bounce-back
         // the plugins will load via the boot-time plugin

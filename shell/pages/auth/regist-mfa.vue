@@ -1,11 +1,12 @@
 <script>
 import BrandImage from '@shell/components/BrandImage';
 import { mapGetters } from 'vuex';
-import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
+import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import BindApp from '@shell/components/TwoFactorAuth/BindApp.vue';
 import { SETTING } from '@shell/config/settings';
 import loadPlugins from '@shell/plugins/plugin';
+import { LOGGED_OUT } from '@shell/config/query-params';
 
 import {
   getBrand,
@@ -31,12 +32,13 @@ export default {
           load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
         },
       });
+
       const v3User = store.getters['auth/v3User'];
 
       if (!v3User) {
         user = await store.dispatch('rancher/findAll', {
           type: NORMAN.USER,
-          opt:  { url: '/v3/users?me=true' }
+          opt:  { url: '/v3/users?me=true', load: _MULTI }
         });
       } else {
         user = [v3User];
@@ -85,11 +87,8 @@ export default {
       return this.t(`model.authConfig.provider.${ provider }`);
     },
 
-    backToVerifyPage() {
-      this.$router.replace({ path: '/auth/verify-mfa', query: { userId: this.user?.[0]?.id ?? this.$route.query.userId } });
-    },
     backToLogin() {
-      this.$router.replace('/auth/login');
+      this.$router.replace({ name: 'auth-logout', query: { [LOGGED_OUT]: true } });
     },
     async handleDone() {
       try {
