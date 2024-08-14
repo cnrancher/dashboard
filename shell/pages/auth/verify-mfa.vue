@@ -2,7 +2,7 @@
 import BrandImage from '@shell/components/BrandImage';
 import { Banner } from '@components/Banner';
 import { mapGetters } from 'vuex';
-import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
+import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 
@@ -26,7 +26,7 @@ export default {
   },
 
   async asyncData({ route, redirect, store }) {
-    let firstLoginSetting, uiLoginLandscape, plSetting, brand, user;
+    let uiLoginLandscape, plSetting, brand, user;
 
     try {
       await store.dispatch('management/findAll', {
@@ -35,24 +35,21 @@ export default {
           load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
         },
       });
-      user = await this.$store.dispatch('rancher/findAll', {
-        type: NORMAN.USER,
-        opt:  { url: '/v3/users?me=true', load: _MULTI }
-      });
+      const v3User = store.getters['auth/v3User'];
 
-      if (!!user?.[0]) {
-        this.$store.dispatch('auth/gotUser', user[0]);
+      if (!v3User) {
+        user = await store.dispatch('rancher/findAll', {
+          type: NORMAN.USER,
+          opt:  { url: '/v3/users?me=true' }
+        });
+      } else {
+        user = [v3User];
       }
-      firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
+
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
       brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
     } catch (e) {
       // Older versions used Norman API to get these
-      firstLoginSetting = await store.dispatch('rancher/find', {
-        type: 'setting',
-        id:   SETTING.FIRST_LOGIN,
-        opt:  { url: `/v3/settings/${ SETTING.FIRST_LOGIN }` }
-      });
       plSetting = await store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.PL,
@@ -74,16 +71,14 @@ export default {
 
     return {
       vendor:           getVendor(),
-      firstLogin:       firstLoginSetting?.value === 'true',
       user,
-      uiLoginLandscape: uiLoginLandscape?.value,
-      isRecoveryCode:   false
+      uiLoginLandscape: uiLoginLandscape?.value
     };
   },
 
   data() {
     return {
-      product: getProduct(), user: [], firstLogin: false, errors: []
+      product: getProduct(), user: [], errors: [], vendor: '', uiLoginLandscape: '', isRecoveryCode: false
     };
   },
 

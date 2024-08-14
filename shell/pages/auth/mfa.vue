@@ -1,5 +1,5 @@
 <script>
-import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
+import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import Loading from '@shell/components/Loading';
@@ -22,10 +22,17 @@ export default {
           load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
         },
       });
-      user = await store.dispatch('rancher/findAll', {
-        type: NORMAN.USER,
-        opt:  { url: '/v3/users?me=true', load: _MULTI }
-      });
+      const v3User = store.getters['auth/v3User'];
+
+      if (!v3User) {
+        user = await store.dispatch('rancher/findAll', {
+          type: NORMAN.USER,
+          opt:  { url: '/v3/users?me=true' }
+        });
+      } else {
+        user = [v3User];
+      }
+
       pref = await store.dispatch('management/request', { url: `/v1/userpreferences/${ user?.[0]?.id }`, method: 'GET' });
       twoFactorAuthConfig = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
     } catch (e) {
