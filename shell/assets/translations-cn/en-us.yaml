@@ -3378,10 +3378,11 @@ logging:
     doc: Logging Operator Official documents
   extension:
     storage:
-      title: Storage
+      title: Container log directory configuration
       selectContainer: Select Container
-      mountPath: Container directory
+      mountPath: Container Log Directory
       mountFile: Container File Name
+      tips: For Pods with multiple containers, you can click the Select Containers button to select the containers from which you want to collect logs and configure the container log path.
   allWorkloadType:
     label: All Workload Types
 longhorn:
@@ -6664,6 +6665,18 @@ typeDescription:
   logging.banzaicloud.io.flow: A flow defines which logs to collect and filter as well as which output to send the logs. The flow is a namespaced resource, which means logs will only be collected from the namespace that the flow is deployed in.
   logging.banzaicloud.io.output: An output defines which logging providers that logs can be sent to. The output needs to be in the same namespace as the flow that is using it.
   group.principal: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
+  logging-extensions.banzaicloud.io.eventtailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-event-tailer/" target="_blank" rel="noopener noreferrer nofollow">Event-tailer</a> listens for Kubernetes events and transmits their changes to stdout, so the Logging operator can process them.
+  logging-extensions.banzaicloud.io.hosttailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-host-tailer/" target="_blank" rel="noopener noreferrer nofollow">Host-tailer</a> tails custom files and transmits their changes to stdout. This way the Logging operator can process them. Kubernetes host tailer allows you to tail logs like kubelet, audit logs, or the systemd journal from the nodes.
+  logging-extensions: |-
+    The Logging extensions part of the Logging operator solves the following problems:
+    <br>
+    1. Collect Kubernetes events to provide insight into what is happening inside a cluster, such as decisions made by the scheduler, or why some pods were evicted from the node.
+    <br>
+    2. Collect logs from the nodes like kubelet logs.
+    <br>
+    3. Collect logs from files on the nodes, for example, audit logs, or the systemd journal.
+    <br>
+    4. Collect logs from legacy application log files.
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,

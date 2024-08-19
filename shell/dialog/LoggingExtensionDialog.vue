@@ -264,6 +264,10 @@ export default {
       class="actions"
     >
       <Banner
+        color="info"
+        :label="t('logging.extension.storage.tips')"
+      />
+      <Banner
         v-for="(err, i) in errors"
         :key="i"
         color="error"

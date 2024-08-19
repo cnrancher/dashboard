@@ -3,6 +3,7 @@ import { mapGetters } from 'vuex';
 import ResourceTable from '@shell/components/ResourceTable';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import ResourceFetch from '@shell/mixins/resource-fetch';
+import TypeDescription from '@shell/components/TypeDescription';
 import {
   STATE, NAME as NAME_COL, NAMESPACE, TYPE, AGE
 } from '@shell/config/table-headers';
@@ -40,8 +41,10 @@ const $loadingResources = ($route, $store) => {
 
 export default {
   name:       'ListWorkload',
-  components: { ResourceTable, LabeledSelect },
-  mixins:     [ResourceFetch],
+  components: {
+    ResourceTable, LabeledSelect, TypeDescription
+  },
+  mixins: [ResourceFetch],
 
   props: {
     useQueryParamsForSimpleFiltering: {
@@ -198,6 +201,7 @@ export default {
 <template>
   <div>
     <header>
+      <TypeDescription resource="logging-extensions" />
       <div class="title">
         <h1 class="mb-0">
           Extension
