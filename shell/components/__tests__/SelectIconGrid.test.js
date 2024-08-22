@@ -15,7 +15,8 @@ describe('component: SelectIconGrid.vue', () => {
       propsData: { rows: [row] },
       mocks:     {
         $router: { push: routerPush },
-        $route:  { params: { cluster: CLUSTER } }
+        $route:  { params: { cluster: CLUSTER } },
+        $store:  { getters: { 'prefs/get': () => 10 } }
       }
     });
 

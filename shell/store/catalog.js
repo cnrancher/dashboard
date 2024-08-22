@@ -454,6 +454,117 @@ export const actions = {
       charts,
       errors: state.errors,
     });
+  },
+
+  async loadChartIndex(ctx, {
+    force, reset, inStore, repoNames
+  } = {}) {
+    const {
+      state, getters, rootGetters, commit, dispatch
+    } = ctx;
+
+    let promises = {};
+
+    // Installing an app? This is fine (in cluster store)
+    // Fetching list of cluster templates? This is fine (in management store)
+    // Installing a cluster template? This isn't fine (in cluster store as per installing app, but if there is no cluster we need to default to management)
+    if (!inStore) {
+      inStore = rootGetters['currentCluster'] ? rootGetters['currentProduct'].inStore : 'management';
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.CLUSTER_REPO) ) {
+      promises.cluster = dispatch(`${ inStore }/findAll`, { type: CATALOG.CLUSTER_REPO }, { root: true });
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.REPO) ) {
+      promises.namespaced = dispatch(`${ inStore }/findAll`, { type: CATALOG.REPO }, { root: true });
+    }
+
+    const hash = await allHash(promises);
+
+    // As per comment above, when there are no clusters this will be management. Store it such that it can be used for those cases
+    commit('setInStore', inStore);
+    hash.cluster = hash.cluster.filter((repo) => !(repo?.metadata?.annotations?.[CATALOG_ANNOTATIONS.HIDDEN_REPO] === 'true'));
+
+    commit('setRepos', hash);
+
+    const repos = getters['repos'];
+    const existingRepos = repos.filter((item) => repoNames.includes(item.metadata?.name));
+
+    if (!existingRepos.length === 0) {
+      return;
+    }
+    const errors = [];
+    let charts = state.charts;
+
+    if (reset) {
+      existingRepos.forEach((repo) => {
+        charts = removeRepoCharts(state.charts, repo);
+      });
+    }
+
+    const loaded = [];
+
+    promises = {};
+
+    for (const repo of existingRepos) {
+      if ((force === true || !getters.isLoaded(repo)) && repo.canLoad) {
+        console.info('Loading index for repo', repo.name, `(${ repo._key })`); // eslint-disable-line no-console
+        promises[repo._key] = repo.followLink('index');
+      }
+    }
+    const res = await allHashSettled(promises);
+
+    for ( const key of Object.keys(res) ) {
+      const obj = res[key];
+      const repo = findBy(repos, '_key', key);
+
+      if ( obj.status === 'rejected' ) {
+        errors.push(stringify(obj.reason));
+        continue;
+      }
+      for ( const k in obj.value.entries ) {
+        for ( const entry of obj.value.entries[k] ) {
+          addChart(ctx, charts, entry, repo);
+        }
+      }
+
+      loaded.push(repo);
+    }
+
+    commit('setCharts', {
+      charts,
+      errors,
+      loaded,
+    });
+  },
+  async loadRepos(ctx, { inStore } = {}) {
+    const { rootGetters, commit, dispatch } = ctx;
+
+    const promises = {};
+
+    // Installing an app? This is fine (in cluster store)
+    // Fetching list of cluster templates? This is fine (in management store)
+    // Installing a cluster template? This isn't fine (in cluster store as per installing app, but if there is no cluster we need to default to management)
+    if (!inStore) {
+      inStore = rootGetters['currentCluster'] ? rootGetters['currentProduct'].inStore : 'management';
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.CLUSTER_REPO) ) {
+      promises.cluster = dispatch(`${ inStore }/findAll`, { type: CATALOG.CLUSTER_REPO }, { root: true });
+    }
+
+    if ( rootGetters[`${ inStore }/schemaFor`](CATALOG.REPO) ) {
+      promises.namespaced = dispatch(`${ inStore }/findAll`, { type: CATALOG.REPO }, { root: true });
+    }
+
+    const hash = await allHash(promises);
+
+    // As per comment above, when there are no clusters this will be management. Store it such that it can be used for those cases
+    commit('setInStore', inStore);
+    hash.cluster = hash.cluster.filter((repo) => !(repo?.metadata?.annotations?.[CATALOG_ANNOTATIONS.HIDDEN_REPO] === 'true'));
+
+    commit('setRepos', hash);
   }
 };
 
@@ -469,6 +580,18 @@ export function parseKey(key) {
     repoName:  parts[1],
     chartName: parts[2],
   };
+}
+
+function removeRepoCharts(map, repo) {
+  const repoType = (repo.type === CATALOG.CLUSTER_REPO ? 'cluster' : 'namespace');
+  const repoName = repo.metadata.name;
+  const key = `${ repoType }/${ repoName }/`;
+
+  return Object.keys(map).filter((k) => !k.startsWith(key)).reduce((t, c) => {
+    t[c] = map[c];
+
+    return t;
+  }, {});
 }
 
 function addChart(ctx, map, chart, repo) {
