@@ -77,6 +77,10 @@ export default {
       type:    Boolean,
       default: true
     },
+    autoscroll: {
+      type:    Boolean,
+      default: true
+    }
   },
 
   methods: {
@@ -223,7 +227,7 @@ export default {
       v-bind="$attrs"
       class="inline"
       :class="{'select-input-view': mode === 'view'}"
-      :autoscroll="true"
+      :autoscroll="autoscroll"
       :append-to-body="appendToBody"
       :calculate-position="positionDropdown"
       :disabled="isView || disabled"

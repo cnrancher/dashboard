@@ -35,7 +35,8 @@ export default {
   },
 
   async fetch() {
-    await this.$store.dispatch('catalog/load', { force: true, reset: true });
+    // await this.$store.dispatch('catalog/load', { force: true, reset: true });
+    await this.$store.dispatch('catalog/loadRepos');
 
     const query = this.$route.query;
 
@@ -44,6 +45,7 @@ export default {
     this.showHidden = query[HIDDEN] === _FLAGGED;
     this.category = query[CATEGORY] || '';
     this.allRepos = this.areAllEnabled();
+    await this.loadRepoCharts();
   },
 
   data() {
@@ -64,7 +66,8 @@ export default {
           label: 'Featured',
           value: 'featured'
         }
-      ]
+      ],
+      loadedRepoCharts: [],
     };
   },
 
@@ -88,6 +91,7 @@ export default {
           color:   r.color,
           weight:  ( r.isRancher ? 1 : ( r.isPartner ? 2 : 3 ) ),
           enabled: !this.hideRepos.includes(r._key),
+          name:    r.metadata.name
         };
       });
 
@@ -343,6 +347,26 @@ export default {
         btnCb(false);
       }
     },
+
+    loadRepoCharts() {
+      const repoNames = this.repoOptions.filter((item) => item.enabled === true).map((item) => item.name);
+      const loadedRepoCharts = this.loadedRepoCharts ?? [];
+      const willLoadRepoNames = repoNames.filter((item) => !loadedRepoCharts.includes(item));
+
+      if (willLoadRepoNames.length === 0) {
+        return;
+      }
+      this.loadedRepoCharts.push(...willLoadRepoNames);
+
+      return this.$store.dispatch('catalog/loadChartIndex', {
+        force: true, reset: true, repoNames: willLoadRepoNames
+      });
+    },
+    handleRepoOptionsClose() {
+      this.$nextTick(() => {
+        this.loadRepoCharts();
+      });
+    }
   },
 };
 </script>
@@ -391,7 +415,9 @@ export default {
         :value="flattenedRepoNames"
         class="checkbox-select"
         :close-on-select="false"
+        :autoscroll="false"
         @option:selecting="$event.all ? toggleAll(!$event.enabled) : toggleRepo($event, !$event.enabled) "
+        @close="handleRepoOptionsClose"
       >
         <template #selected-option="selected">
           {{ selected.label }}
