@@ -6600,16 +6600,6 @@ typeDescription:
   group.principal: 爲組分配全局角色的操作，僅適用於支持組的外部驗證提供程序。本地授權不支持組。
   logging-extensions.banzaicloud.io.eventtailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-event-tailer/" target="_blank" rel="noopener noreferrer nofollow">Event-tailer</a> 監聽 Kubernetes 事件並將其變化傳輸到 stdout，以便 Logging Operator 可以處理它們。
   logging-extensions.banzaicloud.io.hosttailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-host-tailer/" target="_blank" rel="noopener noreferrer nofollow">Host-tailer</a> 跟蹤自定義文件並將其變化傳輸到 stdout。這樣 Logging Operator 就可以處理它們。Kubernetes host tailer 允許您跟蹤來自節點的日誌，例如 kubelet、審計日誌或 systemd 日誌。
-  logging-extensions: |-
-    Logging operator 的 Logging extensions 部分解決了以下問題：
-    <br>
-    1. 收集 Kubernetes 事件來深入瞭解集羣內部發生的情況，例如調度程序做出的決策，或者某些 pod 被驅逐出節點的原因。
-    <br>
-    2. 收集節點日誌 例如：kubelet 日誌。
-    <br>
-    3. 收集節點上的文件中的日誌，例如審計日誌或 systemd 日誌。
-    <br>
-    4. 收集遺留應用程序日誌文件中的日誌。
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,

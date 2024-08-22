@@ -6667,16 +6667,6 @@ typeDescription:
   group.principal: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
   logging-extensions.banzaicloud.io.eventtailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-event-tailer/" target="_blank" rel="noopener noreferrer nofollow">Event-tailer</a> listens for Kubernetes events and transmits their changes to stdout, so the Logging operator can process them.
   logging-extensions.banzaicloud.io.hosttailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-host-tailer/" target="_blank" rel="noopener noreferrer nofollow">Host-tailer</a> tails custom files and transmits their changes to stdout. This way the Logging operator can process them. Kubernetes host tailer allows you to tail logs like kubelet, audit logs, or the systemd journal from the nodes.
-  logging-extensions: |-
-    The Logging extensions part of the Logging operator solves the following problems:
-    <br>
-    1. Collect Kubernetes events to provide insight into what is happening inside a cluster, such as decisions made by the scheduler, or why some pods were evicted from the node.
-    <br>
-    2. Collect logs from the nodes like kubelet logs.
-    <br>
-    3. Collect logs from files on the nodes, for example, audit logs, or the systemd journal.
-    <br>
-    4. Collect logs from legacy application log files.
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,

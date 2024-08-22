@@ -55,7 +55,7 @@ export function init(store) {
   });
 
   virtualType({
-    label:      'Extension',
+    label:      'ContainerTailers',
     namespaced: false,
     icon:       'compass',
     name:       'logging-extensions',
