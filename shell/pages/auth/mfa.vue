@@ -1,5 +1,5 @@
 <script>
-import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
+import { _MULTI } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import Loading from '@shell/components/Loading';
@@ -18,9 +18,7 @@ export default {
     try {
       await store.dispatch('management/findAll', {
         type: MANAGEMENT.SETTING,
-        opt:  {
-          load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
-        },
+        opt:  { url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false },
       });
 
       const v3User = store.getters['auth/v3User'];

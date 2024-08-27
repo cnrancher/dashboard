@@ -2,7 +2,7 @@
 import BrandImage from '@shell/components/BrandImage';
 import { Banner } from '@components/Banner';
 import { mapGetters } from 'vuex';
-import { _ALL_IF_AUTHED, _MULTI } from '@shell/plugins/dashboard-store/actions';
+import { _MULTI } from '@shell/plugins/dashboard-store/actions';
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { LOGGED_OUT } from '@shell/config/query-params';
@@ -32,9 +32,7 @@ export default {
     try {
       await store.dispatch('management/findAll', {
         type: MANAGEMENT.SETTING,
-        opt:  {
-          load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
-        },
+        opt:  { url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false },
       });
 
       const v3User = store.getters['auth/v3User'];
