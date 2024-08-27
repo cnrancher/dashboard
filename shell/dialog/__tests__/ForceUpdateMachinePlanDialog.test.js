@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import ForceUpdateMachinePlanDialog from '@shell/dialog/ForceUpdateMachinePlanDialog.vue';
-import { cleanHtmlDirective } from '@shell/plugins/clean-html-directive';
+import cleanHtmlDirective from '@shell/plugins/clean-html-directive';
 
 describe('component: ForceUpdateMachinePlanDialog', () => {
   it('there should be a prompt message', () => {

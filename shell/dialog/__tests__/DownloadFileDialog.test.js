@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { Banner } from '@components/Banner';
 import DownloadFileDialog from '@shell/dialog/DownloadFileDialog.vue';
-import { cleanHtmlDirective } from '@shell/plugins/clean-html-directive';
+import cleanHtmlDirective from '@shell/plugins/clean-html-directive';
 
 describe('component: DownloadFileDialog', () => {
   it('should clear old error message after verifying the connection', async() => {

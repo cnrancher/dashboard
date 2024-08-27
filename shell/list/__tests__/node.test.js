@@ -1,5 +1,5 @@
 import Node from '@shell/list/node.vue';
-import { COLUMN_BREAKPOINTS } from '@shell/components/SortableTable/index.vue';
+import { COLUMN_BREAKPOINTS } from '@shell/types/store/type-map';
 
 describe('component: list/node', () => {
   it('should contains cpu and memory header', () => {

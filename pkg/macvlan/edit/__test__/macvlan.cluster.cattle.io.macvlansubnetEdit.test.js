@@ -1,8 +1,8 @@
 import MacvlanSubnet from '../macvlan.cluster.cattle.io.macvlansubnet.vue';
 import { mount } from '@vue/test-utils';
 import { _CREATE } from '@shell/config/query-params';
-import { cleanHtmlDirective } from '@shell/plugins/clean-html-directive';
-import { VCleanTooltip } from '@shell/plugins/clean-tooltip-directive';
+import cleanHtmlDirective from '@shell/plugins/clean-html-directive';
+import VCleanTooltip from '@shell/plugins/clean-tooltip-directive';
 
 const emptyForm = {
   apiVersion: 'macvlan.cluster.cattle.io/v1',

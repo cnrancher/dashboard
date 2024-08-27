@@ -2,8 +2,8 @@
 import Aliyunecs from '@shell/machine-config/aliyunecs.vue';
 import { getters } from '@shell/store/aliyun.js';
 import { mount } from '@vue/test-utils';
-import { cleanHtmlDirective } from '@shell/plugins/clean-html-directive';
-import { VCleanTooltip } from '@shell/plugins/clean-tooltip-directive';
+import cleanHtmlDirective from '@shell/plugins/clean-html-directive';
+import VCleanTooltip from '@shell/plugins/clean-tooltip-directive';
 
 describe('component: aliyunecs', () => {
   it('should have input and select', () => {
