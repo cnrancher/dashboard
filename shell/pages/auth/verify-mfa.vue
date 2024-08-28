@@ -21,24 +21,18 @@ import { Checkbox } from '@components/Form/Checkbox';
 
 export default {
   name:       'VerfyMFA',
-  layout:     'unauthenticated',
   components: {
     BrandImage, Banner, VerifyCode, Checkbox
   },
 
-  async asyncData({ route, redirect, store }) {
+  async fetch() {
     let uiLoginLandscape, plSetting, brand, user;
 
     try {
-      await store.dispatch('management/findAll', {
-        type: MANAGEMENT.SETTING,
-        opt:  { url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false },
-      });
-
-      const v3User = store.getters['auth/v3User'];
+      const v3User = this.$store.getters['auth/v3User'];
 
       if (!v3User) {
-        user = await store.dispatch('rancher/findAll', {
+        user = await this.$store.dispatch('rancher/findAll', {
           type: NORMAN.USER,
           opt:  { url: '/v3/users?me=true', load: _MULTI }
         });
@@ -46,16 +40,16 @@ export default {
         user = [v3User];
       }
 
-      plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
-      brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
+      plSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
+      brand = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
     } catch (e) {
       // Older versions used Norman API to get these
-      plSetting = await store.dispatch('rancher/find', {
+      plSetting = await this.$store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.PL,
         opt:  { url: `/v3/settings/${ SETTING.PL }` }
       });
-      brand = await store.dispatch('rancher/find', {
+      brand = await this.$store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.BRAND,
         opt:  { url: `/v3/settings/${ SETTING.BRAND }` }
@@ -68,12 +62,9 @@ export default {
     if (brand?.value?.length && brand.value !== getBrand()) {
       setBrand(brand.value);
     }
-
-    return {
-      vendor:           getVendor(),
-      user,
-      uiLoginLandscape: uiLoginLandscape?.value
-    };
+    this.vendor = getVendor();
+    this.user = user;
+    this.uiLoginLandscape = uiLoginLandscape?.value;
   },
 
   data() {

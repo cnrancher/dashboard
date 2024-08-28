@@ -157,7 +157,7 @@ export default [
       },
       {
         path:      '/auth/verify-cas',
-        component: () => interopDefault(import('@shell/pages/auth/verify-cas.vue' /* webpackChunkName: "pages/auth/verify-cas" */)),
+        component: () => interopDefault(import('@shell/pages/auth/verify-cas.vue')),
         name:      'auth-verify-cas'
       },
       {
