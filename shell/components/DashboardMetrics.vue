@@ -118,6 +118,7 @@ export default {
         :range="graphOptions.range"
         :url="gpuSummaryUrl"
         :vars="gpuVars"
+        :modify-prefix="modifyPrefix"
       />
     </div>
   </div>

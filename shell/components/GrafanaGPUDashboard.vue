@@ -23,6 +23,12 @@ export default {
       type:    String,
       default: null
     },
+    // change the grafana url prefix for local clusters in certain monitoring versions
+    // project monitoring (projectHelmCharts) supply a grafana url that never needs to be modified in this way
+    modifyPrefix: {
+      type:    Boolean,
+      default: true
+    },
     backgroundColor: {
       type:    String,
       default: '#1b1c21'
@@ -34,13 +40,18 @@ export default {
   },
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-    const res = await this.$store.dispatch(`${ inStore }/find`, { type: CATALOG.APP, id: 'cattle-monitoring-system/rancher-monitoring' });
 
-    this.monitoringVersion = res?.currentVersion;
+    if (this.$store.getters[`${ inStore }/canList`](CATALOG.APP)) {
+      try {
+        const res = await this.$store.dispatch(`${ inStore }/find`, { type: CATALOG.APP, id: 'cattle-monitoring-system/rancher-monitoring' });
+
+        this.monitoringVersion = res?.currentVersion;
+      } catch (err) {}
+    }
   },
   data() {
     return {
-      loading: false, error: false, interval: null, initialUrl: this.computeUrl(), errorTimer: null, monitoringVersion: null
+      loading: false, error: false, interval: null, errorTimer: null, monitoringVersion: ''
     };
   },
   computed: {
@@ -103,10 +114,12 @@ export default {
       this.interval = setInterval(() => {
         try {
           const graphWindow = this.$refs.frame?.contentWindow;
-          const errorElements = graphWindow.document.getElementsByClassName('alert-error');
-          const errorCornerElements = graphWindow.document.getElementsByClassName('panel-info-corner--error');
-          const panelInFullScreenElements = graphWindow.document.getElementsByClassName('panel-in-fullscreen');
-          const panelContainerElements = graphWindow.document.getElementsByClassName('panel-container');
+
+          // Note. getElementsByClassName won't work, following a grafana bump class names are now unique - for example css-2qng6u-panel-container
+          const errorElements = graphWindow.document.querySelectorAll('[class$="alert-error');
+          const errorCornerElements = graphWindow.document.querySelectorAll('[class$="panel-info-corner--error');
+          const panelInFullScreenElements = graphWindow.document.querySelectorAll('[class$="panel-in-fullscreen');
+          const panelContainerElements = graphWindow.document.querySelectorAll('[class$="panel-container');
           const error = errorElements.length > 0 || errorCornerElements.length > 0;
           const loaded = panelInFullScreenElements.length > 0 || panelContainerElements.length > 0;
           const errorMessageElms = graphWindow.document.getElementsByTagName('pre');
@@ -138,7 +151,7 @@ export default {
       const clusterId = this.$store.getters['currentCluster'].id;
       const params = this.computeParams();
 
-      return computeDashboardUrl(this.monitoringVersion, embedUrl, clusterId, params);
+      return computeDashboardUrl(this.monitoringVersion, embedUrl, clusterId, params, this.modifyPrefix);
     },
     computeParams() {
       const params = {};
@@ -242,7 +255,7 @@ export default {
       v-show="!error"
       ref="frame"
       :class="{loading, frame: true}"
-      :src="initialUrl"
+      :src="currentUrl"
       frameborder="0"
       scrolling="no"
     />
@@ -257,7 +270,7 @@ export default {
       <a
         :href="grafanaUrl"
         target="_blank"
-        rel="noopener noreferrer nofollow"
+        rel="noopener nofollow"
       >{{ t('grafanaDashboard.grafana') }} <i class="icon icon-external-link" /></a>
     </div>
   </div>
