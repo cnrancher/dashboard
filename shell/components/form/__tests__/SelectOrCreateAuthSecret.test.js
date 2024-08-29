@@ -10,8 +10,9 @@ describe('component: SelectOrCreateAuthSecret, computed: options', () => {
       metadata:  { namespace: 'test', annotations: { 'display-name': base64Encode(host) } }
     };
     const localThis = {
-      t:          (t) => t,
-      allSecrets: [item]
+      t:           (t) => t,
+      allSecrets:  [item],
+      secretTypes: []
     };
 
     const options = SelectOrCreateAuthSecret.computed.options.call(localThis);

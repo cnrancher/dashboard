@@ -34,8 +34,9 @@ describe('page: cluster tools', () => {
               return true;
             }
           },
-          currentCluster: { id: 'cluster', status: { provider: 'provider' } },
-          'i18n/t':       jest.fn(),
+          currentCluster:  { id: 'cluster', status: { provider: 'provider' } },
+          'i18n/t':        jest.fn(),
+          'catalog/repos': []
         }
       }
     },

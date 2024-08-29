@@ -1,5 +1,9 @@
 import Account from '@shell/pages/account/index.vue' ;
 
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
+
 describe('page: account', () => {
   it('should return the correct base path', () => {
     const href = 'https://test.com/dashboard/';

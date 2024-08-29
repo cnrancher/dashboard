@@ -10,13 +10,13 @@ jest.mock('@shell/utils/aes-encrypt', () => {
 
 describe('component: auth/login/ldap', () => {
   it('shold not encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'true' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'true' })) } } };
 
     ldap.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledTimes(0);
   });
   it('shold encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'false' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'false' })) } } };
 
     ldap.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledWith('test');

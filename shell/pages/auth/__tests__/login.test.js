@@ -7,16 +7,18 @@ jest.mock('@shell/utils/aes-encrypt', () => {
     default:    jest.fn()
   };
 });
-
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
 describe('page: auth/login', () => {
   it('shold not encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'true' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'true' })) } } };
 
     login.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledTimes(0);
   });
   it('shold encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'false' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'false' })) } } };
 
     login.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledWith('test');

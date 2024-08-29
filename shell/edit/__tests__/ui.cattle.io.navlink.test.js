@@ -19,7 +19,8 @@ describe('navlink: support labels and iframe', () => {
             'type-map/optionsFor': () => {},
             'i18n/t':              (t) => t,
             currentProduct:        { name: 'explorer' }
-          }
+          },
+          dispatch: jest.fn()
         }
       }
     });
@@ -45,7 +46,8 @@ describe('navlink: support labels and iframe', () => {
             'type-map/optionsFor': () => {},
             'i18n/t':              (t) => t,
             currentProduct:        { name: 'explorer' }
-          }
+          },
+          dispatch: jest.fn()
         }
       }
     });

@@ -2,9 +2,9 @@ import Masthead from '@shell/components/ResourceDetail/Masthead.vue';
 import { mount } from '@vue/test-utils';
 
 describe('test navlink name nowrap', () => {
-  it('should have name-display class', () => {
+  it('should have mastehead-resource-title class', () => {
     const wrapper = mount(Masthead, {
-      stubs: { 'nuxt-link': true },
+      stubs: { 'nuxt-link': true, 'router-link': true },
       mocks: {
         $store: {
           getters: {
@@ -13,13 +13,16 @@ describe('test navlink name nowrap', () => {
             'type-map/labelFor':   () => 'navlink',
             'type-map/optionsFor': () => {},
             'i18n/t':              (t) => t,
-            currentProduct:        { name: 'explorer' }
+            currentProduct:        { name: 'explorer' },
+            'i18n/withFallback':   jest.fn(),
+            currentCluster:        {},
+            isExplorer:            false
           }
         }
       }
     });
 
-    const inputWraps = wrapper.findAll('[class="name-display"]');
+    const inputWraps = wrapper.findAll('[class="mastehead-resource-title"]');
 
     expect(inputWraps).toHaveLength(1);
   });

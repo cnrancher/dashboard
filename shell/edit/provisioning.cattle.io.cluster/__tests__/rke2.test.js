@@ -15,7 +15,7 @@ describe('component: rke2, computed: generateName', () => {
     expect(rke2.computed.generateName.call(localThis)).toBe(localThis.registryHost);
   });
 
-  describe('component: rke2, CustomContainerCongig', () => {
+  describe('component: rke2, CustomContainerConfig', () => {
     it('should contain component CustomContainerdConfig', () => {
       const mockAgentArgs = { 'cloud-provider-name': { options: [], profile: { options: [{ anything: 'yes' }] } } };
       const value = {
@@ -106,7 +106,8 @@ describe('component: rke2, computed: generateName', () => {
               'i18n/t':                         jest.fn(),
               'i18n/withFallback':              jest.fn(),
               'plugins/cloudProviderForDriver': jest.fn()
-            }
+            },
+            dispatch: jest.fn()
           }
         }
 

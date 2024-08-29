@@ -31,6 +31,7 @@ describe('page: cluster dashboard', () => {
           'cluster/all':       jest.fn(),
           'i18n/exists':       jest.fn(),
           'i18n/t':            (label: string) => label === 'generic.provisioning' ? '—' : jest.fn()(),
+          'management/all':    jest.fn(() => []),
         }
       }
     },

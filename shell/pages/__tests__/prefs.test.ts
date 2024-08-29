@@ -1,6 +1,10 @@
 import Preferences from '@shell/pages/prefs.vue';
 import { shallowMount } from '@vue/test-utils';
 
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
+
 describe('page: prefs should', () => {
   it.each([
     ['Fri, May 5 2023', 0],

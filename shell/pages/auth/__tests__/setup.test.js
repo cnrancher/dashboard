@@ -13,15 +13,19 @@ jest.mock('@shell/store/type-map', () => {
   return { applyProducts: jest.fn() };
 });
 
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
+
 describe('page: auth/setup', () => {
   it('shold not encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'true' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'true' })) } } };
 
     setup.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledTimes(0);
   });
   it('shold encrypt password', () => {
-    const localThis = { disabledEncryption: { value: 'false' } };
+    const localThis = { $store: { getters: { 'management/byId': jest.fn(() => ({ value: 'false' })) } } };
 
     setup.methods.encryptPassword.call(localThis, 'test');
     expect(AESEncrypt).toHaveBeenCalledWith('test');
@@ -35,9 +39,10 @@ describe('page: auth/setup', () => {
       mustChangePassword: true,
       passwordStrength:   3,
       isFirstLogin:       false,
-      $store:             { dispatch: jest.fn() },
+      $store:             { dispatch: jest.fn(), getters: { 'management/byId': jest.fn() } },
       v3User:             {},
-      encryptPassword:    encryptPasswordMock
+      encryptPassword:    encryptPasswordMock,
+      done:               jest.fn(),
     };
 
     const btnCbMock = jest.fn();
@@ -65,7 +70,8 @@ describe('page: auth/setup', () => {
           current:            '',
           product:            '',
         };
-      }
+      },
+      mocks: { $route: { query: {} }, $fetchState: {} }
     });
 
     expect(wrapper.findComponent(PasswordStrength).exists()).toBe(true);
