@@ -102,10 +102,10 @@
       </Tab>
       <Tab
         v-for="(p, i) in value.spec.pools"
-        :key="p[idKey] ?? p.name"
+        :key="p[idKey] ?? i"
         :label="p.name ? p.name : 'pool-' + i"
         :name="'name-' + (p[idKey] ?? p.name)"
-        :weight="p[idKey]"
+        :weight="-p[idKey]"
         :error="!!p[errorKey]"
       >
         <Tabbed :side-tabs="true">
@@ -474,6 +474,9 @@ export default {
     if (this.value.metadata.labels.f5cr !== 'true') {
       this.$set(this.value.metadata.labels, 'f5cr', 'true');
     }
+    this.value?.spec?.pools?.forEach((p) => {
+      p[this.idKey] = this.genId();
+    });
 
     this.registerBeforeHook(this.willSave, 'willSave');
   },
