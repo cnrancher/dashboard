@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - v2.9.*
+    branches-ignore:
+      - release-2.9.1-cn # PANDARIA: temporarily disable workflow
 
 jobs:
   build-validation:

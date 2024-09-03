@@ -4,10 +4,14 @@ on:
     branches:
       - master
       - 'release-*'
+    branches-ignore:
+      - release-2.9.1-cn # PANDARIA: temporarily disable workflow
   pull_request:
     branches:
       - master
       - 'release-*'
+    branches-ignore:
+      - release-2.9.1-cn # PANDARIA: temporarily disable workflow
   workflow_dispatch:
     inputs:
       environment:

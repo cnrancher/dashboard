@@ -5,6 +5,8 @@ on:
       - master
       - 'release-*'
       - '*-dev'
+    branches-ignore:
+      - release-2.9.1-cn
 
 jobs:
   build-validation:
