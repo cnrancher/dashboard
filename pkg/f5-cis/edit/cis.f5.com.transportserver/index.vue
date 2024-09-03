@@ -33,7 +33,7 @@
           <Tab
             name="labels"
             label-key="generic.labelsAndAnnotations"
-            :weight="99"
+            :weight="98"
           >
             <Labels
               v-model="value"
@@ -43,7 +43,7 @@
           <Tab
             :label="t('f5cis.transportServer.titles.general')"
             name="general"
-            :weight="98"
+            :weight="99"
             :error="tabErrors.general"
           >
             <div class="row mb-20">
