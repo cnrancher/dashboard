@@ -33,7 +33,7 @@
           <Tab
             name="labels"
             label-key="generic.labelsAndAnnotations"
-            :weight="99"
+            :weight="97"
           >
             <Labels
               v-model="value"
@@ -62,7 +62,7 @@
           <Tab
             name="tls"
             label-key="f5cis.tlsProfile.titles.tls"
-            :weight="97"
+            :weight="99"
           >
             <div class="row mb-20">
               <div class="col span-6">
