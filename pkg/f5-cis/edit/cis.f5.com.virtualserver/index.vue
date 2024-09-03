@@ -33,7 +33,7 @@
           <Tab
             name="labels"
             label-key="generic.labelsAndAnnotations"
-            :weight="99"
+            :weight="98"
           >
             <Labels
               v-model="value"
@@ -43,7 +43,7 @@
           <Tab
             :label="t('f5cis.virtualServer.titles.general')"
             name="general"
-            :weight="98"
+            :weight="99"
             :error="tabErrors.general"
           >
             <div class="row mb-20">
@@ -105,7 +105,7 @@
         :key="p[idKey] ?? p.name"
         :label="p.name ? p.name : 'pool-' + i"
         :name="'name-' + (p[idKey] ?? p.name)"
-        :weight="-p[idKey]"
+        :weight="p[idKey]"
         :error="!!p[errorKey]"
       >
         <Tabbed :side-tabs="true">
