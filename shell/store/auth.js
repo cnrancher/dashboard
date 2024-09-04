@@ -416,7 +416,7 @@ export const actions = {
   },
 
   async logout({
-    dispatch, commit, getters, rootState
+    dispatch, commit, getters, rootState, state
   }, options = {}) {
     // So, we only do this check if auth has been initialized.
     //
