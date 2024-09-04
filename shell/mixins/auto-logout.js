@@ -64,8 +64,6 @@ export default {
   },
 
   mounted() {
-    if ( process.client ) {
-      this.$_init();
-    }
+    this.$_init();
   },
 };
