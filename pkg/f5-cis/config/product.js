@@ -1,7 +1,5 @@
 
-import {
-  HOST, IPAMVS_LABEL, VIRTUAL_SERVER_ADDRESS, DOMAIN_NAME, CREATED_ON, STATUS
-} from './table-headers.js';
+import { HOST, VIRTUAL_SERVER_ADDRESS, DOMAIN_NAME, STATUS } from './table-headers.js';
 import { AGE, NAME } from '@shell/config/table-headers';
 
 export function init(plugin, store) {
@@ -98,13 +96,13 @@ export function init(plugin, store) {
   ]);
 
   headers(ExternalDNS, [
+    NAME,
     DOMAIN_NAME,
     AGE,
-    CREATED_ON
   ]);
 
   headers(IngressLink, [
-    IPAMVS_LABEL,
+    NAME,
     AGE
   ]);
 }
