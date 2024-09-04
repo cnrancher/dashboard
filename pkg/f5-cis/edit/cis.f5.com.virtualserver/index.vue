@@ -49,17 +49,16 @@
             <div class="row mb-20">
               <div class="col span-6">
                 <LabeledInput
-                  v-model="value.spec.virtualServerAddress "
+                  v-model="value.spec.virtualServerName"
                   :mode="mode"
-                  :label="t('f5cis.virtualServer.form.virtualServerAddress.label')"
+                  :label="t('f5cis.virtualServer.form.virtualServerName.label')"
                 />
               </div>
               <div class="col span-6">
                 <LabeledInput
-                  v-model.number="value.spec.virtualServerHTTPPort"
-                  type="number"
-                  :label="t('f5cis.virtualServer.form.virtualServerHTTPPort.label')"
+                  v-model="value.spec.virtualServerAddress "
                   :mode="mode"
+                  :label="t('f5cis.virtualServer.form.virtualServerAddress.label')"
                 />
               </div>
             </div>
@@ -74,9 +73,10 @@
               </div>
               <div class="col span-6">
                 <LabeledInput
-                  v-model="value.spec.virtualServerName"
+                  v-model.number="value.spec.virtualServerHTTPPort"
+                  type="number"
+                  :label="t('f5cis.virtualServer.form.virtualServerHTTPPort.label')"
                   :mode="mode"
-                  :label="t('f5cis.virtualServer.form.virtualServerName.label')"
                 />
               </div>
             </div>

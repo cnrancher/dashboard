@@ -48,27 +48,10 @@
           >
             <div class="row mb-20">
               <div class="col span-6">
-                <LabeledSelect
-                  v-model="value.spec.type"
-                  :label="t('f5cis.transportServer.form.type.label')"
-                  :options="typeOptions"
-                  :mode="mode"
-                />
-              </div>
-              <div class="col span-6">
                 <LabeledInput
-                  v-model="value.spec.host"
-                  :label="t('f5cis.transportServer.form.host.label')"
+                  v-model="value.spec.virtualServerName"
                   :mode="mode"
-                />
-              </div>
-            </div>
-            <div class="row mb-20">
-              <div class="col span-6">
-                <LabeledInput
-                  v-model="value.spec.ipamLabel"
-                  :label="t('f5cis.transportServer.form.ipamLabel.label')"
-                  :mode="mode"
+                  :label="t('f5cis.transportServer.form.virtualServerName.label')"
                 />
               </div>
               <div class="col span-6">
@@ -91,20 +74,35 @@
               </div>
               <div class="col span-6">
                 <LabeledInput
-                  v-model="value.spec.virtualServerName"
-                  :mode="mode"
-                  :label="t('f5cis.transportServer.form.virtualServerName.label')"
-                />
-              </div>
-            </div>
-            <div class="row mb-20">
-              <div class="col span-6">
-                <LabeledInput
                   v-model.number="value.spec.virtualServerPort"
                   required
                   type="number"
                   :mode="mode"
                   :label="t('f5cis.transportServer.form.virtualServerPort.label')"
+                />
+              </div>
+            </div>
+            <div class="row mb-20">
+              <!-- <div class="col span-6">
+                <LabeledInput
+                  v-model="value.spec.ipamLabel"
+                  :label="t('f5cis.transportServer.form.ipamLabel.label')"
+                  :mode="mode"
+                />
+              </div> -->
+              <div class="col span-6">
+                <LabeledSelect
+                  v-model="value.spec.type"
+                  :label="t('f5cis.transportServer.form.type.label')"
+                  :options="typeOptions"
+                  :mode="mode"
+                />
+              </div>
+              <div class="col span-6">
+                <LabeledInput
+                  v-model="value.spec.host"
+                  :label="t('f5cis.transportServer.form.host.label')"
+                  :mode="mode"
                 />
               </div>
             </div>
@@ -335,7 +333,7 @@ const specTemplate = {
   allowSourceRange:     [],
   botDefense:           '',
   host:                 '',
-  ipamLabel:            '',
+  // ipamLabel:            '',
   mode:                 'standard', // standard performance
   pool:                 poolTemplate,
   virtualServerAddress: '',
