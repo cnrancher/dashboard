@@ -320,19 +320,7 @@ export default {
       });
 
       return appBar;
-    },
-
-    footerText() {
-      const textSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
-
-      return textSetting;
-    },
-
-    footerUrl() {
-      const urlSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
-
-      return urlSetting;
-    },
+    }
   },
 
   watch: {
@@ -906,20 +894,6 @@ export default {
             </router-link>
           </div>
         </div>
-        <div
-          v-if="footerText && footerText.value"
-          class="footer-banner"
-        >
-          <div v-if="footerUrl && footerUrl.value">
-            <a
-              :href="footerUrl.value"
-              target="_blank"
-            >{{ footerText.value }}</a>
-          </div>
-          <div v-else>
-            {{ footerText.value }}
-          </div>
-        </div>
       </div>
     </transition>
   </div>
@@ -1438,13 +1412,6 @@ export default {
 
       .version {
         cursor: pointer;
-      }
-    }
-    .footer-banner {
-      margin: 0 20px 20px 20px;
-
-      > * {
-        color: var(--link);
       }
     }
   }

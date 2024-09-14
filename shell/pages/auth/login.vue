@@ -51,16 +51,15 @@ export default {
       err:                this.$route.query.err,
       showLocaleSelector: !process.env.loginLocaleSelector || process.env.loginLocaleSelector === 'true',
 
-      hasLocal:            false,
-      showLocal:           false,
-      providers:           [],
-      providerComponents:  [],
-      customLoginError:    {},
-      firstLogin:          false,
-      vendor:              getVendor(),
-      cooldownTime:        0,
-      cooldownTimer:       null,
-      twoFactorAuthConfig: null
+      hasLocal:           false,
+      showLocal:          false,
+      providers:          [],
+      providerComponents: [],
+      customLoginError:   {},
+      firstLogin:         false,
+      vendor:             getVendor(),
+      cooldownTime:       0,
+      cooldownTimer:      null,
     };
   },
 
@@ -143,9 +142,7 @@ export default {
   },
 
   async fetch() {
-    const {
-      firstLoginSetting, disabledEncryption, footerText, footerUrl
-    } = await this.loadInitialSettings();
+    const { firstLoginSetting, disabledEncryption } = await this.loadInitialSettings();
     const { value } = await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.BANNERS });
     const drivers = await this.$store.dispatch('auth/getAuthProviders');
     const providers = sortBy(drivers.map((x) => x.id), ['id']);
@@ -170,8 +167,6 @@ export default {
     });
 
     this.disabledEncryption = disabledEncryption;
-    this.footerText = footerText;
-    this.footerUrl = footerUrl;
 
     this.$nextTick(() => {
       this.focusSomething();
@@ -180,7 +175,7 @@ export default {
 
   methods: {
     async loadInitialSettings() {
-      let firstLoginSetting, plSetting, brand, disabledEncryption, footerText, footerUrl;
+      let firstLoginSetting, plSetting, brand, disabledEncryption;
 
       // Load settings.
       // For newer versions this will return all settings if you are somehow logged in,
@@ -190,8 +185,6 @@ export default {
         plSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
         brand = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
         disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PASSWORD_ENCRYPT);
-        footerText = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
-        footerUrl = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
       } catch (e) {
         // Older versions used Norman API to get these
         firstLoginSetting = await this.$store.dispatch('rancher/find', {
@@ -217,18 +210,6 @@ export default {
           id:   SETTING.BRAND,
           opt:  { url: `/v3/settings/${ SETTING.DISABLE_PASSWORD_ENCRYPT }` }
         });
-
-        footerText = await this.$store.dispatch('rancher/find', {
-          type: 'setting',
-          id:   SETTING.BRAND,
-          opt:  { url: `/v3/settings/${ SETTING.FOOTER_TEXT }` }
-        });
-
-        footerUrl = await this.$store.dispatch('rancher/find', {
-          type: 'setting',
-          id:   SETTING.BRAND,
-          opt:  { url: `/v3/settings/${ SETTING.FOOTER_URL }` }
-        });
       }
 
       if (plSetting.value?.length && plSetting.value !== getVendor()) {
@@ -240,7 +221,7 @@ export default {
       }
 
       return {
-        firstLoginSetting, plSetting, brand, disabledEncryption, footerText, footerUrl
+        firstLoginSetting, plSetting, brand, disabledEncryption
       };
     },
 
@@ -560,22 +541,6 @@ export default {
         file-name="login-landscape.svg"
       />
     </div>
-    <div
-      v-if="footerText && footerText.value"
-      class="footer-banner"
-    >
-      <div v-if="footerUrl && footerUrl.value">
-        <a
-          :href="footerUrl.value"
-          target="_blank"
-        >
-          {{ footerText.value }}
-        </a>
-      </div>
-      <div v-else>
-        {{ footerText.value }}
-      </div>
-    </div>
   </main>
 </template>
 
@@ -627,13 +592,6 @@ export default {
           padding: 0;
         }
       }
-    }
-
-    .footer-banner {
-      position: absolute;
-      bottom: 4px;
-      left: 25%;
-      transform: translate(-50%, 0);
     }
   }
 
