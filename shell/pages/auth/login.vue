@@ -144,7 +144,7 @@ export default {
 
   async fetch() {
     const {
-      firstLoginSetting, disabledEncryption, uiLoginLandscape, footerText, footerUrl
+      firstLoginSetting, disabledEncryption, footerText, footerUrl
     } = await this.loadInitialSettings();
     const { value } = await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.BANNERS });
     const drivers = await this.$store.dispatch('auth/getAuthProviders');
@@ -170,7 +170,6 @@ export default {
     });
 
     this.disabledEncryption = disabledEncryption;
-    this.uiLoginLandscape = uiLoginLandscape;
     this.footerText = footerText;
     this.footerUrl = footerUrl;
 
@@ -181,7 +180,7 @@ export default {
 
   methods: {
     async loadInitialSettings() {
-      let firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl;
+      let firstLoginSetting, plSetting, brand, disabledEncryption, footerText, footerUrl;
 
       // Load settings.
       // For newer versions this will return all settings if you are somehow logged in,
@@ -191,7 +190,6 @@ export default {
         plSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
         brand = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
         disabledEncryption = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.DISABLE_PASSWORD_ENCRYPT);
-        uiLoginLandscape = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_LOGIN_LANDSCAPE);
         footerText = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_TEXT);
         footerUrl = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FOOTER_URL);
       } catch (e) {
@@ -220,12 +218,6 @@ export default {
           opt:  { url: `/v3/settings/${ SETTING.DISABLE_PASSWORD_ENCRYPT }` }
         });
 
-        uiLoginLandscape = await this.$store.dispatch('rancher/find', {
-          type: 'setting',
-          id:   SETTING.UI_LOGIN_LANDSCAPE,
-          opt:  { url: `/v3/settings/${ SETTING.UI_LOGIN_LANDSCAPE }` }
-        });
-
         footerText = await this.$store.dispatch('rancher/find', {
           type: 'setting',
           id:   SETTING.BRAND,
@@ -248,7 +240,7 @@ export default {
       }
 
       return {
-        firstLoginSetting, plSetting, brand, disabledEncryption, uiLoginLandscape, footerText, footerUrl
+        firstLoginSetting, plSetting, brand, disabledEncryption, footerText, footerUrl
       };
     },
 
@@ -321,6 +313,7 @@ export default {
         } else {
           this.$cookies.remove(USERNAME);
         }
+
         // User logged with local login - we don't do any redirect/reload, so the boot-time plugin will not run again to laod the plugins
         // so we manually load them here - other SSO auth providers bounce out and back to the Dashboard, so on the bounce-back
         // the plugins will load via the boot-time plugin
@@ -561,13 +554,7 @@ export default {
           />
         </div>
       </div>
-      <img
-        v-if="uiLoginLandscape"
-        :src="uiLoginLandscape"
-        class="col span-6 landscape"
-      >
       <BrandImage
-        v-else
         class="col span-6 landscape"
         data-testid="login-landscape__img"
         file-name="login-landscape.svg"
