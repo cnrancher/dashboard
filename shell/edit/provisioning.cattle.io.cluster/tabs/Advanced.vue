@@ -138,6 +138,10 @@ export default {
               v-clean-tooltip="kubeletArgTooltip"
               class="icon icon-info"
             />
+            <i
+              v-tooltip="t('cluster.advanced.argInfo.machineSelector.protip', null, true)"
+              class="icon icon-info"
+            />
           </h3>
 
           <ArrayList
