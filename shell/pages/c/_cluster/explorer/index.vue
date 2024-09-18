@@ -934,7 +934,7 @@ export default {
   margin-top: 0;
 }
 
-.cluster-tools-link {
+.cluster-tools-link, .edit-connect-mode {
   display: flex;
   margin-right: 10px;
 
