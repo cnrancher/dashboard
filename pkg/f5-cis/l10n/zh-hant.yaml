@@ -8,6 +8,7 @@ typeLabel:
 product:
   F5CISExtension: F5 CIS
 f5cis:
+  noPermission: 無權訪問
   productLabel: F5 CIS
   tableHeaders:
     tlsProfileName: TLS 配置文件名稱
