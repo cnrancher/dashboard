@@ -8,6 +8,7 @@ typeLabel:
 product:
   F5CISExtension: F5 CIS
 f5cis:
+  noPermission: No permission to access this page
   productLabel: F5 CIS
   tableHeaders:
     tlsProfileName: TLS Profile Name
