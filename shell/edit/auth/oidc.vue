@@ -88,12 +88,15 @@ export default {
   methods: {
     updateIssuerEndpoint() {
       if (!this.keycloakUrls.url) {
+        this.$set(this.model, 'issuer', '');
+        this.$set(this.model, 'authEndpoint', '');
+
         return;
       }
       const url = this.keycloakUrls.url.replaceAll(' ', '');
 
-      this.model.issuer = `${ url }/auth/realms/${ this.keycloakUrls.realm || '' }`;
-      this.model.authEndpoint = `${ this.model.issuer || '' }/protocol/openid-connect/auth`;
+      this.$set(this.model, 'issuer', `${ url }/auth/realms/${ this.keycloakUrls.realm || '' }`);
+      this.$set(this.model, 'authEndpoint', `${ this.model.issuer || '' }/protocol/openid-connect/auth`);
     },
   }
 };
