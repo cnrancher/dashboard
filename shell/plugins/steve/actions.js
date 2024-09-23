@@ -1,13 +1,13 @@
 import https from 'https';
 import { addParam, parse as parseUrl, stringify as unParseUrl } from '@shell/utils/url';
 import { handleSpoofedRequest, loadSchemas } from '@shell/plugins/dashboard-store/actions';
-import { set } from '@shell/utils/object';
+import { dropKeys, set } from '@shell/utils/object';
 import { deferred } from '@shell/utils/promise';
 import { streamJson, streamingSupported } from '@shell/utils/stream';
 import isObject from 'lodash/isObject';
 import { classify } from '@shell/plugins/dashboard-store/classify';
 import { NAMESPACE } from '@shell/config/types';
-import jsyaml from 'js-yaml';
+import { steveCleanForDownload } from '@shell/plugins/steve/resource-utils';
 
 export default {
 
@@ -353,31 +353,7 @@ export default {
 
   // remove fields added by steve before showing/downloading yamls
   cleanForDownload(ctx, yaml) {
-    if (!yaml) {
-      return;
-    }
-    const rootKeys = [
-      'id',
-      'links',
-      'type',
-      'actions'
-    ];
-    const metadataKeys = [
-      'fields',
-      'relationships',
-      'state',
-    ];
-    const conditionKeys = [
-      'error',
-      'transitioning',
-    ];
-    const obj = jsyaml.load(yaml);
-
-    dropKeys(obj, rootKeys);
-    dropKeys(obj?.metadata, metadataKeys);
-    (obj?.status?.conditions || []).forEach((condition) => dropKeys(condition, conditionKeys));
-
-    return jsyaml.dump(obj);
+    return steveCleanForDownload(yaml);
   }
 };
 
@@ -418,16 +394,6 @@ function dropUnderscores(obj) {
         dropUnderscores(v);
       }
     }
-  }
-}
-
-function dropKeys(obj, keys) {
-  if ( !obj ) {
-    return;
-  }
-
-  for ( const k of keys ) {
-    delete obj[k];
   }
 }
 
