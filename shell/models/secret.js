@@ -6,6 +6,7 @@ import { SERVICE_ACCOUNT } from '@shell/config/types';
 import { set } from '@shell/utils/object';
 import { NAME as MANAGER } from '@shell/config/product/manager';
 import SteveModel from '@shell/plugins/steve/steve-class';
+import { steveCleanForDownload } from '@shell/plugins/steve/resource-utils';
 
 export const TYPES = {
   OPAQUE:           'Opaque',
@@ -366,5 +367,13 @@ export default class Secret extends SteveModel {
     } else {
       return 'c-cluster-product-resource';
     }
+  }
+
+  async cleanForDownload(yaml) {
+    // secret resource contains the type attribute
+    // ref: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/secret-v1/
+    // ref: https://kubernetes.io/docs/concepts/configuration/secret/#secret-types
+
+    return steveCleanForDownload(yaml, { rootKeys: ['id', 'links', 'actions'] });
   }
 }
