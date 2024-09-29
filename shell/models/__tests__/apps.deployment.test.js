@@ -1,5 +1,5 @@
 import Deployment from '@shell/models/apps.deployment.js';
-import { WORKLOAD_TYPES, POD } from '@shell/config/types';
+import { WORKLOAD_TYPES } from '@shell/config/types';
 
 const IGNORED_ANNOTATIONS = [
   'kubectl.kubernetes.io/last-applied-configuration',
