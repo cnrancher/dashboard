@@ -21,7 +21,8 @@ describe('component: TopLevelMenu', () => {
     const getFeature = jest.fn(() => true);
     const harvester = {
       isHarvester: true,
-      id:          'harvester'
+      id:          'harvester',
+      mgmt:        { id: 'harvester' }
     };
     const localThis = {
       explorerHarvesterClusterEnabled: true,
@@ -29,12 +30,19 @@ describe('component: TopLevelMenu', () => {
       $store:                          {
         getters: {
           'management/all':  jest.fn(() => [harvester]),
-          'management/byId': jest.fn()
+          'management/byId': jest.fn(() => ({
+            value:
+            'false'
+          })),
+          'features/get': jest.fn(() => true)
         }
-      }
+      },
+      hasProvCluster: true
     };
 
-    expect(TopLevelMenu.computed.clusters.call(localThis).map((c) => ({ id: c.id, isHarvester: c.isHarvester }))).toContainEqual(harvester);
+    expect(TopLevelMenu.computed.clusters.call(localThis).map((c) => ({
+      id: c.id, isHarvester: c.isHarvester, mgmt: { id: c.id }
+    }))).toContainEqual(harvester);
   });
 
   it('should not contain harvester cluster', () => {

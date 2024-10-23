@@ -18,6 +18,7 @@ describe('component: macvlan', () => {
             'management/byId':            () => jest.fn(),
             'prefs/get':                  () => resource,
             'resource-fetch/refreshFlag': () => jest.fn(),
+            'i18n/t':                     jest.fn(),
           }
         },
         $fetchState: {
