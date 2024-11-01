@@ -3371,10 +3371,11 @@ logging:
     doc: Logging Operator 官方文檔
   extension:
     storage:
-      title: 存儲
+      title: 容器日誌目錄配置
       selectContainer: 選擇容器
-      mountPath: 容器目錄
+      mountPath: 容器日誌目錄
       mountFile: 容器文件名
+      tips: 對於多個容器的 Pod，可點擊選擇容器按鈕選擇要蒐集日誌的容器並配置容器日誌目錄。
   allWorkloadType:
     label: 所有 Workload 類型
 longhorn:
@@ -6644,6 +6645,8 @@ typeDescription:
   logging.banzaicloud.io.flow: Flow 定義了要收集和過濾的日誌，以及日誌的輸出目標。Flow 是一個命名空間資源。換言之，只有部署了該 Flow 的命名空間日誌才能被該 Flow 收集。
   logging.banzaicloud.io.output: Output 定義了日誌可以發送到哪些日誌提供程序。Output 需要與使用它的 Flow 位於相同的命名空間中。
   group.principal: 爲組分配全局角色的操作，僅適用於支持組的外部驗證提供程序。本地授權不支持組。
+  logging-extensions.banzaicloud.io.eventtailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-event-tailer/" target="_blank" rel="noopener noreferrer nofollow">Event-tailer</a> 監聽 Kubernetes 事件並將其變化傳輸到 stdout，以便 Logging Operator 可以處理它們。
+  logging-extensions.banzaicloud.io.hosttailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-host-tailer/" target="_blank" rel="noopener noreferrer nofollow">Host-tailer</a> 跟蹤自定義文件並將其變化傳輸到 stdout。這樣 Logging Operator 就可以處理它們。Kubernetes host tailer 允許您跟蹤來自節點的日誌，例如 kubelet、審計日誌或 systemd 日誌。
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,

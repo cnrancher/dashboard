@@ -14,6 +14,7 @@ export function init(store) {
     basicType,
     spoofedType,
     virtualType,
+    weightType
   } = DSL(store, NAME);
 
   product({
@@ -35,6 +36,14 @@ export function init(store) {
     LOGGING.OUTPUT,
   ]);
 
+  weightType(LOGGING.CLUSTER_FLOW, 99, true);
+  weightType(LOGGING.CLUSTER_OUTPUT, 98, true);
+  weightType(LOGGING.FLOW, 97, true);
+  weightType(LOGGING.OUTPUT, 96, true);
+  weightType('logging-extensions', 95, true);
+  weightType(LOGGING.EVENT_TAILER, 94, true);
+  weightType(LOGGING.HOST_TAILER, 93, true);
+
   virtualType({
     label:      'Overview',
     namespaced: false,
@@ -46,7 +55,7 @@ export function init(store) {
   });
 
   virtualType({
-    label:      'Extension',
+    label:      'ContainerTailers',
     namespaced: false,
     icon:       'compass',
     name:       'logging-extensions',
