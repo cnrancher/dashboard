@@ -22,7 +22,7 @@ import {
   DURATION, MESSAGE, REASON, LAST_SEEN_TIME, EVENT_TYPE, OBJECT, ROLE, ROLES, VERSION, INTERNAL_EXTERNAL_IP, KUBE_NODE_OS, CPU, RAM, SECRET_DATA, CLUSTER_IP, POD_IP
 } from '@shell/config/table-headers';
 
-import { DSL } from '@shell/store/type-map';
+import { DSL, IF_HAVE } from '@shell/store/type-map';
 import {
   STEVE_AGE_COL, STEVE_LIST_GROUPS, STEVE_NAMESPACE_COL, STEVE_NAME_COL, STEVE_STATE_COL
 } from '@shell/config/pagination-table-headers';
@@ -89,7 +89,8 @@ export function init(store) {
     PVC,
     STORAGE_CLASS,
     SECRET,
-    CONFIG_MAP
+    CONFIG_MAP,
+    'pvcStates'
   ], 'storage');
   basicType([
     WORKLOAD,
@@ -471,6 +472,19 @@ export function init(store) {
     route:      { name: 'c-cluster-explorer-navLinks-page' },
     overview:   true,
     exact:      true
+  });
+
+  // persistent volume usage
+  virtualType({
+    ifHave:     IF_HAVE.V2_MONITORING,
+    label:      'PVC States',
+    labelKey:   'nav.pvcStates.label',
+    group:      'storage',
+    namespaced: false,
+    name:       'pvcStates',
+    weight:     -1,
+    route:      { name: 'c-cluster-explorer-pvc-states' },
+    exact:      true,
   });
 
   // Ignore these types as they are managed through the settings product
