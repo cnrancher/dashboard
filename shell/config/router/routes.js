@@ -432,6 +432,10 @@ export default [
         component: () => interopDefault(import('@shell/pages/c/_cluster/explorer/navLinks/_page.vue')),
         name:      'c-cluster-explorer-navLinks-page'
       }, {
+        path:      '/c/:cluster/:product/pvc-states',
+        component: () => interopDefault(import('@shell/pages/c/_cluster/explorer/pvc-states/index.vue')),
+        name:      'c-cluster-explorer-pvc-states'
+      }, {
         path:      '/c/:cluster/auth/config/:id',
         component: () => interopDefault(import('@shell/pages/c/_cluster/auth/config/_id.vue')),
         name:      'c-cluster-auth-config-id'

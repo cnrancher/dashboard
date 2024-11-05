@@ -225,6 +225,12 @@ nav:
   seeAllClustersCollapsed: See all
   keyComboTooltip: Switch clusters and keep location
   tools: Tools
+  pvcStates:
+    label: PVC States
+    name: rancher-extra-dashboards
+    desc: Extra Dashboards For Rancher
+    appInstall:
+      label: Install
 product:
   apps: Apps
   auth: Users & Authentication
