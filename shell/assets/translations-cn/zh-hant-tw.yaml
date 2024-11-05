@@ -218,6 +218,12 @@ nav:
     label: 全局監控
     dashboard: Dashboard
   harvesterDashboard: Harvester 儀錶板
+  pvcStates:
+    label: PVC States
+    name: rancher-extra-dashboards
+    desc: 用於 Rancher 的 Dashboard 擴展
+    appInstall:
+      label: 安裝
 product:
   apps: 應用
   auth: 用戶 & 認證

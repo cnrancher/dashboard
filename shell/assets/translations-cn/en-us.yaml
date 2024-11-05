@@ -220,6 +220,12 @@ nav:
   harvesterDashboard: Harvester Dashboard
   seeAllClusters: See all clusters
   seeAllClustersCollapsed: See all
+  pvcStates:
+    label: PVC States
+    name: rancher-extra-dashboards
+    desc: Extra Dashboards For Rancher
+    appInstall:
+      label: Install
 product:
   apps: Apps
   auth: Users & Authentication

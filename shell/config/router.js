@@ -328,6 +328,10 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/explorer/navLinks/_page.vue' /* webpackChunkName: "pages/c/_cluster/explorer/navLinks/_page" */)),
     name:      'c-cluster-explorer-navLinks-page'
   }, {
+    path:      '/c/:cluster/:product/pvc-states',
+    component: () => interopDefault(import('../pages/c/_cluster/explorer/pvc-states/index.vue' /* webpackChunkName: "pages/c/_cluster/explorer/pvc-states/index" */)),
+    name:      'c-cluster-explorer-pvc-states'
+  }, {
     path:      '/c/:cluster/auth/config/:id',
     component: () => interopDefault(import('../pages/c/_cluster/auth/config/_id.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/_id" */)),
     name:      'c-cluster-auth-config-id'

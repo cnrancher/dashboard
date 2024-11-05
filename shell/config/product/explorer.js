@@ -21,7 +21,7 @@ import {
   DURATION, MESSAGE, REASON, LAST_SEEN_TIME, EVENT_TYPE, OBJECT, ROLE, CLUSTER_IP
 } from '@shell/config/table-headers';
 
-import { DSL } from '@shell/store/type-map';
+import { DSL, IF_HAVE } from '@shell/store/type-map';
 import { configureConditionalDepaginate } from '@shell/store/type-map.utils';
 
 export const NAME = 'explorer';
@@ -81,7 +81,8 @@ export function init(store) {
     PVC,
     STORAGE_CLASS,
     SECRET,
-    CONFIG_MAP
+    CONFIG_MAP,
+    'pvcStates'
   ], 'storage');
   basicType([
     WORKLOAD,
@@ -357,6 +358,19 @@ export function init(store) {
     route:      { name: 'c-cluster-explorer-navLinks-page' },
     overview:   true,
     exact:      true
+  });
+
+  // persistent volume usage
+  virtualType({
+    ifHave:     IF_HAVE.V2_MONITORING,
+    label:      'PVC States',
+    labelKey:   'nav.pvcStates.label',
+    group:      'storage',
+    namespaced: false,
+    name:       'pvcStates',
+    weight:     -1,
+    route:      { name: 'c-cluster-explorer-pvc-states' },
+    exact:      true,
   });
 
   // Ignore these types as they are managed through the settings product
