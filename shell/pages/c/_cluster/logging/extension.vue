@@ -204,7 +204,7 @@ export default {
       <TypeDescription resource="logging-extensions" />
       <div class="title">
         <h1 class="mb-0">
-          ContainerTailer
+          ContainerTailers
         </h1>
       </div>
     </header>
