@@ -15,6 +15,14 @@ export default {
       type:    Object,
       default: () => ({})
     },
+    range: {
+      type:    String,
+      default: null
+    },
+    refreshRate: {
+      type:    String,
+      default: null
+    },
     // change the grafana url prefix for local clusters in certain monitoring versions
     // project monitoring (projectHelmCharts) supply a grafana url that never needs to be modified in this way
     modifyPrefix: {
@@ -146,6 +154,12 @@ export default {
         }
       }, 100);
     },
+    computeFromTo() {
+      return {
+        from: `now-${ this.range }`,
+        to:   `now`
+      };
+    },
     computeUrl() {
       const embedUrl = this.url;
       const clusterId = this.$store.getters['currentCluster'].id;
@@ -155,6 +169,19 @@ export default {
     },
     computeParams() {
       const params = {};
+      const fromTo = this.computeFromTo();
+
+      if (fromTo.from) {
+        params.from = fromTo.from;
+      }
+
+      if (fromTo.to) {
+        params.to = fromTo.to;
+      }
+
+      if (this.refreshRate) {
+        params.refresh = this.refreshRate;
+      }
 
       if (Object.keys(this.vars).length > 0) {
         Object.entries(this.vars).forEach((entry) => {

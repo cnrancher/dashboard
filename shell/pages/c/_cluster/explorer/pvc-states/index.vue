@@ -1,5 +1,6 @@
 <script>
 import GrafanaDashboard from './GrafanaDashboard';
+import DashboardOptions from '@shell/components/DashboardOptions';
 import InstallView from './InstallView.vue';
 import TypeDescription from '@shell/components/TypeDescription';
 import Loading from '@shell/components/Loading';
@@ -12,7 +13,7 @@ const PVC_STATES_CHECK_URL = '/api/v1/namespaces/cattle-monitoring-system/servic
 
 export default {
   components: {
-    GrafanaDashboard, TypeDescription, InstallView, Loading
+    GrafanaDashboard, DashboardOptions, TypeDescription, InstallView, Loading
   },
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
@@ -27,7 +28,11 @@ export default {
   },
   data() {
     return {
-      showInstallView: false, monitoringVersion: '', timer: null, loading: true
+      showInstallView:   false,
+      monitoringVersion: '',
+      timer:             null,
+      loading:           true,
+      graphOptions:      { range: '6h', refreshRate: '30s' }
     };
   },
   computed: {
@@ -102,10 +107,19 @@ export default {
           </h1>
         </div>
       </header>
+
+      <div>
+        <DashboardOptions
+          v-model="graphOptions"
+          :has-summary-and-detail="false"
+        />
+      </div>
       <GrafanaDashboard
         :background-color="graphBackgroundColor"
         :theme="theme"
         :url="url"
+        :refresh-rate="graphOptions.refreshRate"
+        :range="graphOptions.range"
         @error="handleError"
       />
     </div>
