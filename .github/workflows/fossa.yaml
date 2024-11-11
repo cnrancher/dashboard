@@ -4,8 +4,6 @@ on:
   # List the branches that must be scanned when a push event happens.
   push:
     branches: ["master", "release-*"]
-    branches-ignore:
-      - release-2.9.3-cn # PANDARIA: temporarily disable workflow
   # For manual scans.
   workflow_dispatch:
 
