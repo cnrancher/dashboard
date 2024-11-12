@@ -1,16 +1,17 @@
-name: Build Dashboard 2.8 (Release)
+name: Pandaria Build Dashboard (Release)
 on:
   push:
     tags:
-      - v2.8.*
+      - v*-cn-ent*
 
 jobs:
   build-validation:
     name: Validate Code
-    uses: ./.github/workflows/build-test.yaml
+    uses: ./.github/workflows/build-test-pandaria.yaml
   build:
     name: Build and Upload
-    uses: ./.github/workflows/build-and-upload.yaml
+    uses: ./.github/workflows/build-and-upload-pandaria.yaml
+    secrets: inherit
     needs:
       - build-validation
     permissions:
