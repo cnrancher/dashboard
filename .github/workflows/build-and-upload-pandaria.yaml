@@ -1,0 +1,109 @@
+name: Pandaria Build Dashboard and Upload
+on:
+  workflow_call:
+    inputs:
+      CI_BRANCH:
+        required: false
+        type: string
+      CI_BUILD_TAG:
+        required: false
+        type: string
+env:
+  CI_BUILD_TAG: ${{inputs.CI_BUILD_TAG}}
+  CI_BRANCH: ${{inputs.CI_BRANCH}}
+  GIT_REPO: ${{github.repository}}
+  GIT_COMMIT: ${{github.sha}}
+  REPO: ${{github.event.repository.name || ''}}
+jobs:
+  build-and-upload-hosted:
+    if: ${{ inputs.CI_BRANCH }}
+    name: Build & Upload Hosted
+    runs-on: repo-dashboard-runner-k8s
+    container: ubuntu:22.04
+    steps:
+      - id: install-git
+        name: Install Git
+        run: |
+          apt-get update
+          apt-get install -y git curl
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+        # Note - Cannot use the setup action here as it uses a different yarn install arg
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+          
+      - id: install-yarn
+        name: Install Yarn
+        shell: bash
+        run: npm install --global yarn
+        # Build a directory containing the dashboard that can be used with ui-dashboard-index
+      - id: build-hosted
+        name: Build Hosted
+        run: ./scripts/build-hosted
+      - id: upload-gate
+        name: Upload Gate (superceded by a newer build?)
+        run: ./scripts/build-upload-gate
+      - id: install-aws-cli
+        name: Install AWS CLI
+        run: |
+          apt-get update && apt-get install -y unzip
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          ./aws/install
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Upload build
+        run: |
+          aws s3 sync --delete --acl public-read ${{steps.build-hosted.outputs.BUILD_HOSTED_DIR}} s3://pandaria-dashboard-ui/dashboard/${{ steps.build-hosted.outputs.BUILD_HOSTED_LOCATION }}
+  build-and-upload-embedded:
+    if: ${{ inputs.CI_BUILD_TAG }}
+    name: Build & Upload Embedded
+    runs-on: repo-dashboard-runner-k8s
+    container: ubuntu:22.04
+    steps:
+      - id: install-git
+        name: Install Git
+        run: |
+          apt-get update
+          apt-get install -y git
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+        # Note - Cannot use the setup action here as it uses a different yarn install arg
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+      - id: install-yarn
+        name: Install Yarn
+        shell: bash
+        run: npm install --global yarn
+        # Build a tar that will be picked up by rancher builds and embedded into it
+      - id: build-embedded
+        name: Build Embedded
+        run: apt-get update && apt-get install -y curl && npm install --global yarn && ./scripts/build-embedded
+        env:
+          EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
+      - id: install-aws-cli
+        name: Install AWS CLI
+        run: |
+          apt-get update && apt-get install -y unzip curl
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          ./aws/install
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Upload tar
+        run: |
+          aws s3 cp ${{steps.build-embedded.outputs.BUILD_EMBEDED_TGZ}} s3://pandaria-dashboard-ui/release-2.8-cn/
