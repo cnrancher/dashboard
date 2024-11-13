@@ -1,0 +1,21 @@
+name: Pandaria Build Dashboard (Release)
+on:
+  push:
+    tags:
+      - v*-cn-ent*
+
+jobs:
+  build-validation:
+    name: Validate Code
+    uses: ./.github/workflows/build-test-pandaria.yaml
+  build:
+    name: Build and Upload
+    uses: ./.github/workflows/build-and-upload-pandaria.yaml
+    secrets: inherit
+    needs:
+      - build-validation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    with:
+      CI_BUILD_TAG: ${{github.ref_name}}

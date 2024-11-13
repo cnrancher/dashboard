@@ -6,9 +6,8 @@ runs:
   steps:
     - uses: actions/setup-node@v3
       with:
-        node-version: '14.x'
-        cache: 'yarn'
+        node-version: '16.x'
 
     - name: Install packages
       shell: bash
-      run: yarn install:ci
+      run: npm install --global yarn && yarn install:ci
