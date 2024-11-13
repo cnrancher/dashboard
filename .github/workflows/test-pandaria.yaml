@@ -69,7 +69,7 @@ jobs:
           node-version-file: '.nvmrc'
       
       - name: Install packages
-        run: npm install --global yarn && yarn install:ci
+        run: npm install --global yarn && yarn config set registry https://registry.yarnpkg.com && yarn install:ci
       
       - name: Run i18n string check
         run: |

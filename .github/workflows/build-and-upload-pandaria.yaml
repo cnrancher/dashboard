@@ -43,7 +43,7 @@ jobs:
       - id: install-yarn
         name: Install Yarn
         shell: bash
-        run: npm install --global yarn
+        run: npm install --global yarn && yarn config set registry https://registry.yarnpkg.com
 
         # Build a directory containing the dashboard that can be used with ui-dashboard-index
       - id: build-hosted
@@ -98,12 +98,12 @@ jobs:
       - id: install-yarn
         name: Install Yarn
         shell: bash
-        run: npm install --global yarn
+        run: npm install --global yarn && yarn config set registry https://registry.yarnpkg.com
 
         # Build a tar that will be picked up by rancher builds and embedded into it
       - id: build-embedded
         name: Build Embedded
-        run: apt-get update && apt-get install -y curl && npm install --global yarn && ./scripts/build-embedded
+        run: apt-get update && apt-get install -y curl && ./scripts/build-embedded
         env:
           EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
 
