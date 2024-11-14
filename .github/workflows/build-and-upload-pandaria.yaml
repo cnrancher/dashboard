@@ -61,7 +61,7 @@ jobs:
           aws-region: ap-southeast-2
       - name: Upload build
         run: |
-          aws s3 sync --delete --acl public-read ${{steps.build-hosted.outputs.BUILD_HOSTED_DIR}} s3://pandaria-dashboard-ui/dashboard/${{ steps.build-hosted.outputs.BUILD_HOSTED_LOCATION }}
+          aws s3 sync ${{steps.build-hosted.outputs.BUILD_HOSTED_DIR}} s3://pandaria-dashboard-ui/dashboard/${{ steps.build-hosted.outputs.BUILD_HOSTED_LOCATION }} --delete --acl public-read
   build-and-upload-embedded:
     if: ${{ inputs.CI_BUILD_TAG }}
     name: Build & Upload Embedded
@@ -106,4 +106,4 @@ jobs:
           aws-region: ap-southeast-2
       - name: Upload tar
         run: |
-          aws s3 cp ${{steps.build-embedded.outputs.BUILD_EMBEDED_TGZ}} s3://pandaria-dashboard-ui/release-2.8-cn/
+          aws s3 cp ${{steps.build-embedded.outputs.BUILD_EMBEDED_TGZ}} s3://pandaria-dashboard-ui/release-2.8-cn/ --acl public-read
