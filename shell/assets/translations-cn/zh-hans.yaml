@@ -1216,6 +1216,9 @@ cluster:
       secretKey:
         label: SecretKey
         placeholder: 你的阿里云密文密钥
+        aliyun:
+      stsToken:
+        label: 设置为 STS Token
     tke:
       accessKeyId:
         label: 访问密钥 ID
@@ -4766,6 +4769,9 @@ rbac:
       global-read-only:
         description: 只读管理员可以访问所有下游集群中的所有资源，但不能访问local集群
         label: 只读管理员
+      cloud-provider-sts-user:
+        label: 集群驱动安全令牌角色
+        description: 允许用户通过 STS 云凭证创建 ACK 集群，目前 STS User 只支持 ACK。
     notBound: '没有绑定的用户 <i class="icon icon-checkmark" style="margin-left: 5px"></i>'
     unableToCheck: 无法检查是否存在绑定了该角色的用户，请重试。
     usersBound: |-

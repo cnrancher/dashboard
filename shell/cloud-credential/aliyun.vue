@@ -1,18 +1,31 @@
 <script>
 import Loading from '@shell/components/Loading';
+import { CAPI } from '@shell/config/labels-annotations';
 import CreateEditView from '@shell/mixins/create-edit-view';
+import { mapGetters } from 'vuex';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
+import { RadioButton } from '@components/Form/Radio';
 
 export default {
-  components: { Loading, LabeledInput },
-  mixins:     [CreateEditView],
+  components: {
+    Loading, LabeledInput, RadioButton
+  },
+  mixins: [CreateEditView],
 
   fetch() {
   },
 
   data() {
-    return {};
+    return { stsToken: false };
   },
+
+  mounted() {
+    if (this.value.annotations[CAPI.CREDENTIAL_DRIVER_ALIYUN_SST] === 'true') {
+      this.stsToken = true;
+    }
+  },
+
+  computed: { ...mapGetters({ t: 'i18n/t' }) },
 
   watch: {
     'value.decodedData.accessKeyId'(neu) {
@@ -44,6 +57,10 @@ export default {
         return false;
       }
     },
+    listeners() {
+      this.stsToken = !this.stsToken;
+      this.$emit('setAliyunSTSTokenAnno', this.stsToken);
+    }
   }
 };
 </script>
@@ -71,5 +88,14 @@ export default {
       :mode="mode"
       @input="value.setData('accessKeySecret', $event);"
     />
+    <div class="mt-10">
+      <RadioButton
+        :val="true"
+        name="stsToken"
+        :value="stsToken"
+        :label="t('cluster.credential.aliyun.stsToken.label')"
+        @input="listeners"
+      />
+    </div>
   </div>
 </template>

@@ -46,19 +46,21 @@ export const MACHINE_ROLES = {
 };
 
 export const CAPI = {
-  DEPLOYMENT_NAME:      'cluster.x-k8s.io/deployment-name',
-  CREDENTIAL_DRIVER:    'provisioning.cattle.io/driver',
-  CLUSTER_NAMESPACE:    'cluster.x-k8s.io/cluster-namespace',
-  FORCE_MACHINE_REMOVE: 'provisioning.cattle.io/force-machine-remove',
-  MACHINE_NAME:         'cluster.x-k8s.io/machine',
-  DELETE_MACHINE:       'cluster.x-k8s.io/delete-machine',
-  PROVIDER:             'provider.cattle.io',
-  SECRET_AUTH:          'v2prov-secret-authorized-for-cluster',
-  SECRET_WILL_DELETE:   'v2prov-authorized-secret-deletes-on-cluster-removal',
+  DEPLOYMENT_NAME:              'cluster.x-k8s.io/deployment-name',
+  CREDENTIAL_DRIVER:            'provisioning.cattle.io/driver',
+  CLUSTER_NAMESPACE:            'cluster.x-k8s.io/cluster-namespace',
+  FORCE_MACHINE_REMOVE:         'provisioning.cattle.io/force-machine-remove',
+  MACHINE_NAME:                 'cluster.x-k8s.io/machine',
+  DELETE_MACHINE:               'cluster.x-k8s.io/delete-machine',
+  PROVIDER:                     'provider.cattle.io',
+  SECRET_AUTH:                  'v2prov-secret-authorized-for-cluster',
+  SECRET_WILL_DELETE:           'v2prov-authorized-secret-deletes-on-cluster-removal',
   /**
    * Annotation for overriding the cluster provider,
    */
-  UI_CUSTOM_PROVIDER:   'ui.rancher/provider'
+  UI_CUSTOM_PROVIDER:           'ui.rancher/provider',
+  // PANDARIA
+  CREDENTIAL_DRIVER_ALIYUN_SST: 'provisioning.cattle.io/pandaria-aliyun-sst',
 };
 
 export const CATALOG = {

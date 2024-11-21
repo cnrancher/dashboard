@@ -4637,6 +4637,9 @@ rbac:
         label: 登录访问
       clustertemplaterevisions-create:
         label: 创建 RKE 模板修订版
+      cloud-provider-sts-user:
+        label: 集群驱动安全令牌角色
+        description: 允许用户通过 STS 云凭证创建 ACK 集群，目前 STS User 只支持 ACK。
 
 resourceDetail:
   detailTop:

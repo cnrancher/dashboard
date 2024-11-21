@@ -247,6 +247,13 @@ export default {
 
       return this.$store.getters['i18n/withFallback'](`secret.initials."${ type }"`, null, fallback);
     },
+
+    setAliyunSTSTokenAnno(value) {
+      this.value.setAnnotation(CAPI.CREDENTIAL_DRIVER_ALIYUN_SST, 'false');
+      if (value && this.driverName === 'aliyun') {
+        this.value.setAnnotation(CAPI.CREDENTIAL_DRIVER_ALIYUN_SST, 'true');
+      }
+    }
   },
 };
 </script>
@@ -283,6 +290,7 @@ export default {
           :value="value"
           :mode="mode"
           :hide-sensitive-data="hideSensitiveData"
+          @setAliyunSTSTokenAnno="setAliyunSTSTokenAnno"
         />
       </keep-alive>
     </CruResource>

@@ -4672,6 +4672,9 @@ rbac:
         label: Login Access
       clustertemplaterevisions-create:
         label: Create RKE Template Revisions
+      cloud-provider-sts-user:
+        label: Cloud Provider STS User
+        description: Allow users to create ACK clusters using STS cloud credentials; currently, STS User only supports ACK.
 
 resourceDetail:
   detailTop:
