@@ -1,0 +1,26 @@
+rancherHami:
+  title: HAMi
+  subTitle: Install
+  overview:
+    title: Overview
+    subtitle: "Powered By: <a href='https://github.com/Project-HAMi/HAMi' target='_blank' rel='noopener nofollow noreferrer'>HAMi</a>"
+    linkedList:
+      hami:
+        label: HAMi
+        description: 'Heterogeneous AI Computing Virtualization Middleware'
+        na: Resource Unavailable
+  installView:
+    steps:
+      hami:
+        label: Inatall HAMi Chart
+        title: HAMi
+        tips: "HAMi, formerly known as 'k8s-vGPU-scheduler', is a Heterogeneous device management middleware for Kubernetes. <br />It can manage different types of heterogeneous devices (like GPU, NPU, etc.), <br />share heterogeneous devices among pods, <br />make better scheduling decisions based on topology of devices and scheduling policies."
+        appInstall:
+          label: Install HAMi
+      monitoring:
+        label: Inatall Rancher Monitoring Chart
+        title: Rancher Monitoring
+        tips: "Prometheus is required to deploy HAMi UI. It is recommended to use Monitoring in Rancher Cluster Tool.<br />If you choose to use other Prometheus, you can skip installing Rancher Monitoring."
+        appInstall:
+          label: Install Rancher Monitoring
+          skip: Skip and install HAMi directly

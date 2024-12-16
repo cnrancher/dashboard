@@ -36,6 +36,7 @@ export const HARVESTER_CONTAINER = create('harvester-baremetal-container-workloa
 export const FLEET_WORKSPACE_BACK = create('provisioningv2-fleet-workspace-back-population', false);
 export const F5_UI_EXTENSION = create('f5-ui-extension', false);
 export const PROVISIONING_PRE_BOOTSTRAP = create('provisioningprebootstrap', false);
+export const HAMI_UI_EXTENSION = create('hami-ui-extension', false);
 
 // Not currently used.. no point defining ones we don't use
 // export const EMBEDDED_CLUSTER_API = create('embedded-cluster-api', true);

@@ -56,6 +56,7 @@ import GpuResourceLimit from '@shell/components/GpuResourceLimit';
 import { SETTING } from '@shell/config/settings';
 import { defaultContainer } from '@shell/models/workload';
 import { allHash } from '@shell/utils/promise';
+import HamiResourceLimit from '@shell/components/HamiResourceLimit';
 
 const TAB_WEIGHT_MAP = {
   general:              99,
@@ -136,7 +137,8 @@ export default {
     WorkloadPorts,
     ContainerMountPaths,
     LabeledInputSugget,
-    GpuResourceLimit
+    GpuResourceLimit,
+    HamiResourceLimit
   },
 
   mixins: [CreateEditView, ResourceManager],
@@ -181,6 +183,18 @@ export default {
 
     this.$store.dispatch('harbor/fetchHarborVersion');
     this.$store.dispatch('harbor/loadHarborServerUrl');
+    try {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      const hamiResourceTypes = await this.$store.dispatch(
+        `${ inStore }/request`,
+        { url: `/k8s/clusters/${ this.currentCluster.id }/v1/hami.pandaria.com.resourcetypes/rancher-hami-resourcetypes` }
+      );
+
+      this.hamiResourceLimtsOptions = hamiResourceTypes?.spec?.resourceTypes?.map((item) => ({ label: item, value: item })) ?? [];
+    } catch (error) {
+      console.error('Error: Load HAMi ResourceTypes Failed', error); // eslint-disable-line no-console
+    }
 
     // don't block UI for these resources
     this.resourceManagerFetchSecondaryResources(this.secondaryResourceData);
@@ -308,6 +322,7 @@ export default {
       idKey:                     ID_KEY,
 
       systemGpuManagementSchedulerName: '',
+      hamiResourceLimtsOptions:         []
     };
   },
 
@@ -567,6 +582,37 @@ export default {
         } else if ((!requestsGpuShared || !limitsGpuShared) && this.systemGpuManagementSchedulerName && schedulerName === this.systemGpuManagementSchedulerName) {
           this.podTemplateSpec.schedulerName = '';
         }
+      }
+    },
+
+    flatHamiResources: {
+      get() {
+        const { limits = {} } = this.container.resources || {};
+        const keys = this.hamiResourceLimtsOptions.map((item) => item.value);
+
+        return Object.entries(limits).filter(([k]) => keys.includes(k)).reduce((t, [k, v]) => {
+          t[k] = v;
+
+          return t;
+        }, {});
+      },
+      set(v) {
+        const { limits = {}, requests = {} } = this.container.resources || {};
+        const resetLimits = this.hamiResourceLimtsOptions.map((item) => item.value).reduce((t, c) => {
+          t[c] = null;
+
+          return t;
+        }, {});
+        const out = {
+          requests: { ...requests },
+          limits:   {
+            ...limits,
+            ...resetLimits,
+            ...v
+          }
+        };
+
+        this.$set(this.container, 'resources', cleanUp(out));
       }
     },
 

@@ -327,10 +327,16 @@ export default {
                 :mode="mode"
                 :show-tip="false"
                 :limit-min-max-values="false"
+                :handle-gpu-limit="false"
               />
               <GpuResourceLimit
                 v-model="flatGpuResources"
                 :mode="mode"
+              />
+              <HamiResourceLimit
+                v-model="flatHamiResources"
+                :mode="mode"
+                :options="hamiResourceLimtsOptions"
               />
             </Tab>
 
