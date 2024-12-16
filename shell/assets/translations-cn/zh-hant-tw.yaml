@@ -4057,7 +4057,7 @@ node:
     downloadNodeConfig: 下載密鑰
     scaleDown: 縮容
     forceDelete: 強制刪除
-    editGpuDevicePluginConfig: 修改 NVIDIA GPU 配置
+    editGpuDevicePluginConfig: 修改 NVIDIA GPU 配置（棄用）
 persistentVolume:
   pluginConfiguration:
     label: 插件配置
@@ -8147,10 +8147,10 @@ gpuReservation:
   memUnit: GiB
   placeholder: 例如：1
   set: 限制
-  shared: 共享 GPU 內存
+  shared: 共享 GPU 內存（棄用）
   sharedTips: 在設置共享 GPU 內存的同時，Rancher 將自動為工作負載設置 GPU 調度器名稱
   unit: GPUs
-  devices: GPU 設備
+  devices: GPU 設備（棄用）
   resourceName: GPU 資源名
 vGpuReservation:
   label: Orion X GPU 預留
@@ -8646,3 +8646,9 @@ mfa:
     appTips: '<a href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid&oco=0" target="_blank" rel="noopener noreferrer nofollow">Google</a> 和 <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer nofollow">Microsoft</a>等身份驗證器應用及瀏覽器擴展會生成一次性密碼，用作登錄時的第二因素。'
   errors:
     codeRequired: 需要輸入驗證碼
+hamiResourceReservation:
+  title: HAMi 資源限制/預留
+  label:
+    name: HAMi 資源名稱
+    value: 限制
+  placeholder: 例如：1
