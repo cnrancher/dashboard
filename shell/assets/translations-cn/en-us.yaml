@@ -4196,7 +4196,6 @@ node:
     downloadNodeConfig: Download Keys
     scaleDown: Scale Down
     forceDelete: Force Delete
-    editGpuDevicePluginConfig: Edit NVIDIA GPU Config
 persistentVolume:
   pluginConfiguration:
     label: Plugin configuration
@@ -8124,32 +8123,10 @@ clusterConnectMode:
     label: Test
     success: Connect Success
   title: Cluster connect mode
-gpuReservation:
-  label: NVIDIA GPU Limit/Reservation
-  memUnit: GiB
-  placeholder: e.g. 1
-  set: Limit to
-  shared: Shared GPU Memory
-  sharedTips: While setting the shared GPU memory, Rancher will automatically set the GPU scheduler name for the workload
-  unit: GPUs
-  devices: GPU Devices
-  resourceName: GPU Resource Name
-vGpuReservation:
-  label: Orion X GPU Reservation
-  placeholder: e.g. 1
-  set: Limit to
-  unit: vGPUs
 autoLogout:
   message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
   title: Auto logout
-editGpuDevicePluginConfigDialog:
-  title: Edit {name} NVIDIA Device Plugin Config
-  subtitle: Select K8s Device Plugin Config
-  config:
-    label: Config
-    placeholder: Please Select A Config...
-  errors:
-    noPermission: The current user does not have permission to modify the configuration
+
 rancher-nvidia-k8s-device-plugin:
   titles:
     image: Container Images
@@ -8697,3 +8674,9 @@ labelSelect:
   pagination:
     counts: '{count} / {totalCount} items'
     more: Load More...
+hamiResourceReservation:
+  title: HAMi Resources Limit/Reservation
+  label:
+    name: HAMi Resource Name
+    value: Limit To
+  placeholder: e.g. 1

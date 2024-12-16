@@ -62,12 +62,6 @@ export default class ClusterNode extends SteveModel {
       label:   this.t('node.actions.downloadSSHKey'),
     };
 
-    const editGpuDevicePluginConfig = {
-      action: 'editGpuDevicePluginConfig',
-      icon:   'icon icon-edit',
-      label:  this.t('node.actions.editGpuDevicePluginConfig'),
-    };
-
     return [
       openSsh,
       downloadKeys,
@@ -78,7 +72,6 @@ export default class ClusterNode extends SteveModel {
       stopDrain,
       { divider: true },
       ...super._availableActions,
-      editGpuDevicePluginConfig
     ];
   }
 
@@ -89,13 +82,6 @@ export default class ClusterNode extends SteveModel {
 
   downloadKeys() {
     this.provisionedMachine.downloadKeys();
-  }
-
-  editGpuDevicePluginConfig() {
-    this.$dispatch('promptModal', {
-      resources: [this],
-      component: 'EditGpuDevicePluginConfigDialog'
-    });
   }
 
   get showDetailStateBadge() {

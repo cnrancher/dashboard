@@ -1,0 +1,26 @@
+rancherHami:
+  title: HAMi
+  subTitle: 安裝
+  overview:
+    title: 概述
+    subtitle: "技術支持：<a href='https://github.com/Project-HAMi/HAMi' target='_blank' rel='noopener nofollow noreferrer'>HAMi</a>"
+    linkedList:
+      hami:
+        label: HAMi
+        description: 異構 AI 計算虛擬化中間件
+        na: 資源不可用
+  installView:
+    steps:
+      hami:
+        label: 安裝 Chart
+        title: HAMi
+        tips: "HAMi（前身爲 'k8s-vGPU-scheduler'）是一個面向 Kubernetes 的異構設備管理中間件。<br />它可以管理不同類型的異構設備（如 GPU、NPU、MLU、DCU 等），實現異構設備在 Pod 之間的共享，<br />並基於設備拓撲和調度策略做出更優的調度決策。"
+        appInstall:
+          label: 安裝 HAMi
+      monitoring:
+        label: 安裝 Rancher Monitoring Chart
+        title: Rancher Monitoring
+        tips: 部署 HAMi UI 需要 Prometheus。建議使用 Rancher Cluster Tool 中的監控。如果您選擇使用其他 Prometheus，則可以跳過安裝 Rancher Monitoring。
+        appInstall:
+          label: 安裝 Rancher Monitoring
+          skip: 跳過，直接安裝 HAMi
