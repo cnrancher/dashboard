@@ -39,12 +39,12 @@
             >
               {{ t("rancherHami.installView.steps.monitoring.appInstall.label") }}
             </button>
-            <button
+            <!-- <button
               class="btn role-secondary mt-20"
               @click.prevent="skip"
             >
               {{ t("rancherHami.installView.steps.monitoring.appInstall.skip") }}
-            </button>
+            </button> -->
           </div>
         </div>
       </template>
