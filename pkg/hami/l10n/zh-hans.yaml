@@ -20,7 +20,7 @@ rancherHami:
       monitoring:
         label: 安装 Rancher Monitoring Chart
         title: Rancher Monitoring
-        tips: 部署 HAMi UI 需要 Prometheus。建议使用 Rancher Cluster Tool 中的监控。如果您选择使用其他 Prometheus，则可以跳过安装 Rancher Monitoring。
+        tips: 部署 HAMi UI 需要 Prometheus。建议使用 Rancher Cluster Tool 中的监控。
         appInstall:
           label: 安装 Rancher Monitoring
           skip: 跳过，直接安装 HAMi
