@@ -8628,3 +8628,4 @@ hamiResourceReservation:
     name: HAMi 資源名稱
     value: 限制
   placeholder: 例如：1
+  keyConflictTips: HAMi 資源 nvidia.com/gpu 限制/預留 與 NVIDIA GPU 限制/預留重名，兩者會被同步修改。
