@@ -547,7 +547,7 @@ export default {
           }
         };
 
-        this.$set(this.container, 'resources', cleanUp(out));
+        this.container.resources = cleanUp(out);
       }
     },
 
