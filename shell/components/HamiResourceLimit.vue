@@ -17,19 +17,21 @@
             :label="t('hamiResourceReservation.label.name')"
             :mode="mode"
             :options="remainingResources(item.name)"
-            @change="updateHamiResources('name', $event)"
+            :tooltip="item.name === 'nvidia.com/gpu' ? t('hamiResourceReservation.keyConflictTips') : null"
+            @change="updateHamiResources()"
           />
         </div>
         <div class="col span-5">
           <LabeledInput
-            v-model="item.value"
+            :value="item.value"
             :placeholder="t('hamiResourceReservation.placeholder')"
             :label="t('hamiResourceReservation.label.value')"
             :mode="mode"
             type="number"
             min="0"
             step="1"
-            @input="updateHamiResources('value', $event)"
+            @input="(v) => item.value = v.replace(/[^0-9]/g, '')"
+            @change="updateHamiResources()"
           />
         </div>
         <div class="col span-2">
@@ -60,6 +62,8 @@ import { mapGetters } from 'vuex';
 import { _VIEW } from '@shell/config/query-params';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
+import { parseSi } from '@shell/utils/units';
+
 const ID_KEY = Symbol('id');
 const serialMaker = function() {
   let prefix = '';
@@ -105,7 +109,7 @@ export default {
     serialMaker.setPrefix('item_');
     serialMaker.setSeq(0);
     const limits = Object.entries(this.value).map(([k, v]) => ({
-      name: k, value: v, [ID_KEY]: serialMaker.genSym()
+      name: k, value: parseSi(`${ v }`), [ID_KEY]: serialMaker.genSym()
     }));
 
     return { limits, idKey: ID_KEY };
@@ -117,6 +121,21 @@ export default {
     },
     addDisabled() {
       return this.limits.length === this.options.length;
+    },
+
+  },
+  watch: {
+    value(v) {
+      const k = 'nvidia.com/gpu';
+      const limitValue = v[k];
+
+      if (limitValue) {
+        const limit = this.limits.find((item) => item.name === k);
+
+        if (limit) {
+          limit.value = limitValue;
+        }
+      }
     }
   },
   methods: {
@@ -145,7 +164,13 @@ export default {
       const item = this.remainingResources()?.[0];
 
       if (item) {
-        this.limits.push({ name: item.value, value: null });
+        let value = null;
+        const k = 'nvidia.com/gpu';
+
+        if (item.value === k && this.value[k]) {
+          value = parseSi(`${ this.value[k] }`);
+        }
+        this.limits.push({ name: item.value, value });
         this.$emit('add');
       }
     },
