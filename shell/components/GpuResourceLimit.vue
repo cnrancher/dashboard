@@ -227,6 +227,9 @@ export default {
     }
   },
   watch: {
+    'value.limitsGpu'(v) {
+      this.gpuSet = v;
+    },
     gpuReservationMode(m) {
       if (m === 'shared') {
         this.updateGpuShared(this.gpuShared);

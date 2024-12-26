@@ -8416,3 +8416,4 @@ hamiResourceReservation:
     name: HAMi Resource Name
     value: Limit To
   placeholder: e.g. 1
+  keyConflictTips: The HAMi resource nvidia.com/gpu Limit/Reservation is duplicated with the NVIDIA GPU Limit/Reservation , and both will be modified synchronously.
