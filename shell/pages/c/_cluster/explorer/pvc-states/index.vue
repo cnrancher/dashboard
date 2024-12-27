@@ -110,7 +110,7 @@ export default {
 
       <div>
         <DashboardOptions
-          v-model="graphOptions"
+          v-model:value="graphOptions"
           :has-summary-and-detail="false"
         />
       </div>
