@@ -7,6 +7,7 @@
       {{ t('mfa.disableOTP.label') }}
     </button>
     <AppModal
+      v-if="showTwoFactorDisableModal"
       class="two-factor-disable-modal"
       name="two-factor-disable"
       :width="600"
@@ -85,15 +86,16 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      errors:  [],
-      form:    { passCode: '' }
+      loading:                   false,
+      errors:                    [],
+      form:                      { passCode: '' },
+      showTwoFactorDisableModal: false
     };
   },
   computed: { enalbeTwoFactorAuth: mapPref(ENABLE_TWO_FACTOR_AUTH) },
   methods:  {
     showConfirmDialog() {
-      this.$modal.show('two-factor-disable');
+      this.showTwoFactorDisableModal = true;
     },
     async confirm(result) {
       if (!result) {
@@ -125,7 +127,7 @@ export default {
       this.loading = false;
     },
     close() {
-      this.$modal.hide('two-factor-disable');
+      this.showTwoFactorDisableModal = false;
     },
     validate() {
       if (this.form.passCode?.trim() === '') {

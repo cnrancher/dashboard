@@ -175,7 +175,11 @@ export default {
   },
   data() {
     return {
-      codes: [], loading: false, errors: []
+      codes:                     [],
+      loading:                   false,
+      errors:                    [],
+      showViewRecoveryCodeModal: false,
+      showNewRecoveryCodeModal:  false
     };
   },
   computed: {
@@ -187,21 +191,21 @@ export default {
     viewCode() {
       this.errors = [];
       this.codes = [];
-      this.$modal.show('view-recovery-code');
+      this.showViewRecoveryCodeModal = true;
     },
     newCode() {
       this.errors = [];
       this.codes = [];
-      this.$modal.show('new-recovery-code');
+      this.showNewRecoveryCodeModal = true;
     },
     download() {
       downloadFile('rancher-recovery-codes.txt', this.codeString);
     },
     closeNewCodeView() {
-      this.$modal.hide('new-recovery-code');
+      this.showNewRecoveryCodeModal = false;
     },
     close() {
-      this.$modal.hide('view-recovery-code');
+      this.showViewRecoveryCodeModal = false;
     },
     async handleVerify({ userId, passCode }) {
       this.loading = true;

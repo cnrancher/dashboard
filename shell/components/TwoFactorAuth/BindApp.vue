@@ -43,6 +43,7 @@
       />
     </div>
     <AppModal
+      v-if="showTwoFactorSecretModal"
       class="two-factor-secret-modal"
       name="two-factor-secret"
       :width="600"
@@ -126,10 +127,11 @@ export default {
   },
   data() {
     return {
-      errors:    [],
-      secret:    '',
-      imageUrl:  '',
-      principal: null
+      errors:                   [],
+      secret:                   '',
+      imageUrl:                 '',
+      principal:                null,
+      showTwoFactorSecretModal: false
     };
   },
   computed: {
@@ -177,11 +179,11 @@ export default {
       this.errors = err.map((e) => stringify(e));
     },
     viewSecret() {
-      this.$modal.show('two-factor-secret');
+      this.showTwoFactorSecretModal = true;
     },
 
     close() {
-      this.$modal.hide('two-factor-secret');
+      this.showTwoFactorSecretModal = false;
     },
     async loadBindAppInfo() {
       const buffer = await import('@otplib/preset-browser/buffer');
