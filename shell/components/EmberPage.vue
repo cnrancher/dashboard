@@ -5,6 +5,7 @@ import { NAME as MANAGER } from '@shell/config/product/manager';
 import { CAPI, MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { findEmberPage, clearEmberInactiveTimer, startEmberInactiveTimer, EMBER_FRAME } from '@shell/utils/ember-page';
+import { mapPref, ENABLE_TWO_FACTOR_AUTH } from '@shell/store/prefs';
 
 const EMBER_FRAME_HIDE_CLASS = 'ember-iframe-hidden';
 const PAGE_CHECK_TIMEOUT = 30000;
@@ -82,6 +83,8 @@ export default {
   },
 
   data() {
+    const twoFactorAuthConfig = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.TWO_FACTOR_AUTH_CONFIG);
+
     return {
       iframeEl:         null,
       loaded:           true,
@@ -95,7 +98,8 @@ export default {
       wmHeight:         -1,
       showHeaderBanner: false,
       showFooterBanner: false,
-      auditUICheck:     null
+      auditUICheck:     null,
+      twoFactorAuthConfig
     };
   },
 
@@ -105,6 +109,13 @@ export default {
     ...mapState('wm', ['open']),
     locale() {
       return this.$store.getters['i18n/current']();
+    },
+    enalbeTwoFactorAuth: mapPref(ENABLE_TWO_FACTOR_AUTH),
+    tipHeight() {
+      const tfa = this.twoFactorAuthConfig?.value;
+      const etf = this.enalbeTwoFactorAuth;
+
+      return tfa === 'true' && etf === false ? '2em' : '0';
     }
   },
 
@@ -141,6 +152,11 @@ export default {
     },
     locale() {
       this.syncLocale();
+    },
+    tipHeight() {
+      const iframeEl = findEmberPage();
+
+      iframeEl?.style?.setProperty('--tip-height', this.tipHeight);
     }
   },
 
@@ -344,6 +360,8 @@ export default {
         iframeEl.height = 0;
         this.syncSize();
       }
+
+      iframeEl?.style?.setProperty('--tip-height', this.tipHeight);
     },
 
     syncSize() {
@@ -596,15 +614,15 @@ export default {
   $banner-height: 2em;
 
   .fixed-top-banner {
-    top: calc(#{$banner-height} + var(--header-height));
+    top: calc(#{$banner-height} + var(--header-height) + var(--tip-height));
   }
 
   .fixed-one-banner {
-    height: calc(100vh - var(--header-height) - #{$banner-height});
+    height: calc(100vh - var(--header-height) - #{$banner-height} - var(--tip-height));
   }
 
   .fixed-two-banners {
-    height: calc(100vh - var(--header-height) - #{$banner-height} - #{$banner-height});
+    height: calc(100vh - var(--header-height) - #{$banner-height} - #{$banner-height} - var(--tip-height));
   }
 
   .ember-page {
@@ -649,23 +667,23 @@ export default {
   .ember-iframe {
     border: 0;
     left: calc(var(--nav-width) + $app-bar-collapsed-width);
-    height: calc(100vh - var(--header-height));
+    height: calc(100vh - var(--header-height) - var(--tip-height));
     position: absolute;
-    top: var(--header-height);
+    top: calc(var(--header-height) + var(--tip-height));
     width: calc(100vw - var(--nav-width) - $app-bar-collapsed-width);
     visibility: show;
   }
 
   .ember-iframe-top-banner {
-    top: calc(#{$banner-height} + var(--header-height));
+    top: calc(#{$banner-height} + var(--header-height)  + var(--tip-height));
   }
 
   .ember-iframe-one-banner {
-    height: calc(100vh - var(--header-height) - #{$banner-height});
+    height: calc(100vh - var(--header-height) - #{$banner-height} - var(--tip-height));
   }
 
   .ember-iframe-two-banners {
-    height: calc(100vh - var(--header-height) - #{$banner-height} - #{$banner-height});
+    height: calc(100vh - var(--header-height) - #{$banner-height} - #{$banner-height} - var(--tip-height));
   }
 
   .ember-iframe-inline {
