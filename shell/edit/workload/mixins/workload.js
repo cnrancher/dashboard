@@ -286,7 +286,6 @@ export default {
       }
     }
 
-    this.selectContainer(container);
     if (this.realMode === _CLONE && this.value.type === WORKLOAD_TYPES.JOB) {
       this.cleanUpClonedJobData();
     }
@@ -320,13 +319,11 @@ export default {
       podFsGroup:                 podTemplateSpec.securityContext?.fsGroup,
       savePvcHookName:            'savePvcHook',
       tabWeightMap:               TAB_WEIGHT_MAP,
-      fvFormRuleSets:             [{
-        path: 'image', rootObject: this.container, rules: ['required'], translationKey: 'workload.container.image'
-      }],
-      fvReportedValidationPaths: ['spec'],
-      isNamespaceNew:            false,
-      allPods:                   [],
-      idKey:                     ID_KEY,
+      fvFormRuleSets:             [],
+      fvReportedValidationPaths:  ['spec'],
+      isNamespaceNew:             false,
+      allPods:                    [],
+      idKey:                      ID_KEY,
 
       systemGpuManagementSchedulerName: '',
       hamiResourceLimtsOptions:         []
@@ -730,6 +727,15 @@ export default {
       if (this.harbor.imageTag) {
         this.container.imageTag = this.harbor.imageTag;
       }
+    },
+
+    container: {
+      handler(c) {
+        this.fvFormRuleSets = [{
+          path: 'image', rootObject: c, rules: ['required'], translationKey: 'workload.container.image'
+        }];
+      },
+      immediate: true
     }
   },
 
@@ -739,6 +745,8 @@ export default {
 
     this.registerAfterHook(this.saveService, 'saveService');
     this.initStaticPod(this.podTemplateSpec, this.podAnnotations);
+
+    this.selectContainer(this.container);
   },
 
   methods: {
