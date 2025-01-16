@@ -806,6 +806,7 @@ export default {
           type: CATALOG.APP,
           id:   `${ APP_NAMESPACE }/${ APP_NAME }`
         });
+        await app?.fetchValues(true);
       } catch (error) {}
 
       const value = await this.$store.dispatch(`${ this.inStore }/create`, {
@@ -823,7 +824,7 @@ export default {
 
       this.originalYamlValues = this.valuesYaml = jsyaml.dump(value || {});
 
-      this.value = (mergeWith(value, app?.spec?.values || {}, (objValue, srcValue) => {
+      this.value = (mergeWith(value, app?.values || {}, (objValue, srcValue) => {
         if (isArray(objValue)) {
           return objValue.concat(srcValue);
         }
@@ -833,11 +834,11 @@ export default {
         this.value.thanos.query.enabledClusterStores = this.monitoringSettings.enabledClusters;
       }
 
-      if (!app?.spec?.values.global?.version) {
+      if (!app?.values?.global?.version) {
         this.value.global.version = get(app, 'spec.chart.metadata.version') || this.version.version;
       }
 
-      if (!app?.spec?.values.global?.clusterId) {
+      if (!app?.values?.global?.clusterId) {
         this.value.global.clusterId = this.currentCluster?.id || 'local';
       }
 
