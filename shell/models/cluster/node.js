@@ -19,7 +19,8 @@ export default class ClusterNode extends SteveModel {
       icon:     'icon icon-fw icon-pause',
       label:    'Cordon',
       total:    1,
-      bulkable: true
+      bulkable: true,
+      test:     ''
     };
 
     const uncordon = {
