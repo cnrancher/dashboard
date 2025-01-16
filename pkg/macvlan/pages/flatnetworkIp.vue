@@ -37,16 +37,26 @@ export default {
   },
   async fetch() {
     const { currentCluster } = this;
+    let config = {};
 
     if (this.$route.params?.id) {
-      await this.$store.dispatch('flatnetwork/loadFlatnetworkIps', {
-        cluster: currentCluster?.id,
-        query:   { labelSelector: { subnet: this.$route.params?.id } }
-      });
-      const config = await this.$store.dispatch('flatnetwork/loadFlatnetwork', {
-        cluster: currentCluster?.id,
-        query:   this.$route.params?.id
-      });
+      try {
+        await this.$store.dispatch('flatnetwork/loadFlatnetworkIps', {
+          cluster: currentCluster?.id,
+          query:   { labelSelector: { subnet: this.$route.params?.id } }
+        });
+      } catch (e) {
+        this.$store.commit('flatnetwork/setFlatnetworkIpList', []);
+      }
+
+      try {
+        config = await this.$store.dispatch('flatnetwork/loadFlatnetwork', {
+          cluster: currentCluster?.id,
+          query:   this.$route.params?.id
+        });
+      } catch (e) {
+        config = {};
+      }
 
       this.config = config;
     }
@@ -122,6 +132,9 @@ export default {
     groupBy() {
       return 'metadata.namespace';
     },
+    canEdit() {
+      return !!this.config?.links?.update;
+    }
   },
   methods: {
     getWorkloadName(name, workloadselector) {
@@ -169,6 +182,7 @@ export default {
     />
     <div class="container">
       <button
+        v-if="canEdit"
         type="button"
         class="btn role-primary mr-10 edit-button"
         @click.prevent.stop="editView"
