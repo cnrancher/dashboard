@@ -6,11 +6,11 @@ typeLabel:
     }
   flatnetwork.pandaria.io.flatnetworksubnet: |-
     {count, plural,
-      one { Rancher Macvlan (V2 Experimental) }
-      other { Rancher Macvlan (V2 Experimental) }
+      one { Rancher FlatNetwork (V2 Experimental) }
+      other { Rancher FlatNetwork (V2 Experimental) }
     }
 macvlan:
-  titleV2: Rancher Macvlan (V2 Experimental)
+  titleV2: Rancher FlatNetwork (V2 Experimental)
   deprecated: Rancher Macvlan (V1) has been deprecated. Please migrate to V2 according to the official documentation
   nav:
     label: Rancher Macvlan (V1)

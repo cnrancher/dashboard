@@ -481,7 +481,7 @@ export default {
             v-model="config.metadata.name"
             required
             label-key="generic.name"
-            tooltipKey="name"
+            tooltipKey="generic.name"
             placeholder-key="nameNsDescription.name.placeholder"
             :mode="mode"
             :disabled="isEdit"
