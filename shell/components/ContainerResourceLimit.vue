@@ -370,6 +370,7 @@ export default {
           :input-exponent="-1"
           :output-modifier="true"
           :base-unit="t('suffix.cpus')"
+          data-testid="cpu-max-limit"
           @input="updateLimits"
         />
       </span>
@@ -382,6 +383,7 @@ export default {
           :input-exponent="2"
           :increment="1024"
           :output-modifier="true"
+          data-testid="memory-max-limit"
           @input="updateLimits"
         />
       </span>
@@ -399,6 +401,7 @@ export default {
           :input-exponent="-1"
           :output-modifier="true"
           :base-unit="t('suffix.cpus')"
+          data-testid="cpu-min-limit"
           @input="updateLimits"
         />
       </span>
@@ -411,6 +414,7 @@ export default {
           :input-exponent="2"
           :increment="1024"
           :output-modifier="true"
+          data-testid="memory-min-limit"
           @input="updateLimits"
         />
       </span>
