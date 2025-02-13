@@ -209,6 +209,7 @@ export default {
         :mode="mode"
         :show-tip="false"
         :handle-gpu-limit="false"
+        :limit-min-max-values="false"
         class="mt-10"
       />
     </GroupPanel>
