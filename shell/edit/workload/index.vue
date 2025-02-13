@@ -329,6 +329,7 @@ export default {
                 :show-tip="false"
                 :limit-min-max-values="false"
                 :handle-gpu-limit="false"
+                :limit-ephemeral-storage="true"
               />
               <GpuResourceLimit
                 v-model="flatGpuResources"

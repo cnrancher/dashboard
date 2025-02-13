@@ -44,6 +44,10 @@ export default {
     limitMinMaxValues: {
       type:    Boolean,
       default: true
+    },
+    limitEphemeralStorage: {
+      type:    Boolean,
+      default: false
     }
   },
 
@@ -329,7 +333,10 @@ export default {
         />
       </span>
     </div>
-    <div class="row mb-20">
+    <div
+      v-if="limitEphemeralStorage"
+      class="row mb-20"
+    >
       <span class="col span-6">
         <UnitInput
           v-model="requestEphemeralStorage"

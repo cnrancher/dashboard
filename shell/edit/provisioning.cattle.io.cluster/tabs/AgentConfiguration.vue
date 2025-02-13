@@ -90,27 +90,22 @@ export default {
         const {
           cpu: limitsCpu,
           memory: limitsMemory,
-          'ephemeral-storage': limitEphemeralStorage
         } = limits;
-        const { cpu: requestsCpu, memory: requestsMemory, 'ephemeral-storage': requestEphemeralStorage } = requests;
+        const { cpu: requestsCpu, memory: requestsMemory } = requests;
 
         return {
           limitsCpu,
           limitsMemory,
-          limitEphemeralStorage,
           requestsCpu,
           requestsMemory,
-          requestEphemeralStorage
         };
       },
       set(neu) {
         const {
           limitsCpu,
           limitsMemory,
-          limitEphemeralStorage,
           requestsCpu,
           requestsMemory,
-          requestEphemeralStorage
         } = neu;
 
         const existing = this.value?.overrideResourceRequirements || {};
@@ -121,14 +116,12 @@ export default {
         const out = {
           ...existing,
           requests: {
-            cpu:                 requestsCpu,
-            memory:              requestsMemory,
-            'ephemeral-storage': requestEphemeralStorage
+            cpu:    requestsCpu,
+            memory: requestsMemory,
           },
           limits: {
-            cpu:                 limitsCpu,
-            memory:              limitsMemory,
-            'ephemeral-storage': limitEphemeralStorage
+            cpu:    limitsCpu,
+            memory: limitsMemory,
           },
         };
 
@@ -214,6 +207,7 @@ export default {
         :mode="mode"
         :show-tip="false"
         :handle-gpu-limit="false"
+        :limit-min-max-values="false"
         class="mt-10"
       />
     </GroupPanel>
