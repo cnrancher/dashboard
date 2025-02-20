@@ -356,6 +356,7 @@ export default {
                 :mode="mode"
                 :show-tip="false"
                 :limit-min-max-values="false"
+                :limit-ephemeral-storage="true"
               />
 
               <HamiResourceLimit

@@ -2471,6 +2471,8 @@ containerResourceLimit:
   minCpu: Min CPU
   minMemory: Min Memory
   error: The value of {key1} must be less than or equal to the value of {key2}.
+  limitsEphemeralStorage: Ephemeral Storage limit
+  requestEphemeralStorage: Ephemeral Storage Reservation
 resource:
   errors:
     update: "Error updating {name}"

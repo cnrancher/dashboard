@@ -2290,6 +2290,8 @@ containerResourceLimit:
   minCpu: 最小 CPU
   minMemory: 最小内存
   error: '{key1}的值必须小于或等于{key2}的值。'
+  limitsEphemeralStorage: 本地临时存储限制
+  requestEphemeralStorage: 本地临时存储预留
 resource:
   errors:
     update: "更新 {name} 出错"

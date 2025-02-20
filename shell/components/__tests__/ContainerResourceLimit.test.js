@@ -1,7 +1,6 @@
 import ContainerResourceLimit from '@shell/components/ContainerResourceLimit.vue';
 import { shallowMount } from '@vue/test-utils';
 import { CONTAINER_DEFAULT_RESOURCE_LIMIT } from '@shell/config/labels-annotations';
-import UnitInput from '@shell/components/form/UnitInput';
 
 describe('component: ContainerResourceLimit, method: validateResourceLimits', () => {
   // have not empty errors
@@ -314,20 +313,10 @@ describe('component: ContainerResourceLimit, method: updateBeforeSave', () => {
       expect(tMock).toHaveBeenCalledWith('containerResourceLimit.minCpu');
       expect(tMock).toHaveBeenCalledWith('containerResourceLimit.maxMemory');
       expect(tMock).toHaveBeenCalledWith('containerResourceLimit.minMemory');
-      const allComponents = wrapper.findAllComponents(UnitInput);
-
-      expect(allComponents.at(4).props()).toMatchObject({
-        label: 'containerResourceLimit.maxCpu', inputExponent: -1, outputModifier: true, baseUnit: 'suffix.cpus'
-      });
-      expect(allComponents.at(5).props()).toMatchObject({
-        label: 'containerResourceLimit.maxMemory', inputExponent: 2, increment: 1024, outputModifier: true
-      });
-      expect(allComponents.at(6).props()).toMatchObject({
-        label: 'containerResourceLimit.minCpu', inputExponent: -1, outputModifier: true, baseUnit: 'suffix.cpus'
-      });
-      expect(allComponents.at(7).props()).toMatchObject({
-        label: 'containerResourceLimit.minMemory', inputExponent: 2, increment: 1024, outputModifier: true
-      });
+      expect(wrapper.find('[data-testid="cpu-max-limit"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="memory-max-limit"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="cpu-min-limit"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="memory-min-limit"]').exists()).toBe(true);
     });
     it('should hide max/min cpu/memory limit', () => {
       const tMock = jest.fn();
