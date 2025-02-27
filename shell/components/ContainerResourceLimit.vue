@@ -403,7 +403,7 @@ export default {
     >
       <span class="col span-6">
         <UnitInput
-          v-model="requestEphemeralStorage"
+          v-model:value="requestEphemeralStorage"
           :placeholder="t('containerResourceLimit.memPlaceholder')"
           :label="t('containerResourceLimit.requestEphemeralStorage')"
           :mode="mode"
@@ -411,12 +411,12 @@ export default {
           :increment="1024"
           :output-modifier="true"
           data-testid="ephemeral-storage-reservation"
-          @input="updateLimits"
+          @update:value="updateLimits"
         />
       </span>
       <span class="col span-6">
         <UnitInput
-          v-model="limitsEphemeralStorage"
+          v-model:value="limitsEphemeralStorage"
           :placeholder="t('containerResourceLimit.memPlaceholder')"
           :label="t('containerResourceLimit.limitsEphemeralStorage')"
           :mode="mode"
@@ -424,7 +424,7 @@ export default {
           :increment="1024"
           :output-modifier="true"
           data-testid="ephemeral-storage-limit"
-          @input="updateLimits"
+          @update:value="updateLimits"
         />
       </span>
     </div>
