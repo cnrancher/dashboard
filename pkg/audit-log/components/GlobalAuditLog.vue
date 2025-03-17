@@ -310,7 +310,7 @@ export default {
       <VxeColumn
         field="operation"
         :title="t('auditLog.table.operation')"
-        width="80"
+        width="90"
       >
         <template #default="{ row }">
           <span v-if="row.requestAction"> {{ row.requestAction }} </span> <span v-else>{{ row.operation }}</span>
@@ -319,7 +319,7 @@ export default {
       <VxeColumn
         field="responseCode"
         :title="t('auditLog.table.result')"
-        width="120"
+        width="138"
       >
         <template #default="{ row }">
           <span>{{ responseCodeFilter(row.responseCode) }}</span>
@@ -329,7 +329,7 @@ export default {
         field="requestTimestamp"
         :title="t('auditLog.table.time')"
         sortable
-        width="180"
+        width="186"
       />
       <VxeColumn
         field="requestResType"
@@ -347,7 +347,7 @@ export default {
       <VxeColumn
         field="detail"
         :title="t('auditLog.table.detail')"
-        width="60"
+        width="64"
       >
         <template #default="{row}">
           <a

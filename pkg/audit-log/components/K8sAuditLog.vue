@@ -339,7 +339,7 @@ export default {
       <VxeColumn
         field="detail"
         :title="t('auditLog.table.detail')"
-        width="60"
+        width="64"
       >
         <template #default="{row}">
           <a
