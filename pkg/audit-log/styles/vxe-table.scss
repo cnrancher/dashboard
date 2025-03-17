@@ -12,7 +12,7 @@ $vxe-table-header-font-color: var(--body-text);
 $vxe-table-body-background-color: var(--sortable-table-row-bg);
 $vxe-table-row-hover-background-color: var(--sortable-table-hover-bg);
 
-@import 'vxe-table/styles/index.scss';
+@import 'vxe-table/styles/all.scss';
 
 .vxe-table--render-default.border--default .vxe-table--header-wrapper, .vxe-table--render-default.border--full .vxe-table--header-wrapper, .vxe-table--render-default.border--outer .vxe-table--header-wrapper {
   background-color: var(--sortable-table-header-bg);
