@@ -183,17 +183,20 @@ export default {
 
     this.$store.dispatch('harbor/fetchHarborVersion');
     this.$store.dispatch('harbor/loadHarborServerUrl');
-    try {
-      const inStore = this.$store.getters['currentProduct'].inStore;
 
-      const hamiResourceTypes = await this.$store.dispatch(
-        `${ inStore }/request`,
-        { url: `/k8s/clusters/${ this.currentCluster.id }/v1/hami.pandaria.com.resourcetypes/rancher-hami-resourcetypes` }
-      );
+    if (this.$store.getters[`management/canList`]('hami.pandaria.com.resourcetype')) {
+      try {
+        const inStore = this.$store.getters['currentProduct'].inStore;
 
-      this.hamiResourceLimtsOptions = hamiResourceTypes?.spec?.resourceTypes?.map((item) => ({ label: item, value: item })) ?? [];
-    } catch (error) {
-      console.error('Error: Load HAMi ResourceTypes Failed', error); // eslint-disable-line no-console
+        const hamiResourceTypes = await this.$store.dispatch(
+          `${ inStore }/request`,
+          { url: `/k8s/clusters/${ this.currentCluster.id }/v1/hami.pandaria.com.resourcetypes/rancher-hami-resourcetypes` }
+        );
+
+        this.hamiResourceLimtsOptions = hamiResourceTypes?.spec?.resourceTypes?.map((item) => ({ label: item, value: item })) ?? [];
+      } catch (error) {
+        console.error('Error: Load HAMi ResourceTypes Failed', error); // eslint-disable-line no-console
+      }
     }
 
     // don't block UI for these resources
