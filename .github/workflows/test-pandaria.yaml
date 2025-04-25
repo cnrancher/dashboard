@@ -23,10 +23,10 @@ jobs:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      
+
       - name: Run tests
         uses: ./.github/actions/unit-tests
 
@@ -45,10 +45,8 @@ jobs:
   i18n:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
-    needs:
-      - unit-test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -58,19 +56,17 @@ jobs:
   check-i18n:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
-    needs:
-      - i18n
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-      
+
       - name: Install packages
         run: npm install --global yarn && yarn install:ci
-      
+
       - name: Run i18n string check
         run: |
           # Falure won't fail the job (remove -x when all current issues are fixed)
@@ -79,10 +75,8 @@ jobs:
   lint:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
-    needs:
-      - check-i18n
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
