@@ -1,25 +1,26 @@
 # Validation steps required before a build occurs. Not designed to replace the CI test workflow
 name: Pandaria Build Test
+
 on:
   # This tells GH that the workflow is reusable 
   workflow_call:
+
 jobs:
   unit-test:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
       - name: Run tests
         uses: ./.github/actions/unit-tests
   i18n:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
-    needs:
-      - unit-test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Run i18n lint
@@ -27,11 +28,10 @@ jobs:
   lint:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
-    needs:
-      - i18n
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
       - name: Run lint
         uses: ./.github/actions/lint
