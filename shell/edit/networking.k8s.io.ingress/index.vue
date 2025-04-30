@@ -180,7 +180,7 @@ export default {
       }));
     },
     namespaceSecrets() {
-      return this.filterByCurrentResourceNamespace(this.allSecrets);
+      return this.filterByCurrentResourceNamespace(this.secrets ?? []);
     }
   },
 
@@ -197,6 +197,11 @@ export default {
   },
 
   methods: {
+    filterByCurrentResourceNamespace(resources) {
+      return resources.filter((resource) => {
+        return resource.metadata.namespace === this.value.metadata.namespace;
+      });
+    },
     willSave() {
       const backend = get(this.value.spec, this.value.defaultBackendPath);
       const serviceName = get(backend, this.value.serviceNamePath);
