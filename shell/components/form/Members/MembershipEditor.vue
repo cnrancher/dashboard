@@ -237,11 +237,11 @@ export default {
         v-else
         type="button"
         :disabled="isView"
-        class="btn role-link"
+        class="btn btn-sm role-link"
         :data-testid="`remove-item-${i}`"
         @click="remove"
       >
-        {{ t('generic.remove') }}
+        <i class="icon icon-trash" />
       </button>
       <button
         v-if="editMemberDialogName"
