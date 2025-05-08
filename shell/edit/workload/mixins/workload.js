@@ -189,7 +189,7 @@ export default {
     this.$store.dispatch('harbor/fetchHarborVersion');
     this.$store.dispatch('harbor/loadHarborServerUrl');
 
-    if (this.$store.getters[`management/canList`]('hami.pandaria.com.resourcetype')) {
+    if (this.$store.getters[`cluster/canList`]('hami.pandaria.com.resourcetype')) {
       try {
         const inStore = this.$store.getters['currentProduct'].inStore;
 
