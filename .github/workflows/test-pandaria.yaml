@@ -27,21 +27,11 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/unit-tests
 
-      - name: Collect Coverage
-        run: |
-          mkdir -p coverage-artifacts/coverage
-          cp coverage/unit/coverage-final.json coverage-artifacts/coverage/coverage-unit.json
-          cp -r coverage/unit/ coverage-artifacts/coverage/unit/
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{github.run_number}}-${{github.run_attempt}}-coverage
-          path: coverage-artifacts/**/*
-
   i18n:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
+    needs:
+      - unit-test
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,6 +43,8 @@ jobs:
   lint:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
+    needs:
+      - i18n
     steps:
       - uses: actions/checkout@v4
         with:
