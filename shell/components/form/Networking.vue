@@ -165,7 +165,7 @@ export default {
 
     async fetchVlansubnets() {
       const clusterId = this.currentCluster.id;
-      const canList = this.$store?.getters?.['management/canList'];
+      const canList = this.$store?.getters?.['cluster/canList'];
       const macvlanV1Installed = typeof canList === 'function' ? canList('macvlan.cluster.cattle.io.macvlansubnet') : false;
 
       if (clusterId && macvlanV1Installed) {
