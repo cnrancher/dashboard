@@ -145,7 +145,7 @@ export default {
               this.isAdmin = true;
             }
 
-            if (['read-only-pandaria', 'global-read-only'].includes(globalRole.id)) {
+            if (['global-read-only'].includes(globalRole.id)) {
               this.isReadOnlyAdmin = true;
             }
 

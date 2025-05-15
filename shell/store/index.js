@@ -906,7 +906,7 @@ export const actions = {
     }
 
     if (res.globalRoleBindings && getters['auth/me']?.id) {
-      const readOnlyAdminRoles = ['read-only-pandaria', 'global-read-only'];
+      const readOnlyAdminRoles = ['global-read-only'];
       const id = getters['auth/me']?.id;
       const adminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'admin');
       const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => readOnlyAdminRoles.includes(binding.globalRoleName));

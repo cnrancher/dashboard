@@ -99,7 +99,7 @@ export default {
 
   computed: {
     globalResources() {
-      return this.globalRoles?.filter((r) => r.id !== 'read-only-pandaria');
+      return this.globalRoles;
     },
 
     clusterResources() {
