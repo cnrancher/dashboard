@@ -256,17 +256,15 @@ export default {
           </div>
         </div>
       </template>
-    </CruResource>
-    <div
-      v-if="!model.enabled"
-      class="row"
-    >
-      <div class="col span-12">
+      <div
+        v-if="!model.enabled"
+      >
         <Banner
-          v-clean-html="t('authConfig.associatedWarning', tArgs, true)"
           color="info"
-        />
+        >
+          <div v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
+        </Banner>
       </div>
-    </div>
+    </CruResource>
   </div>
 </template>
