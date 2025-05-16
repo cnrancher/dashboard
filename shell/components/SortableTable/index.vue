@@ -1316,7 +1316,7 @@ export default {
         </slot>
         <template
           v-for="(row, i) in groupedRows.rows"
-          :key="i"
+          :key="row.key ?? i"
         >
           <slot
             name="main-row"
