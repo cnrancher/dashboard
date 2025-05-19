@@ -302,7 +302,7 @@ export function init(store) {
   );
 
   headers(SERVICE,
-    [STATE, NAME_COL, NAMESPACE_COL, TARGET_PORT, SELECTOR, SPEC_TYPE, AGE],
+    [STATE, NAME_COL, NAMESPACE_COL, TARGET_PORT, SELECTOR, SPEC_TYPE, CLUSTER_IP, AGE],
     [
       STEVE_STATE_COL,
       STEVE_NAME_COL,
@@ -319,7 +319,6 @@ export function init(store) {
         sort:   false, // ['spec.type', 'spec.clusterIP'] Pending API support  (blocked https://github.com/rancher/rancher/issues/48473 (index fields)
         search: 'spec.type',
       },
-      CLUSTER_IP,
       STEVE_AGE_COL
     ]
   );
