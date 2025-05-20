@@ -14,11 +14,6 @@ export default {
     ...mapGetters({ t: 'i18n/t' }),
     ...mapGetters({ options: 'action-menu/optionsArray' }),
   },
-  data() {
-    const experimentalItems = ['two-factor-authenticator-config'];
-
-    return { experimentalItems };
-  }
 };
 </script>
 
@@ -31,7 +26,6 @@ export default {
       <div class="title">
         <h1>
           {{ value.id }}
-          <strong v-if="experimentalItems.includes(value.id)">({{ t('generic.experimental') }})</strong>
           <span
             v-if="value.fromEnv"
             class="modified"
