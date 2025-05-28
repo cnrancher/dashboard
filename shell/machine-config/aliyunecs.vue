@@ -162,15 +162,15 @@ export default {
         this[k] = res[k];
       }
 
-      if (!this.value?.zone || !findBy(this.zoneOptions, 'value', this.value.zone )) {
+      if (!this.value?.zone) {
         this.value.zone = this.defaultValue.zone;
       }
 
-      if (!this.value?.vpcId || !findBy(this.vpcOptions, 'value', this.value.vpcId )) {
+      if (!this.value?.vpcId) {
         this.value.vpcId = this.defaultValue.vpcId;
       }
 
-      if (!this.value?.instanceType || !findBy(this.instanceOptions, 'value', this.value.instanceType )) {
+      if (!this.value?.instanceType) {
         this.value.instanceType = this.instanceOptions?.[1]?.value;
       }
 
@@ -320,7 +320,7 @@ export default {
         cloudCredentialId, regionId: region, vpcId,
       });
 
-      if (!this.value?.vswitchId || !findBy(this.vSwitcheOptions, 'value', this.value.vswitchId )) {
+      if (!this.value?.vswitchId) {
         this.value.vswitchId = this.defaultValue.vswitchId;
       }
 
@@ -397,10 +397,10 @@ export default {
       this.imageType = imageType;
       this.imageVersionChoose = imageVersionChoose;
 
-      if (!this.value?.systemDiskCategory || !findBy(this.systemDiskCategoryOptions, 'value', this.value.systemDiskCategory )) {
+      if (!this.value?.systemDiskCategory) {
         this.value.systemDiskCategory = this.systemDiskCategoryOptions?.[0]?.value;
       }
-      if (!this.value?.diskCategory || !findBy(this.diskCategoryOptions, 'value', this.value.diskCategory )) {
+      if (!this.value?.diskCategory) {
         this.value.diskCategory = this.diskCategoryOptions?.[0]?.value;
       }
     },
