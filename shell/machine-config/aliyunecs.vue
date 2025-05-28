@@ -225,6 +225,7 @@ export default {
       spotDuration:           true,
       imageType:              null,
       imageVersionChoose:     [],
+      previousImageIdOption:  {},
     };
   },
 
@@ -370,8 +371,26 @@ export default {
           imageType = found?.Platform;
           imageVersionChoose = this.groupImages?.[imageType] || [] ;
         } else {
+          const segments = this.value.imageId.split('_');
+          const name = segments[0];
+          const formatMap = {
+            anolisos:   () => 'Anolis',
+            centos:     () => segments[1] === 'stream' ? 'CentOS Stream' : 'CentOS',
+            coreos:     () => 'CoreOS',
+            fcos:       () => 'Fedora CoreOS',
+            rockylinux: () => 'Rocky Linux',
+            opensuse:   () => 'openSUSE',
+          };
+          const system = formatMap[name] ? formatMap[name]() : this.capitalizeFirst(name);
+
+          imageType = system;
           imageVersionChoose = this.groupImages?.[imageType] || [] ;
-          this.value.imageId = imageVersionChoose?.[0]?.value;
+
+          this.previousImageIdOption = {
+            label: `${ imageType } ${ this.value.imageId }`,
+            value: this.value.imageId
+          };
+          imageVersionChoose.push(this.previousImageIdOption);
         }
       }
 
@@ -505,6 +524,12 @@ export default {
 
       this.imageVersionChoose = imageVersionChoose;
       this.value.imageId = imageVersionChoose.length ? imageVersionChoose[0]?.value : '';
+    },
+
+    capitalizeFirst(str) {
+      if (typeof str !== 'string' || str.length === 0) return str;
+
+      return str.charAt(0).toUpperCase() + str.slice(1);
     },
   },
 
