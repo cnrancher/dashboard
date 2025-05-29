@@ -396,13 +396,6 @@ export default {
 
       this.imageType = imageType;
       this.imageVersionChoose = imageVersionChoose;
-
-      if (!this.value?.systemDiskCategory) {
-        this.value.systemDiskCategory = this.systemDiskCategoryOptions?.[0]?.value;
-      }
-      if (!this.value?.diskCategory) {
-        this.value.diskCategory = this.diskCategoryOptions?.[0]?.value;
-      }
     },
     updateTags(tag) {
       const ary = [];
@@ -437,7 +430,18 @@ export default {
 
     test() {
       const errors = [];
-      const requiredList = ['zone', 'vpcId', 'vswitchId', 'instanceType', 'diskFs', 'internetChargeType', 'imageId', 'systemDiskCategory', 'diskCategory', 'instanceChargeType'];
+      const requiredList = [
+        'zone',
+        'vpcId',
+        'vswitchId',
+        'instanceType',
+        'diskFs',
+        'internetChargeType',
+        'imageId',
+        'systemDiskCategory',
+        'instanceChargeType',
+        'systemDiskSize',
+      ];
 
       requiredList.forEach((item) => {
         if (!this.value?.[item]) {
@@ -464,20 +468,24 @@ export default {
       return { errors };
     },
 
-    unitInputRangeLimit(min, max, key) {
-      const value = this.value?.[key];
+    unitInputRangeLimit(ele, min, max, key) {
+      this.$nextTick(() => {
+        const value = ele?.target?.value;
 
-      if (!value) {
-        return;
-      }
+        if (!value) {
+          this.value[key] = min.toString();
 
-      if (value < min) {
-        this.value[key] = min.toString();
-      }
+          return;
+        }
 
-      if (value > max) {
-        this.value[key] = max.toString();
-      }
+        if (value < min) {
+          this.value[key] = min.toString();
+        }
+
+        if (value > max) {
+          this.value[key] = max.toString();
+        }
+      });
     },
     initInstanceChargeType() {
       let instanceChargeType = this.value?.instanceChargeType || this.instanceChargeType;
@@ -777,7 +785,6 @@ export default {
 
       if ( this.value.systemDiskCategory && this.value.systemDiskCategory === 'cloud_auto' ) {
         size.Min = 40;
-        this.unitInputRangeLimit(size.Min, size.Max, 'systemDiskSize');
       } else {
         size.Min = 20;
       }
@@ -789,7 +796,6 @@ export default {
 
       if ( this.value.diskCategory && this.value.diskCategory === 'cloud_auto' ) {
         size.Min = 40;
-        this.unitInputRangeLimit(size.Min, size.Max, 'diskSize');
       } else {
         size.Min = 20;
       }
@@ -972,10 +978,11 @@ export default {
             :min="20"
             :max="500"
             :disabled="disabled"
+            :required="true"
             :label="t('cluster.machineConfig.aliyunecs.systemDiskSize.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.systemDiskSize.placeholder', {min: systemDiskCategorySize.Min, max: systemDiskCategorySize.Max})"
             :suffix="t('cluster.machineConfig.aliyunecs.systemDiskSize.suffix')"
-            @input="unitInputRangeLimit(20, 500, 'systemDiskSize')"
+            @blur="unitInputRangeLimit($event, systemDiskCategorySize.Min, 500, 'systemDiskSize')"
           />
         </div>
       </div>
@@ -992,7 +999,7 @@ export default {
             :label="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.label')"
             :placeholder="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.placeholder')"
             :suffix="t('cluster.machineConfig.aliyunecs.internetMaxBandwidth.suffix')"
-            @input="unitInputRangeLimit(1, 100, 'internetMaxBandwidth')"
+            @blur="unitInputRangeLimit($event, 1, 100, 'internetMaxBandwidth')"
           />
         </div>
       </div>
@@ -1015,7 +1022,6 @@ export default {
               v-model="value.diskCategory"
               :mode="mode"
               :options="diskCategoryOptions"
-              :required="true"
               :searchable="true"
               :disabled="disabled"
               :label="t('cluster.machineConfig.aliyunecs.diskCategory.label')"
@@ -1032,7 +1038,6 @@ export default {
               :label="t('cluster.machineConfig.aliyunecs.diskSize.label')"
               :placeholder="t('cluster.machineConfig.aliyunecs.diskSize.placeholder', {min: diskCategorySize.Min, max: diskCategorySize.Max})"
               :suffix="t('cluster.machineConfig.aliyunecs.diskSize.suffix')"
-              @input="unitInputRangeLimit(20, 32768, 'diskSize')"
             />
           </div>
         </div>
