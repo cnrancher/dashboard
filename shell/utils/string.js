@@ -321,3 +321,9 @@ export function sanitizeValue(v) {
 export function sanitizeIP(v) {
   return (v || '').replace(/[^a-z0-9.:_-]/ig, '');
 }
+
+export function isBase64(value) {
+  const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+
+  return base64regex.test(value);
+}
