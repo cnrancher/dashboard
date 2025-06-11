@@ -1,6 +1,6 @@
 <script>
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
-import { set } from '@shell/utils/object';
+import { set, clone } from '@shell/utils/object';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { Checkbox } from '@components/Form/Checkbox';
 import SelectOrCreateAuthSecret from '@shell/components/form/SelectOrCreateAuthSecret';
@@ -8,6 +8,7 @@ import CreateEditView from '@shell/mixins/create-edit-view';
 import SecretSelector from '@shell/components/form/SecretSelector';
 import { SECRET_TYPES as TYPES } from '@shell/config/secret';
 import { base64Decode, base64Encode } from '@shell/utils/crypto';
+import { isBase64 } from '@shell/utils/string';
 
 export default {
   components: {
@@ -46,7 +47,7 @@ export default {
   },
 
   data() {
-    const configMap = this.value.spec.rkeConfig?.registries?.configs || {};
+    const configMap = clone(this.value.spec.rkeConfig?.registries?.configs) || {};
     const entries = [];
 
     const defaultAddValue = {
@@ -61,7 +62,11 @@ export default {
       if (configMap[hostname]) {
         configMap[hostname].insecureSkipVerify = configMap[hostname].insecureSkipVerify ?? defaultAddValue.insecureSkipVerify;
         configMap[hostname].authConfigSecretName = configMap[hostname].authConfigSecretName ?? defaultAddValue.authConfigSecretName;
-        configMap[hostname].caBundle = base64Decode(configMap[hostname].caBundle ?? defaultAddValue.caBundle);
+
+        const caBundle = configMap[hostname].caBundle ?? defaultAddValue.caBundle;
+
+        configMap[hostname].caBundle = isBase64(caBundle) ? base64Decode(caBundle) : caBundle;
+
         configMap[hostname].tlsSecretName = configMap[hostname].tlsSecretName ?? defaultAddValue.tlsSecretName;
       }
       entries.push({

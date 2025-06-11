@@ -9926,11 +9926,6 @@ is-arrayish@^0.3.1:
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.3.2.tgz#4574a2ae56f7ab206896fb431eaeed066fdf8f03"
   integrity sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
 
-is-base64@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-base64/-/is-base64-1.1.0.tgz#8ce1d719895030a457c59a7dcaf39b66d99d56b4"
-  integrity sha512-Nlhg7Z2dVC4/PTvIFkgVVNvPHSO2eR/Yd0XzhGiXCXEvWnptXlXa/clQ8aePPiMuxEGcWfzWbGw2Fe3d+Y3v1g==
-
 is-bigint@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/is-bigint/-/is-bigint-1.0.4.tgz#08147a1875bc2b32005d41ccd8291dffc6691df3"
@@ -16558,15 +16553,15 @@ ws@^8.13.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-xe-utils@^3.5.11, xe-utils@^3.5.31:
-  version "3.5.31"
-  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-3.5.31.tgz#b9217553de4069559dacb778c16950acbac63b9a"
-  integrity sha512-oS4yv8qktvlE0wc9yYkitDidEmThc5qN0UTRvKCvrWnejxbTyIxbwfrdZmPKdKGZtB+/U8cEAMFywLJjHtD11A==
-
 ws@^8.18.0:
   version "8.18.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
+
+xe-utils@^3.5.11, xe-utils@^3.5.31:
+  version "3.5.31"
+  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-3.5.31.tgz#b9217553de4069559dacb778c16950acbac63b9a"
+  integrity sha512-oS4yv8qktvlE0wc9yYkitDidEmThc5qN0UTRvKCvrWnejxbTyIxbwfrdZmPKdKGZtB+/U8cEAMFywLJjHtD11A==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
