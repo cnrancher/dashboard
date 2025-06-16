@@ -41,7 +41,7 @@ export default {
     }
   },
   data() {
-    const minLength = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.CATTLE_PASSWORD_MIN_LENGTH)?.value ?? 12;
+    const minLength = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PASSWORD_MIN_LENGTH)?.value ?? 12;
 
     return { minLength };
   },

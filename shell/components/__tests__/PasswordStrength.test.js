@@ -1,4 +1,5 @@
 import PasswordStrength from '@shell/components/PasswordStrength.vue';
+import { shallowMount } from '@vue/test-utils';
 
 describe('component: PasswordStrength', () => {
   it('should return the correct strength', () => {
@@ -76,5 +77,24 @@ describe('component: PasswordStrength', () => {
       labelKey:  'changePassword.strength.best',
       state:     'best'
     });
+  });
+  it('should read setting to init minLength', () => {
+    const wrapper = shallowMount(PasswordStrength, {
+      global: {
+        mocks: {
+          $store: {
+            getters: {
+              'management/byId': jest.fn((_, k) => {
+                if (k === 'password-min-length') {
+                  return { value: 99 };
+                }
+              })
+            }
+          }
+        }
+      }
+    });
+
+    expect(wrapper.vm.minLength).toBe(99);
   });
 });
