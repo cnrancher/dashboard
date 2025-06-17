@@ -119,6 +119,10 @@ const hasCredential = computed(() => {
   return !!cceConfig.value?.huaweiCredentialSecret;
 });
 
+const isNewOrUnprovisioned = computed(() => {
+  return props.mode === _CREATE || !normanCluster.value?.cceStatus?.upstreamSpec;
+});
+
 const fvExtraRules = computed(() => {
   let out = {};
 
@@ -164,7 +168,7 @@ const fvExtraRules = computed(() => {
         nonImportRules.eipChargeModeRequired = CCEValidators.eipChargeModeRequired(cceConfig, intl);
         nonImportRules.eipBandwidthSizeRequired = CCEValidators.eipBandwidthSizeRequired(cceConfig, intl);
       }
-      if (cceConfig.value.authentiactionMode === 'authenticating_proxy') {
+      if (cceConfig.value.authentiactionMode === 'authenticating_proxy' && isNewOrUnprovisioned.value) {
         nonImportRules.authenticatingProxyCaRequired = CCEValidators.authenticatingProxyCaRequired(cceConfig, intl);
         nonImportRules.authenticatingProxyCertRequired = CCEValidators.authenticatingProxyCertRequired(cceConfig, intl);
         nonImportRules.authenticatingProxyPrivateKeyRequired = CCEValidators.authenticatingProxyPrivateKeyRequired(cceConfig, intl);
@@ -181,10 +185,6 @@ const fvExtraRules = computed(() => {
   }
 
   return out;
-});
-
-const isNewOrUnprovisioned = computed(() => {
-  return props.mode === _CREATE || !normanCluster.value?.cceStatus?.upstreamSpec;
 });
 
 const isTurbo = computed(() => {
@@ -1498,7 +1498,7 @@ onMounted(async() => {
               :mode="mode"
             />
           </div>
-          <div v-if="cceConfig.authentiactionMode === 'authenticating_proxy'">
+          <div v-if="cceConfig.authentiactionMode === 'authenticating_proxy' && isNewOrUnprovisioned">
             <div class="row mt-10">
               <div class="col span-6">
                 <LabeledInput
