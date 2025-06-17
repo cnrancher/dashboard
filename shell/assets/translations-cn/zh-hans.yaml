@@ -1237,22 +1237,23 @@ cluster:
         placeholder: 你的 腾讯云 访问密钥 Secret
     huawei:
       accessKey:
-        label: 访问密钥 ID
-        placeholder: CCE 访问密钥 ID
+        label: 访问密钥
+        placeholder: CCE 访问密钥
         help: 創建访问密钥 ID 参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">这里</a>.
       secretKey:
         label: 访问密钥
         placeholder: CCE 访问密钥
         help: 获取访问密钥参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">这里</a>.
       projectId:
-        label: 项目 ID
-        placeholder: CCE 项目 ID
-        help: 获取项目 ID 参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
-        required: 项目 ID 必須填写
+        label: 项目
+        placeholder: CCE 项目
+        help: 获取项目参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
+        required: 项目必須填写
       regionID:
         label: 默认区域
-        help: 项目 ID 需要和默认区域匹配，否者云凭证将不可用。可参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
+        help: 项目需要和默认区域匹配，否者云凭证将不可用。可参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
         cn_north_1: 华北-北京一
+        cn_north_3: 华北三
         cn_north_4: 华北-北京四
         cn_east_3: 华东-上海一
         cn_east_2: 华东-上海二
@@ -1269,6 +1270,16 @@ cluster:
         eu_west_101: 欧洲-都柏林
         tr_west_1: 土耳其-伊斯坦布尔
         ae_ad_1: 中东-阿布扎比-OP5
+        ap_southeast_4: 亚太-雅加达
+        ap_southeast_5: 亚太-马尼拉
+        cn_south_4: 华南-广州-友好用户环境
+        cn_north_11: 华北-乌兰察布-汽车一
+        cn_east_5: 华东-青岛
+        na_mexico_1: 拉美-墨西哥城一
+        la_north_2: 拉美-墨西哥城二
+        me_east_1: 中东-利雅得
+        af_north_1: 非洲-开罗
+        cn_east_4: 华东二
     aws:
       accessKey:
         label: Access Key

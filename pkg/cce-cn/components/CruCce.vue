@@ -980,10 +980,12 @@ function fixConfig(liveNormanCluster) {
     kubeProxyMode,
     eniNetwork,
     flavor,
+    huaweiCredentialSecret,
   } = config;
 
   const out = {
     category,
+    huaweiCredentialSecret,
     containerNetworkCidr: containerNetwork.cidr,
     containerNetworkMode: containerNetwork.mode,
     version,
@@ -1401,7 +1403,7 @@ onMounted(async() => {
               v-model:value="cceConfig.kubeProxyMode"
               :disabled="!isNewOrUnprovisioned"
               name="selectKubeProxyMode"
-              :options="['iptables', 'IPVS']"
+              :options="['iptables', 'ipvs']"
               :labels="[
                 'iptables',
                 'IPVS',
@@ -1569,7 +1571,7 @@ onMounted(async() => {
             :disabled="!isNewOrUnprovisioned"
             :value="cceConfig.tags"
             :protected-keys="[]"
-            :add-label="t('labels.addLabel')"
+            :add-label="t('tags.addTag')"
             :add-icon="addIcon"
             :mode="mode"
             :read-allowed="false"

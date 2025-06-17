@@ -4,21 +4,30 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 
 const REGIONS = [
-  'cn-east-3',
-  'af-south-1',
-  'cn-north-4',
-  'cn-north-1',
-  'cn-north-9',
-  'cn-east-2',
-  'cn-south-1',
-  'eu-west-0',
-  'eu-west-101',
-  'tr-west-1',
-  'cn-southwest-2',
+  'ap-southeast-1',
   'ap-southeast-2',
   'ap-southeast-3',
-  'ae-ad-1',
-  'ap-southeast-1',
+  'ap-southeast-4',
+  'ap_southeast_5',
+  'cn-east-2',
+  'cn-east-3',
+  'cn-east-4',
+  'cn-east-5',
+  'cn-north-1',
+  'cn-north-4',
+  'cn-north-9',
+  'cn-north-11',
+  'cn-south-1',
+  'cn-south-4',
+  'cn-southwest-2',
+  'la-north-2',
+  'la-south-2',
+  'na-mexico-1',
+  'sa-brazil-1',
+  'tr-west-1',
+  'me-east-1',
+  'af-north-1',
+  'af-south-1',
 ];
 
 const getHuaweiRegionChoices = (regions) => {
@@ -41,20 +50,20 @@ export default {
   },
 
   watch: {
-    'value.decodedData.regionID'(neu) {
-      this.$emit('validationChanged', !!neu);
+    'value.decodedData.regionID'() {
+      this.$emit('validationChanged', this.validate());
     },
 
-    'value.decodedData.projectID'(neu) {
-      this.$emit('validationChanged', !!neu);
+    'value.decodedData.projectID'() {
+      this.$emit('validationChanged', this.validate());
     },
 
-    'value.decodedData.accessKey'(neu) {
-      this.$emit('validationChanged', !!neu);
+    'value.decodedData.accessKey'() {
+      this.$emit('validationChanged', this.validate());
     },
 
-    'value.decodedData.secretKey'(neu) {
-      this.$emit('validationChanged', !!neu);
+    'value.decodedData.secretKey'() {
+      this.$emit('validationChanged', this.validate());
     },
   },
 
@@ -78,6 +87,14 @@ export default {
       } catch (e) {
         return false;
       }
+    },
+    validate() {
+      const projectID = this.value.decodedData.projectID;
+      const accessKey = this.value.decodedData.accessKey;
+      const secretKey = this.value.decodedData.secretKey;
+      const regionID = this.value.decodedData.regionID;
+
+      return !!projectID && !!accessKey && !!secretKey && !!regionID;
     },
   },
 

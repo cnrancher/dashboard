@@ -1237,22 +1237,23 @@ cluster:
         placeholder: 你的 騰訊雲 訪問密鑰 Secret
     huawei:
       accessKey:
-        label: 訪問密钥 ID
-        placeholder: CCE 訪問密钥 ID
-        help: 創建訪問密钥 ID 参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">这里</a>.
+        label: 訪問密钥
+        placeholder: CCE 訪問密钥
+        help: 創建訪問密钥 参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">这里</a>.
       secretKey:
         label: 訪問密钥
         placeholder: CCE 訪問密钥
         help: 获取訪問密钥参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606340.html" target="_blank">这里</a>.
       projectId:
-        label: 项目 ID
-        placeholder: CCE 项目 ID
-        help: 获取项目 ID 参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
-        required: 项目 ID 必須填寫
-      regionId:
+        label: 项目
+        placeholder: CCE 项目
+        help: 获取项目参考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
+        required: 项目必須填寫
+      regionID:
         label: 默認區域
         help: 項目 ID 需要和默認區域匹配，否者雲憑證將不可用。可參考 <a href="https://support.huaweicloud.com/usermanual-ca/zh-cn_topic_0046606344.html" target="_blank">这里</a>.
         cn_north_1: 華北-北京一
+        cn_north_3: 華北三
         cn_north_4: 華北-北京四
         cn_east_3: 華東-上海一
         cn_east_2: 華東-上海二
@@ -1269,6 +1270,16 @@ cluster:
         eu_west_101: 歐洲-都柏林
         tr_west_1: 土耳其-伊斯坦布爾
         ae_ad_1: 中東-阿布扎比-OP5
+        ap_southeast_4: 亞太-雅加達
+        ap_southeast_5: 亞太-马尼拉
+        cn_south_4: 華南-廣州-友好使用者環境
+        cn_north_11: 華北-烏蘭察布-汽車一區
+        cn_east_5: 華東-青島
+        na_mexico_1: 拉美-墨西哥城一區
+        la_north_2: 拉美-墨西哥城二區
+        me_east_1: 中東-利雅德
+        af_north_1: 非洲-开羅
+        cn_east_4: 华東二
     aws:
       accessKey:
         label: Access Key
