@@ -1435,16 +1435,16 @@ cluster:
         cn_east_2: CN East-Shanghai2
         cn_south_1: CN South-Guangzhou
         cn_southwest_2: CN Southwest-Guiyang1
-        ap_southeast_1: AP-Hong-Kong
+        ap_southeast_1: CN-Hong Kong
         ap_southeast_2: AP-Bangkok
         ap_southeast_3: AP-Singapore
         af_south_1: AF-Johannesburg
         sa_brazil_1: LA-Sao Paulo1
         la_south_2: LA-Santiago
-        cn_north_9: North-Ulanqab1
+        cn_north_9: CN North-Ulanqab1
         eu_west_0: Europe-Paris
         eu_west_101: Europe-Dublin
-        tr_west_1: Turkey-Istanbul
+        tr_west_1: TR-Istanbul
         ae_ad_1: Middle-East-Abu-Dhabi-OP5
         ap_southeast_4: AP-Jakarta
         ap_southeast_5: AP-Manila

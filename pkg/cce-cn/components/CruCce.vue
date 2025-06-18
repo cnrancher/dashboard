@@ -264,7 +264,7 @@ function registerWatch() {
         state.value.errors.push(err);
       }
     }
-  });
+  }, { immediate: true });
 
   watch(() => cceConfig.value.category, async() => {
     if (cceConfig.value.huaweiCredentialSecret) {
@@ -825,9 +825,10 @@ async function fetchClusters(cloudCredentialId) {
     const out = [];
 
     if (res.length === 0) {
+      options.value.clusterOptions = out;
+
       return;
     }
-
     res.forEach((c) => {
       out.push({
         label: c.metadata.name,
@@ -1571,7 +1572,7 @@ onMounted(async() => {
             :disabled="!isNewOrUnprovisioned"
             :value="cceConfig.tags"
             :protected-keys="[]"
-            :add-label="t('tags.addTag')"
+            :add-label="t('labels.addTag')"
             :add-icon="addIcon"
             :mode="mode"
             :read-allowed="false"
