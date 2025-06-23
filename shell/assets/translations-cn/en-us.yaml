@@ -112,8 +112,15 @@ generic:
   upload: Upload
   actionMenu: action menu
   ariaLabel:
-    key: Key {index}
-    value: Value {index}
+    key: Key for row {index}
+    value: Value for row {index}
+    addKeyValue: Add a new Key-Value row
+    arrayList: Array list input
+    genericAddRow: Add a new row
+    genericRow: row {index}
+    keyValue: Key-Value input
+    readKeyValue: read  Key-Values from file
+    remove: remove row {index}
   ascending: ascending
   basic: Basic
   clearFilters: clear filters
@@ -130,6 +137,19 @@ generic:
   unified: Unified
   userAvatar: user avatar
   userMenu: user menu
+  banners:
+    altCloseBanner: Close banner icon
+    bannerIcon: Banner icon
+  category: Category
+  featured: Featured
+  installed: Installed
+  opensInNewTab: Opens in a new tab
+  shortFeatured: Feat
+  showLess: Show less
+  showMore: Show more
+  tag: Tag
+  tags: Tags
+  upgradeable: Upgradeable
 locale:
   en-us: English
   zh-hans: 简体中文
@@ -190,6 +210,7 @@ nav:
     Project: Project
     drivers: Drivers
     jwt.authentication: JWT Authentication
+    resources: Resources
   ns:
     all: All Namespaces
     clusterLevel: Only Cluster Resources
@@ -212,9 +233,11 @@ nav:
     clusters: clusters
     ariaLabel: Filter clusters on main menu
   resourceSearch:
-    label: Resource Search
-    toolTip: Resource Search {key}
-    placeholder: Type to search for a resource...
+    label: Resource Type Search
+    toolTip: Resource Type Search {key}
+    placeholder: Type to search for a resource type...
+    filteringDescription: Using this input will immediately filter the results in the list below
+    prompt: Search for a Kubernetes Resource/Custom Resource type
   header:
     setLoginPage: Set as login page
     restoreCards: Restore hidden cards
@@ -264,6 +287,7 @@ nav:
   alt:
     mainMenuIcon: Main menu icon
     mainMenuRancherLogo: Main menu Rancher logo
+    userAvatar: User avatar image
   ariaLabel:
     about: About page link
     cluster: Cluster menu item
@@ -280,6 +304,7 @@ nav:
     seeAll: See all clusters menu item
     support: Support page link
     topLevelMenu: Main menu
+    sideNav: Secondary menu
   expandCollapseAppBar: Expand/Collapse the Application Bar
 product:
   apps: Apps
@@ -345,6 +370,9 @@ about:
     machine: Machine
     releaseNotes: 'View release notes'
     rancher: Rancher
+    downloadCli: Download CLI for {os}
+    downloadImages: Download {listName} images list
+    githubRepo: Open GitHub repository for the {name} component
   os:
     mac: macOS
     windows: Windows
@@ -414,6 +442,9 @@ accountAndKeys:
           year: Years
       scope: Scope
       noScope: No Scope
+      ariaLabel:
+        expiration: Expiration duration - number input
+        expirationUnits: Expiration unit - time unit
     info:
       accessKey: Access Key
       secretKey: Secret Key
@@ -422,6 +453,7 @@ accountAndKeys:
       keyCreated: A new API Key has been created
       bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests. You can also combine them to use as a Bearer token:"
       ttlLimitedWarning: The Expiry time for this API Key was reduced due to system configuration
+    copyApiEnpoint: Copy API Endpoint to clipboard
 addClusterMemberDialog:
   title: Add Cluster Member
 addonConfigConfirmation:
@@ -491,6 +523,9 @@ authConfig:
           4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
           5: 'Click on "Save".'
         topPrivateDomain: 'Top private domain of:'
+        ariaLabel:
+          hostname: Copy Hostname to clipboard
+          serverUrl: Copy Server URL to clipboard
       2:
         title: 'Navigate to the "Credentials" tab to create your OAuth client ID'
         body:
@@ -499,6 +534,8 @@ authConfig:
           3: 'Authorized redirect URIs:'
           4: 'Click "Create", and then click on the "Download JSON" button.'
           5: 'Upload the downloaded JSON file in the OAuth credentials box.'
+        ariaLabel:
+          serverUrlVerify: Copy Server Auth Verfication URL to clipboard
       3:
         title: 'Create Service Account credentials'
         introduction: 'Follow <a href="{docsBase}/how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/authentication-config/configure-google-oauth#3-creating-service-account-credentials" target="_blank" rel="noopener noreferrer nofollow">this</a> guide to:'
@@ -625,6 +662,7 @@ authConfig:
     reply:
       info: 'Azure AD requires a whitelisted URL for your Rancher server before beginning this setup. Please ensure that the following URL is set in the Reply URL section of your Azure Portal. Please note that it may take up to 5 minutes for the whitelisted URL to propagate.'
       label: Reply URL
+      ariaLabel: Copy Reply URL to clipboard
     updateEndpoint:
       button: Update Endpoint
       banner:
@@ -674,13 +712,16 @@ authConfig:
     scope:
       label: Scopes
       placeholder: openid
-      protip: The <code>openid</code> scope is required. If you are using custom scopes, ensure that it is included.
+      protip: The <code>openid</code>, <code>profile</code>, and <code>email</code> scopes are required and cannot be removed.
     tokenEndpoint: Token Endpoint
     url: URL
     userInfoEndpoint: User Info Endpoint
     groupSearch:
       label: Enable group search
       tooltip: Allows users with appropriate permissions to search and view all groups within the OIDC provider's realm. This can be useful for administrators who need to assign global roles to groups that they are not currently a member of.
+    cognito: Configure an Amazon Cognito account
+    cognitoHelp: You will need to create an application client in Cognito of type <b>Traditional web application</b> with the Return URL set to the URL shown below.
+    cognitoIssuer: Issuer URL
   stateBanner:
     disabled: 'The {provider} authentication provider is currently disabled.'
     enabled: 'The {provider} authentication provider is currently enabled.'
@@ -889,6 +930,12 @@ asyncButton:
     successIcon: checkmark
     waiting: ""
     waitingIcon: refresh
+  alt:
+    iconAlt: Async button icon
+  redeploy:
+    action: Redeploy
+    success: Redeployed
+    waiting: Redeploying Workload
 backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
@@ -1047,6 +1094,14 @@ catalog:
     featuredBtn: Featured
     iconAlt: Icon for {app} card/grid item
     refresh: refresh charts
+    addNewRepo:
+      ariaLabel: Add a new repository
+      label: Add new
+    appChartCard:
+      footerItem:
+        ariaLabel: Apply filter
+    experimentalStatus:
+      tooltip: Experimental - using this filter is not yet 100% accurate. Proceed with caution.
   install:
     action:
       goToUpgrade: Edit/Upgrade
@@ -2075,7 +2130,7 @@ cluster:
     cloudProviderAddConfig: On Kubernetes 1.27 or greater, the <b>Amazon</b> Cloud Provider requires additional configuration. See <a href="https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon" target="_blank" rel="noopener noreferrer nofollow">the documentation</a> for more information.
     cloudProviderMigrateAzure: On Kubernetes 1.30 or greater, the <b>Azure</b> Cloud Provider has been removed. To upgrade Kubernetes, the cluster should be migrated to External provider first.<br> See <a href="https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/azure" target="_blank" rel="noopener noreferrer nofollow">the documentation</a> for more information.
     cloudProviderUnsupportedAzure: On Kubernetes 1.30 or greater, the <b>Azure</b> Cloud Provider has been removed. See <a href="https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/azure" target="_blank" rel="noopener noreferrer nofollow">the documentation</a> for more information.
-    rke1DeprecationMessage: Rancher Kubernetes Engine (RKE / RKE1) will reach end of life on July 31, 2025. Rancher 2.12.0 and later will no longer support provisioning or managing downstream RKE1 clusters. We recommend replatforming RKE1 clusters to RKE2 to ensure continued support and security updates. Learn more about the transition <a href="https://www.suse.com/support/kb/doc/?id=000021518" target="_blank" rel="noopener noreferrer nofollow">here</a>.
+    rke1DeprecationMessage: Rancher Kubernetes Engine (RKE / RKE1) has reached end of life and these clusters are no longer supported. We recommend replatforming RKE1 clusters to RKE2 to ensure continued support and security updates. Learn more about the transition <a href="https://www.suse.com/support/kb/doc/?id=000021518" target="_blank" rel="noopener noreferrer nofollow">here</a>.
     rke1DeprecationShortMessage: Rancher Kubernetes Engine (RKE / RKE1) will reach end of life on July 31, 2025. Rancher 2.12.0 and later will no longer support provisioning or managing downstream RKE1 clusters.
   rkeTemplateUpgrade: Template revision {name} available for upgrade
   detail:
@@ -2231,6 +2286,7 @@ cluster:
     ovhcloudmks: OVHcloud MKS
     amazonelasticcontainerservice: Amazon EKS (Unsupported Kev1)
     googlekubernetesengine: Google GKE (Unsupported Kev1)
+    sks: Exoscale SKS
   providerTag:
     rke2:
       harvester: '{tag}'
@@ -2503,6 +2559,7 @@ cluster:
     expired: Cloud Credential expired, please Renew Cloud Credentials
     expiring: Cloud Credential will expire on { expires }, please Renew Cloud Credentials
     renew: Renew Cloud Credentials
+  rke1Unsupported: RKE1 Clusters are no longer supported
 clusterIndexPage:
   hardwareResourceGauge:
     consumption: "{useful} of {total} {units} {suffix}"
@@ -2618,6 +2675,7 @@ detailText:
       =1 {+ 1 more char}
       other {+ {n, number} more chars}
     }
+  copyAriaLabel: Copy {item} value to clipboard
 drainNode:
   action: 'Drain'
   actionStop: 'Stop Drain'
@@ -2659,6 +2717,28 @@ fleet:
       }
     expandAll: Expand All
     collapseAll: Collapse All
+    cards:
+      filters:
+        gitRepos: Show Git Repos
+        helmOps: Show Helm Ops
+      noClusters: Not targeting any clusters
+      resourceSummary:
+        part1: in
+        part2: |-
+          {count, plural,
+          =1 { cluster }
+          other { clusters }
+          }
+    collapse: Collapse
+    expand: Expand
+    noApplications: You don't have any App Bundles in your Workspaces
+    resources: Resources
+    source: Source
+    state: State
+    viewMode:
+      cards: Show cards
+      table: Show table
+    workspace: Workspace
   cluster:
     summary: Resource Summary
     nonReady: Non-Ready Bundles
@@ -2694,6 +2774,9 @@ fleet:
       unknown: 'Unknown'
       notReady: Not Ready
       waitApplied: Wait Applied
+    noClusters:
+      gitRepo: This GitRepo is not targeting any clusters
+      helmOp: This HelmOp is not targeting any clusters
   gitRepo:
     createLocalBanner: When deploying a Git Repo to the Local workspace you are unable to target any specific Cluster or Cluster Groups
     tabs:
@@ -2712,13 +2795,14 @@ fleet:
       placeholder: e.g. /directory/in/your/repo
       addLabel: Add Path
       empty: The root of the repo is used by default. Multiple different directories can be provided.
+      ariaLabel: Enter path for Git Repo
     repo:
       title: Source
       label: Repository URL
       placeholder: 'e.g. https://github.com/rancher/fleet-examples.git or git@github.com:rancher/fleet-examples.git'
       addRepo: Add Repository
       noRepos: No repositories have been added
-      noWorkspaces: There are no workspaces. <br/> Please create a workspace before adding repositories
+      noWorkspaces: There are no workspaces.
     add:
       steps:
         repoInfo:
@@ -2813,6 +2897,7 @@ fleet:
         label: Pause
       unpause:
         label: Unpause
+      add: Create Git Repo
     polling:
       enable: Enable Polling
       label: Polling
@@ -2821,6 +2906,16 @@ fleet:
         minimumValuewarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with GitRepos that contain a large amount of resources please consider increasing this value.
         tooltip: Polling Interval is the time between a push to the Repository and Fleet's reaction to it.
         webhookWarning: A webhook is configured in Rancher to reconcile Git updates and GitRepo resources. The Polling Interval will automatically be adjusted to 1 hour.
+    intro:
+      add: Create Git Repo
+      empty: No Git Repos have been added
+    ociStorageSecret:
+      label: OCI Storage Secret
+      options:
+        chooseCustom: 'Choose a custom secret:'
+        chooseExisting: 'Choose a secret:'
+      title: OCI Registry
+      tooltip: If 'None' is selected, Fleet will use the 'ocistorage' fallback secret when existing in current workspace.<br>Every changes of the selected OCI storage secret will not be applied until next Git Repo update.
   clusterGroup:
     selector:
       label: Cluster Selectors
@@ -2848,9 +2943,179 @@ fleet:
   workspaces:
     tabs:
       restrictions: Allowed Target Namespaces
+      ociRegistry: Default OCI Registry
     timeout: Workspace creation timeout. It's possible the workspace was created. We suggest checking the workspace page before trying to create another.
     remove:
       warning: Deleting a Workspace also deletes all resources in the Workspace. This includes GitRepos but also Clusters.<br><br>Deleted Clusters will be removed from {vendor}, and if {vendor} manages the life-cycle of the Cluster it's underlying infrastructure will also be deleted.
+  application:
+    actions:
+      create: Create App Bundle
+    groupBy: Group By Type
+    intro:
+      add: Create App Bundle
+      empty: No App Bundles have been created
+    menuLabel: App Bundles
+    noPermissions: You have no permissions to create {label}
+    pageTitle: App Bundles
+    subTypes:
+      fleet.cattle.io.gitrepo:
+        description: GitRepo describes a git repository that is watched by Fleet. The resource contains the necessary information to deploy the repo, or parts of it, to target clusters.
+      fleet.cattle.io.helmop:
+        description: HelmOp is a simplified way of creating bundles by directly pointing to a Helm repository or to an OCI registry, without needing to set up a git repository.
+    warningTooltip:
+      cluster: There are no clusters available
+      clusterGroup: There are no clusters in this Cluster Group
+  helmOp:
+    actions:
+      add: Create Helm Op
+      disablePolling:
+        label: Disable Polling
+      enablePolling:
+        label: Enable Polling
+      forceUpdate:
+        label: Force Update
+        promptNames: 'You are attempting to update: '
+        promptTitle: Force Update
+        promptWarning: |-
+          {
+            count, plural,
+            =1 {Force update could be a long running process.}
+            other {Force update could be a long running process.}
+          }
+      pause:
+        label: Pause
+      unpause:
+        label: Unpause
+    add:
+      steps:
+        advanced:
+          description: Fleet will use the authentication settings and polling to synchronise the resources contained in it.
+          info: These settings are for advanced usage and optional. You can skip them and finish the creation process.
+          label: Advanced
+          subtext: Define advanced settings
+          title: Specify advanced settings like authenticaion credentials and polling
+        chart:
+          description: chart
+          label: Chart
+          subtext: Define Helm Chart source details
+          title: chart
+        metadata:
+          description: Helm Op basic info
+          label: Metadata
+          subtext: Define metadata details
+          title: Specify the Helm Op name and labels/annotations
+        targetInfo:
+          description: You can configure which clusters will be used as the target of synchronisation with the resources in the repository.
+          label: Target details
+          subtext: Define target details
+          title: Specify which target to synchronise this repository to
+        values:
+          description: values
+          label: Values
+          subtext: Define Helm Values for the chart
+          title: values
+    auth:
+      helm: Helm Authentication
+      label: Authentication
+      title: Authentication
+    caBundle:
+      label: Certificates
+      placeholder: Paste in one or more certificates, starting with -----BEGIN CERTIFICATE----
+    intro:
+      add: Create Helm Op
+      empty: No Helm Ops have been added
+    polling:
+      enable: Enable Polling
+      label: Polling
+      pollingInterval:
+        label: Polling Interval
+        minimumValuewarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with GitRepos that contain a large amount of resources please consider increasing this value.
+        tooltip: Polling Interval is the time between a push to the Repository and Fleet's reaction to it.
+    resources:
+      correctDrift: Enable self-healing
+      correctDriftTooltip: When enabled, Fleet will ensure that the cluster resources are kept in sync with the HelmOp. All resource changes made on the cluster will be lost.
+      keepResources: Always keep resources
+      keepResourcesTooltip: When enabled, resources will be kept when deleting a HelmOp or Bundle - only Helm release secrets will be deleted.
+      label: Resource Handling
+    serviceAccount:
+      label: Service Account Name
+      placeholder: 'Optional: Use a service account in the target clusters'
+    source:
+      oci:
+        chart:
+          label: OCI Registry URL
+          placeholder: e.g. oci://ghcr.io/rancher/fleet/helm-chart or oci://ghcr.io/rancher/fleet/helm-chart:0.0.1
+      release:
+        label: Name
+        placeholder: The Helm release name
+        title: Release
+      repo:
+        chart:
+          label: Chart
+          placeholder: The path to the chart name in the repository
+        repo:
+          label: URL
+          placeholder: e.g. https://github.com/rancher/fleet/helm-chart
+      selectLabel: Type
+      tarball:
+        label: Absolute URL
+        placeholder: e.g. https://github.com/rancher/fleet/helm-chart/helm-chart-0.0.1.tgz
+      title: Source
+      types:
+        oci: OCI Registry
+        repo: Repository
+        tarball: Tarball
+      version:
+        label: Version
+        placeholder: The Chart version
+    target:
+      advanced: Advanced
+      cluster: Cluster
+      clusterGroup: Cluster Group
+      label: Deploy To
+      labelLocal: Deploy With
+      selectLabel: Target
+    targetDisplay:
+      advanced: Advanced
+      all: All
+      cluster: Cluster
+      clusterGroup: Group
+      local: Local
+      none: None
+    targetNamespace:
+      label: Target Namespace
+      placeholder: 'Optional: Require all resources to be in this namespace'
+    tls:
+      insecure: Accept any certificate (insecure)
+    values:
+      description: Configure Values used by Helm that help define the App.
+      selectLabel: Values
+      title: Values
+      types:
+        values: Values
+        valuesFiles: Values Files
+        valuesFrom: Values From
+      values:
+        loading: Loading from chart
+        selectLabel: YAML
+      valuesFiles:
+        addLabel: Add File path
+        ariaLabel: Enter path for value File
+        empty: empty
+        placeholder: ""
+        selectLabel: Files
+      valuesFrom:
+        selectLabel: Values From
+      yaml:
+        options:
+          diff: Compare Changes
+          edit: Edit YAML
+  tableHeaders:
+    applicationClustersReady: Clusters Ready
+    applicationResourcesSummary: Resources
+    applicationSource: Source
+    applicationTarget: Target
+    applicationType: Type
 footer:
   docs: Docs
   download: Download CLI
@@ -2934,6 +3199,7 @@ clusterBadge:
     comment: Custom comment
     previewHeader: RANCHER HEADER
     previewSide: SIDE NAVIGATION
+    badgeBgColorInput: Badge background color selector input
   customize: Customize
   customizeAppearance: Customize Appearance
   setClusterAppearance: Cluster Appearance
@@ -3204,6 +3470,8 @@ ingress:
       title: http redirect https
 internalExternalIP:
   none: None
+  copyExternalIp: Copy external IP address to clipboard
+  copyInternalIp: Copy internal IP address to clipboard
 istio:
   links:
     kiali:
@@ -3394,6 +3662,7 @@ labels:
     show: Show System Labels and Annotations
   annotations:
     title: Annotations
+    singular: Annotation
 landing:
   clusters:
     title: Clusters
@@ -3435,6 +3704,8 @@ landing:
   welcomeToRancher: 'Welcome to {vendor}'
   deprecatedPsp: Pod Security Policies are deprecated as of Kubernetes v1.21, and have been removed in Kubernetes v1.25. You have one or more PodSecurityPolicy resource(s) in this cluster.
   psps: PSPs
+  bannerImage: Homepage banner image
+  homepage: Homepage
 logging:
   clusterFlow:
     noOutputsBanner: There are no cluster outputs in the selected namespace.
@@ -3763,6 +4034,8 @@ login:
   loggedOutFromSlo: You've been logged out of Rancher and from your single sign-on identity provider.
   invalidResponseError: Invalid response received to login request. Please try again.
   userUnauthorized: You are not authorized to use this system.
+  landscapeAlt: Landscape image
+  login: Login
 managementNode:
   customName: Custom Name
 members:
@@ -4193,6 +4466,7 @@ namespace:
   snapshots:
     label: Snapshots
     totalSnapshotSize: Total Snapshot Size
+  cancelCreateAriaLabel: Cancel create namespace
 namespaceFilter:
   noMatchingOptions: No matching options
   more: "+{more}"
@@ -4202,6 +4476,10 @@ namespaceFilter:
       one {1 item selected}
       other {{total} items selected}
       }
+  button:
+    clear: Remove applied namespace filters
+    clearFilter: Clear namespace options filter
+  input: Filter namespace options
 namespaceList:
   selectLabel: Namespace
   addLabel: Add Namespace
@@ -4798,6 +5076,7 @@ prefs:
     themeShortcut: Enable Dark/Light Theme keyboard shortcut toggle (shift+T)
     title: Advanced Features
     viewInApi: Enable "View in API"
+    pluginDeveloperTooltip: Enables the ability to perform a developer load of UI extensions
   language: Language
   confirmationSetting:
     scalingDownPrompt: Do not ask for confirmation when scaling down node pools.
@@ -4812,6 +5091,8 @@ principal:
   name: Name
   loginName: Username
   type: Type
+  alt:
+    avatar: User avatar image
 probe:
   checkInterval:
     label: Check Interval
@@ -4964,6 +5245,7 @@ promptForceRemove:
   confirmName: "Enter in the pool name below to confirm:"
   podRemoveWarning: "Force deleting pods does not wait for confirmation that the pod's processes have been terminated. This may result in <strong>data corruption or inconsistencies</strong>"
   namespaceWarning: Forcing deletions will directly modify finalizers, which can lead to errors.
+  ariaLabel: Copy Machine name to clipboard
 promptScaleMachineDown:
   attemptingToRemove: "You are attempting to delete {count} {type}"
   retainedMachine1: At least one Machine must exist for roles Control Plane and Etcd.
@@ -5058,6 +5340,7 @@ rbac:
         neuvector:
           labelClusterScoped: NeuVector, Cluster Scoped
           labelNamespaceScoped: NeuVector, Namespaced
+        psaWarning: Granting Project Roles the ability to amend PSA labels could lead to a weaker security posture and allow for privilege escalation. This is only recommended for advanced users who understand the risks involved.
     subtypes:
       GLOBAL:
         createButton: Create Global Role
@@ -5181,6 +5464,8 @@ rbac:
         =1 { Checking if there are any users bound to this role <i class="icon-spin icon icon-spinner" style="margin-left: 5px"></i> }
         other { Checking if there are any users bound to these roles <i class="icon-spin icon icon-spinner" style="margin-left: 5px"></i> }
       }
+  errors:
+    escalation: You cannot assign Global Permissions that are higher than your own. Please verify the permissions you are attempting to assign.
 resourceDetail:
   detailTop:
     annotations: Annotations
@@ -5233,6 +5518,9 @@ resourceDetail:
         no {a {managedBy} app}
         yes {the {managedBy} app {appName}}}; changes made here will likely be overwritten the next time {managedBy} runs.
     createdBy: Created by
+    ariaLabel:
+      favoriteAction: Add {resource} to your starred/favorites list
+      unfavoriteAction: Remove {resource} from your starred/favorites list
 resourceList:
   head:
     create: Create
@@ -5252,6 +5540,7 @@ resourceTable:
     cluster: Group by Cluster
     role: Group by Role
     device: Group by Device
+    pool: Group by Pool
   groupLabel:
     cluster: "<span>Cluster:</span> {name}"
     namespace: "<span>Namespace:</span> {name}"
@@ -5266,6 +5555,8 @@ resourceTable:
     nodePool: "<span>Pool:</span> {name}"
     node: "<span>Node:</span> {name}"
     notInACluster: Not in a Cluster
+  autoRefresh:
+    label: Auto Refresh
 resourceTabs:
   conditions:
     tab: Conditions
@@ -5569,6 +5860,7 @@ setup:
   useManual: Set a specific password to use
   useRandom: Use a randomly generated password
   welcome: Welcome to {vendor}!
+  copyRandom: Copy random password to clipboard
 sortableTable:
   bulkActions:
     collapsed:
@@ -5606,6 +5898,19 @@ sortableTable:
   searchLabel: Filter table results
   tableActionsImgAlt: More actions icon
   tableActionsLabel: More actions - { resource }
+  alt:
+    firstPageBtn: First page of results icon
+    lastPageBtn: Last page of results icon
+    nextPageBtn: Next page of results icon
+    prevPageBtn: Previous page of results icon
+    sortingIconAsc: Table header ascending sort icon
+    sortingIconDesc: Table header descending sort icon
+  ariaLabel:
+    firstPageBtn: First page of results
+    lastPageBtn: Last page of results
+    nextPageBtn: Next page of results
+    prevPageBtn: Previous page of results
+  filteringDescription: Using this input will immediately filter the results in the table below
 storageClass:
   actions:
     setAsDefault: Set as Default
@@ -6364,6 +6669,9 @@ validation:
   alphanumeric: '"{key}" must be alphanumeric'
   git:
     repository: Repository URL must be a HTTP(s) or SSH url with no trailing spaces
+    url: URL must be a HTTP(s) or SSH url with no trailing spaces
+  oci:
+    url: URL must be an OCI url with no trailing spaces
 wizard:
   previous: Previous
   finish: Finish
@@ -6633,6 +6941,9 @@ workload:
     workload: Workload
     pods: Pods by State
     runs: Runs
+    duration: Last Scheduled Time
+    image: Image
+    started: Started
   gaugeStates:
     succeeded: Successful
     running: Running
@@ -6991,6 +7302,7 @@ model:
       saml: SAML
       oauth: OAuth
       oidc: OIDC
+      cognito: Amazon Cognito
     name:
       keycloak: Keycloak (SAML)
       keycloakoidc: Keycloak (OIDC)
@@ -7014,6 +7326,7 @@ model:
       keycloakoidc: Keycloak
       cas: CAS
       genericoidc: Generic OIDC
+      cognito: Amazon Cognito
   cluster:
     name: Cluster Name
   ingress:
@@ -7080,6 +7393,7 @@ typeDescription:
   group.principal: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
   logging-extensions.banzaicloud.io.eventtailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-event-tailer/" target="_blank" rel="noopener noreferrer nofollow">Event-tailer</a> listens for Kubernetes events and transmits their changes to stdout, so the Logging operator can process them.
   logging-extensions.banzaicloud.io.hosttailer: <a href="https://kube-logging.dev/docs/configuration/extensions/kubernetes-host-tailer/" target="_blank" rel="noopener noreferrer nofollow">Host-tailer</a> tails custom files and transmits their changes to stdout. This way the Logging operator can process them. Kubernetes host tailer allows you to tail logs like kubelet, audit logs, or the systemd journal from the nodes.
+  jwt.authentication: Enable this feature on a cluster to add support for JWT authenticating downstream service accounts.
 typeLabel:
   management.cattle.io.token: |-
     {count, plural,
@@ -7633,6 +7947,16 @@ typeLabel:
       one { Operator Configuration }
       other { Operator Configuration }
     }
+  fleet.cattle.io.application: |-
+    {count, plural,
+      one { App Bundle }
+      other { App Bundles }
+    }
+  fleet.cattle.io.helmop: |-
+    {count, plural,
+      one { Helm Op }
+      other { Helm Ops }
+    }
 action:
   clone: Clone
   disable: Disable
@@ -7663,6 +7987,9 @@ action:
   resume: Resume
   forceUpdate: Force Update Machine Plan
   editQuota: Edit Quota
+  ariaLabel:
+    hidePass: Hide {area}
+    showPass: Reveal {area}
 unit:
   sec: secs
   min: mins
@@ -7900,7 +8227,7 @@ performance:
     applicable: Server-side pagination applies to Resource Types
     checkboxLabel: Enable Server-side Pagination
     description: By default Lists will fetch all resources and paginate in the browser (create the page given sorting and filtering settings). Change this setting to enable pagination server-side. This should help the responsiveness of the UI in systems with a lot of resources.
-    featureFlag: The&nbsp;<a href="{ffUrl}">Feature Flag</a>&nbsp;`ui-sql-cache` must be enabled to use this feature
+    featureFlag: Enabling/Disabling <i class="mr-5">"Server-side Pagination"</i> is now solely done so via the <i class="mr-5">ui-sql-cache</i>&nbsp;<a href="{ffUrl}">Feature Flag</a>
     incompatibleDescription: Server-side Pagination is incompatible with Manual Refresh and Incremental Loading. Enabling this will disable them.
     label: Server-side Pagination
     resources:
@@ -7940,6 +8267,15 @@ banner:
   consent: Consent Banner
   consentFootnote: "Tip: Use \\n character for line break"
   individualSetting: This banner is managed by the setting "{name}" and can not be modified in the UI
+  bannerConsent: Login Screen Banner
+  bannerFooter: Footer Banner
+  bannerHeader: Header Banner
+  htmlContent: HTML Content
+  htmlWarning: Not all HTML elements or attriutes are permitted and the HTML entered here will be sanitized before display. For HTML anchor elements, it is recommended to use the target attribute to have links open in a blank tab.
+  toggleTextHtml: Toggle between text and html
+  type:
+    html: HTML
+    text: Text
 branding:
   label: Branding
   directoryName: Brand Asset Directory Name
@@ -8096,6 +8432,7 @@ support:
     four:
       title: Innovate with Freedom
       text: Take advantage of our certified compatibility with a wide range of Kubernetes providers, operating systems, and open source software.
+  bannerImage: Support page banner image
 embedding:
   retry: Retry
   unavailable: Cluster Manager UI is not available
@@ -8979,3 +9316,103 @@ labeledSelect:
   startTyping: Start typing to define an item
 windowmanager:
   closeTab: Close tab {tabId}
+component:
+  resource:
+    detail:
+      card:
+        insightsCard:
+          rows:
+            conditions: Conditions
+            events: Events
+          title: Insights
+        podsCard:
+          ariaResourceName: pods
+          title: Pods
+        resourceUsage:
+          amount: '{used} of {available}'
+          cpu: CPU
+          memory: Memory
+          pods: Pods
+          used: Used
+        resourcesCard:
+          rows:
+            ingresses: Ingresses
+            referredToBy: Referred to by
+            refersTo: Refers to
+            services: Services
+          title: Resources
+        scaler:
+          ariaLabel:
+            decrease: Decrease {resourceName}
+            increase: Increase {resourceName}
+      metadata:
+        annotations:
+          title: Annotations
+        identifyingInformation:
+          age: Age
+          available: Available
+          image: Image
+          namespace: Namespace
+          project: Project
+          ready: Ready
+          up-to-date: Up-to-date
+        keyValue:
+          noRows: There are no {propertyName} configured on this resource.
+          showConfiguration: Show Configuration
+        labels:
+          title: Labels
+        labelsAndAnnotations: Labels and Annotations
+      titleBar:
+        ariaLabel:
+          actionMenu: More actions - { resource }
+          showConfiguration: Show the entire configuration of { resource }
+        showConfiguration: Show Configuration
+errors:
+  actionNotAvailable: This action is not currently available
+  failedInApi:
+    withName:
+      withCodeExplanation:
+        withMessageDetail: 'Validation failed in API: {name} {codeExplanation}: {messageDetail}'
+        withoutMessageDetail: 'Validation failed in API: {name} {codeExplanation}'
+      withMessageDetail: 'Validation failed in API: {name} {messageDetail}'
+      withoutAnythingElse: 'Validation failed in API: {name} '
+    withoutAnything: Validation failed in API.
+    withoutName:
+      withCode:
+        withCodeExplanation: 'Validation failed in API: {code} {codeExplanation}'
+        withoutCodeExplanation: 'Validation failed in API: {code}'
+      withMessageDetail:
+        withCodeExplanation: 'Validation failed in API: {codeExplanation}: {messageDetail}'
+        withoutCodeExplanation: 'Validation failed in API: {messageDetail}'
+  invalidCharacters: contains invalid characters
+  invalidOption: is not a valid option
+  maxLengthExceeded: is too long
+  maxLimitExceded: is too big
+  messageAndDetail: '{message} ({detail})'
+  messageOrDetail: '{val}'
+  minLengthExceeded: is not long enough
+  minLimitExceeded: is too small
+  missingRequired: is required
+  notFound:
+    withUrl: '{msg}: {url}'
+    withoutUrl: '{msg}'
+  notNullable: must be set
+  notUnique: is not unique
+graph:
+  loading: Loading chart data...
+  noPermissions: You do not have permission to Graph view
+  rendering: Rendering chart...
+itemCard:
+  ariaLabel:
+    clickable: Click on card for {cardTitle}
+layouts:
+  blank: blank layout
+  default: default layout
+  home: home layout
+  logout: logout layout
+  plain: plain layout
+  unauthenticated: unauthenticated layout
+  verify: verify layout
+promptRedeploy:
+  attemptingToRedeploy: You are attempting to redeploy the {type} {names}<br><br>Redeploying will restart the selected workloads and may cause temporary downtime.
+  title: Redeploy {type}?

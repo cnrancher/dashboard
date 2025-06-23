@@ -2030,6 +2030,7 @@ cluster:
     machineinventoryselectortemplate: Elemental 集羣
     huawei: 華為雲
     ovhcloudmks: OVHcloud MKS
+    sks: Exoscale SKS
   providerTag:
     rke2:
       harvester: '{tag}'
@@ -2413,6 +2414,7 @@ fleet:
       }
     expandAll: 展開所有
     collapseAll: 收起所有
+    noApplications: 工作區中沒有任何 Git 倉庫
   cluster:
     summary: 資源摘要
     nonReady: 非就緒 Bundle
@@ -2445,6 +2447,9 @@ fleet:
       unknown: '未知'
       notReady: 未就緒
       waitApplied: 等待應用
+    noClusters:
+      gitRepo: 這個 Git 倉庫不針對任何集羣
+      helmOp: ""
   gitRepo:
     createLocalBanner: 將 Git 倉庫部署到本地工作區時，你無法定位任何集羣或集羣組
     tabs:
@@ -7514,6 +7519,9 @@ banner:
     label: '字體大小'
   consent: 同意橫幅
   consentFootnote: "提示：使用 \n 進行換行"
+  bannerConsent: 登錄屏幕橫幅
+  bannerFooter: 頁腳橫幅
+  bannerHeader: 標題橫幅
 branding:
   label: 品牌
   directoryName: 品牌資產目錄名稱
@@ -8650,3 +8658,6 @@ promptSlo:
   all:
     active: 退出 {name}
     waiting: 正在退出
+graph:
+  loading: 正在加載 Chart 數據...
+  rendering: 正在渲染 Chart...

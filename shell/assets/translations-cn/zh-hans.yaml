@@ -2030,6 +2030,7 @@ cluster:
     machineinventoryselectortemplate: Elemental 集群
     huawei: 华为云
     ovhcloudmks: OVHcloud MKS
+    sks: Exoscale SKS
   providerTag:
     rke2:
       harvester: '{tag}'
@@ -2412,6 +2413,7 @@ fleet:
       }
     expandAll: 展开所有
     collapseAll: 收起所有
+    noApplications: 工作区中没有任何 Git 仓库
   cluster:
     summary: 资源摘要
     nonReady: 非就绪 Bundle
@@ -2444,6 +2446,9 @@ fleet:
       unknown: '未知'
       notReady: 未就绪
       waitApplied: 等待应用
+    noClusters:
+      gitRepo: 这个 Git 仓库不针对任何集群
+      helmOp: ""
   gitRepo:
     createLocalBanner: 将 Git 仓库部署到本地工作区时，你无法定位任何集群或集群组
     tabs:
@@ -7513,6 +7518,9 @@ banner:
     label: '字体大小'
   consent: 同意横幅
   consentFootnote: "提示：使用 \n 进行换行"
+  bannerConsent: 登录屏幕横幅
+  bannerFooter: 页脚横幅
+  bannerHeader: 标题横幅
 branding:
   label: 品牌
   directoryName: 品牌资产目录名称
@@ -8649,3 +8657,6 @@ promptSlo:
   all:
     active: 退出 {name}
     waiting: 正在退出
+graph:
+  loading: 正在加载 Chart 数据...
+  rendering: 正在渲染 Chart...
