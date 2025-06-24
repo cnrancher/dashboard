@@ -207,13 +207,13 @@ export default {
     initYaml() {
       return {
         on: {
-          'prometheus.prometheusSpec.externalLabels.prometheus_from': this.currentCluster.spec.displayName,
-          'nodeExporter.serviceMonitor.metricRelabelings':            this.getInitYaml('nodeExporter.serviceMonitor.metricRelabelings', this.nodeExporterMetricRelabelings),
-          'nodeExporter.serviceMonitor.relabelings':                  this.getInitYaml('nodeExporter.serviceMonitor.relabelings', this.nodeExporterRelabelings),
-          'k3sServer.serviceMonitor.endpoints':                       this.getEndpoints('k3sServer.serviceMonitor.endpoints', this.k3sServerEndpointsRelabelings, this.k3sServerMetricEndpointsRelabelings),
-          'hardenedKubelet.serviceMonitor.endpoints':                 this.getEndpoints('hardenedKubelet.serviceMonitor.endpoints', this.hardenedKubeletEndpointsRelabelings, this.hardenedKubeletMetricEndpointsRelabelings),
-          'kubelet.serviceMonitor.cAdvisorMetricRelabelings':         this.kubeletCAdvisorMetricRelabelings,
-          'kubelet.serviceMonitor.cAdvisorRelabelings':               this.kubeletCAdvisorRelabelings,
+          'prometheus.prometheusSpec.externalLabels.prometheus_from':      this.currentCluster.spec.displayName,
+          'prometheus-node-exporter.prometheus.monitor.metricRelabelings': this.getInitYaml('prometheus-node-exporter.prometheus.monitor.metricRelabelings', this.nodeExporterMetricRelabelings),
+          'prometheus-node-exporter.prometheus.monitor.relabelings':       this.getInitYaml('prometheus-node-exporter.prometheus.monitor.relabelings', this.nodeExporterRelabelings),
+          'k3sServer.serviceMonitor.endpoints':                            this.getEndpoints('k3sServer.serviceMonitor.endpoints', this.k3sServerEndpointsRelabelings, this.k3sServerMetricEndpointsRelabelings),
+          'hardenedKubelet.serviceMonitor.endpoints':                      this.getEndpoints('hardenedKubelet.serviceMonitor.endpoints', this.hardenedKubeletEndpointsRelabelings, this.hardenedKubeletMetricEndpointsRelabelings),
+          'kubelet.serviceMonitor.cAdvisorMetricRelabelings':              this.kubeletCAdvisorMetricRelabelings,
+          'kubelet.serviceMonitor.cAdvisorRelabelings':                    this.kubeletCAdvisorRelabelings,
         },
         off: {}
       };
