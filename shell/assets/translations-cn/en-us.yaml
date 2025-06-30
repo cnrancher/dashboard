@@ -7985,7 +7985,6 @@ action:
   runNow: Run Now
   suspend: Suspend
   resume: Resume
-  forceUpdate: Force Update Machine Plan
   editQuota: Edit Quota
   ariaLabel:
     hidePass: Hide {area}
@@ -9031,9 +9030,6 @@ formScheduling:
     title: Tolerations
     add: Add Toleration
     workloadTitle: Tolerations for {workload} pod
-forceUpdateMachinePlan:
-  attemptingToUpdate: "You are attempting to force the update of the machine-plan"
-  error: Error in force updating machine plan
 podDisruptionBudget:
   budget:
     label: Budget
