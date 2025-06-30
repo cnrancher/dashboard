@@ -8,7 +8,6 @@ import { allHash } from '@shell/utils/promise';
 import { sortBy } from '@shell/utils/sort';
 import { reactive } from 'vue';
 import { LocationAsRelativeRaw } from 'vue-router';
-import { EXPLORER_HARVESTER_CLUSTER } from '@shell/store/features';
 interface TopLevelMenuCluster {
   id: string,
   label: string,
@@ -454,10 +453,8 @@ export class TopLevelMenuHelperLegacy extends BaseTopLevelMenuHelper implements 
       // exit early
       return [];
     }
-    const explorerHarvesterClusterEnabled = this.$store.getters['features/get'](EXPLORER_HARVESTER_CLUSTER);
     const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-    // const mgmtClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all, this.$store), this.$store);
-    const mgmtClusters = filterHiddenLocalCluster(explorerHarvesterClusterEnabled ? all : filterOnlyKubernetesClusters(all, this.$store), this.$store);
+    const mgmtClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all, this.$store), this.$store);
     const provClusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
     const provClustersByMgmtId = provClusters.reduce((res: any, provCluster: ProvCluster) => {
       if (provCluster.mgmt?.id) {
