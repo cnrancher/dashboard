@@ -5,7 +5,7 @@ import AuthConfig from '@shell/mixins/auth-config';
 import CruResource from '@shell/components/CruResource';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { Checkbox } from '@components/Form/Checkbox';
-import { Banner } from '@components/Banner';
+import Banner from '@components/Banner/Banner.vue';
 import AllowedPrincipals from '@shell/components/auth/AllowedPrincipals';
 import AuthBanner from '@shell/components/auth/AuthBanner';
 import UnitInput from '@shell/components/form/UnitInput';
@@ -14,6 +14,7 @@ import { AFTER_SAVE_HOOKS, BEFORE_SAVE_HOOKS } from '@shell/mixins/child-hook';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import difference from 'lodash/difference';
 import { addObject } from '@shell/utils/array';
+import FileSelector from '@shell/components/form/FileSelector';
 
 export default {
   components: {
@@ -24,7 +25,8 @@ export default {
     AllowedPrincipals,
     Checkbox,
     AuthBanner,
-    UnitInput
+    UnitInput,
+    FileSelector
   },
 
   mixins: [CreateEditView, AuthConfig],
@@ -44,6 +46,22 @@ export default {
     toSave() {
       return { enabled: true, casConfig: this.model };
     },
+    skipTls() {
+      return this.model?.['skip-tls'];
+    }
+  },
+  watch: {
+    skipTls(v) {
+      if (v && this.model?.certificate) {
+        this.model.certificate = '';
+      }
+    },
+    'model.tls'(v) {
+      if (!v && (this.model?.certificate || this.model?.['skip-tls'])) {
+        this.model['skip-tls'] = false;
+        this.model.certificate = '';
+      }
+    }
   },
 
   methods: {
@@ -155,13 +173,14 @@ export default {
         >
           <template #rows>
             <tr><td>{{ t(`authConfig.cas.hostUrl.label`) }}: </td><td>{{ model.hostname }}</td></tr>
-            <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.port.label`) }}: </td><td>{{ model.port }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.connectionTimeout.label`) }}: </td><td>{{ model.connectionTimeout }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.callbackURL.label'`) }}: </td><td>{{ model.service }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.loginEndpoint.label`) }}: </td><td>{{ model.loginEndpoint }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.logoutEndpoint.label`) }}: </td><td>{{ model.logoutEndpoint }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.serviceValidate.label`) }}: </td><td>{{ model.serviceValidate }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.skipTls.label`) }}: </td><td>{{ model['skipTls'] }}</td></tr>
           </template>
         </AuthBanner>
 
@@ -177,9 +196,10 @@ export default {
       <template v-else>
         <Banner
           v-if="!model.enabled"
-          :label="t('authConfig.stateBanner.disabled', tArgs)"
           color="warning"
-        />
+        >
+          <p v-clean-html="t('authConfig.stateBanner.disabled', tArgs)" />
+        </Banner>
 
         <h3>{{ t(`authConfig.cas.${NAME}`) }}</h3>
         <div class="row mb-20">
@@ -201,16 +221,6 @@ export default {
               :mode="mode"
               :label="t('authConfig.cas.port.label')"
               @update:value="e=>model.port = e.replace(/[^0-9]*/g, '')"
-            />
-          </div>
-        </div>
-        <div class="row mb-20">
-          <div class="col span-6">
-            <Checkbox
-              v-model:value="model.tls"
-              :mode="mode"
-              class="full-height"
-              :label="`${t('authConfig.cas.enableTLS')}(https://)`"
             />
           </div>
         </div>
@@ -265,19 +275,58 @@ export default {
               required
             />
           </div>
+          <div class="col span-6">
+            <div class="cas__tls">
+              <div>
+                <Checkbox
+                  v-model:value="model.tls"
+                  :mode="mode"
+                  class="full-height"
+                  :label="`${t('authConfig.cas.enableTLS')}(https://)`"
+                />
+              </div>
+              <template v-if="model.tls">
+                <div>
+                  <Checkbox
+                    v-model:value="model['skip-tls']"
+                    :mode="mode"
+                    class="full-height"
+                    :label="t('authConfig.cas.skipTls.label')"
+                  />
+                </div>
+                <div v-if="!model['skip-tls']">
+                  <LabeledInput
+                    v-model:value="model.certificate"
+                    :label="t(`authConfig.oidc.cert.label`)"
+                    :placeholder="t(`authConfig.oidc.cert.placeholder`)"
+                    :mode="mode"
+                    required=""
+                    type="multiline"
+                  />
+                  <FileSelector
+                    class="role-tertiary add mt-5"
+                    :label="t('generic.readFromFile')"
+                    :mode="mode"
+                    @selected="model.certificate = $event"
+                  />
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
+        <div class="row mb-20" />
       </template>
-    </CruResource>
-    <div
-      v-if="!model.enabled"
-      class="row"
-    >
-      <div class="col span-12">
-        <Banner
-          v-clean-html="t('authConfig.associatedWarning', tArgs, true)"
-          color="info"
-        />
+      <div v-if="!model.enabled">
+        <Banner color="info">
+          <p v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
+        </Banner>
       </div>
-    </div>
+    </CruResource>
   </div>
 </template>
+<style scoped>
+.cas__tls {
+  display: grid;
+  gap: 8px;
+}
+</style>

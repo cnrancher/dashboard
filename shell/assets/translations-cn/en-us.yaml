@@ -664,6 +664,8 @@ authConfig:
     serviceValidate:
       label: Service Validate
       placeholder: e.g. /cas/serviceValidate
+    skipTls:
+      label: Skip TLS Verifications
 authGroups:
   actions:
     refresh: Refresh Group Memberships

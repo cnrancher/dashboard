@@ -604,7 +604,7 @@ authConfig:
     connectionTimeout:
       label: 服务器连接超时
       placeholder: 例如：5000
-    enableTLS: Use a secure connection
+    enableTLS: 使用安全连接
     hostUrl:
       label: CAS Host
       placeholder: 例如：cas-server.com
@@ -623,6 +623,11 @@ authConfig:
     usernameField:
       label: 用户名字段
       placeholder: 例如：username
+    serviceValidate:
+      label: 服务验证
+      placeholder: 例如：/cas/serviceValidate
+    skipTls:
+      label: 跳过 TLS 验证
 authGroups:
   actions:
     refresh: 刷新用户组成员名单
