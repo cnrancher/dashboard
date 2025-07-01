@@ -161,6 +161,7 @@ export default {
             <tr><td>{{ t(`authConfig.cas.callbackURL.label'`) }}: </td><td>{{ model.service }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.loginEndpoint.label`) }}: </td><td>{{ model.loginEndpoint }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.logoutEndpoint.label`) }}: </td><td>{{ model.logoutEndpoint }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.serviceValidate.label`) }}: </td><td>{{ model.serviceValidate }}</td></tr>
           </template>
         </AuthBanner>
 
@@ -195,7 +196,6 @@ export default {
             <LabeledInput
               :value="model.port"
               type="number"
-              required
               :min="0"
               :step="1"
               :mode="mode"
@@ -250,6 +250,17 @@ export default {
               v-model:value="model.logoutEndpoint"
               :label="t(`authConfig.cas.logoutEndpoint.label`)"
               :placeholder="t('authConfig.cas.logoutEndpoint.placeholder')"
+              :mode="mode"
+              required
+            />
+          </div>
+        </div>
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledInput
+              v-model:value="model.serviceValidate"
+              :label="t(`authConfig.cas.serviceValidate.label`)"
+              :placeholder="t('authConfig.cas.serviceValidate.placeholder')"
               :mode="mode"
               required
             />
