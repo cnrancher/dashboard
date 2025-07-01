@@ -15,20 +15,20 @@ function reply(err, code) {
 export default {
   layout: 'unauthenticated',
 
-  async fetch({ store, route, redirect }) {
-    const ticket = route.query.ticket;
+  async fetch() {
+    const ticket = this.$route.query.ticket;
     const {
       error, error_description: errorDescription, errorCode, errorMsg
-    } = route.query;
+    } = this.$route.query;
 
     if (error || errorDescription || errorCode || errorMsg) {
       let out = errorDescription || error || errorCode;
 
       if (errorMsg) {
-        out = store.getters['i18n/withFallback'](`login.serverError.${ errorMsg }`, null, errorMsg);
+        out = this.$store.getters['i18n/withFallback'](`login.serverError.${ errorMsg }`, null, errorMsg);
       }
 
-      redirect(`/auth/login?err=${ escape(out) }`);
+      this.$router.replace(`/auth/login?err=${ escape(out) }`);
 
       return;
     }
@@ -38,17 +38,17 @@ export default {
     }
 
     try {
-      const res = await store.dispatch('auth/verifyCASAuth', { ticket });
+      const res = await this.$store.dispatch('auth/verifyCASAuth', { ticket });
 
       if ( res._status === 200) {
-        const backTo = route.query[BACK_TO] || '/';
+        const backTo = this.$route.query[BACK_TO] || '/';
 
-        redirect(backTo);
+        this.$router.replace(backTo);
       } else {
-        redirect(`/auth/login?err=${ escape(res) }`);
+        this.$router.replace(`/auth/login?err=${ escape(res) }`);
       }
     } catch (err) {
-      redirect(`/auth/login?err=${ escape(err) }`);
+      this.$router.replace(`/auth/login?err=${ escape(err) }`);
     }
   },
 
