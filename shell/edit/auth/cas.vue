@@ -300,7 +300,6 @@ export default {
                     :label="t(`authConfig.oidc.cert.label`)"
                     :placeholder="t(`authConfig.oidc.cert.placeholder`)"
                     :mode="mode"
-                    required=""
                     type="multiline"
                   />
                   <FileSelector
