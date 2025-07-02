@@ -141,6 +141,16 @@ export default {
           }
           this.model.service = `${ window.location.origin }${ route }`;
         }
+        // setting data for SLO
+        if (this.model && Object.keys(this.model).includes('logoutAllSupported')) {
+          if (!this.model.logoutAllEnabled && !this.model.logoutAllForced) {
+            this.sloType = SLO_OPTION_VALUES.rancher;
+          } else if (this.model.logoutAllEnabled && this.model.logoutAllForced) {
+            this.sloType = SLO_OPTION_VALUES.all;
+          } else if (this.model.logoutAllEnabled && !this.model.logoutAllForced) {
+            this.sloType = SLO_OPTION_VALUES.both;
+          }
+        }
       }
 
       if (!this.model.enabled) {

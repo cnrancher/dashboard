@@ -105,13 +105,6 @@ export function parseAuthProvidersInfo(rows) {
   };
 }
 
-export function thirdAuthLogout(url) {
-  return new Promise((resolve) => {
-    window.open(url, 'rancherAuthLogout', popupWindowOptions());
-    resolve('Third Auth Logout Success');
-  });
-}
-
 export const checkSchemasForFindAllHash = (types, store) => {
   const hash = {};
 

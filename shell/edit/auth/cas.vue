@@ -1,7 +1,7 @@
 <script>
 import Loading from '@shell/components/Loading';
 import CreateEditView from '@shell/mixins/create-edit-view';
-import AuthConfig from '@shell/mixins/auth-config';
+import AuthConfig, { SLO_OPTION_VALUES } from '@shell/mixins/auth-config';
 import CruResource from '@shell/components/CruResource';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { Checkbox } from '@components/Form/Checkbox';
@@ -15,6 +15,7 @@ import { exceptionToErrorsArray } from '@shell/utils/error';
 import difference from 'lodash/difference';
 import { addObject } from '@shell/utils/array';
 import FileSelector from '@shell/components/form/FileSelector';
+import RadioGroup from '@components/Form/Radio/RadioGroup.vue';
 
 export default {
   components: {
@@ -26,7 +27,8 @@ export default {
     Checkbox,
     AuthBanner,
     UnitInput,
-    FileSelector
+    FileSelector,
+    RadioGroup
   },
 
   mixins: [CreateEditView, AuthConfig],
@@ -48,7 +50,24 @@ export default {
     },
     skipTls() {
       return this.model?.['skip-tls'];
-    }
+    },
+    isLogoutAllSupported() {
+      return this.model?.logoutAllSupported;
+    },
+
+    sloOptions() {
+      return [
+        { value: SLO_OPTION_VALUES.rancher, label: this.t('authConfig.saml.sloOptions.onlyRancher', { name: this.model?.nameDisplay }) },
+        { value: SLO_OPTION_VALUES.all, label: this.t('authConfig.saml.sloOptions.logoutAll', { name: this.model?.nameDisplay }) },
+        { value: SLO_OPTION_VALUES.both, label: this.t('authConfig.saml.sloOptions.choose') },
+      ];
+    },
+
+    sloTypeText() {
+      const sloOptionSelected = this.sloOptions.find((item) => item.value === this.sloType);
+
+      return sloOptionSelected?.label || '';
+    },
   },
   watch: {
     skipTls(v) {
@@ -60,6 +79,23 @@ export default {
       if (!v && (this.model?.certificate || this.model?.['skip-tls'])) {
         this.model['skip-tls'] = false;
         this.model.certificate = '';
+      }
+    },
+    // sloType is defined on shell/mixins/auth-config.js
+    sloType(neu) {
+      switch (neu) {
+      case SLO_OPTION_VALUES.rancher:
+        this.model.logoutAllEnabled = false;
+        this.model.logoutAllForced = false;
+        break;
+      case SLO_OPTION_VALUES.all:
+        this.model.logoutAllEnabled = true;
+        this.model.logoutAllForced = true;
+        break;
+      case SLO_OPTION_VALUES.both:
+        this.model.logoutAllEnabled = true;
+        this.model.logoutAllForced = false;
+        break;
       }
     }
   },
@@ -181,6 +217,9 @@ export default {
             <tr><td>{{ t(`authConfig.cas.serviceValidate.label`) }}: </td><td>{{ model.serviceValidate }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.skipTls.label`) }}: </td><td>{{ model['skipTls'] }}</td></tr>
+            <tr v-if="isLogoutAllSupported">
+              <td>{{ t(`authConfig.saml.sloTitle`) }}: </td><td>{{ sloTypeText }}</td>
+            </tr>
           </template>
         </AuthBanner>
 
@@ -313,7 +352,28 @@ export default {
             </div>
           </div>
         </div>
-        <div class="row mb-20" />
+        <!-- SLO logout -->
+        <div
+          v-if="isLogoutAllSupported"
+          class="mt-10 mb-30"
+        >
+          <div class="row">
+            <div class="col span-12">
+              <h3>{{ t('authConfig.saml.sloTitle') }}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4">
+              <RadioGroup
+                v-model:value="sloType"
+                :mode="mode"
+                :options="sloOptions"
+                :disabled="!model.logoutAllSupported"
+                name="sloTypeRadio"
+              />
+            </div>
+          </div>
+        </div>
       </template>
       <div v-if="!model.enabled">
         <Banner color="info">

@@ -2,7 +2,7 @@ import { GITHUB_NONCE, GITHUB_REDIRECT, GITHUB_SCOPE } from '@shell/config/query
 import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { _MULTI } from '@shell/plugins/dashboard-store/actions';
 import { addObjects, findBy, joinStringList } from '@shell/utils/array';
-import { openAuthPopup, returnTo, thirdAuthLogout } from '@shell/utils/auth';
+import { openAuthPopup, returnTo } from '@shell/utils/auth';
 import { base64Encode } from '@shell/utils/crypto';
 import { removeEmberPage } from '@shell/utils/ember-page';
 import { randomStr } from '@shell/utils/string';
@@ -446,17 +446,6 @@ export const actions = {
       return;
     }
 
-    if (options?.provider) {
-      try {
-        const driver = await dispatch('getAuthProvider', options.provider);
-
-        if (driver?.logoutUrl) {
-          await thirdAuthLogout(driver.logoutUrl);
-        }
-      } catch (e) {
-      }
-    }
-
     // Unload plugins - we will load again on login
     await rootState.$plugin.logout();
 
@@ -478,7 +467,7 @@ export const actions = {
     // SLO - Single-sign logout - will logout auth provider from all places where it's logged in
     if (options.slo) {
       logoutAction = 'logoutAll';
-      data.finalRedirectUrl = returnTo({ isSlo: true }, this);
+      data.finalRedirectUrl = returnTo({ isSlo: true, route: options.route }, this);
     }
 
     try {
@@ -490,8 +479,8 @@ export const actions = {
         redirectUnauthorized: false,
       }, { root: true });
 
-      // Single-sign logout for SAML providers that allow for it
-      if (res.baseType === 'samlConfigLogoutOutput' && res.idpRedirectUrl) {
+      // Single-sign logout for SAML and CAS providers that allow for it
+      if (['samlConfigLogoutOutput', 'casConfigLogoutOutput'].includes(res.baseType) && res.idpRedirectUrl) {
         window.location.href = res.idpRedirectUrl;
 
         return;
