@@ -10,7 +10,6 @@ import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 import { KEY } from '@shell/utils/platform';
 import { getVersionInfo } from '@shell/utils/version';
-import { EXPLORER_HARVESTER_CLUSTER } from '@shell/store/features';
 import { SETTING } from '@shell/config/settings';
 import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
 import { getProductFromRoute } from '@shell/utils/router';
@@ -79,10 +78,6 @@ export default {
       };
     },
 
-    explorerHarvesterClusterEnabled() {
-      return this.features(EXPLORER_HARVESTER_CLUSTER);
-    },
-
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;
     },
@@ -103,7 +98,7 @@ export default {
       }
 
       const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      const mgmtClusters = filterHiddenLocalCluster(this.explorerHarvesterClusterEnabled ? all : filterOnlyKubernetesClusters(all, this.$store), this.$store);
+      const mgmtClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all, this.$store), this.$store);
       const provClusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
       const provClustersByMgmtId = provClusters.reduce((res, provCluster) => {
         if (provCluster.mgmt?.id) {
