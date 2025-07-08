@@ -49,7 +49,7 @@ export default {
       return { enabled: true, casConfig: this.model };
     },
     skipTls() {
-      return this.model?.['skip-tls'];
+      return this.model?.skipTLS;
     },
     isLogoutAllSupported() {
       return this.model?.logoutAllSupported;
@@ -76,8 +76,8 @@ export default {
       }
     },
     'model.tls'(v) {
-      if (!v && (this.model?.certificate || this.model?.['skip-tls'])) {
-        this.model['skip-tls'] = false;
+      if (!v && (this.model?.certificate || this.model?.skipTLS)) {
+        this.model.skipTLS = false;
         this.model.certificate = '';
       }
     },
@@ -216,7 +216,7 @@ export default {
             <tr><td>{{ t(`authConfig.cas.logoutEndpoint.label`) }}: </td><td>{{ model.logoutEndpoint }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.serviceValidate.label`) }}: </td><td>{{ model.serviceValidate }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
-            <tr><td>{{ t(`authConfig.cas.skipTls.label`) }}: </td><td>{{ model['skipTls'] }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.skipTls.label`) }}: </td><td>{{ model.skipTLS }}</td></tr>
             <tr v-if="isLogoutAllSupported">
               <td>{{ t(`authConfig.saml.sloTitle`) }}: </td><td>{{ sloTypeText }}</td>
             </tr>
@@ -331,13 +331,13 @@ export default {
               <template v-if="model.tls">
                 <div>
                   <Checkbox
-                    v-model:value="model['skip-tls']"
+                    v-model:value="model.skipTLS"
                     :mode="mode"
                     class="full-height"
                     :label="t('authConfig.cas.skipTls.label')"
                   />
                 </div>
-                <div v-if="!model['skip-tls']">
+                <div v-if="!model.skipTLS">
                   <LabeledInput
                     v-model:value="model.certificate"
                     :label="t(`authConfig.oidc.cert.label`)"
