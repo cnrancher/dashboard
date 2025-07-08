@@ -239,7 +239,11 @@ export default {
         >
           <p v-clean-html="t('authConfig.stateBanner.disabled', tArgs)" />
         </Banner>
-
+        <div v-if="!model.enabled">
+          <Banner color="warning">
+            <p v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
+          </Banner>
+        </div>
         <h3>{{ t(`authConfig.cas.${NAME}`) }}</h3>
         <div class="row mb-20">
           <div class="col span-6">
@@ -375,11 +379,6 @@ export default {
           </div>
         </div>
       </template>
-      <div v-if="!model.enabled">
-        <Banner color="info">
-          <p v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
-        </Banner>
-      </div>
     </CruResource>
   </div>
 </template>
