@@ -32,6 +32,7 @@ export const UNSUPPORTED_STORAGE_DRIVERS = create('unsupported-storage-drivers',
 export const FLEET = create('continuous-delivery', true);
 export const HARVESTER = create('harvester', true);
 export const VIRTAITECH_GPU_SERVICE_UI = create('virtaitech-gpu-service-ui', false);
+export const EXPLORER_HARVESTER_CLUSTER = create('explorer-harvester-cluster', false);
 export const HARVESTER_CONTAINER = create('harvester-baremetal-container-workload', false);
 export const FLEET_WORKSPACE_BACK = create('provisioningv2-fleet-workspace-back-population', false);
 export const F5_UI_EXTENSION = create('f5-ui-extension', false);
