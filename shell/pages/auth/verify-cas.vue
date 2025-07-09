@@ -1,5 +1,6 @@
 <script>
-import { BACK_TO } from '@shell/config/query-params';
+import { BACK_TO, IS_SLO, _FLAGGED } from '@shell/config/query-params';
+import loadPlugins from '@shell/plugins/plugin';
 
 function reply(err, code) {
   try {
@@ -15,47 +16,76 @@ function reply(err, code) {
 export default {
   layout: 'unauthenticated',
 
-  async fetch({ store, route, redirect }) {
-    const ticket = route.query.ticket;
+  async fetch() {
+    const ticket = this.$route.query.ticket;
     const {
       error, error_description: errorDescription, errorCode, errorMsg
-    } = route.query;
+    } = this.$route.query;
 
     if (error || errorDescription || errorCode || errorMsg) {
       let out = errorDescription || error || errorCode;
 
-      if (errorMsg) {
-        out = store.getters['i18n/withFallback'](`login.serverError.${ errorMsg }`, null, errorMsg);
-      }
+      if (this.isSlo) {
+        console.error('Failed to log out of auth provider', error, errorDescription, errorCode, errorMsg); // eslint-disable-line no-console
 
-      redirect(`/auth/login?err=${ escape(out) }`);
+        let out = this.$store.getters['i18n/withFallback'](`logout.specificError.unknown`);
+
+        if (errorCode) {
+          out = this.$store.getters['i18n/withFallback'](`logout.specificError.${ errorCode }`, null, out);
+        }
+
+        this.$router.replace(`/auth/login?${ IS_SLO }&err=${ escape(out) }`);
+
+        return;
+      } else {
+        if (errorMsg) {
+          out = this.$store.getters['i18n/withFallback'](`login.serverError.${ errorMsg }`, null, errorMsg);
+        }
+
+        this.$router.replace(`/auth/login?err=${ escape(out) }`);
+
+        return;
+      }
+    }
+
+    // check for existence of IS_SLO query param to differentiate between a login and a logout
+    if (this.isSlo) {
+      this.$store.dispatch('auth/uiLogout');
 
       return;
     }
-
     if (ticket && window.opener) {
       return;
     }
 
     try {
-      const res = await store.dispatch('auth/verifyCASAuth', { ticket });
+      const res = await this.$store.dispatch('auth/verifyCASAuth', { ticket });
 
       if ( res._status === 200) {
-        const backTo = route.query[BACK_TO] || '/';
+        const backTo = this.$route.query[BACK_TO] || '/';
 
-        redirect(backTo);
+        // Load plugins
+        await loadPlugins({
+          app:     this.$store.app,
+          store:   this.$store,
+          $plugin: this.$store.$plugin
+        });
+
+        this.$router.replace(backTo);
       } else {
-        redirect(`/auth/login?err=${ escape(res) }`);
+        this.$router.replace(`/auth/login?err=${ escape(res) }`);
       }
     } catch (err) {
-      redirect(`/auth/login?err=${ escape(err) }`);
+      this.$router.replace(`/auth/login?err=${ escape(err) }`);
     }
   },
 
   data() {
     const ticket = this.$route.query.ticket;
+    // Is Single Log Out
+    const isSlo = this.$route.query[IS_SLO] === _FLAGGED;
 
-    return { testing: ticket && window.opener };
+    return { testing: ticket && window.opener, isSlo };
   },
 
   mounted() {
@@ -87,10 +117,13 @@ export default {
 </script>
 
 <template>
-  <main>
+  <main class="main-layout">
     <h1 class="text-center mt-50">
       <span v-if="testing">
         Testing Configuration&hellip;
+      </span>
+      <span v-else-if="isSlo">
+        Logging Out&hellip;
       </span>
       <span v-else>
         Logging In&hellip;

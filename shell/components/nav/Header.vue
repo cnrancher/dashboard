@@ -108,12 +108,26 @@ export default {
       return publicAuthProviders.find((authProvider) => configType[authProvider.id] === 'saml') || {};
     },
 
+    casAuthPorviderEnabled() {
+      const publicAuthProviders = this.$store.getters['rancher/all']('authProvider');
+
+      return publicAuthProviders.find((authProvider) => configType[authProvider.id] === 'cas') || {};
+    },
+
+    isAuthCasProvider() {
+      return this.principal && this.principal.provider === 'cas';
+    },
+
     shouldShowSloLogoutModal() {
       if (this.isAuthLocalProvider) {
         // If the user logged in as a local user... they cannot log out as if they were an auth config user
         return false;
       }
+      if (this.isAuthCasProvider) {
+        const { logoutAllSupported, logoutAllEnabled, logoutAllForced } = this.casAuthPorviderEnabled;
 
+        return logoutAllSupported && logoutAllEnabled && !logoutAllForced;
+      }
       const { logoutAllSupported, logoutAllEnabled, logoutAllForced } = this.samlAuthProviderEnabled;
 
       return logoutAllSupported && logoutAllEnabled && !logoutAllForced;
@@ -279,7 +293,7 @@ export default {
     showSloModal() {
       this.$store.dispatch('management/promptModal', {
         component:      'SloDialog',
-        componentProps: { authProvider: this.samlAuthProviderEnabled },
+        componentProps: { authProvider: this.isAuthCasProvider ? this.casAuthPorviderEnabled : this.samlAuthProviderEnabled },
         modalWidth:     '500px'
       });
     },

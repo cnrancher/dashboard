@@ -1,11 +1,11 @@
 <script>
 import Loading from '@shell/components/Loading';
 import CreateEditView from '@shell/mixins/create-edit-view';
-import AuthConfig from '@shell/mixins/auth-config';
+import AuthConfig, { SLO_OPTION_VALUES } from '@shell/mixins/auth-config';
 import CruResource from '@shell/components/CruResource';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { Checkbox } from '@components/Form/Checkbox';
-import { Banner } from '@components/Banner';
+import Banner from '@components/Banner/Banner.vue';
 import AllowedPrincipals from '@shell/components/auth/AllowedPrincipals';
 import AuthBanner from '@shell/components/auth/AuthBanner';
 import UnitInput from '@shell/components/form/UnitInput';
@@ -14,6 +14,8 @@ import { AFTER_SAVE_HOOKS, BEFORE_SAVE_HOOKS } from '@shell/mixins/child-hook';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import difference from 'lodash/difference';
 import { addObject } from '@shell/utils/array';
+import FileSelector from '@shell/components/form/FileSelector';
+import RadioGroup from '@components/Form/Radio/RadioGroup.vue';
 
 export default {
   components: {
@@ -24,7 +26,9 @@ export default {
     AllowedPrincipals,
     Checkbox,
     AuthBanner,
-    UnitInput
+    UnitInput,
+    FileSelector,
+    RadioGroup
   },
 
   mixins: [CreateEditView, AuthConfig],
@@ -44,6 +48,56 @@ export default {
     toSave() {
       return { enabled: true, casConfig: this.model };
     },
+    skipTls() {
+      return this.model?.skipTLS;
+    },
+    isLogoutAllSupported() {
+      return this.model?.logoutAllSupported;
+    },
+
+    sloOptions() {
+      return [
+        { value: SLO_OPTION_VALUES.rancher, label: this.t('authConfig.saml.sloOptions.onlyRancher', { name: this.model?.nameDisplay }) },
+        { value: SLO_OPTION_VALUES.all, label: this.t('authConfig.saml.sloOptions.logoutAll', { name: this.model?.nameDisplay }) },
+        { value: SLO_OPTION_VALUES.both, label: this.t('authConfig.saml.sloOptions.choose') },
+      ];
+    },
+
+    sloTypeText() {
+      const sloOptionSelected = this.sloOptions.find((item) => item.value === this.sloType);
+
+      return sloOptionSelected?.label || '';
+    },
+  },
+  watch: {
+    skipTls(v) {
+      if (v && this.model?.certificate) {
+        this.model.certificate = '';
+      }
+    },
+    'model.tls'(v) {
+      if (!v && (this.model?.certificate || this.model?.skipTLS)) {
+        this.model.skipTLS = false;
+        this.model.certificate = '';
+      }
+    },
+    // sloType is defined on shell/mixins/auth-config.js
+    sloType(neu) {
+      switch (neu) {
+      case SLO_OPTION_VALUES.rancher:
+        this.model.logoutAllEnabled = false;
+        this.model.logoutAllForced = false;
+        break;
+      case SLO_OPTION_VALUES.all:
+        this.model.logoutAllEnabled = true;
+        this.model.logoutAllForced = true;
+        break;
+      case SLO_OPTION_VALUES.both:
+        this.model.logoutAllEnabled = true;
+        this.model.logoutAllForced = false;
+        break;
+      }
+    }
   },
 
   methods: {
@@ -155,12 +209,17 @@ export default {
         >
           <template #rows>
             <tr><td>{{ t(`authConfig.cas.hostUrl.label`) }}: </td><td>{{ model.hostname }}</td></tr>
-            <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.port.label`) }}: </td><td>{{ model.port }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.connectionTimeout.label`) }}: </td><td>{{ model.connectionTimeout }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.callbackURL.label'`) }}: </td><td>{{ model.service }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.loginEndpoint.label`) }}: </td><td>{{ model.loginEndpoint }}</td></tr>
             <tr><td>{{ t(`authConfig.cas.logoutEndpoint.label`) }}: </td><td>{{ model.logoutEndpoint }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.serviceValidate.label`) }}: </td><td>{{ model.serviceValidate }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.enableTLS`) }}(https://): </td><td>{{ model.tls }}</td></tr>
+            <tr><td>{{ t(`authConfig.cas.skipTls.label`) }}: </td><td>{{ model.skipTLS }}</td></tr>
+            <tr v-if="isLogoutAllSupported">
+              <td>{{ t(`authConfig.saml.sloTitle`) }}: </td><td>{{ sloTypeText }}</td>
+            </tr>
           </template>
         </AuthBanner>
 
@@ -176,10 +235,15 @@ export default {
       <template v-else>
         <Banner
           v-if="!model.enabled"
-          :label="t('authConfig.stateBanner.disabled', tArgs)"
           color="warning"
-        />
-
+        >
+          <p v-clean-html="t('authConfig.stateBanner.disabled', tArgs)" />
+        </Banner>
+        <div v-if="!model.enabled">
+          <Banner color="warning">
+            <p v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
+          </Banner>
+        </div>
         <h3>{{ t(`authConfig.cas.${NAME}`) }}</h3>
         <div class="row mb-20">
           <div class="col span-6">
@@ -195,22 +259,11 @@ export default {
             <LabeledInput
               :value="model.port"
               type="number"
-              required
               :min="0"
               :step="1"
               :mode="mode"
               :label="t('authConfig.cas.port.label')"
               @update:value="e=>model.port = e.replace(/[^0-9]*/g, '')"
-            />
-          </div>
-        </div>
-        <div class="row mb-20">
-          <div class="col span-6">
-            <Checkbox
-              v-model:value="model.tls"
-              :mode="mode"
-              class="full-height"
-              :label="`${t('authConfig.cas.enableTLS')}(https://)`"
             />
           </div>
         </div>
@@ -255,16 +308,83 @@ export default {
             />
           </div>
         </div>
-      </template>
-      <div
-        v-if="!model.enabled"
-      >
-        <Banner
-          color="info"
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledInput
+              v-model:value="model.serviceValidate"
+              :label="t(`authConfig.cas.serviceValidate.label`)"
+              :placeholder="t('authConfig.cas.serviceValidate.placeholder')"
+              :mode="mode"
+              required
+            />
+          </div>
+          <div class="col span-6">
+            <div class="cas__tls">
+              <div>
+                <Checkbox
+                  v-model:value="model.tls"
+                  :mode="mode"
+                  class="full-height"
+                  :label="`${t('authConfig.cas.enableTLS')}(https://)`"
+                />
+              </div>
+              <template v-if="model.tls">
+                <div>
+                  <Checkbox
+                    v-model:value="model.skipTLS"
+                    :mode="mode"
+                    class="full-height"
+                    :label="t('authConfig.cas.skipTls.label')"
+                  />
+                </div>
+                <div v-if="!model.skipTLS">
+                  <LabeledInput
+                    v-model:value="model.certificate"
+                    :label="t(`authConfig.oidc.cert.label`)"
+                    :placeholder="t(`authConfig.oidc.cert.placeholder`)"
+                    :mode="mode"
+                    type="multiline"
+                  />
+                  <FileSelector
+                    class="role-tertiary add mt-5"
+                    :label="t('generic.readFromFile')"
+                    :mode="mode"
+                    @selected="model.certificate = $event"
+                  />
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- SLO logout -->
+        <div
+          v-if="isLogoutAllSupported"
+          class="mt-10 mb-30"
         >
-          <div v-clean-html="t('authConfig.associatedWarning', tArgs, true)" />
-        </Banner>
-      </div>
+          <div class="row">
+            <div class="col span-12">
+              <h3>{{ t('authConfig.saml.sloTitle') }}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4">
+              <RadioGroup
+                v-model:value="sloType"
+                :mode="mode"
+                :options="sloOptions"
+                :disabled="!model.logoutAllSupported"
+                name="sloTypeRadio"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
     </CruResource>
   </div>
 </template>
+<style scoped>
+.cas__tls {
+  display: grid;
+  gap: 8px;
+}
+</style>
