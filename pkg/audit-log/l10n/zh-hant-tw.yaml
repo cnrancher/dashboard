@@ -26,6 +26,7 @@ auditLog:
     request: 請求對象
     response: 響應對象
     title: 審計日誌-請求詳情
+    remoteAddr: 遠程地址
   form:
     name:
       label: 請求資源Name/ID
