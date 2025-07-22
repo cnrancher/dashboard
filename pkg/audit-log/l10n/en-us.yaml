@@ -27,6 +27,7 @@ auditLog:
     request: Request Object
     response: Response Object
     title: Audit Log - Request Details
+    remoteAddr: Remote Address
   form:
     name:
       label: Resource Name/ID
