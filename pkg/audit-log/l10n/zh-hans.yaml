@@ -26,6 +26,7 @@ auditLog:
     request: 请求对象
     response: 响应对象
     title: 审计日志-请求详情
+    remoteAddr: 远程地址
   form:
     name:
       label: 请求资源Name/ID
