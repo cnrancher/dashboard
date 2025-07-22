@@ -57,6 +57,14 @@ export default {
       class="pl-10 pr-10"
     >
       <div>
+        <div class="flex gap-2 items-center">
+          <h4>
+            {{ t('auditLog.detail.remoteAddr') }}:
+          </h4>
+          <div>
+            {{ value?.remoteAddr }}
+          </div>
+        </div>
         <h4>{{ t('auditLog.detail.request') }}</h4>
         <JsonView :value="requestBody" />
       </div>
