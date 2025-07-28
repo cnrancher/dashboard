@@ -16,6 +16,7 @@ import { allHash } from '@shell/utils/promise';
  * Explorer members page.
  * Route: /c/local/explorer/members
  */
+
 export default {
   name: 'ExplorerMembers',
 
@@ -129,6 +130,32 @@ export default {
       return this.clusterRoleTemplateBindings.filter(
         (b) => b?.clusterName === this.$store.getters['currentCluster'].id
       );
+    },
+    rowsWithClusterRoleTamplateBindings() {
+      const userRoles = this.filteredClusterRoleTemplateBindings.reduce((rows, curr) => {
+        const {
+          userName, userPrincipalName, groupPrincipalName, roleTemplate
+        } = curr;
+
+        const userOrGroup = userName || groupPrincipalName;
+
+        if (!userOrGroup) {
+          return rows;
+        }
+
+        if (!rows[userOrGroup]) {
+          rows[userOrGroup] = curr;
+          rows[userOrGroup].allRoles = [];
+        }
+
+        if (roleTemplate) {
+          rows[userOrGroup].allRoles.push({ roleTemplate: curr.roleTemplate, userPrincipalName });
+        }
+
+        return rows;
+      }, {});
+
+      return Object.values(userRoles);
     },
     filteredProjects() {
       return this.projects.reduce((all, p) => {
@@ -249,6 +276,25 @@ export default {
       });
     },
 
+    getClusterRoleBinding(row, role) {
+      const userOrGroupKey = row.userName ? 'userName' : 'groupPrincipalName';
+
+      return this.clusterRoleTemplateBindings.find((r) => {
+        return r.roleTemplateName === role.id && r[userOrGroupKey] === row[userOrGroupKey];
+      });
+    },
+    async removeClusterRole(row, role) {
+      const resource = this.getClusterRoleBinding(row, role);
+
+      await resource.promptRemove();
+    },
+    viewClusterRoleInAPI(row, role) {
+      const resource = this.getClusterRoleBinding(row, role);
+
+      if (resource?.canViewInApi) {
+        resource.viewInApi();
+      }
+    },
     getProjectRoleBinding(row, role) {
       // Each row is a combination of project, role and user/group
       // So find the specfic roleBindingTemplate corresponding to the specific project, role + user/group
@@ -314,14 +360,42 @@ export default {
         <ResourceTable
           :schema="schema"
           :headers="headers"
-          :rows="filteredClusterRoleTemplateBindings"
-          :groupable="true"
+          :rows="rowsWithClusterRoleTamplateBindings"
+          :groupable="false"
           :show-grouping="true"
           :namespaced="false"
           :loading="$fetchState.pending || !currentCluster || loadingClusterBindings"
           sub-search="subSearch"
           :sub-fields="['nameDisplay']"
-        />
+          :table-actions="false"
+          :row-actions="false"
+        >
+          <template
+            #cell:role="{row}"
+          >
+            <span
+              v-for="(role, j) in row.allRoles"
+              :key="j"
+              ref="value"
+              v-clean-tooltip="role.userPrincipalName"
+              :data-testid="`role-value-${j}`"
+              class="role"
+            >
+              <span
+                class="role-value"
+                :class="{'text-link-enabled' : row.roleTemplate.canViewInApi}"
+                @click="viewRoleInAPI(row, role.roleTemplate)"
+              >
+                {{ role.roleTemplate.nameDisplay }}
+              </span>
+              <i
+                class="icon icon-close"
+                :data-testid="`role-values-close-${j}`"
+                @click="removeClusterRole(row, role.roleTemplate, $event)"
+              />
+            </span>
+          </template>
+        </ResourceTable>
       </Tab>
       <Tab
         v-if="canManageProjectMembers"
