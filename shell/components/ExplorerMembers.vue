@@ -11,6 +11,7 @@ import SortableTable from '@shell/components/SortableTable';
 import { mapGetters } from 'vuex';
 import { canViewProjectMembershipEditor } from '@shell/components/form/Members/ProjectMembershipEditor.vue';
 import { allHash } from '@shell/utils/promise';
+import { sortBy } from '@shell/utils/sort';
 
 /**
  * Explorer members page.
@@ -79,7 +80,9 @@ export default {
       mgmtRoleTemplates: this.$store.dispatch(`management/findAll`, { type: MANAGEMENT.ROLE_TEMPLATE }),
     };
 
-    await allHash(hydration);
+    const resp = await allHash(hydration);
+
+    this.mgmtRoleTemplates = resp.mgmtRoleTemplates;
   },
 
   data() {
@@ -117,7 +120,8 @@ export default {
         },
       ],
       loadingProjectBindings: true,
-      loadingClusterBindings: true
+      loadingClusterBindings: true,
+      mgmtRoleTemplates:      []
     };
   },
 
@@ -127,14 +131,17 @@ export default {
       return this.normanClusterRoleTemplateBindings.map((b) => b.clusterroletemplatebinding) ;
     },
     filteredClusterRoleTemplateBindings() {
-      return this.clusterRoleTemplateBindings.filter(
+      const out = this.clusterRoleTemplateBindings.filter(
         (b) => b?.clusterName === this.$store.getters['currentCluster'].id
       );
+
+      return sortBy(out, ['userPrincipalName', 'groupPrincipalName']);
     },
     rowsWithClusterRoleTamplateBindings() {
+      const mgmtRoleTemplates = this.mgmtRoleTemplates;
       const userRoles = this.filteredClusterRoleTemplateBindings.reduce((rows, curr) => {
         const {
-          userName, userPrincipalName, groupPrincipalName, roleTemplate
+          userName, userPrincipalName, groupPrincipalName, roleTemplateName
         } = curr;
 
         const userOrGroup = userName || groupPrincipalName;
@@ -147,9 +154,10 @@ export default {
           rows[userOrGroup] = curr;
           rows[userOrGroup].allRoles = [];
         }
+        const roleTemplate = mgmtRoleTemplates.find((item) => item.id === roleTemplateName);
 
         if (roleTemplate) {
-          rows[userOrGroup].allRoles.push({ roleTemplate: curr.roleTemplate, userPrincipalName });
+          rows[userOrGroup].allRoles.push({ roleTemplate, userPrincipalName });
         }
 
         return rows;
@@ -173,7 +181,7 @@ export default {
         return !!this.filteredProjects[projectId];
       });
 
-      return out;
+      return sortBy(out, ['userPrincipalId', 'groupPrincipalId']);
     },
     projectsWithoutRoles() {
       const inUse = this.filteredProjectRoleTemplateBindings.reduce((projects, binding) => {
@@ -199,6 +207,7 @@ export default {
 
     // We're using this because we need to show projects as groups even if the project doesn't have any role bindings
     rowsWithFakeProjects() {
+      const mgmtRoleTemplates = this.mgmtRoleTemplates;
       const fakeRows = this.projectsWithoutRoles.map((project) => {
         return {
           groupByLabel:     `${ ('resourceTable.groupLabel.notInAProject') }-${ project.id }`,
@@ -214,7 +223,7 @@ export default {
       // We need to group each of the TemplateRoleBindings by the user + project
       const userRoles = [...fakeRows, ...this.filteredProjectRoleTemplateBindings].reduce((rows, curr) => {
         const {
-          userId, groupPrincipalId, roleTemplate, projectId
+          userId, groupPrincipalId, roleTemplateId, projectId
         } = curr;
 
         const userOrGroup = userId || groupPrincipalId;
@@ -230,8 +239,10 @@ export default {
           rows[userOrGroupKey].allRoles = [];
         }
 
+        const roleTemplate = mgmtRoleTemplates.find((item) => item.id === roleTemplateId);
+
         if (roleTemplate) {
-          rows[userOrGroupKey].allRoles.push(curr.roleTemplate);
+          rows[userOrGroupKey].allRoles.push(roleTemplate);
         }
 
         return rows;
