@@ -2,7 +2,6 @@
 import LazyImage from '@shell/components/LazyImage';
 import { get } from '@shell/utils/object';
 import capitalize from 'lodash/capitalize';
-import { ROWS_PER_PAGE } from '@shell/store/prefs';
 
 export default {
   emits: ['clicked'],
@@ -82,48 +81,6 @@ export default {
     },
   },
 
-  data() {
-    return { currentPage: 1 };
-  },
-
-  computed: {
-    pageSize() {
-      // return 10;
-
-      return parseInt(this.$store.getters['prefs/get'](ROWS_PER_PAGE), 10) || 50;
-    },
-    total() {
-      return this.rows.length;
-    },
-    pageCount() {
-      if (this.pageSize <= 0 || this.total === 0) {
-        return 1;
-      }
-
-      return Math.ceil(this.total / this.pageSize);
-    },
-    indexFrom() {
-      return Math.max(0, 1 + this.pageSize * (this.currentPage - 1));
-    },
-
-    indexTo() {
-      return Math.min(this.total, this.indexFrom + this.pageSize - 1);
-    },
-    pageData() {
-      return this.rows.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
-    },
-
-    pagingDisplay() {
-      const opt = {
-        count: this.total,
-        pages: this.pageCount,
-        from:  this.indexFrom,
-        to:    this.indexTo,
-      };
-
-      return this.$store.getters['i18n/t']('sortableTable.paging.generic', opt);
-    },
-  },
   methods: {
     get,
 
@@ -147,158 +104,88 @@ export default {
 
       this.$emit('clicked', row, idx);
     },
-    capitalize,
-    setPage(num) {
-      if (this.currentPage === num) {
-        return;
-      }
-
-      this.currentPage = num;
-    },
-
-    goToPage(which) {
-      let page;
-
-      switch (which) {
-      case 'first':
-        page = 1;
-        break;
-      case 'prev':
-        page = Math.max(1, this.currentPage - 1 );
-        break;
-      case 'next':
-        page = Math.min(this.pageCount, this.currentPage + 1 );
-        break;
-      case 'last':
-        page = this.pageCount;
-        break;
-      }
-
-      this.setPage(page);
-    },
+    capitalize
   },
 };
 </script>
 
 <template>
-  <div>
-    <div
-      v-if="rows.length"
-      class="grid"
+  <div
+    v-if="rows.length"
+    class="grid"
+  >
+    <component
+      :is="asLink && !r.isIframe ? 'a' : 'div'"
+      v-for="(r, idx) in rows"
+      :key="get(r, keyField)"
+      :role="asLink ? 'link' : null"
+      :aria-disabled="asLink && get(r, disabledField) === true ? true : null"
+      :aria-label="get(r, nameField)"
+      :tabindex="get(r, disabledField) === true ? -1 : 0"
+      :href="asLink ? get(r, !r.isIframe ? linkField : iframeSrcField) : null"
+      :target="get(r, targetField)"
+      :rel="rel"
+      class="item"
+      :data-testid="componentTestid + '-' + get(r, nameField)"
+      :class="{
+        'has-description': !!get(r, descriptionField),
+        'has-side-label': !!get(r, sideLabelField),
+        [colorFor(r, idx)]: true,
+        disabled: get(r, disabledField) === true
+      }"
+      @click="select(r, idx)"
+      @keyup.enter.space="select(r, idx)"
     >
-      <component
-        :is="asLink && !r.isIframe ? 'a' : 'div'"
-        v-for="(r, idx) in pageData"
-        :key="get(r, keyField)"
-        :role="asLink ? 'link' : null"
-        :aria-disabled="asLink && get(r, disabledField) === true ? true : null"
-        :aria-label="get(r, nameField)"
-        :tabindex="get(r, disabledField) === true ? -1 : 0"
-        :href="asLink ? get(r, !r.isIframe ? linkField : iframeSrcField) : null"
-        :target="get(r, targetField)"
-        :rel="rel"
-        class="item"
-        :data-testid="componentTestid + '-' + get(r, nameField)"
-        :class="{
-          'has-description': !!get(r, descriptionField),
-          'has-side-label': !!get(r, sideLabelField),
-          [colorFor(r, idx)]: true,
-          disabled: get(r, disabledField) === true
-        }"
-        @click="select(r, idx)"
-        @keyup.enter.space="select(r, idx)"
+      <div
+        class="side-label"
+        :class="{'indicator': true }"
+      />
+      <div v-if="r.deploysOnWindows">
+        <label class="deploys-os-label">
+          {{ t('catalog.charts.deploysOnWindows') }}
+        </label>
+      </div>
+      <div v-if="r.windowsIncompatible">
+        <label class="os-incompatible-label">
+          {{ t('catalog.charts.windowsIncompatible') }}
+        </label>
+      </div>
+      <div
+        v-if="get(r, sideLabelField)"
+        class="side-label"
+        :class="{'indicator': false }"
       >
-        <div
-          class="side-label"
-          :class="{'indicator': true }"
-        />
-        <div v-if="r.deploysOnWindows">
-          <label class="deploys-os-label">
-            {{ t('catalog.charts.deploysOnWindows') }}
-          </label>
-        </div>
-        <div v-if="r.windowsIncompatible">
-          <label class="os-incompatible-label">
-            {{ t('catalog.charts.windowsIncompatible') }}
-          </label>
-        </div>
-        <div
-          v-if="get(r, sideLabelField)"
-          class="side-label"
-          :class="{'indicator': false }"
-        >
-          <label>{{ get(r, sideLabelField) }}</label>
-        </div>
+        <label>{{ get(r, sideLabelField) }}</label>
+      </div>
 
-        <div class="logo">
-          <i
-            v-if="r.iconClass"
-            :class="r.iconClass"
-            :alt="t('catalog.charts.iconAlt', { app: get(r, nameField) })"
-          />
-          <LazyImage
-            v-else
-            :src="get(r, iconField)"
-            :alt="t('catalog.charts.iconAlt', { app: get(r, nameField) })"
-          />
-        </div>
-        <h4 class="name">
-          {{ get(r, nameField) }}
-        </h4>
-        <div
-          v-if="get(r, descriptionField)"
-          class="description"
-        >
-          {{ get(r, descriptionField) }}
-        </div>
-      </component>
-    </div>
-    <div
-      v-else
-      class="m-50 text-center"
-    >
-      <h1 v-t="noDataKey" />
-    </div>
-    <div
-      v-if="pageCount > 1"
-      class="paging"
-    >
-      <button
-        type="button"
-        class="btn btn-sm role-multi-action"
-        :disabled="currentPage == 1"
-        @click="goToPage('first')"
+      <div class="logo">
+        <i
+          v-if="r.iconClass"
+          :class="r.iconClass"
+          :alt="t('catalog.charts.iconAlt', { app: get(r, nameField) })"
+        />
+        <LazyImage
+          v-else
+          :src="get(r, iconField)"
+          :alt="t('catalog.charts.iconAlt', { app: get(r, nameField) })"
+        />
+      </div>
+      <h4 class="name">
+        {{ get(r, nameField) }}
+      </h4>
+      <div
+        v-if="get(r, descriptionField)"
+        class="description"
       >
-        <i class="icon icon-chevron-beginning" />
-      </button>
-      <button
-        type="button"
-        class="btn btn-sm role-multi-action"
-        :disabled="currentPage == 1"
-        @click="goToPage('prev')"
-      >
-        <i class="icon icon-chevron-left" />
-      </button>
-      <span>
-        {{ pagingDisplay }}
-      </span>
-      <button
-        type="button"
-        class="btn btn-sm role-multi-action"
-        :disabled="currentPage == pageCount"
-        @click="goToPage('next')"
-      >
-        <i class="icon icon-chevron-right" />
-      </button>
-      <button
-        type="button"
-        class="btn btn-sm role-multi-action"
-        :disabled="currentPage == pageCount"
-        @click="goToPage('last')"
-      >
-        <i class="icon icon-chevron-end" />
-      </button>
-    </div>
+        {{ get(r, descriptionField) }}
+      </div>
+    </component>
+  </div>
+  <div
+    v-else
+    class="m-50 text-center"
+  >
+    <h1 v-t="noDataKey" />
   </div>
 </template>
 
@@ -536,16 +423,6 @@ export default {
     .disabled {
       opacity: 0.5;
       cursor: not-allowed;
-    }
-  }
-
-  .paging {
-    margin-top: 10px;
-    text-align: center;
-
-    SPAN {
-      display: inline-block;
-      min-width: 200px;
     }
   }
 </style>
