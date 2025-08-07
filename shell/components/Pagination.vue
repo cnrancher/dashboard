@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 import { ROWS_PER_PAGE } from '@shell/store/prefs';
