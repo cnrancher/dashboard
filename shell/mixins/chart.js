@@ -277,13 +277,8 @@ export default {
 
     async fetchChart() {
       this.versionInfoError = null;
-      if (this.query.repoName) {
-        await this.$store.dispatch('catalog/loadChartIndex', {
-          force: true, reset: true, repoNames: [this.query.repoName]
-        });
-      } else {
-        await this.$store.dispatch('catalog/load'); // not the problem
-      }
+
+      await this.$store.dispatch('catalog/load'); // not the problem
 
       this.fetchStoreChart();
 
