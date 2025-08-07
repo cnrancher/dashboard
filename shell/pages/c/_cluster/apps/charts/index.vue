@@ -12,7 +12,7 @@ import { lcFirst } from '@shell/utils/string';
 import { sortBy } from '@shell/utils/sort';
 import debounce from 'lodash/debounce';
 import { mapGetters } from 'vuex';
-import { SHOW_PRE_RELEASE } from '@shell/store/prefs';
+import { SHOW_PRE_RELEASE, ROWS_PER_PAGE } from '@shell/store/prefs';
 import { CATALOG } from '@shell/config/labels-annotations';
 import { isUIPlugin } from '@shell/config/uiplugins';
 import { RcItemCard } from '@components/RcItemCard';
@@ -25,6 +25,7 @@ import AddRepoLink from '@shell/pages/c/_cluster/apps/charts/AddRepoLink';
 import StatusLabel from '@shell/pages/c/_cluster/apps/charts/StatusLabel';
 import RichTranslation from '@shell/components/RichTranslation.vue';
 import Select from '@shell/components/form/Select';
+import Pagination from '@shell/components/Pagination.vue';
 
 const createInitialFilters = () => ({
   repos:      [],
@@ -44,7 +45,8 @@ export default {
     AppChartCardSubHeader,
     AppChartCardFooter,
     Select,
-    RichTranslation
+    RichTranslation,
+    Pagination
   },
 
   async fetch() {
@@ -114,7 +116,9 @@ export default {
         { value: CATALOG_SORT_OPTIONS.LAST_UPDATED_DESC, label: this.t('catalog.charts.sort.lastUpdatedDesc') },
         { value: CATALOG_SORT_OPTIONS.ALPHABETICAL_ASC, label: this.t('catalog.charts.sort.alphaAscending') },
         { value: CATALOG_SORT_OPTIONS.ALPHABETICAL_DESC, label: this.t('catalog.charts.sort.alphaDescending') },
-      ]
+      ],
+
+      page: 1
     };
   },
 
@@ -122,6 +126,9 @@ export default {
     ...mapGetters(['currentCluster']),
     ...mapGetters({ allCharts: 'catalog/charts', loadingErrors: 'catalog/errors' }),
 
+    perPage() {
+      return parseInt(this.$store.getters['prefs/get'](ROWS_PER_PAGE), 10) || 100;
+    },
     repoOptions() {
       let out = this.$store.getters['catalog/repos'].map((r) => {
         return {
@@ -275,6 +282,14 @@ export default {
       });
     },
 
+    pagedAppChartCards() {
+      const total = this.appChartCards.length;
+      const indexFrom = Math.max(0, 1 + this.perPage * (this.page - 1));
+      const indexTo = Math.min(total, indexFrom + this.perPage - 1);
+
+      return this.appChartCards.slice(indexFrom - 1, indexTo);
+    },
+
     clusterId() {
       return this.$store.getters['clusterId'];
     },
@@ -324,6 +339,10 @@ export default {
       },
       immediate: false
     },
+
+    appChartCards() {
+      this.page = 1;
+    }
   },
 
   methods: {
@@ -599,7 +618,7 @@ export default {
           data-testid="app-chart-cards-container"
         >
           <rc-item-card
-            v-for="card in appChartCards"
+            v-for="card in pagedAppChartCards"
             :id="card.id"
             :key="card.id"
             :pill="card.pill"
@@ -608,7 +627,7 @@ export default {
             :content="card.content"
             :value="card.rawChart"
             variant="medium"
-            :class="{ 'single-card': appChartCards.length === 1 }"
+            :class="{ 'single-card': pagedAppChartCards.length === 1 }"
             :clickable="true"
             @card-click="selectChart"
           >
@@ -628,6 +647,13 @@ export default {
               />
             </template>
           </rc-item-card>
+        </div>
+        <div>
+          <Pagination
+            v-model:page="page"
+            :total="appChartCards.length"
+            :rows-per-page="perPage"
+          />
         </div>
       </div>
     </div>
