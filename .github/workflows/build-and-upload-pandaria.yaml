@@ -124,5 +124,5 @@ jobs:
 
       - name: Upload tar
         run: |
-          aws s3 cp ${{steps.build-embedded.outputs.BUILD_EMBEDED_TGZ}} s3://cn-pandaria-dashboard-ui/release-2.11-cn/ --acl public-read
+          aws s3 cp ${{steps.build-embedded.outputs.BUILD_EMBEDED_TGZ}} s3://cn-pandaria-dashboard-ui/release-2.12-cn/ --acl public-read
   
