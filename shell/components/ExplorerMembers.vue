@@ -224,7 +224,7 @@ export default {
       // We need to group each of the TemplateRoleBindings by the user + project
       const userRoles = [...fakeRows, ...this.filteredProjectRoleTemplateBindings].reduce((rows, curr) => {
         const {
-          userId, groupPrincipalId, roleTemplateId, projectId
+          userPrincipalId, userId, groupPrincipalId, roleTemplateId, projectId
         } = curr;
 
         const userOrGroup = userId || groupPrincipalId;
@@ -243,7 +243,7 @@ export default {
         const roleTemplate = mgmtRoleTemplates.find((item) => item.id === roleTemplateId);
 
         if (roleTemplate) {
-          rows[userOrGroupKey].allRoles.push(roleTemplate);
+          rows[userOrGroupKey].allRoles.push({ roleTemplate, userPrincipalId });
         }
 
         return rows;
@@ -456,20 +456,21 @@ export default {
               v-for="(role, j) in row.allRoles"
               :key="j"
               ref="value"
+              v-clean-tooltip="role.userPrincipalId"
               :data-testid="`role-value-${j}`"
               class="role"
             >
               <span
                 class="role-value"
                 :class="{'text-link-enabled' : row.canViewInApi}"
-                @click="viewRoleInAPI(row, role)"
+                @click="viewRoleInAPI(row, role.roleTemplate)"
               >
-                {{ role.nameDisplay }}
+                {{ role.roleTemplate.nameDisplay }}
               </span>
               <i
                 class="icon icon-close"
                 :data-testid="`role-values-close-${j}`"
-                @click="removeRole(row, role, $event)"
+                @click="removeRole(row, role.roleTemplate, $event)"
               />
             </span>
           </template>
