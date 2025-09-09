@@ -1128,6 +1128,8 @@ catalog:
     appChartCard:
       footerItem:
         ariaLabel: Apply filter
+      subHeaderItem:
+        missingVersionDate: Last updated date is not available for this chart
     refreshButton:
       label: Refresh all repositories
     resetFilters:
@@ -2236,7 +2238,7 @@ cluster:
   banner:
     warning: 'This cluster contains a machineSelectorConfig, which this form does not fully support; use the YAML editor to manage the full configuration.'
     os: 'You are attempting to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
-    rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a href="{docsBase}/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/rke1-vs-rke2-differences#cluster-api" target="_blank" rel="noopener nofollow">documentation</a>.'
+    rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a href="{docsBase}/how-to-guides/new-user-guides/launch-kubernetes-with-rancher#launching-kubernetes-on-new-nodes-in-an-infrastructure-provider" target="_blank" rel="noopener nofollow">documentation</a>.'
     desiredNodeGroupWarning: There are 0 nodes available to run the cluster agent. The cluster will not become active until at least one node is available.
     deprecatedPsp: Pod Security Policies are deprecated as of Kubernetes v1.21, and have been removed in Kubernetes v1.25.
     haveArgInfo: Configuration information is not available for the selected Kubernetes version.  The options available on this screen will be limited; you may want to use the YAML editor.
@@ -2861,6 +2863,7 @@ fleet:
           =1 { cluster }
           other { clusters }
           }
+      search: Filter
     collapse: Collapse
     expand: Expand
     noApplications: You don't have any App Bundles in your Workspaces
@@ -3053,9 +3056,9 @@ fleet:
       label: Polling
       pollingInterval:
         label: Polling Interval
-        minimumValuewarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with GitRepos that contain a large amount of resources please consider increasing this value.
         tooltip: Polling Interval is the time between a push to the Repository and Fleet's reaction to it.
         webhookWarning: A webhook is configured in Rancher to reconcile Git updates and GitRepo resources. The Polling Interval will automatically be adjusted to 1 hour.
+        minimumValueWarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with GitRepos that contain a large amount of resources please consider increasing this value.
     intro:
       add: Create Git Repo
       empty: No Git Repos have been added
@@ -3198,8 +3201,9 @@ fleet:
       label: Polling
       pollingInterval:
         label: Polling Interval
-        minimumValuewarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with HelmOps that contain a large amount of resources please consider increasing this value.
         tooltip: Polling Interval is the time between a push to the Repository and Fleet's reaction to it.
+        minimumValueWarning: The recommended minimum Polling Interval is 15 seconds. To avoid performance issues with HelmOps that contain a large amount of resources please consider increasing this value.
+        versionTooltip: Polling can be enabled only if version is a valid semantic versioning constraint (e.g. 2.x.x, < 1.0).
     resources:
       correctDrift: Enable self-healing
       correctDriftTooltip: When enabled, Fleet will ensure that the cluster resources are kept in sync with the HelmOp. All resource changes made on the cluster will be lost.
@@ -3213,7 +3217,7 @@ fleet:
       oci:
         chart:
           label: OCI Registry URL
-          placeholder: e.g. oci://ghcr.io/rancher/fleet/helm-chart or oci://ghcr.io/rancher/fleet/helm-chart:0.0.1
+          placeholder: e.g. oci://foo.bar/baz
       release:
         label: Name
         placeholder: The Helm release name
@@ -3223,12 +3227,12 @@ fleet:
           label: Chart
           placeholder: The path to the chart name in the repository
         repo:
-          label: URL
-          placeholder: e.g. https://github.com/rancher/fleet/helm-chart
+          label: Repository URL
+          placeholder: e.g. https://foo.bar/baz
       selectLabel: Type
       tarball:
         label: Absolute URL
-        placeholder: e.g. https://github.com/rancher/fleet/helm-chart/helm-chart-0.0.1.tgz
+        placeholder: e.g. https://example.com/charts/my-chart-1.2.3.tgz
       title: Source
       types:
         oci: OCI Registry
@@ -3347,7 +3351,7 @@ fleet:
       description: ""
       label: Helmops
     info: Rancher will reboot Fleet agent and controller on settings change.
-    label: Fleet
+    label: Continuous Delivery
     metrics:
       description: Enable metrics
       label: Metrics
@@ -3370,7 +3374,7 @@ fleet:
     replicas:
       description: Number of replicas of Fleet pods.
       label: Replicas
-    title: Fleet Settings
+    title: Continuous Delivery Settings
     tolerations:
       add: Add Toleration
       description: List of node taints to tolerate (requires Kubernetes >= 1.6)
@@ -6956,7 +6960,9 @@ validation:
     url: URL must be a HTTP(s) or SSH url with no trailing spaces
   genericUrl: Field must be a valid URL
   oci:
-    url: URL must be an OCI url with no trailing spaces
+    url: It must be a valid OCI URL with no trailing spaces
+  repository:
+    url: It must be a valid HTTP(s) or SSH URL with no trailing spaces
 wizard:
   previous: Previous
   finish: Finish
@@ -8414,8 +8420,9 @@ advancedSettings:
     rotate-certs-if-expiring-in-days: Set the time for the rancher server to rotate certificates in advance（in days）.
     system-catalog: Configure Rancher to use System Chart Repo.
     agent-tls-mode: Rancher Certificate Verification. In `strict` mode the agents (system, cluster, fleet, etc) will only trust Rancher installations which are using a certificate signed by the CABundle in the `cacerts` setting. When the mode is system-store, the agents will trust any certificate signed by a CABundle in the operating system’s trust store.
-    k3s-based-upgrader-uninstall-concurrency: Defines the maximum number of clusters in which Rancher can concurrently uninstall the legacy `rancher-k3s-upgrader` or `rancher-rke2-upgrader` app from imported K3s or RKE2 clusters.
+    k3s-based-upgrader-uninstall-concurrency: Defines the maximum number of clusters in which Rancher can concurrently uninstall the legacy `rancher-k3s-upgrader` or `rancher-rke2-upgrader` app from imported or node-driver K3s or RKE2 clusters.
     imported-cluster-version-management: Enables version management for imported RKE2/K3s clusters, and the local cluster if it is an RKE2/K3s cluster. The per-cluster version management setting overrides this global setting at the cluster level. For existing clusters where the cluster-level version management is set to 'system-default', changing this flag will trigger a redeployment of the cluster agent during the next reconciliation (by default every 5 minutes, or as soon as the cluster is edited, whichever comes first).
+    system-agent-upgrader-install-concurrency: Defines the maximum number of clusters in which Rancher can concurrently install the resources required for upgrading system-agent.
   editHelp:
     'ui-banners': This setting takes a JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.
   enum:
