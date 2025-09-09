@@ -149,6 +149,18 @@ export default defineComponent({
             getValue:   (row: any) => row.podConsumedUsage
           });
         }
+        const cpu = paginationHeaders.find((item) => item.name === 'cpu');
+
+        if (cpu) {
+          cpu.getValue = (row: any) => row.cpuUsagePercentage;
+          cpu.formatter = 'CpuUsage';
+        }
+        const ram = paginationHeaders.find((item) => item.name === 'ram');
+
+        if (ram) {
+          ram.getValue = (row: any) => row.ramUsagePercentage;
+          ram.formatter = 'MemoryUsage';
+        }
 
         return paginationHeaders;
       } else {
