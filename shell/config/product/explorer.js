@@ -332,6 +332,9 @@ export function init(store) {
         sort:   ['spec.type'],
         search: 'spec.type'
       },
+      {
+        ...CLUSTER_IP, sort: false, search: false
+      },
       STEVE_AGE_COL
     ]
   );
