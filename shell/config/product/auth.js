@@ -26,6 +26,9 @@ export function init(store) {
   } = DSL(store, NAME);
 
   product({
+    ifHave(rootGetters) {
+      return !rootGetters['auth/isReadOnlyAdmin'];
+    },
     ifHaveType:          new RegExp(`${ MANAGEMENT.USER }|${ MANAGEMENT.AUTH_CONFIG }`, 'i'),
     ifHaveVerb:          'GET',
     ifFeature:           MULTI_CLUSTER,

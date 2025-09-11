@@ -961,7 +961,15 @@ export const actions = {
             admin = resp.admins.find((p) => p.me === true);
           }
           if (!readOnlyAdmin && roagrbs.length > 0) {
-            readOnlyAdmin = resp.readOnlyAdmins.find((p) => p.me === true);
+            readOnlyAdmin = resp.readOnlyAdmins.find((p) => {
+              const isMe = (p.me === true);
+
+              if (isMe && p.principalType === 'group') {
+                return p.memberOf === true;
+              }
+
+              return isMe;
+            });
           }
         } catch (err) {
           // do nothing
