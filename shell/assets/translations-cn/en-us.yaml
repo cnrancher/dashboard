@@ -621,6 +621,9 @@ authConfig:
       starttls: Start TLS
       tls: LDAPS (TLS)
     userLoginFilter: User Login Filter
+    searchUsingServiceAccount:
+      label: Enable Service Account Search
+      tip: When enabled, Rancher will use the service account instead of the user account to search for users and groups.
   saml:
     entityID: Entity ID Field
     UID: UID Field

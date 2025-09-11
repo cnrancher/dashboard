@@ -1320,7 +1320,7 @@ cluster:
         placeholder: 你的 Linode API 访问 Token
     name:
       label: 凭证名称
-      placeholder: 此凭证的名称
+      placeholder: 此凭证的名称（可选）
     s3:
       accessKey:
         label: Access Key
