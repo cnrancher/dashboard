@@ -199,7 +199,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="outlet">
     <header>
       <TypeDescription resource="logging-extensions" />
       <div class="title">
