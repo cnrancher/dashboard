@@ -101,26 +101,6 @@ export default {
       // Prevent issues if custom NavLink is used #5047
       if (this.type?.route) {
         const typePath = this.$router.resolve(this.type.route)?.fullPath;
-        const legacyPaths = [
-          '/project-resource-quota',
-        ];
-
-        if (/^(\/c|p|g|n\/)/.test(typePath) && legacyPaths.some((p) => typePath?.indexOf(p) > -1)) {
-          if (typePath !== this.$route.path) {
-            this.$emit('selected');
-
-            return;
-          }
-          const { name, params } = this.$route;
-
-          this.$nextTick(() => {
-            this.$router.replace({
-              name, params, query: { _t: new Date().getTime() }
-            });
-          });
-
-          return;
-        }
 
         if (typePath !== this.$route.fullPath) {
           this.$emit('selected');
