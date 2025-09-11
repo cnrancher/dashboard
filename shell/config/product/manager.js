@@ -101,6 +101,7 @@ export function init(store) {
     route:      { name: 'c-cluster-manager-driver-nodedriver' },
     exact:      true
   });
+
   virtualType({
     labelKey:   'drivers.operatorsetting.title',
     name:       'operator-setting',
@@ -127,11 +128,6 @@ export function init(store) {
     'rke-node-drivers',
     'operator-setting',
   ], 'drivers');
-
-  basicType([
-    'rke-templates',
-    'rke-node-templates'
-  ], 'RKE1Configuration');
 
   virtualType({
     showMenuFun(state, getters, rootState, rootGetters) {
