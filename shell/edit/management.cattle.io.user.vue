@@ -217,23 +217,6 @@ export default {
         }
         throw err;
       }
-
-      try {
-        await this.$refs.grb.save(userId);
-      } catch (err) {
-        if (this.isCreate) {
-          this.watchOverride = true;
-          this.$emit(
-            'update:mode',
-            {
-              userId,
-              mode:     _EDIT,
-              resource: 'management.cattle.io.user',
-            }
-          );
-        }
-        throw err;
-      }
     },
 
     encryptPassword(password) {
