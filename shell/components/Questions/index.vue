@@ -294,8 +294,23 @@ export default {
     set,
     componentForQuestion,
 
-    update(variable, $event) {
+    update(variable, $event, q) {
       set(this.value, variable, $event);
+      // pandaria: remove form config props if it is hidden
+      if (q.subquestions?.length && !this.shouldShowSub(q, this.value)) {
+        // only for rancher-f5-cis
+        if (this.source?.chart?.name === 'rancher-f5-cis') {
+          q.subquestions.forEach((item) => {
+            if (item.variable.includes('.')) {
+              const i = item.variable.lastIndexOf('.');
+
+              delete get(this.value, item.variable.substr(0, i))?.[item.variable.substr(i + 1)];
+            } else {
+              delete this.value[item.variable];
+            }
+          });
+        }
+      }
       if (this.emit) {
         this.$emit('updated');
       }
@@ -474,7 +489,7 @@ export default {
             :value="get(value, q.variable)"
             :disabled="disabled"
             :chart-name="chartName"
-            @update:value="update(q.variable, $event)"
+            @update:value="update(q.variable, $event, q)"
           />
         </div>
       </div>
@@ -503,7 +518,7 @@ export default {
             :value="get(value, q.variable)"
             :disabled="disabled"
             :chart-name="chartName"
-            @update:value="update(q.variable, $event)"
+            @update:value="update(q.variable, $event, q)"
           />
         </div>
       </div>
