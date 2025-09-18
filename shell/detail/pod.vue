@@ -232,7 +232,7 @@ export default {
           :detail-url="POD_METRICS_DETAIL_URL"
           :summary-url="POD_METRICS_SUMMARY_URL"
           :vars="graphVars"
-          graph-height="550px"
+          graph-height="610px"
         />
       </template>
     </Tab>
@@ -248,7 +248,7 @@ export default {
           :detail-url="POD_PROJECT_METRICS_DETAIL_URL"
           :summary-url="POD_PROJECT_METRICS_SUMMARY_URL"
           :vars="graphVars"
-          graph-height="550px"
+          graph-height="610px"
         />
       </template>
     </Tab>
