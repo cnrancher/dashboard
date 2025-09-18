@@ -257,7 +257,6 @@ export default {
       :class="{loading, frame: true}"
       :src="currentUrl"
       frameborder="0"
-      scrolling="no"
     />
     <div v-if="loading">
       <Loading />
