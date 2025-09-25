@@ -2346,6 +2346,19 @@ cluster:
         true: Exposed to the public interface
       s3backups:
         label: Save Backups to S3
+      s3config:
+        bucket:
+          label: Bucket
+        endpoint:
+          label: Endpoint
+        endpointCA:
+          label: Endpoint CA Cert
+        folder:
+          label: Folder
+        region:
+          label: Region
+        skipSSLVerify:
+          label: Accept any certificate (insecure)
     cisProfile:
       option: (None)
     defaultPodSecurityAdmissionConfigurationTemplateName:
@@ -3772,6 +3785,11 @@ login:
   loggedOutFromSlo: You've been logged out of Rancher and from your single sign-on identity provider.
   invalidResponseError: Invalid response received to login request. Please try again.
   userUnauthorized: You are not authorized to use this system.
+  cli:
+    invalidParams: Invalid login parameters - can not login
+    warning: If you did not initiate this request or the "Client Request Id" shown in your terminal does not match the code shown below, do not continue
+    warningLegacy: If you did not initiate this request or the code shown below does not match the "requestId" parameter shown as part of the login url in your terminal, do not continue
+    welcome: Login to complete CLI authentication
 managementNode:
   customName: Custom Name
 members:
@@ -6352,6 +6370,7 @@ validation:
       localhost: If the Server URL is internal to the Rancher server (e.g. localhost) the downstream clusters may not be able to communicate with Rancher.
       trailingForwardSlash: Server URL should not have a trailing forward slash.
       url: Server URL must be an URL.
+      awsStyleEndpoint: Endpoint URL has to be a valid domain-based endpoint and cannot start with a protocol (e.g https:// or http://)
   stringLength:
     between: '"{key}" should be between {min} and {max} {max, plural, =1 {character} other {characters}}'
     exactly: '"{key}" should be {count, plural, =1 {# character} other {# characters}}'
@@ -9024,7 +9043,7 @@ quotasCn:
   usable: Usable
   editProjectModal: Edit project quotas
   editNamespaceModal: Edit namespace quotas
-  chart: 
+  chart:
     distribution: Allocated
     used: Used
     qesourceQuotaLink: This page shows quota-related usage. For details, please refer to <a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/" target="_blank">Kubernetes ResourceQuota</a>.
@@ -9032,7 +9051,7 @@ quotasCn:
     remain: Assignable
     class: Storage Class
     total: Total
-    legend: 
+    legend:
       distribution: Allocated
       used: Used
   headers:

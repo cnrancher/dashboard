@@ -1319,7 +1319,7 @@ cluster:
         placeholder: 你的 Linode API 訪問 Token
     name:
       label: 憑證名稱
-      placeholder: 此憑證的名稱
+      placeholder: 此憑證的名稱（可選）
     s3:
       accessKey:
         label: Access Key

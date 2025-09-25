@@ -1209,7 +1209,7 @@ cluster:
         placeholder: 你的客户端 Secret
     name:
       label: 凭证名称
-      placeholder: 此凭证的名称
+      placeholder: 此凭证的名称（可选）
     s3:
       accessKey:
         label: Access Key
