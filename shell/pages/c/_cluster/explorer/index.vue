@@ -870,7 +870,7 @@ export default {
             v-if="props.active"
             :detail-url="K8S_METRICS_DETAIL_URL"
             :summary-url="K8S_METRICS_SUMMARY_URL"
-            graph-height="550px"
+            graph-height="610px"
           />
         </template>
       </Tab>
@@ -886,7 +886,7 @@ export default {
             class="etcd-metrics"
             :detail-url="ETCD_METRICS_DETAIL_URL"
             :summary-url="ETCD_METRICS_SUMMARY_URL"
-            graph-height="550px"
+            graph-height="610px"
           >
             <EtcdInfoBanner />
           </DashboardMetrics>
