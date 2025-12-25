@@ -31,12 +31,12 @@ jobs:
           apt-get install -y git curl
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
         # Note - Cannot use the setup action here as it uses a different yarn install arg
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
           
@@ -86,12 +86,12 @@ jobs:
           apt-get install -y git
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
         # Note - Cannot use the setup action here as it uses a different yarn install arg
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 

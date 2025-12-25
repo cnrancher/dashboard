@@ -10,7 +10,7 @@ jobs:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -23,7 +23,7 @@ jobs:
     needs:
       - unit-test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -36,7 +36,7 @@ jobs:
     needs:
       - i18n
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
