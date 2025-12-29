@@ -94,7 +94,6 @@ export const SETTING = {
   SYSTEM_NAMESPACES:                    'system-namespaces',
 
   SYSTEM_GPU_MANAGEMENT_SCHEDULER_NAME:          'system-gpu-management-scheduler-name',
-  UI_SESSION_LOGOUT_MINUTES:                     'ui-session-logout-minutes',
   DISABLE_PASSWORD_ENCRYPT:                      'disable-password-encrypt',
   AUDIT_LOG_SERVER_URL:                          'auditlog-server-url',
   WHITELIST_DOMAIN:                              'whitelist-domain',
@@ -199,10 +198,9 @@ export const ALLOWED_SETTINGS: GlobalSetting = {
     ruleSet: [{ name: 'minValue', factoryArg: 1 }]
   },
 
-  [SETTING.UI_SESSION_LOGOUT_MINUTES]: {},
-  [SETTING.DISABLE_PASSWORD_ENCRYPT]:  { kind: 'boolean' },
-  [SETTING.AUDIT_LOG_SERVER_URL]:      { kind: 'url' },
-  [SETTING.DOWNLOAD_FILE_SIZE_LIMIT]:  {
+  [SETTING.DISABLE_PASSWORD_ENCRYPT]: { kind: 'boolean' },
+  [SETTING.AUDIT_LOG_SERVER_URL]:     { kind: 'url' },
+  [SETTING.DOWNLOAD_FILE_SIZE_LIMIT]: {
     kind: 'int',
     unit: 'Mi'
   },

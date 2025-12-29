@@ -26,7 +26,6 @@ import PageHeaderActions from '@shell/mixins/page-actions';
 import BrowserTabVisibility from '@shell/mixins/browser-tab-visibility';
 import { getClusterFromRoute, getProductFromRoute } from '@shell/utils/router';
 import SideNav from '@shell/components/SideNav';
-import AutoLogout from '@shell/mixins/auto-logout';
 import { Layout } from '@shell/types/window-manager';
 
 const SET_LOGIN_ACTION = 'set-as-login';
@@ -51,7 +50,7 @@ export default {
     FixedTips
   },
 
-  mixins: [PageHeaderActions, Brand, BrowserTabVisibility, AutoLogout],
+  mixins: [PageHeaderActions, Brand, BrowserTabVisibility],
 
   // Note - This will not run on route change
   data() {

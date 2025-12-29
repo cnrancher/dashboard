@@ -7361,7 +7361,6 @@ advancedSettings:
     'brand': 在'/assets/brand'中定義，用於替代主題的文件夾名稱
     'hide-local-cluster': 隱藏 local 集羣
     password-min-length: 定義用戶密碼所需的最少字符數。
-    ui-session-logout-minutes: 用戶超過配置時間沒有任何操作將自動註銷(以分鐘爲單位)。
     ui-footer-text: 額外的頁腳內容
     ui-footer-url: 額外頁腳內容對應的鏈接
     disable-password-encrypt: 禁用密碼加密。
@@ -8171,9 +8170,6 @@ clusterConnectMode:
     label: 測試
     success: 測試成功
   title: 集羣連接模式
-autoLogout:
-  message: 你在 {autoLogoutTime} 分鐘內沒有任何操作, 系統將自動登出
-  title: 自動登出
 rancher-nvidia-k8s-device-plugin:
   titles:
     image: 容器鏡像

@@ -8638,7 +8638,6 @@ advancedSettings:
     'ui-default-landing': 'The default page users land on after login.'
     'brand': Folder name for an alternative theme defined in '/assets/brand'
     'hide-local-cluster': Hide the local cluster
-    ui-session-logout-minutes: User will automatically logout without any operation after the configured time (in minutes)
     ui-footer-text: Extra text in footer.
     ui-footer-url: URL for the extra text in footer.
     disable-password-encrypt: Disabling Password Encryption.
@@ -9307,9 +9306,6 @@ clusterConnectMode:
     label: Test
     success: Connect Success
   title: Cluster connect mode
-autoLogout:
-  message: You have not operated in the last {autoLogoutTime} minutes, so we will auto log out
-  title: Auto logout
 rancher-nvidia-k8s-device-plugin:
   titles:
     image: Container Images

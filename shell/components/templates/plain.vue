@@ -13,7 +13,6 @@ import SlideInPanelManager from '@shell/components/SlideInPanelManager';
 import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
 import AzureWarning from '@shell/components/auth/AzureWarning';
 import BrowserTabVisibility from '@shell/mixins/browser-tab-visibility';
-import AutoLogout from '@shell/mixins/auto-logout';
 import Inactivity from '@shell/components/Inactivity';
 import { mapGetters } from 'vuex';
 import PromptModal from '@shell/components/PromptModal';
@@ -39,7 +38,7 @@ export default {
     WindowManager
   },
 
-  mixins: [Brand, BrowserTabVisibility, AutoLogout],
+  mixins: [Brand, BrowserTabVisibility],
 
   data() {
     return {
