@@ -940,7 +940,6 @@ export const actions = {
         getters
       });
     }
-
     if (res.globalRoleBindings && getters['auth/me']?.id) {
       const readOnlyAdminRoles = ['global-read-only'];
       const id = getters['auth/me']?.id;
@@ -975,7 +974,7 @@ export const actions = {
               const isMe = (p.me === true);
 
               if (isMe && p.principalType === 'group') {
-                return p.memberOf === true;
+                return true;
               }
 
               return isMe;
