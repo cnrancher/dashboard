@@ -38,7 +38,7 @@ export function init(store) {
 
   virtualType({
     ifHave(rootGetters) {
-      return !rootGetters['auth/isReadOnlyAdmin'];
+      return (!rootGetters['auth/isReadOnlyAdmin'] || rootGetters['auth/isAdmin']);
     },
     labelKey:   'auth.config.label',
     icon:       'lock',

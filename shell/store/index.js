@@ -943,47 +943,11 @@ export const actions = {
     if (res.globalRoleBindings && getters['auth/me']?.id) {
       const readOnlyAdminRoles = ['global-read-only'];
       const id = getters['auth/me']?.id;
+      const principalIds = getters['auth/me']?.principalIds ?? [];
       const adminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'admin');
       const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => readOnlyAdminRoles.includes(binding.globalRoleName));
-      let admin = adminGlobalRoleBindings.find((grb) => grb?.userName === id);
-      let readOnlyAdmin = readOnlyAdminGlobalRoleBindings.find((grb) => grb?.userName === id);
-      const agrbs = adminGlobalRoleBindings.filter((grb) => grb?.groupPrincipalName);
-      const roagrbs = readOnlyAdminGlobalRoleBindings.filter((grb) => grb?.groupPrincipalName);
-
-      if ((!readOnlyAdmin || !admin) && (roagrbs.length > 0 || agrbs.length > 0)) {
-        const promises = {};
-
-        if (agrbs.length > 0) {
-          promises['admins'] = Promise.all(agrbs.map( (grb) => dispatch('rancher/find', {
-            type: NORMAN.PRINCIPAL, id: grb.groupPrincipalName, opt: { url: `/v3/principals/${ encodeURIComponent(grb.groupPrincipalName) }` }
-          }, { root: true })));
-        }
-        if (roagrbs.length > 0) {
-          promises['readOnlyAdmins'] = Promise.all(roagrbs.map((grb) => dispatch('rancher/find', {
-            type: NORMAN.PRINCIPAL, id: grb.groupPrincipalName, opt: { url: `/v3/principals/${ encodeURIComponent(grb.groupPrincipalName) }` }
-          }, { root: true })));
-        }
-        try {
-          const resp = await allHash(promises);
-
-          if (!admin && agrbs.length > 0) {
-            admin = resp.admins.find((p) => p.me === true);
-          }
-          if (!readOnlyAdmin && roagrbs.length > 0) {
-            readOnlyAdmin = resp.readOnlyAdmins.find((p) => {
-              const isMe = (p.me === true);
-
-              if (isMe && p.principalType === 'group') {
-                return true;
-              }
-
-              return isMe;
-            });
-          }
-        } catch (err) {
-          // do nothing
-        }
-      }
+      const admin = adminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => adminGlobalRoleBindings.some((r) => (r.groupPrincipalName && pId === r.groupPrincipalName) || (r.userPrincipalName && pId === r.userPrincipalName) ));
+      const readOnlyAdmin = readOnlyAdminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => readOnlyAdminGlobalRoleBindings.some( (r) => (r.groupPrincipalName && pId === r.groupPrincipalName) || (r.userPrincipalName && pId === r.userPrincipalName) ));
 
       if (admin) {
         commit('auth/setAdmin', true);
