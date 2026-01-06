@@ -376,6 +376,12 @@ addonConfigConfirmation:
 addProjectMemberDialog:
   title: 添加項目成員
 authConfig:
+  slo:
+    sloTitle: 登出行爲
+    sloOptions:
+      onlyRancher: 僅登出 Rancher，不登出 {name}
+      logoutAll: 同時登出 Rancher 和 {name}（包括所有在 {name} 中註冊的其他應用）
+      choose: 在額外的登出步驟中，允許用戶選擇上述其中一種方式
   accessMode:
     label: '配置能登錄和使用 {vendor} 的人員名單'
     required: 只有授權用戶和用戶組能夠訪問
