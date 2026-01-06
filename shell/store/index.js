@@ -946,11 +946,12 @@ export const actions = {
       const principalIds = getters['auth/me']?.principalIds ?? [];
 
       try {
-        const principals = await dispatch('rancher/find', { type: NORMAN.PRINCIPAL }, { root: true });
-        const ids = principals.filter((p) => p.memberOf === true).map((p) => p.id);
+        const principals = await dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: 'principals' } });
+        const ids = principals?.filter((p) => p.memberOf === true).map((p) => p.id) ?? [];
 
         principalIds.push(...ids);
       } catch (error) {
+
         // do nothing
       }
       const adminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'admin');
