@@ -944,10 +944,39 @@ export const actions = {
       const readOnlyAdminRoles = ['global-read-only'];
       const id = getters['auth/me']?.id;
       const principalIds = getters['auth/me']?.principalIds ?? [];
+
+      try {
+        const principals = await dispatch('rancher/find', { type: NORMAN.PRINCIPAL }, { root: true });
+        const ids = principals.filter((p) => p.memberOf === true).map((p) => p.id);
+
+        principalIds.push(...ids);
+      } catch (error) {
+        // do nothing
+      }
       const adminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => binding.globalRoleName === 'admin');
       const readOnlyAdminGlobalRoleBindings = res.globalRoleBindings.filter((binding) => readOnlyAdminRoles.includes(binding.globalRoleName));
-      const admin = adminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => adminGlobalRoleBindings.some((r) => (r.groupPrincipalName && pId === r.groupPrincipalName) || (r.userPrincipalName && pId === r.userPrincipalName) ));
-      const readOnlyAdmin = readOnlyAdminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => readOnlyAdminGlobalRoleBindings.some( (r) => (r.groupPrincipalName && pId === r.groupPrincipalName) || (r.userPrincipalName && pId === r.userPrincipalName) ));
+      const adminGlobalRoleBindingNames = adminGlobalRoleBindings.reduce((t, c) => {
+        if (c.groupPrincipalName) {
+          t.push(c.groupPrincipalName);
+        }
+        if (c.userPrincipalName) {
+          t.push(c.userPrincipalName);
+        }
+
+        return t;
+      }, []);
+      const readOnlyAdminGlobalRoleBindingNames = readOnlyAdminGlobalRoleBindings.reduce((t, c) => {
+        if (c.groupPrincipalName) {
+          t.push(c.groupPrincipalName);
+        }
+        if (c.userPrincipalName) {
+          t.push(c.userPrincipalName);
+        }
+
+        return t;
+      }, []);
+      const admin = adminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => adminGlobalRoleBindingNames.includes(pId));
+      const readOnlyAdmin = readOnlyAdminGlobalRoleBindings.some((r) => id === r.userName) || principalIds.some((pId) => readOnlyAdminGlobalRoleBindingNames.includes(pId));
 
       if (admin) {
         commit('auth/setAdmin', true);
