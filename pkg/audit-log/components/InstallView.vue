@@ -279,4 +279,7 @@ export default {
 :deep(.controls-row) {
   position: relative;
 }
+:deep(.footer-error) {
+  margin-top: 0px;
+}
 </style>
