@@ -9064,6 +9064,7 @@ customLinks:
     mirror: Download Mirror
     suseCollective: SUSE Collective
     appCo: SUSE Application Collection
+    primeDocs: Prime Docs
   description: Configure the links to display on the home page. You can define your own custom links as well as show or hide default links.
   displayTitle: Links
   label: Home Links

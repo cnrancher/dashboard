@@ -9,6 +9,11 @@ import DOMPurify from 'dompurify';
 const DEFAULT_LINKS = [
   {
     key:     'docs',
+    value:   DOCS_BASE,
+    enabled: true,
+  },
+  {
+    key:     'primeDocs',
     value:   'https://ee.docs.rancher.cn/',
     enabled: true,
   },
