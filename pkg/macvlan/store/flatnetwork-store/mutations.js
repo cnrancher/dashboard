@@ -8,7 +8,7 @@ export default {
   setFlatnetworkIpList(state, val) {
     state.flatnetworkIpList = val;
   },
-  addFlatnetworkIpListt(state, val) {
+  addFlatnetworkIpList(state, val) {
     state.flatnetworkIpList = state.flatnetworkIpList.concat(val);
   },
 };

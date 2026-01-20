@@ -36,29 +36,29 @@ export default {
     };
   },
   async fetch() {
-    const { currentCluster } = this;
-    let config = {};
+    const clusterId = this.currentCluster?.id;
+    const subnetId = this.$route.params?.id;
 
-    if (this.$route.params?.id) {
-      try {
-        await this.$store.dispatch('flatnetwork/loadFlatnetworkIps', {
-          cluster: currentCluster?.id,
-          query:   { labelSelector: { subnet: this.$route.params?.id } }
-        });
-      } catch (e) {
-        this.$store.commit('flatnetwork/setFlatnetworkIpList', []);
-      }
+    this.$store.commit('flatnetwork/setFlatnetworkIpList', []);
+    this.config = {};
 
-      try {
-        config = await this.$store.dispatch('flatnetwork/loadFlatnetwork', {
-          cluster: currentCluster?.id,
-          query:   this.$route.params?.id
-        });
-      } catch (e) {
-        config = {};
-      }
+    if (!clusterId || !subnetId) {
+      return;
+    }
 
-      this.config = config;
+    try {
+      await this.$store.dispatch('flatnetwork/loadFlatnetworkIps', {
+        cluster: clusterId,
+        query:   { labelSelector: { subnet: subnetId } }
+      });
+
+      this.config = await this.$store.dispatch('flatnetwork/loadFlatnetwork', {
+        cluster: clusterId,
+        query:   subnetId
+      });
+    } catch (e) {
+      console.error('Failed to load flatnetwork data:', e); // eslint-disable-line no-console
+      this.config = {};
     }
   },
 
