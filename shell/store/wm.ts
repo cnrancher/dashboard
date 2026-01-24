@@ -118,6 +118,17 @@ export const mutations = {
   switchTab(state: State, { tabId, targetPosition }: { tabId: string, targetPosition: Position }) {
     const current = { ...(state.tabs.find((x) => x.id === tabId) || {}) };
 
+    // pandaria ui: if tab.showHeader is false, close it
+    if (current && current.showHeader === false && current.position === RIGHT) {
+      const tab = state.tabs.find((x) => x.id === tabId);
+
+      removeObject(state.tabs, tab);
+      state.active[tab.position] = '';
+      state.open[tab.position] = false;
+      state.lockedPositions = [];
+
+      return;
+    }
     if (current) {
       moveTabByReference(state.tabs, current.position, targetPosition, tabId);
 

@@ -3,6 +3,7 @@ import { useStore } from 'vuex';
 import { Tab } from '@shell/types/window-manager';
 
 const tabs = ref<{ tab: Tab, containerId: string }[]>([]);
+let id = 0;
 
 /**
  * This composable is responsible for handling the tabs within the window manager.
@@ -17,13 +18,16 @@ export default () => {
 
     if (existing) {
       existing.containerId = arg.containerId;
+      existing.id = id++;
 
       return;
     }
 
     tabs.value = [
       ...tabs.value,
-      { tab: arg.tab, containerId: arg.containerId }
+      {
+        tab: arg.tab, containerId: arg.containerId, id: id++
+      }
     ];
   }
 

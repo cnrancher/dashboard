@@ -54,8 +54,8 @@ const { tabs } = useTabsHandler();
     :position="RIGHT"
   />
   <Teleport
-    v-for="{ tab, containerId } in tabs"
-    :key="tab.id"
+    v-for="{ tab, containerId, id } in tabs"
+    :key="id"
     :to="`#${ containerId }`"
   >
     <keep-alive>
