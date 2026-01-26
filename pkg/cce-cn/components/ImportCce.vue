@@ -17,6 +17,10 @@ defineProps({
     type:    String,
     default: ''
   },
+  clusterLoading: {
+    type:    Boolean,
+    default: false,
+  },
   clusterOptions: {
     type:    Array,
     default: () => [],
@@ -79,7 +83,7 @@ function updateName(name) {
         label-key="cceCn.clusterSelect.importCluster"
         :disabled="disabled"
         :rules="rules.clusterID"
-        :loading="state.clustersLoading"
+        :loading="clusterLoading"
         :placeholder="intl('cceCn.clusterSelect.placeholder')"
         @update:value="$emit('update:clusterID', $event)"
       />
