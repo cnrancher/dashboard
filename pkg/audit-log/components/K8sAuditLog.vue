@@ -4,6 +4,7 @@ import { Table as VxeTable, Column as VxeColumn, VxeUI } from 'vxe-table';
 import { Banner } from '@components/Banner';
 import PageTitle from './PageTitle.vue';
 import { mapGetters } from 'vuex';
+import Date from '@shell/components/formatter/Date.vue';
 
 const DEFAULT_DATE_RANGE = '5';
 
@@ -246,7 +247,7 @@ export default {
     },
   },
   components: {
-    VxeTable, VxeColumn, Banner, PageTitle
+    VxeTable, VxeColumn, Banner, PageTitle, Date
   }
 };
 </script>
@@ -345,7 +346,14 @@ export default {
         field="requestTimestamp"
         :title="t('auditLog.table.requestTimestamp')"
         width="180"
-      />
+      >
+        <template #default="{row}">
+          <Date
+            v-if="row.requestTimestamp"
+            :value="row.requestTimestamp"
+          />
+        </template>
+      </VxeColumn>
       <VxeColumn
         field="detail"
         :title="t('auditLog.table.detail')"

@@ -5,6 +5,7 @@ import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import Loading from '@shell/components/Loading';
 import { Banner } from '@components/Banner';
+import Date from '@shell/components/formatter/Date.vue';
 
 export default {
   emits: ['close'],
@@ -101,6 +102,7 @@ export default {
     Tab,
     Loading,
     Banner,
+    Date
   }
 };
 </script>
@@ -149,7 +151,12 @@ export default {
               <span class="text-$label-color">{{ t('auditLog.table.stage') }}: </span><span>{{ value?.stage }}</span>
             </div>
             <div class="flex gap-2">
-              <span class="text-$label-color">{{ t('auditLog.table.requestTimestamp') }}: </span> {{ value?.requestTimestamp }}
+              <span class="text-$label-color">{{ t('auditLog.table.requestTimestamp') }}: </span>
+              <Date
+                v-if="value?.requestTimestamp"
+                :value="value?.requestTimestamp"
+                :title="value?.requestTimestamp"
+              />
             </div>
           </div>
           <hr class="mt-4 mb-4">
@@ -161,7 +168,12 @@ export default {
               <span class="text-$label-color">{{ t('auditLog.table.requestURI') }}:</span> <span>{{ value?.requestURI }}</span>
             </div>
             <div class="flex gap-2">
-              <span class="text-$label-color">{{ t('auditLog.k8sAuditEventDialog.stageTime') }}:</span> <span>{{ value?.stageTimestamp }}</span>
+              <span class="text-$label-color">{{ t('auditLog.k8sAuditEventDialog.stageTime') }}:</span>
+              <Date
+                v-if="value?.stageTimestamp"
+                :value="value?.stageTimestamp"
+                :title="value?.stageTimestamp"
+              />
             </div>
             <div class="flex gap-2">
               <span class="text-$label-color">{{ t('auditLog.k8sAuditEventDialog.responseCode') }}:</span> <span>{{ value?.responseCode }}</span>
