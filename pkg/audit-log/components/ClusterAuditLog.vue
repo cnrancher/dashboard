@@ -4,7 +4,7 @@ import { Table as VxeTable, Column as VxeColumn, VxeUI } from 'vxe-table';
 import { mapGetters } from 'vuex';
 import { HTTP_CODE } from '@pkg/config/constants.js';
 import PageTitle from './PageTitle.vue';
-import Date from '@shell/components/formatter/Date.vue';
+import DateFormatter from '@shell/components/formatter/Date.vue';
 
 const DEFAULT_DATE_RANGE = '5';
 
@@ -240,7 +240,7 @@ export default {
     }
   },
   components: {
-    VxeTable, VxeColumn, PageTitle, Date
+    VxeTable, VxeColumn, PageTitle, DateFormatter
   }
 };
 </script>
@@ -342,7 +342,7 @@ export default {
         width="180"
       >
         <template #default="{row}">
-          <Date
+          <DateFormatter
             v-if="row.requestTimestamp"
             :value="row.requestTimestamp"
           />

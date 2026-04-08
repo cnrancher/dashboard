@@ -5,7 +5,7 @@ import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import Loading from '@shell/components/Loading';
 import { Banner } from '@components/Banner';
-import Date from '@shell/components/formatter/Date.vue';
+import DateFormatter from '@shell/components/formatter/Date.vue';
 
 export default {
   emits: ['close'],
@@ -102,7 +102,7 @@ export default {
     Tab,
     Loading,
     Banner,
-    Date
+    DateFormatter
   }
 };
 </script>
@@ -152,7 +152,7 @@ export default {
             </div>
             <div class="flex gap-2">
               <span class="text-$label-color">{{ t('auditLog.table.requestTimestamp') }}: </span>
-              <Date
+              <DateFormatter
                 v-if="value?.requestTimestamp"
                 :value="value?.requestTimestamp"
                 :title="value?.requestTimestamp"
@@ -169,7 +169,7 @@ export default {
             </div>
             <div class="flex gap-2">
               <span class="text-$label-color">{{ t('auditLog.k8sAuditEventDialog.stageTime') }}:</span>
-              <Date
+              <DateFormatter
                 v-if="value?.stageTimestamp"
                 :value="value?.stageTimestamp"
                 :title="value?.stageTimestamp"
