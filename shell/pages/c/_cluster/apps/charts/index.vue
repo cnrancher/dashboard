@@ -47,7 +47,7 @@ export default {
     AppChartCardSubHeader,
     AppChartCardFooter,
     Select,
-    RichTranslation,
+    RichTranslation
   },
 
   async fetch() {
@@ -331,14 +331,6 @@ export default {
       }));
     },
 
-    pagedAppChartCards() {
-      const total = this.appChartCards.length;
-      const indexFrom = Math.max(0, 1 + this.perPage * (this.page - 1));
-      const indexTo = Math.min(total, indexFrom + this.perPage - 1);
-
-      return this.appChartCards.slice(indexFrom - 1, indexTo);
-    },
-
     clusterId() {
       return this.$store.getters['clusterId'];
     },
@@ -394,10 +386,6 @@ export default {
       },
       immediate: false
     },
-
-    appChartCards() {
-      this.page = 1;
-    }
   },
 
   methods: {
@@ -770,7 +758,7 @@ export default {
           data-testid="app-chart-cards-container"
         >
           <rc-item-card
-            v-for="card in pagedAppChartCards"
+            v-for="card in appChartCards"
             :id="card.id"
             :key="card.id"
             :pill="card.pill"
