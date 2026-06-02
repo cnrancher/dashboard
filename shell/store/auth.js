@@ -528,10 +528,10 @@ export const actions = {
 
     // Unload plugins - we will load again on login
     await rootState.$extension.logout();
-    if (state.v3User?.id) {
+    if (state.user?.id) {
       try {
         await dispatch('management/request', {
-          url:                  `/v1/management.cattle.io.users/${ state.v3User?.id }?action=logout`,
+          url:                  `/v1/management.cattle.io.users/${ state.user?.id }?action=logout`,
           method:               'post',
           data:                 {},
           headers:              { 'Content-Type': 'application/json' },

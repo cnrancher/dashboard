@@ -104,7 +104,7 @@ export default {
       }));
     },
     userId() {
-      return this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
+      return this.$store.getters['auth/user']?.id ?? this.$route.query?.userId;
     },
     showDisableOtpButton() {
       return this.twoFactorAuthConfig?.value !== 'harden';

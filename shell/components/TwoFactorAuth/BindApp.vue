@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     userId() {
-      return this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
+      return this.$store.getters['auth/user']?.id ?? this.$route.query?.userId;
     },
 
     serverUrlSetting() {
@@ -161,7 +161,7 @@ export default {
         if (typeof this.handleEnableOtp === 'function') {
           await this.handleEnableOtp();
         } else {
-          const userId = this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
+          const userId = this.$store.getters['auth/user']?.id ?? this.$route.query?.userId;
           const pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ userId }`, method: 'GET' });
 
           pref.data['enable-two-factor-authenticator'] = 'true';

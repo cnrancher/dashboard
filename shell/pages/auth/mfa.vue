@@ -14,15 +14,15 @@ export default {
     // For newer versions this will return all settings if you are somehow logged in,
     // and just the public ones if you aren't.
     try {
-      const v3User = this.$store.getters['auth/v3User'];
+      const user = this.$store.getters['auth/user'];
 
-      if (!v3User) {
+      if (!user) {
         user = await this.$store.dispatch('rancher/findAll', {
           type: NORMAN.USER,
           opt:  { url: '/v3/users?me=true', load: _MULTI }
         });
       } else {
-        user = [v3User];
+        user = [user];
       }
 
       pref = await this.$store.dispatch('management/request', { url: `/v1/userpreferences/${ user?.[0]?.id }`, method: 'GET' });

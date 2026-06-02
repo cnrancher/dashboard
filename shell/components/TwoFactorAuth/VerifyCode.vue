@@ -91,7 +91,7 @@ export default {
         return;
       }
       this.loading = true;
-      const userId = this.$store.getters['auth/v3User']?.id ?? this.$route.query?.userId;
+      const userId = this.$store.getters['auth/user']?.id ?? this.$route.query?.userId;
       const data = { ...this.form };
 
       if (this.isRecoveryCode) {

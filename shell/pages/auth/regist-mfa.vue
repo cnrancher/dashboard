@@ -30,15 +30,15 @@ export default {
         opt:  { url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false },
       });
 
-      const v3User = this.$store.getters['auth/v3User'];
+      const user = this.$store.getters['auth/user'];
 
-      if (!v3User) {
+      if (!user) {
         user = await this.$store.dispatch('rancher/findAll', {
           type: NORMAN.USER,
           opt:  { url: '/v3/users?me=true', load: _MULTI }
         });
       } else {
-        user = [v3User];
+        user = [user];
       }
 
       plSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
