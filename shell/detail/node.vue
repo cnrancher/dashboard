@@ -343,6 +343,7 @@ export default {
             :has-gpu="hasGpu"
             :vars="graphVars"
             :gpu-vars="gpuGraphVars"
+            graph-height="875px"
           />
         </template>
       </Tab>
