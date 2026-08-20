@@ -47,6 +47,8 @@ generic:
   plusMore: "+ {n} 更多"
   readFromFile: 从文件读取
   readFromFolder: 从文件夹读取
+  ariaLabel:
+    readBinaryKeyValue: 从二进制文件读取并填入键值
   register: 注册
   remove: 移除
   resource: |-
@@ -4976,6 +4978,8 @@ secret:
     privateKey: 私钥
     privateKeyPlaceholder: "粘贴私钥，一般以----BEGIN RSA PRIVATE KEY----开头"
   data: 数据
+  readBinaryFromFile: 读取二进制文件
+  readBinaryFileTooLarge: 所选文件超过 750 KB 大小限制，无法上传。
   registry:
     address: 镜像仓库
     domainName: 镜像仓库域名

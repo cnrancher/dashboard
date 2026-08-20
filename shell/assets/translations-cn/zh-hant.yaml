@@ -47,6 +47,8 @@ generic:
   plusMore: "+ {n} 更多"
   readFromFile: 從文件讀取
   readFromFolder: 從文件夾讀取
+  ariaLabel:
+    readBinaryKeyValue: 從二進制文件讀取並填入鍵值
   register: 註冊
   remove: 移除
   resource: |-
@@ -4977,6 +4979,8 @@ secret:
     privateKey: 私鑰
     privateKeyPlaceholder: "粘貼私鑰，一般以----BEGIN RSA PRIVATE KEY----開頭"
   data: 數據
+  readBinaryFromFile: 讀取二進制文件
+  readBinaryFileTooLarge: 所選文件超過 750 KB 大小限制，無法上傳。
   registry:
     address: 鏡像倉庫
     domainName: 鏡像倉庫域名

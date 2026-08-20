@@ -120,6 +120,7 @@ generic:
     genericRow: row {index}
     keyValue: Key-Value input
     readKeyValue: read  Key-Values from file
+    readBinaryKeyValue: read binary file into Key-Value
     remove: remove row {index}
   ascending: ascending
   basic: Basic
@@ -5896,6 +5897,8 @@ secret:
       expired: '{count} {count, plural, =1 {Certificate has expired} other {Certificates have expired}}'
       expiring: '{count} {count, plural, =1 {Certificate expires soon} other {Certificates expire soon}}'
   data: Data
+  readBinaryFromFile: Read Binary File
+  readBinaryFileTooLarge: The selected file exceeds the maximum size of 750 KB and cannot be uploaded.
   registry:
     address: Registry
     domainName: Registry Domain Name
