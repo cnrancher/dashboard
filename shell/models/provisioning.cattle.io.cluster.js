@@ -636,7 +636,8 @@ export default class ProvCluster extends SteveModel {
   }
 
   get nodes() {
-    return this.$rootGetters['management/all'](MANAGEMENT.NODE).filter((node) => node.id.startsWith(this.mgmtClusterId));
+    // return this.$rootGetters['management/all'](MANAGEMENT.NODE).filter((node) => node.id.startsWith(this.mgmtClusterId));
+    return this.$rootGetters['management/clusterIdToNodesMap'].get(this.mgmtClusterId) ?? [];
   }
 
   get machines() {

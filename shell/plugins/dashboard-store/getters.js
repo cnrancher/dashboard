@@ -559,4 +559,18 @@ export default {
    * Can be used to change behaviour given steve cache api functionality
    */
   isSteveCacheUrl: (state) => () => false,
+
+  clusterIdToNodesMap: (state, getters) => {
+    const allNodes = getters['all'](MANAGEMENT.NODE) ?? [];
+
+    return allNodes.reduce((t, c) => {
+      const [clusterId] = c.id.split('/');
+      const nodes = t.get(clusterId) ?? [];
+
+      nodes.push(c);
+      t.set(clusterId, nodes);
+
+      return t;
+    }, new Map());
+  },
 };
