@@ -581,5 +581,19 @@ export default {
    */
   getSavedCount: (state) => (name) => {
     return state.savedCounts[name];
-  }
+  },
+
+  clusterIdToNodesMap: (state, getters) => {
+    const allNodes = getters['all'](MANAGEMENT.NODE) ?? [];
+
+    return allNodes.reduce((t, c) => {
+      const [clusterId] = c.id.split('/');
+      const nodes = t.get(clusterId) ?? [];
+
+      nodes.push(c);
+      t.set(clusterId, nodes);
+
+      return t;
+    }, new Map());
+  },
 };
