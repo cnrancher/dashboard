@@ -356,11 +356,15 @@ export default {
   },
 
   mounted() {
+    document.addEventListener('keydown', this.onAltKeyDown);
     document.addEventListener('keyup', this.handler);
+    window.addEventListener('blur', this.resetRouteCombo);
   },
 
   beforeUnmount() {
+    document.removeEventListener('keydown', this.onAltKeyDown);
     document.removeEventListener('keyup', this.handler);
+    window.removeEventListener('blur', this.resetRouteCombo);
   },
 
   methods: {
@@ -374,8 +378,8 @@ export default {
       return this.productFromRoute === obj?.value;
     },
 
-    handleKeyComboClick() {
-      this.routeCombo = !this.routeCombo;
+    resetRouteCombo() {
+      this.routeCombo = false;
     },
 
     clusterMenuClick(ev, cluster) {
@@ -398,14 +402,35 @@ export default {
       return this.$router.push(cluster.clusterRoute);
     },
 
+    onAltKeyDown(e) {
+      if (e.repeat) {
+        return;
+      }
+
+      const key = e.key?.toLowerCase();
+
+      if (key !== 'alt' && key !== 'option') {
+        return;
+      }
+
+      this.routeCombo = true;
+    },
+
     handler(e) {
       if (e.keyCode === KEY.ESCAPE ) {
         this.hide();
+      }
+
+      const key = e.key?.toLowerCase();
+
+      if (key === 'alt' || key === 'option') {
+        this.resetRouteCombo();
       }
     },
 
     hide() {
       this.shown = false;
+      this.resetRouteCombo();
       if (this.clustersFiltered === 0) {
         this.clusterFilter = '';
       }
@@ -686,7 +711,6 @@ export default {
                 >
                   <button
                     v-if="c.ready"
-                    v-shortkey.push="{windows: ['alt'], mac: ['option']}"
                     :data-testid="`pinned-menu-cluster-${ c.id }`"
                     class="cluster selector option"
                     :class="{'active-menu-link': c.isMenuActive }"
@@ -694,7 +718,6 @@ export default {
                     role="button"
                     :aria-label="`${t('nav.ariaLabel.cluster')} ${ c.label }`"
                     @click.prevent="clusterMenuClick($event, c)"
-                    @shortkey="handleKeyComboClick"
                   >
                     <ClusterIconMenu
                       v-clean-tooltip="getTooltipConfig(c, true)"
@@ -765,7 +788,6 @@ export default {
                 >
                   <button
                     v-if="c.ready"
-                    v-shortkey.push="{windows: ['alt'], mac: ['option']}"
                     :data-testid="`menu-cluster-${ c.id }`"
                     class="cluster selector option"
                     :class="{'active-menu-link': c.isMenuActive }"
@@ -773,7 +795,6 @@ export default {
                     role="button"
                     :aria-label="`${t('nav.ariaLabel.cluster')} ${ c.label }`"
                     @click="clusterMenuClick($event, c)"
-                    @shortkey="handleKeyComboClick"
                   >
                     <ClusterIconMenu
                       v-clean-tooltip="getTooltipConfig(c, true)"
