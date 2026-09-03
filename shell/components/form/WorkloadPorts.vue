@@ -274,8 +274,9 @@ export default {
       :key="idx"
       class="ports-row"
       :class="{
-        'show-host':row._showHost,
+        'show-host': row._showHost,
         'loadBalancer': row._serviceType === 'LoadBalancer',
+        'nodePort': row._serviceType === 'NodePort',
         'tcp': row.protocol === 'TCP',
         'show-ipam': showIpam,
       }"
@@ -436,8 +437,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-$remove: 75;
-$checkbox: 75;
+$remove-width: 75px;
 
 .title {
   margin-bottom: 10px;
@@ -446,31 +446,38 @@ $checkbox: 75;
     float: right;
   }
 }
-.ports-headers, .ports-row{
+.ports-headers, .ports-row {
   display: grid;
-  grid-template-columns: 28% 28% 15% 10% 75px 0.5fr;
+  width: 100%;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(90px, 1fr) minmax(70px, 0.8fr) minmax(100px, 1fr) $remove-width;
   grid-column-gap: $column-gutter;
   margin-bottom: 10px;
   align-items: center;
-  & .port{
+
+  > div {
+    min-width: 0;
+  }
+
+  & .port {
     display: flex;
     justify-content: space-between;
   }
 
-  &.show-host{
-    grid-template-columns: 20% 20% 145px 90px 140px .5fr .5fr;
+  &.show-host:not(.loadBalancer):not(.nodePort) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(100px, 1fr) minmax(80px, 0.8fr) minmax(110px, 1fr) minmax(110px, 1fr) $remove-width;
   }
 
-  &.show-ipam.loadBalancer.tcp{
-    grid-template-columns: 20% 20% 145px 90px .5fr 140px .5fr;
+  &.show-host.nodePort,
+  &.show-host.loadBalancer {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(100px, 1fr) minmax(80px, 0.8fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr) $remove-width;
   }
 
-  &.show-ipam.show-host.loadBalancer{
-    grid-template-columns: 20% 10% 135px 90px 105px .5fr .5fr .5fr;
+  &.show-ipam.loadBalancer.tcp:not(.show-host) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(100px, 1fr) minmax(80px, 0.8fr) minmax(100px, 1fr) minmax(120px, 1fr) $remove-width;
   }
 
-  &.show-ipam.show-host.loadBalancer.tcp{
-    grid-template-columns: 12% 10% 135px 90px 105px .5fr .5fr 100px .5fr;
+  &.show-ipam.show-host.loadBalancer.tcp {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr) minmax(100px, 1fr) minmax(80px, 0.8fr) minmax(95px, 1fr) minmax(95px, 1fr) minmax(95px, 1fr) minmax(110px, 1fr) $remove-width;
   }
 }
 
@@ -490,8 +497,13 @@ $checkbox: 75;
   color: var(--primary);
 }
 
-.remove BUTTON {
-  padding: 0px;
+.remove {
+  justify-self: start;
+  white-space: nowrap;
+
+  BUTTON {
+    padding: 0;
+  }
 }
 
 .ports-row INPUT {
