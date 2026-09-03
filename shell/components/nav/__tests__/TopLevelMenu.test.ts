@@ -837,8 +837,8 @@ describe('topLevelMenu', () => {
       });
     });
 
-    describe('handleKeyComboClick', () => {
-      it('should not toggle routeCombo when route is a non-explorer c-cluster route', async() => {
+    describe('onAltKeyDown', () => {
+      it('should not set routeCombo when route is a non-explorer c-cluster route', async() => {
         const wrapper: Wrapper<InstanceType<typeof TopLevelMenu>> = mount(TopLevelMenu, {
           global: {
             mocks: {
@@ -853,11 +853,11 @@ describe('topLevelMenu', () => {
         await waitForIt();
 
         expect(wrapper.vm.routeCombo).toBe(false);
-        wrapper.vm.handleKeyComboClick();
+        wrapper.vm.onAltKeyDown({ key: 'Alt', repeat: false });
         expect(wrapper.vm.routeCombo).toBe(false);
       });
 
-      it('should toggle routeCombo when route is cluster explorer', async() => {
+      it('should set routeCombo when route is cluster explorer', async() => {
         const wrapper: Wrapper<InstanceType<typeof TopLevelMenu>> = mount(TopLevelMenu, {
           global: {
             mocks: {
@@ -872,7 +872,7 @@ describe('topLevelMenu', () => {
         await waitForIt();
 
         expect(wrapper.vm.routeCombo).toBe(false);
-        wrapper.vm.handleKeyComboClick();
+        wrapper.vm.onAltKeyDown({ key: 'Alt', repeat: false });
         expect(wrapper.vm.routeCombo).toBe(true);
       });
     });
