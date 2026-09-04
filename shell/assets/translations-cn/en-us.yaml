@@ -1455,6 +1455,7 @@ catalog:
       rancher-rke2-charts: RKE2
       rancher-ui-plugins: Rancher Extensions
       suse-application-collection: SUSE App Collection
+      rancher-gc-extension: Rancher GC Extensions
     target:
       git:
         description: Git repository containing Helm charts or cluster templates
