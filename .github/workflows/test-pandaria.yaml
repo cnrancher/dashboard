@@ -23,51 +23,47 @@ jobs:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
       
       - name: Run tests
         uses: ./.github/actions/unit-tests
-
-      - name: Collect Coverage
-        run: |
-          mkdir -p coverage-artifacts/coverage
-          cp coverage/unit/coverage-final.json coverage-artifacts/coverage/coverage-unit.json
-          cp -r coverage/unit/ coverage-artifacts/coverage/unit/
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{github.run_number}}-${{github.run_attempt}}-coverage
-          path: coverage-artifacts/**/*
-
   i18n:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     needs:
       - unit-test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
 
       - name: Run i18n lint
         uses: ./.github/actions/i18n-lint
-
-  check-i18n:
+  lint:
     runs-on: repo-dashboard-runner-k8s
     container: ubuntu:22.04
     needs:
       - i18n
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v4
+      - name: Run tests
+        uses: ./.github/actions/lint
+  check-i18n:
+    runs-on: repo-dashboard-runner-k8s
+    container: ubuntu:22.04
+    needs:
+      - lint
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version-file: '.nvmrc'
-      
       - name: Install packages
         run: npm install --global yarn && yarn install:ci
       
@@ -76,15 +72,20 @@ jobs:
           # Falure won't fail the job (remove -x when all current issues are fixed)
           ./scripts/check-i18n -s -x
 
-  lint:
-    runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
-    needs:
-      - check-i18n
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
+  # check-i18n-links:
+  #   runs-on: repo-dashboard-runner-k8s
+  #   container: ubuntu:22.04
+  #   steps:
+  #     - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+  #       with:
+  #         fetch-depth: 1
+  #     - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+  #       with:
+  #         node-version-file: '.nvmrc'
+  #     - name: Install packages
+  #       run: npm install --global yarn && yarn install:ci
+  #     - name: Run check of all http links in the i18n files (broken link check)
+  #       run: |
+  #         ./scripts/check-i18n-links
 
-      - name: Run tests
-        uses: ./.github/actions/lint
+
