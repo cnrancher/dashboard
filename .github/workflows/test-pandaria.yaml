@@ -21,29 +21,27 @@ env:
 jobs:
   unit-test:
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: ubuntu:24.04
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-      
       - name: Run tests
         uses: ./.github/actions/unit-tests
   i18n:
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: ubuntu:24.04
     needs:
       - unit-test
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-
       - name: Run i18n lint
         uses: ./.github/actions/i18n-lint
   lint:
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: ubuntu:24.04
     needs:
       - i18n
     steps:
@@ -54,19 +52,13 @@ jobs:
         uses: ./.github/actions/lint
   check-i18n:
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: ubuntu:24.04
     needs:
       - lint
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install packages
-        run: npm install --global yarn && yarn install:ci
-      
       - name: Run i18n string check
         run: |
           # Falure won't fail the job (remove -x when all current issues are fixed)
@@ -74,7 +66,7 @@ jobs:
 
   # check-i18n-links:
   #   runs-on: repo-dashboard-runner-k8s
-  #   container: ubuntu:22.04
+  #   container: ubuntu:24.04
   #   steps:
   #     - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
   #       with:

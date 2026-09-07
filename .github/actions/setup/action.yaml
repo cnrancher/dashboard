@@ -10,4 +10,4 @@ runs:
 
     - name: Install packages
       shell: bash
-      run: npm install --global yarn && yarn install:ci
+      run: npm install --global --allow-scripts=yarn yarn && yarn install:ci
