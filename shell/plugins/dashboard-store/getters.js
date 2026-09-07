@@ -1,5 +1,5 @@
 
-import { SCHEMA, COUNT } from '@shell/config/types';
+import { SCHEMA, COUNT, MANAGEMENT } from '@shell/config/types';
 
 import { matches } from '@shell/utils/selector';
 import { typeMunge, typeRef, SIMPLE_TYPES } from '@shell/utils/create-yaml';
@@ -453,5 +453,19 @@ export default {
     const resource = id || context ? { id, context } : null;
 
     return paginationUtils.isEnabled({ rootGetters }, { store, resource });
-  }
+  },
+
+  clusterIdToNodesMap: (state, getters) => {
+    const allNodes = getters['all'](MANAGEMENT.NODE) ?? [];
+
+    return allNodes.reduce((t, c) => {
+      const [clusterId] = c.id.split('/');
+      const nodes = t.get(clusterId) ?? [];
+
+      nodes.push(c);
+      t.set(clusterId, nodes);
+
+      return t;
+    }, new Map());
+  },
 };
