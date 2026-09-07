@@ -1,5 +1,5 @@
 
-import { SCHEMA, COUNT, POD } from '@shell/config/types';
+import { SCHEMA, COUNT, POD, MANAGEMENT } from '@shell/config/types';
 
 import { matches } from '@shell/utils/selector';
 import { typeMunge, typeRef, SIMPLE_TYPES } from '@shell/utils/create-yaml';
@@ -542,4 +542,18 @@ export default {
    * Can be used to change behaviour given steve cache api functionality
    */
   isSteveCacheUrl: (state) => () => false,
+
+  clusterIdToNodesMap: (state, getters) => {
+    const allNodes = getters['all'](MANAGEMENT.NODE) ?? [];
+
+    return allNodes.reduce((t, c) => {
+      const [clusterId] = c.id.split('/');
+      const nodes = t.get(clusterId) ?? [];
+
+      nodes.push(c);
+      t.set(clusterId, nodes);
+
+      return t;
+    }, new Map());
+  },
 };
