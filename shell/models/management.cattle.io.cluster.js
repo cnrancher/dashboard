@@ -511,8 +511,7 @@ export default class MgmtCluster extends SteveModel {
   }
 
   get nodes() {
-    // return this.$getters['all'](MANAGEMENT.NODE).filter((node) => node.id.startsWith(this.id));
-    return this.$getters['clusterIdToNodesMap'].get(this.id) ?? [];
+    return this.$getters['all'](MANAGEMENT.NODE).filter((node) => node.id.startsWith(this.id));
   }
 
   get nodesArchitecture() {
