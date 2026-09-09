@@ -47,7 +47,7 @@ const props = defineProps({
   }
 });
 
-const SUPPORTED_VERSION_RANGE = '>=1.33.0 <1.36.0';
+const SUPPORTED_VERSION_RANGE = '>=1.33.0 <1.37.0';
 const store = useStore();
 const route = useRoute();
 const intl = computed(() => store.getters['i18n/t']);
