@@ -9647,6 +9647,7 @@ plugins:
       addCommunityRancherRepo: Add Community Extensions Repository
       addPartnersRancherRepo: Add Partners Extensions Repository
       featuresButton: Go to Feature Flags
+      addRancherGCRepo: Add Rancher Prime GC Extensions Repository
     prompt:
       can: You need to enable the <code>{ff}</code> Feature Flag in Global Settings. Once enabled, Rancher will require a restart.
       cant: Automatic installation is not available - required Helm Charts could not be found

@@ -26,6 +26,7 @@ export default {
     }
 
     this.addRepos.official = isRancherPrime() && !this.hasRancherUIPluginsRepo;
+    this.addRepos.officialGC = isRancherPrime() && !this.hasRancherGCUIPluginsRepo;
     this.addRepos.partners = !this.hasRancherUIPartnersPluginsRepo;
   },
 
@@ -35,8 +36,9 @@ export default {
       repos:    [],
       prime:    isRancherPrime(),
       addRepos: {
-        official: false,
-        partners: false
+        official:   false,
+        officialGC: false,
+        partners:   false
       },
       reposInfo: {
         official: {
@@ -44,6 +46,12 @@ export default {
           name:   UI_PLUGINS_REPOS.OFFICIAL.NAME,
           url:    UI_PLUGINS_REPOS.OFFICIAL.URL,
           branch: UI_PLUGINS_REPOS.OFFICIAL.BRANCH,
+        },
+        officialGC: {
+          repo:   undefined,
+          name:   UI_PLUGINS_REPOS.OFFICIAL_GC.NAME,
+          url:    UI_PLUGINS_REPOS.OFFICIAL_GC.URL,
+          branch: UI_PLUGINS_REPOS.OFFICIAL_GC.BRANCH,
         },
         partners: {
           repo:   undefined,
@@ -60,6 +68,9 @@ export default {
   computed: {
     hasRancherUIPluginsRepo() {
       return !!this.repos.find((r) => r.urlDisplay === UI_PLUGINS_REPOS.OFFICIAL.URL);
+    },
+    hasRancherGCUIPluginsRepo() {
+      return !!this.repos.find((r) => r.urlDisplay === UI_PLUGINS_REPOS.OFFICIAL_GC.URL);
     },
     hasRancherUIPartnersPluginsRepo() {
       return !!this.repos.find((r) => r.urlDisplay === UI_PLUGINS_REPOS.PARTNERS.URL);
@@ -129,6 +140,25 @@ export default {
       />
       <div
         v-if="hasRancherUIPluginsRepo"
+        class="checkbox-info"
+      >
+        ({{ t('plugins.setup.installed') }})
+      </div>
+    </div>
+    <!-- Official GC repo -->
+    <div
+      v-if="prime"
+      class="mb-15"
+    >
+      <Checkbox
+        v-model:value="addRepos.officialGC"
+        :disabled="$fetchState.pending || hasRancherGCUIPluginsRepo"
+        :primary="true"
+        label-key="plugins.setup.install.addRancherGCRepo"
+        data-testid="add-extensions-repos-modal-add-official-gc-repo"
+      />
+      <div
+        v-if="hasRancherGCUIPluginsRepo"
         class="checkbox-info"
       >
         ({{ t('plugins.setup.installed') }})
