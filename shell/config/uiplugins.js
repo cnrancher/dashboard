@@ -23,6 +23,11 @@ export const UI_PLUGINS_REPOS = {
     URL:    'https://github.com/rancher/ui-plugin-charts',
     BRANCH: 'main',
   },
+  OFFICIAL_GC: {
+    NAME:   'rancher-gc-extension',
+    URL:    'https://github.com/cnrancher/rancher-gc-extension',
+    BRANCH: 'main',
+  },
   PARTNERS: {
     NAME:   'partner-extensions',
     URL:    'https://github.com/rancher/partner-extensions',
