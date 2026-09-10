@@ -8,7 +8,7 @@ export const CCE_OS_RULES = [
   {
     osName:                       'Huawei Cloud EulerOS 2.0',
     architectures:                ['x86', 'arm'],
-    versions:                     ['v1.33', 'v1.34', 'v1.35'],
+    versions:                     ['v1.34', 'v1.35', 'v1.36'],
     supportedAboveListedVersions: true,
     supportedClusterTypes:        [
       CCE_CLUSTER_TYPES.STANDARD_VPC,
@@ -19,7 +19,7 @@ export const CCE_OS_RULES = [
   {
     osName:                       'Ubuntu 22.04',
     architectures:                ['x86'],
-    versions:                     ['v1.33', 'v1.34', 'v1.35'],
+    versions:                     ['v1.34', 'v1.35', 'v1.36'],
     supportedAboveListedVersions: true,
     supportedClusterTypes:        [
       CCE_CLUSTER_TYPES.STANDARD_VPC,
@@ -29,7 +29,7 @@ export const CCE_OS_RULES = [
   {
     osName:                       'Ubuntu 22.04.cgroup2',
     architectures:                ['x86'],
-    versions:                     ['v1.35'],
+    versions:                     ['v1.35', 'v1.36'],
     supportedAboveListedVersions: true,
     supportedClusterTypes:        [
       CCE_CLUSTER_TYPES.STANDARD_VPC,
@@ -39,7 +39,7 @@ export const CCE_OS_RULES = [
   {
     osName:                 'EulerOS 2.9',
     architectures:          ['x86', 'arm'],
-    versions:               ['v1.33', 'v1.34'],
+    versions:               ['v1.34'],
     unsupportedFromVersion: 'v1.35',
     supportedClusterTypes:  [
       CCE_CLUSTER_TYPES.STANDARD_VPC,
@@ -50,7 +50,7 @@ export const CCE_OS_RULES = [
   {
     osName:                 'CentOS 7.6',
     architectures:          ['x86'],
-    versions:               ['v1.33', 'v1.34'],
+    versions:               ['v1.34'],
     unsupportedFromVersion: 'v1.35',
     supportedClusterTypes:  [
       CCE_CLUSTER_TYPES.STANDARD_VPC,

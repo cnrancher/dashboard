@@ -35,8 +35,8 @@ import Labels from '@shell/components/form/Labels.vue';
 import ImportCce from './ImportCce';
 import FloatingHelpPanel from './FloatingHelpPanel.vue';
 
-const RANCHER_SUPPORTED_MIN_VERSION = 'v1.33';
-const RANCHER_SUPPORTED_MAX_VERSION = 'v1.35';
+const RANCHER_SUPPORTED_MIN_VERSION = 'v1.34';
+const RANCHER_SUPPORTED_MAX_VERSION = 'v1.36';
 
 const props = defineProps({
   mode: {
