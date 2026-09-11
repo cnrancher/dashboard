@@ -3,6 +3,11 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { base64Encode } from '@shell/utils/crypto';
 import { exceptionToErrorsArray } from '@shell/utils/error';
+import { sortBy } from '@shell/utils/sort';
+import { cleanupNormanClusterAgentConfiguration } from '../util/agentConfigurationCleanup.js';
+
+const BEFORE_SAVE_HOOKS = '_beforeSaveHooks';
+const AFTER_SAVE_HOOKS = '_afterSaveHooks';
 
 export function useCreateEditView(props, context) {
   const {
@@ -10,6 +15,47 @@ export function useCreateEditView(props, context) {
   } = context;
 
   const $router = useRouter();
+  const hookState = { [BEFORE_SAVE_HOOKS]: [], [AFTER_SAVE_HOOKS]: [] };
+  let nextHookId = 1;
+
+  function registerHook(key, boundFn, name, priority = 99, boundFnContext) {
+    if (!name) {
+      name = `hook_${ nextHookId }`;
+      nextHookId++;
+    }
+
+    const hooks = hookState[key];
+    const entry = hooks.find((hook) => hook.name === name);
+
+    if (entry) {
+      entry.priority = priority;
+      entry.fn = boundFn;
+      entry.fnContext = boundFnContext;
+    } else {
+      hooks.push({
+        name, priority, fn: boundFn, fnContext: boundFnContext,
+      });
+    }
+  }
+
+  function registerBeforeHook(boundFn, name, priority = 99, boundFnContext) {
+    registerHook(BEFORE_SAVE_HOOKS, boundFn, name, priority, boundFnContext);
+  }
+
+  function registerAfterHook(boundFn, name, priority = 99, boundFnContext) {
+    registerHook(AFTER_SAVE_HOOKS, boundFn, name, priority, boundFnContext);
+  }
+
+  async function applyHooks(key, ...args) {
+    const hooks = sortBy(hookState[key] || [], ['priority', 'name']);
+    const out = {};
+
+    for (const x of hooks) {
+      out[x.name] = await x.fn.apply(x.fnContext || null, args);
+    }
+
+    return out;
+  }
   const doneRoute = computed(() => {
     return props.value?.listLocation?.name;
   });
@@ -23,7 +69,9 @@ export function useCreateEditView(props, context) {
 
   async function save(buttonDone, url, depth = 0) {
     try {
+      await applyHooks(BEFORE_SAVE_HOOKS, normanCluster.value);
       await actuallySave(url);
+      await applyHooks(AFTER_SAVE_HOOKS, normanCluster.value);
       buttonDone && buttonDone(true);
       done();
     } catch (err) {
@@ -33,6 +81,8 @@ export function useCreateEditView(props, context) {
   }
 
   async function actuallySave() {
+    cleanupNormanClusterAgentConfiguration(normanCluster.value);
+
     if (tkeConfig.value.imported && tkeConfig.value.clusterId) {
       // Use tkeConfig.value.clusterVersion to detect edit mode for imported clusters.
       // If this is an imported cluster and clusterVersion is set, the cluster is in edit mode.
@@ -308,5 +358,7 @@ export function useCreateEditView(props, context) {
   return {
     doneRoute,
     save,
+    registerBeforeHook,
+    registerAfterHook,
   };
 }
