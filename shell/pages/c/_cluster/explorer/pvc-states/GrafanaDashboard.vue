@@ -74,10 +74,14 @@ export default {
       const contentWindow = this.$refs.frame?.contentWindow;
 
       if (this.loading === false && !this.error && contentWindow) {
-        return contentWindow.document.querySelector('div.react-grid-layout')?.offsetHeight + 32;
+        return [...(contentWindow.document.querySelectorAll('.dashboard-row-wrapper') ?? [])].reduce((t, c) => {
+          t += (c.offsetHeight + 8);
+
+          return t;
+        }, 0) + 46;
       }
 
-      return 1012;
+      return 1034;
     },
   },
   watch: {
