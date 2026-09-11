@@ -11,7 +11,9 @@ import NodePool from './NodePool';
 import { CREATOR_PRINCIPAL_ID } from '@shell/config/labels-annotations';
 import Tab from '@shell/components/Tabbed/Tab.vue';
 import Tabbed from '@shell/components/Tabbed/index.vue';
-import { _CREATE, _IMPORT, _VIEW } from '@shell/config/query-params';
+import { _CREATE, _IMPORT, _VIEW, _EDIT } from '@shell/config/query-params';
+import AgentConfiguration from '@shell/edit/provisioning.cattle.io.cluster/tabs/AgentConfiguration.vue';
+import ClusterMembershipEditor, { canViewClusterMembershipEditor } from '@shell/components/form/Members/ClusterMembershipEditor.vue';
 import Banner from '@components/Banner/Banner.vue';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
@@ -20,7 +22,6 @@ import KeyValue from '@shell/components/form/KeyValue';
 import UnitInput from '@shell/components/form/UnitInput';
 import FileSelector from '@shell/components/form/FileSelector.vue';
 import { RadioGroup } from '@components/Form/Radio';
-import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import { queryHuawei } from '../util/request';
 import CONFIG_ENV from '../util/config';
 import { getDefaultFlavorValue } from '../util/flavors';
@@ -34,6 +35,8 @@ import Accordion from '@components/Accordion/Accordion.vue';
 import Labels from '@shell/components/form/Labels.vue';
 import ImportCce from './ImportCce';
 import FloatingHelpPanel from './FloatingHelpPanel.vue';
+import PrivateRegistry from '@shell/components/form/PrivateRegistry.vue';
+import { PRIVATE_REGISTRY_CONTEXT } from '@shell/components/form/PrivateRegistry.constants';
 
 const RANCHER_SUPPORTED_MIN_VERSION = 'v1.34';
 const RANCHER_SUPPORTED_MAX_VERSION = 'v1.36';
@@ -101,7 +104,7 @@ const state = ref({
   highAvailabilityEnabled:  's2',
   highAvailabilityDisabled: false,
   clusterLoading:           false,
-  showPrivateRegistryInput: false,
+  privateRegistryEnabled:   false,
   eniNetworks:              [],
   errors:                   [],
 });
@@ -109,9 +112,59 @@ const emit = defineEmits(['done']);
 const {
   save,
   doneRoute,
+  registerBeforeHook,
+  registerAfterHook,
 } = useCreateEditView(props, {
   emit, normanCluster, cceConfig, nodePools, state
 });
+
+const membershipUpdate = ref({});
+
+function ensureImportedConfig() {
+  if (!normanCluster.value.importedConfig) {
+    normanCluster.value.importedConfig = {};
+  }
+}
+
+function ensureAgentDeploymentCustomization() {
+  if (!normanCluster.value.fleetAgentDeploymentCustomization) {
+    normanCluster.value.fleetAgentDeploymentCustomization = {};
+  }
+  if (!normanCluster.value.clusterAgentDeploymentCustomization) {
+    normanCluster.value.clusterAgentDeploymentCustomization = {};
+  }
+}
+
+function onMembershipUpdate(update) {
+  membershipUpdate.value = update;
+}
+
+async function saveRoleBindings() {
+  if (membershipUpdate.value.save) {
+    await membershipUpdate.value.save(normanCluster.value.id);
+  }
+}
+
+const canManageMembers = computed(() => canViewClusterMembershipEditor(store));
+
+const isEditMode = computed(() => props.mode === _CREATE || props.mode === _EDIT);
+
+const pullSecrets = computed({
+  get() {
+    const secrets = normanCluster.value?.importedConfig?.privateRegistryPullSecrets;
+
+    return secrets?.[0] ?? undefined;
+  },
+  set(val) {
+    ensureImportedConfig();
+    if (val) {
+      normanCluster.value.importedConfig.privateRegistryPullSecrets = [val];
+    } else if (normanCluster.value.importedConfig.privateRegistryPullSecrets) {
+      delete normanCluster.value.importedConfig.privateRegistryPullSecrets;
+    }
+  },
+});
+
 const isImport = ref(route.query.mode === _IMPORT);
 const hasCredential = computed(() => {
   return !!cceConfig.value?.huaweiCredentialSecret;
@@ -1248,25 +1301,9 @@ function cancelCredential() {
 }
 
 function initPrivateRegistryConfig() {
-  if (!normanCluster.value?.importedConfig) {
-    normanCluster.value.importedConfig = { privateRegistryURL: null };
-  } else if (!normanCluster.value.importedConfig.privateRegistryURL) {
-    normanCluster.value.importedConfig.privateRegistryURL = null;
-  }
-
-  state.value.showPrivateRegistryInput = !!normanCluster.value.importedConfig.privateRegistryURL;
-}
-
-function updatePrivateRegistryInput(val) {
-  state.value.showPrivateRegistryInput = val;
-
-  if (!normanCluster.value.importedConfig) {
-    normanCluster.value.importedConfig = {};
-  }
-
-  if (!val) {
-    normanCluster.value.importedConfig.privateRegistryURL = null;
-  }
+  ensureImportedConfig();
+  ensureAgentDeploymentCustomization();
+  state.value.privateRegistryEnabled = !!normanCluster.value.importedConfig?.privateRegistryURL;
 }
 
 function setClusterName(name) {
@@ -1526,6 +1563,7 @@ function updateCceConfigTags(tags) {
 }
 
 onMounted(async() => {
+  registerAfterHook(saveRoleBindings, 'save-role-bindings');
   if (isImport.value) {
     await initImportConfig();
   } else {
@@ -2119,6 +2157,43 @@ onMounted(async() => {
       <div>
         <Accordion
           class="mb-20"
+          title-key="cluster.agentConfig.tabs.cluster"
+        >
+          <AgentConfiguration
+            v-model:value="normanCluster.clusterAgentDeploymentCustomization"
+            :mode="mode"
+            type="cluster"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
+          title-key="cluster.agentConfig.tabs.fleet"
+        >
+          <AgentConfiguration
+            v-model:value="normanCluster.fleetAgentDeploymentCustomization"
+            :mode="mode"
+            type="fleet"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
+          title-key="members.memberRoles"
+        >
+          <Banner
+            v-if="isEditMode"
+            color="info"
+          >
+            {{ intl('cluster.memberRoles.removeMessage') }}
+          </Banner>
+          <ClusterMembershipEditor
+            v-if="canManageMembers"
+            :mode="mode"
+            :parent-id="normanCluster.id ? normanCluster.id : undefined"
+            @membership-update="onMembershipUpdate"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
           :title="intl('generic.labelsAndAnnotations')"
         >
           <Labels
@@ -2132,27 +2207,16 @@ onMounted(async() => {
         data-testid="registries-accordion"
         :open-initially="false"
       >
-        <Banner
-          color="info"
-          class="mt-0"
-        >
-          {{ intl('cluster.privateRegistry.importedDescription') }}
-        </Banner>
-        <Checkbox
-          :value="state.showPrivateRegistryInput"
-          class="mb-20"
-          :mode="mode"
-          :label="t('cluster.privateRegistry.label')"
-          data-testid="private-registry-enable-checkbox"
-          @update:value="updatePrivateRegistryInput($event)"
-        />
-        <LabeledInput
-          v-if="state.showPrivateRegistryInput && normanCluster.importedConfig"
+        <PrivateRegistry
+          v-if="normanCluster.importedConfig"
           v-model:value="normanCluster.importedConfig.privateRegistryURL"
+          v-model:pull-secret="pullSecrets"
+          v-model:enabled="state.privateRegistryEnabled"
+          :context="PRIVATE_REGISTRY_CONTEXT.IMPORTING"
           :mode="mode"
-          label-key="catalog.chart.registry.custom.inputLabel"
-          data-testid="private-registry-url"
-          :placeholder="t('catalog.chart.registry.custom.placeholder')"
+          :register-before-hook="registerBeforeHook"
+          checkbox-test-id="private-registry-enable-checkbox"
+          input-test-id="private-registry-url"
         />
       </Accordion>
       <FloatingHelpPanel
