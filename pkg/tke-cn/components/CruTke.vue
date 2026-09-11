@@ -4,7 +4,6 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { NORMAN } from '@shell/config/types';
 import CruResource from '@shell/components/CruResource.vue';
-import Checkbox from '@components/Form/Checkbox/Checkbox.vue';
 import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
 import Banner from '@components/Banner/Banner.vue';
@@ -14,7 +13,9 @@ import GroupPanel from '@shell/components/GroupPanel';
 import SelectCredential from '@shell/edit/provisioning.cattle.io.cluster/SelectCredential.vue';
 import { useCreateEditView } from '../composables/useCreateEditView.js';
 import { CREATOR_PRINCIPAL_ID } from '@shell/config/labels-annotations';
-import { _CREATE, _IMPORT, _VIEW } from '@shell/config/query-params';
+import { _CREATE, _IMPORT, _VIEW, _EDIT } from '@shell/config/query-params';
+import AgentConfiguration from '@shell/edit/provisioning.cattle.io.cluster/tabs/AgentConfiguration.vue';
+import ClusterMembershipEditor, { canViewClusterMembershipEditor } from '@shell/components/form/Members/ClusterMembershipEditor.vue';
 import { RadioGroup } from '@components/Form/Radio';
 import Tab from '@shell/components/Tabbed/Tab.vue';
 import Accordion from '@components/Accordion/Accordion.vue';
@@ -29,6 +30,8 @@ import TkeNetworkConfigForm from './TkeNetworkConfigForm';
 import FloatingHelpPanel from './FloatingHelpPanel.vue';
 import ImportTke from './ImportTke';
 import MasterNode from './MasterNode';
+import PrivateRegistry from '@shell/components/form/PrivateRegistry.vue';
+import { PRIVATE_REGISTRY_CONTEXT } from '@shell/components/form/PrivateRegistry.constants';
 import {
   find, pullAt, uniq, compact, flatten, cloneDeep
 } from 'lodash';
@@ -117,7 +120,7 @@ const state = ref({
   vpcIdLoading:                 false,
   subnetLoading:                false,
   securityGroupLoading:         false,
-  showPrivateRegistryInput:     false,
+  privateRegistryEnabled:       false,
   clusterCidrValidating:        false,
   clusterCidrConflictError:     '',
   serviceCidrValidating:        false,
@@ -371,9 +374,59 @@ const VIEW = computed(() => {
 const {
   save,
   doneRoute,
+  registerBeforeHook,
+  registerAfterHook,
 } = useCreateEditView(props, {
   emit, normanCluster, tkeConfig, nodePools, state
 });
+
+const membershipUpdate = ref({});
+
+function ensureImportedConfig() {
+  if (!normanCluster.value.importedConfig) {
+    normanCluster.value.importedConfig = {};
+  }
+}
+
+function ensureAgentDeploymentCustomization() {
+  if (!normanCluster.value.fleetAgentDeploymentCustomization) {
+    normanCluster.value.fleetAgentDeploymentCustomization = {};
+  }
+  if (!normanCluster.value.clusterAgentDeploymentCustomization) {
+    normanCluster.value.clusterAgentDeploymentCustomization = {};
+  }
+}
+
+function onMembershipUpdate(update) {
+  membershipUpdate.value = update;
+}
+
+async function saveRoleBindings() {
+  if (membershipUpdate.value.save) {
+    await membershipUpdate.value.save(normanCluster.value.id);
+  }
+}
+
+const canManageMembers = computed(() => canViewClusterMembershipEditor(store));
+
+const isEditMode = computed(() => props.mode === _CREATE || props.mode === _EDIT);
+
+const pullSecrets = computed({
+  get() {
+    const secrets = normanCluster.value?.importedConfig?.privateRegistryPullSecrets;
+
+    return secrets?.[0] ?? undefined;
+  },
+  set(val) {
+    ensureImportedConfig();
+    if (val) {
+      normanCluster.value.importedConfig.privateRegistryPullSecrets = [val];
+    } else if (normanCluster.value.importedConfig.privateRegistryPullSecrets) {
+      delete normanCluster.value.importedConfig.privateRegistryPullSecrets;
+    }
+  },
+});
+
 const hasCredential = computed(() => {
   return !!tkeConfig.value?.tkeCredentialSecret;
 });
@@ -481,14 +534,13 @@ async function initImportConfig() {
       clusterEndpoint:     true,
       region:              '',
     };
-    if (!normanCluster.value?.importedConfig?.privateRegistryURL) {
-      normanCluster.value.importedConfig = { privateRegistryURL: null };
-    }
+    ensureImportedConfig();
+    ensureAgentDeploymentCustomization();
   } else {
     fixConfig(normanCluster.value.tkeConfig);
-    if (normanCluster.value?.importedConfig?.privateRegistryURL) {
-      state.value.showPrivateRegistryInput = true;
-    }
+    ensureImportedConfig();
+    ensureAgentDeploymentCustomization();
+    state.value.privateRegistryEnabled = !!normanCluster.value.importedConfig?.privateRegistryURL;
   }
 
   state.value.loading = false;
@@ -504,17 +556,13 @@ async function initCustomConfig() {
     if (normanCluster.value.tkeConfig) {
       fixConfig(normanCluster.value.tkeConfig);
     }
-    if (!normanCluster.value?.importedConfig?.privateRegistryURL) {
-      normanCluster.value.importedConfig = { privateRegistryURL: null };
-    }
-    if (normanCluster.value?.importedConfig?.privateRegistryURL) {
-      state.value.showPrivateRegistryInput = true;
-    }
+    ensureImportedConfig();
+    ensureAgentDeploymentCustomization();
+    state.value.privateRegistryEnabled = !!normanCluster.value.importedConfig?.privateRegistryURL;
   } else {
     normanCluster.value = await store.dispatch('rancher/create', { type: NORMAN.CLUSTER }, { root: true });
-    if (!normanCluster.value?.importedConfig?.privateRegistryURL) {
-      normanCluster.value.importedConfig = { privateRegistryURL: null };
-    }
+    ensureImportedConfig();
+    ensureAgentDeploymentCustomization();
     const principalId = store.getters['auth/principalId'];
 
     if (principalId.includes('local://')) {
@@ -649,6 +697,7 @@ function fixConfig(config) {
 }
 
 onMounted(async() => {
+  registerAfterHook(saveRoleBindings, 'save-role-bindings');
   if (isImport) {
     await initImportConfig();
   } else {
@@ -901,18 +950,6 @@ async function validateServiceCidrConflict(cloudCredentialId) {
   }
 
   state.value.serviceCidrValidating = false;
-}
-
-function updatePrivateRegistryInput(val) {
-  state.value.showPrivateRegistryInput = val;
-
-  if (!normanCluster.value.importedConfig) {
-    normanCluster.value.importedConfig = {};
-  }
-
-  if (!val) {
-    normanCluster.value.importedConfig.privateRegistryURL = null;
-  }
 }
 
 function parseSemver(v = '') {
@@ -1703,6 +1740,43 @@ function handleZoneChange() {
       <div>
         <Accordion
           class="mb-20"
+          title-key="cluster.agentConfig.tabs.cluster"
+        >
+          <AgentConfiguration
+            v-model:value="normanCluster.clusterAgentDeploymentCustomization"
+            :mode="mode"
+            type="cluster"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
+          title-key="cluster.agentConfig.tabs.fleet"
+        >
+          <AgentConfiguration
+            v-model:value="normanCluster.fleetAgentDeploymentCustomization"
+            :mode="mode"
+            type="fleet"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
+          title-key="members.memberRoles"
+        >
+          <Banner
+            v-if="isEditMode"
+            color="info"
+          >
+            {{ intl('cluster.memberRoles.removeMessage') }}
+          </Banner>
+          <ClusterMembershipEditor
+            v-if="canManageMembers"
+            :mode="mode"
+            :parent-id="normanCluster.id ? normanCluster.id : undefined"
+            @membership-update="onMembershipUpdate"
+          />
+        </Accordion>
+        <Accordion
+          class="mb-20"
           :title="intl('generic.labelsAndAnnotations')"
         >
           <Labels
@@ -1717,27 +1791,16 @@ function handleZoneChange() {
         data-testid="registries-accordion"
         :open-initially="false"
       >
-        <Banner
-          color="info"
-          class="mt-0"
-        >
-          {{ intl('cluster.privateRegistry.importedDescription') }}
-        </Banner>
-        <Checkbox
-          :value="state.showPrivateRegistryInput"
-          class="mb-20"
-          :mode="mode"
-          :label="t('cluster.privateRegistry.label')"
-          data-testid="private-registry-enable-checkbox"
-          @update:value="updatePrivateRegistryInput($event)"
-        />
-        <LabeledInput
-          v-if="state.showPrivateRegistryInput && normanCluster.importedConfig"
+        <PrivateRegistry
+          v-if="normanCluster.importedConfig"
           v-model:value="normanCluster.importedConfig.privateRegistryURL"
+          v-model:pull-secret="pullSecrets"
+          v-model:enabled="state.privateRegistryEnabled"
+          :context="PRIVATE_REGISTRY_CONTEXT.IMPORTING"
           :mode="mode"
-          label-key="catalog.chart.registry.custom.inputLabel"
-          data-testid="private-registry-url"
-          :placeholder="t('catalog.chart.registry.custom.placeholder')"
+          :register-before-hook="registerBeforeHook"
+          checkbox-test-id="private-registry-enable-checkbox"
+          input-test-id="private-registry-url"
         />
       </Accordion>
     </div>
