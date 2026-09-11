@@ -6,6 +6,11 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { clear } from '@shell/utils/array';
 import { handleConflict } from '@shell/plugins/dashboard-store/normalize';
+import { sortBy } from '@shell/utils/sort';
+import { cleanupNormanClusterAgentConfiguration } from '../util/agentConfigurationCleanup.js';
+
+const BEFORE_SAVE_HOOKS = '_beforeSaveHooks';
+const AFTER_SAVE_HOOKS = '_afterSaveHooks';
 
 export function useCreateEditView(props, context) {
   const {
@@ -16,6 +21,47 @@ export function useCreateEditView(props, context) {
   const $router = useRouter();
   const $store = useStore();
   const isEdit = computed(() => props.mode === _EDIT);
+  const hookState = { [BEFORE_SAVE_HOOKS]: [], [AFTER_SAVE_HOOKS]: [] };
+  let nextHookId = 1;
+
+  function registerHook(key, boundFn, name, priority = 99, boundFnContext) {
+    if (!name) {
+      name = `hook_${ nextHookId }`;
+      nextHookId++;
+    }
+
+    const hooks = hookState[key];
+    const entry = hooks.find((hook) => hook.name === name);
+
+    if (entry) {
+      entry.priority = priority;
+      entry.fn = boundFn;
+      entry.fnContext = boundFnContext;
+    } else {
+      hooks.push({
+        name, priority, fn: boundFn, fnContext: boundFnContext,
+      });
+    }
+  }
+
+  function registerBeforeHook(boundFn, name, priority = 99, boundFnContext) {
+    registerHook(BEFORE_SAVE_HOOKS, boundFn, name, priority, boundFnContext);
+  }
+
+  function registerAfterHook(boundFn, name, priority = 99, boundFnContext) {
+    registerHook(AFTER_SAVE_HOOKS, boundFn, name, priority, boundFnContext);
+  }
+
+  async function applyHooks(key, ...args) {
+    const hooks = sortBy(hookState[key] || [], ['priority', 'name']);
+    const out = {};
+
+    for (const x of hooks) {
+      out[x.name] = await x.fn.apply(x.fnContext || null, args);
+    }
+
+    return out;
+  }
 
   const doneRoute = computed(() => {
     return props.value?.listLocation?.name;
@@ -45,7 +91,9 @@ export function useCreateEditView(props, context) {
     }
 
     try {
+      await applyHooks(BEFORE_SAVE_HOOKS, normanCluster.value);
       await actuallySave(url);
+      await applyHooks(AFTER_SAVE_HOOKS, normanCluster.value);
       buttonDone && buttonDone(true);
       done();
     } catch (err) {
@@ -66,6 +114,8 @@ export function useCreateEditView(props, context) {
   }
 
   async function actuallySave() {
+    cleanupNormanClusterAgentConfiguration(normanCluster.value);
+
     if (ackConfig.value.imported && ackConfig.value.cluster_id) {
       normanCluster.value.ackConfig = ackConfig.value;
       await normanCluster.value.save();
@@ -132,5 +182,7 @@ export function useCreateEditView(props, context) {
   return {
     doneRoute,
     save,
+    registerBeforeHook,
+    registerAfterHook,
   };
 }
