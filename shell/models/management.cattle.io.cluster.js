@@ -853,4 +853,32 @@ export default class MgmtCluster extends SteveModel {
     } catch {
     }
   }
+
+  get isSuspended() {
+    return this.metadata?.['annotations']?.['mcm.pandaria.io/cluster-pause'] === 'true';
+  }
+
+  get stateBackground() {
+    if (this.isSuspended) {
+      return 'bg-warning';
+    }
+
+    return super.stateBackground;
+  }
+
+  get stateDisplay() {
+    if (this.isSuspended) {
+      return 'Paused';
+    }
+
+    return super.stateDisplay;
+  }
+
+  get stateDescription() {
+    if (this.isSuspended) {
+      return '';
+    }
+
+    return super.stateDescription;
+  }
 }
