@@ -141,6 +141,8 @@ export default {
           const errorMessage = errorMessageElms.length > 0 ? errorMessageElms[0].innerText : '';
           const isFailure = errorMessage.includes('"status": "Failure"');
           const isNotFound = errorMessage.includes('"code": 404');
+          const title = graphWindow.document.head?.querySelector('title')?.innerText ?? '';
+          const isGatewayError = /^503|4 Gateway/.test(title);
 
           if (err) {
             throw new Error('An error was detected in the iframe');
@@ -148,10 +150,13 @@ export default {
           if (isNotFound) {
             throw new Error(errorMessage);
           }
+          if (isGatewayError) {
+            throw new Error(title);
+          }
           this.loading = !loaded;
           this.error = isFailure;
         } catch (ex) {
-          this.error = true;
+          this.error = ex;
           this.loading = false;
           clearInterval(this.interval);
           this.interval = null;
@@ -245,7 +250,7 @@ export default {
         {{ t('grafanaDashboard.failedToLoad') }} <a
           href="#"
           @click="reload"
-        >{{ t('grafanaDashboard.reload') }}</a>
+        >{{ t('grafanaDashboard.reload') }}</a> ({{ error }})
       </div>
     </Banner>
     <iframe
