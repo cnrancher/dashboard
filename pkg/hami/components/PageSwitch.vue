@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      apps: [], loading: true, errors: [], hamiResourceTypes: null, requiredApps: ['rancher-monitoring', 'rancher-hami']
+      apps: [], loading: true, errors: [], hamiResourceTypes: null, requiredApps: ['rancher-hami']
     };
   },
   created() {
