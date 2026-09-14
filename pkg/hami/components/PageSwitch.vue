@@ -8,7 +8,6 @@
     </template>
     <template v-else>
       <InstllView
-        :monitoring="monitoringInstalled"
         :hami="harmiInstalled"
       />
     </template>
@@ -61,13 +60,7 @@ export default {
     }
   },
   computed: {
-    monitoringInstalled() {
-      if (this.harmiInstalled) {
-        return true;
-      }
 
-      return !!this.installedApps.find((app) => app.spec?.chart?.metadata?.name === 'rancher-monitoring');
-    },
     harmiInstalled() {
       if (this.hamiResourceTypes?.metadata?.labels?.['hami.pandaria.com/installed-by-chart'] === 'true') {
         return true;
@@ -83,7 +76,7 @@ export default {
     },
 
     hideInstallView() {
-      return this.harmiInstalled && this.monitoringInstalled;
+      return this.harmiInstalled;
     }
   }
 };

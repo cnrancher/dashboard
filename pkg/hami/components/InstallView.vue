@@ -19,35 +19,6 @@
       <template #next>
         <div />
       </template>
-      <template #rancher-monitoring>
-        <div class="content">
-          <img
-            :src="genericIcon"
-            class="logo mb-10"
-          >
-          <h2 class="mb-20">
-            {{ t('rancherHami.installView.steps.monitoring.title') }}
-          </h2>
-          <p
-            v-clean-html="t('rancherHami.installView.steps.monitoring.tips', {}, true)"
-            class="mb-20 text-center"
-          />
-          <div>
-            <button
-              class="btn role-primary mt-20"
-              @click.prevent="monitoringChartRoute"
-            >
-              {{ t("rancherHami.installView.steps.monitoring.appInstall.label") }}
-            </button>
-            <!-- <button
-              class="btn role-secondary mt-20"
-              @click.prevent="skip"
-            >
-              {{ t("rancherHami.installView.steps.monitoring.appInstall.skip") }}
-            </button> -->
-          </div>
-        </div>
-      </template>
       <template #rancher-hami>
         <div class="content">
           <img
@@ -85,10 +56,6 @@ import genericIcon from '@shell/assets/images/generic-catalog.svg';
 export default {
   components: { Wizard },
   props:      {
-    monitoring: {
-      type:    Boolean,
-      default: false
-    },
     hami: {
       type:    Boolean,
       default: false
@@ -102,14 +69,6 @@ export default {
     steps() {
       const steps = [];
 
-      if (this.monitoring === false) {
-        steps.push({
-          name:    'rancher-monitoring',
-          label:   this.t('rancherHami.installView.steps.monitoring.label'),
-          subtext: this.t('rancherHami.installView.steps.monitoring.label'),
-          ready:   true
-        });
-      }
       if (this.hami === false) {
         steps.push({
           name:    'rancher-hami',
@@ -123,9 +82,6 @@ export default {
     }
   },
   methods: {
-    skip() {
-      this.$refs.wizard?.next();
-    },
     harmiChartRoute() {
       const clusterId = this.currentCluster.id;
 
@@ -139,19 +95,7 @@ export default {
         },
       });
     },
-    monitoringChartRoute() {
-      const clusterId = this.currentCluster.id;
 
-      this.$router.push({
-        name:   'c-cluster-apps-charts-install',
-        params: { cluster: clusterId === BLANK_CLUSTER ? 'local' : clusterId },
-        query:  {
-          [REPO_TYPE]: 'cluster',
-          [REPO]:      'rancher-charts',
-          [CHART]:     'rancher-monitoring',
-        },
-      });
-    },
     finish() {
 
     }
