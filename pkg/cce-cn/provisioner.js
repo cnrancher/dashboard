@@ -1,5 +1,6 @@
 import CruCce from './components/CruCce.vue';
 import { isProviderEnabled } from '@shell/utils/settings';
+import { shouldUseCceProvisionerEditForm } from './util/hostedProvisionerEditForm.js';
 
 class CceProvisioner {
   static ID = 'cce';
@@ -50,6 +51,10 @@ class CceProvisioner {
 
   get description() {
     return this.context.t('cceCn.description');
+  }
+
+  shouldUseProvisionerEditForm(args) {
+    return shouldUseCceProvisionerEditForm(args);
   }
 }
 

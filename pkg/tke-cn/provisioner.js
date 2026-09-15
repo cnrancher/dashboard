@@ -1,5 +1,6 @@
 import CruTke from './components/CruTke.vue';
 import { isProviderEnabled } from '@shell/utils/settings';
+import { shouldUseTkeProvisionerEditForm } from './util/hostedProvisionerEditForm.js';
 
 class TkeProvisioner {
   static ID = 'tke';
@@ -50,6 +51,10 @@ class TkeProvisioner {
 
   get description() {
     return this.context.t('tkeCn.description');
+  }
+
+  shouldUseProvisionerEditForm(args) {
+    return shouldUseTkeProvisionerEditForm(args);
   }
 }
 

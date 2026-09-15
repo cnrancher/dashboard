@@ -21,6 +21,7 @@ import { KONTAINER_TO_DRIVER } from '@shell/models/management.cattle.io.kontaine
 import Rke2Config from './rke2';
 import { requireAsset } from '@shell/utils/require-asset';
 import { resolveSubType } from './subtype-detection';
+import { adjustSubTypeForHostedProvisioner } from './adjust-sub-type-for-hosted-provisioner';
 
 const SORT_GROUPS = {
   template:  1,
@@ -159,6 +160,13 @@ export default {
       extensions: this.extensions,
       realMode:   this.realMode,
       as:         this.as,
+    });
+
+    this.subType = adjustSubTypeForHostedProvisioner({
+      subType:    this.subType,
+      clusterId:  this.value.id,
+      extensions: this.extensions,
+      mgmt:       this.value.mgmt,
     });
   },
 

@@ -1,5 +1,6 @@
 import CruAck from './components/CruAck.vue';
 import { isProviderEnabled } from '@shell/utils/settings';
+import { shouldUseAckProvisionerEditForm } from './util/hostedProvisionerEditForm.js';
 
 class AckProvisioner {
   static ID = 'ack';
@@ -50,6 +51,10 @@ class AckProvisioner {
 
   get description() {
     return this.context.t('ackCn.description');
+  }
+
+  shouldUseProvisionerEditForm(args) {
+    return shouldUseAckProvisionerEditForm(args);
   }
 }
 
