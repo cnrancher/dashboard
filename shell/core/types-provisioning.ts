@@ -89,7 +89,7 @@ export interface ClusterProvisionerContext {
   /**
    * [Deprecated] Definition of the extension
    */
-  $extension: any,
+  $plugin: any,
   /**
    * Definition of the extension
    */
