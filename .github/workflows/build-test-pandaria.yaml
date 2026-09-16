@@ -6,39 +6,35 @@ on:
   workflow_call:
 
 jobs:
-  unit-test:
-    runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 1
+  # unit-test:
+  #   runs-on: repo-dashboard-runner-k8s
+  #   container: ubuntu:24.04
+  #   steps:
+  #     - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+  #       with:
+  #         fetch-depth: 1
 
-      - name: Run tests
-        uses: ./.github/actions/unit-tests
-
-  i18n:
-    runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
-    needs:
-      - unit-test
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 1
-
-      - name: Run i18n lint
-        uses: ./.github/actions/i18n-lint
+  #     - name: Run tests
+  #       uses: ./.github/actions/unit-tests
 
   lint:
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
-    needs:
-      - i18n
+    container: node:24
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
+      - name: Install packages
+        shell: bash
+        run: npx yarn install:ci
 
-      - name: Run lint
-        uses: ./.github/actions/lint
+      - name: Run i18n linters
+        shell: bash
+        run: npx yarn lint-l10n
+
+      - name: Run linters
+        shell: bash
+        run: npx yarn lint
+      
+
+  

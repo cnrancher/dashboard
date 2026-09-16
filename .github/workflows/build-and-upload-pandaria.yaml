@@ -16,35 +16,26 @@ env:
   GIT_REPO: ${{github.repository}}
   GIT_COMMIT: ${{github.sha}}
   REPO: ${{github.event.repository.name || ''}}
+  GIT_CONFIG_COUNT: 1
+  GIT_CONFIG_KEY_0: safe.directory
+  GIT_CONFIG_VALUE_0: ${{ github.workspace }}
 
 jobs:
   build-and-upload-hosted:
     if: ${{ inputs.CI_BRANCH }}
     name: Build & Upload Hosted
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: node:24
     steps:
-      - id: install-git
-        name: Install Git
-        run: |
-          apt-get update
-          apt-get install -y git curl
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-      - uses: actions/checkout@v5
+      # - id: install-git
+      #   name: Install Git
+      #   run: |
+      #     apt-get update
+      #     apt-get install -y git curl
+      #     git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-
-        # Note - Cannot use the setup action here as it uses a different yarn install arg
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: '.nvmrc'
-          
-      - id: install-yarn
-        name: Install Yarn
-        shell: bash
-        run: npm install --global yarn
-
         # Build a directory containing the dashboard that can be used with ui-dashboard-index
       - id: build-hosted
         name: Build Hosted
@@ -77,33 +68,23 @@ jobs:
     if: ${{ inputs.CI_BUILD_TAG }}
     name: Build & Upload Embedded
     runs-on: repo-dashboard-runner-k8s
-    container: ubuntu:22.04
+    container: node:24
     steps:
-      - id: install-git
-        name: Install Git
-        run: |
-          apt-get update
-          apt-get install -y git
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      # - id: install-git
+      #   name: Install Git
+      #   run: |
+      #     apt-get update
+      #     apt-get install -y git
+      #     git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 1
-
-        # Note - Cannot use the setup action here as it uses a different yarn install arg
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: '.nvmrc'
-
-      - id: install-yarn
-        name: Install Yarn
-        shell: bash
-        run: npm install --global yarn
 
         # Build a tar that will be picked up by rancher builds and embedded into it
       - id: build-embedded
         name: Build Embedded
-        run: apt-get update && apt-get install -y curl && npm install --global yarn && ./scripts/build-embedded
+        run: ./scripts/build-embedded
         env:
           EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
 

@@ -9,4 +9,4 @@ runs:
 
     - name: Run i18n linters
       shell: bash
-      run: yarn lint-l10n
+      run: npx yarn lint-l10n
