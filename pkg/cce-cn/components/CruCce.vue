@@ -1394,8 +1394,8 @@ function fixConfig(liveNormanCluster) {
       sshKey,
       rootVolumeSize:   rootVolume.size,
       rootVolumeType:   rootVolume.type,
-      dataVolumeSize:   dataVolumes[0].size,
-      dataVolumeType:   dataVolumes[0].type,
+      dataVolumeSize:   dataVolumes?.length > 0 ? dataVolumes[0]?.size : '',
+      dataVolumeType:   dataVolumes?.length > 0 ? dataVolumes[0]?.type : '',
       billingMode,
       runtime,
     };
