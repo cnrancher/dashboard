@@ -128,6 +128,14 @@ export default {
       if (this.currentCluster.isLocal && this.$store.getters['management/schemaFor'](MANAGEMENT.NODE)) {
         this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
       }
+
+      // Connect mode calls viewConnectionConfig on provisioning.cattle.io.cluster.
+      // Fetch only this cluster so the tab works without visiting Cluster Management first.
+      const provClusterId = this.currentCluster.provClusterId;
+
+      if (!this.currentCluster.isLocal && provClusterId && this.$store.getters['management/schemaFor'](CAPI.RANCHER_CLUSTER)) {
+        this.$store.dispatch('management/find', { type: CAPI.RANCHER_CLUSTER, id: provClusterId }).catch(() => {});
+      }
     }
   },
 
@@ -445,9 +453,17 @@ export default {
       };
     },
     provisioningCluster() {
-      const out = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster?.metadata?.name);
+      const provClusterId = this.currentCluster?.provClusterId;
 
-      return out;
+      if (provClusterId) {
+        const byId = this.$store.getters['management/byId'](CAPI.RANCHER_CLUSTER, provClusterId);
+
+        if (byId) {
+          return byId;
+        }
+      }
+
+      return this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster?.metadata?.name);
     },
     kubernetesVersion() {
       const base = this.currentCluster?.kubernetesVersionBase || '';
