@@ -10,5 +10,4 @@ runs:
     - name: Run tests
       shell: bash
       run: |
-        yarn test:ci
-        
+        npx yarn test:ci

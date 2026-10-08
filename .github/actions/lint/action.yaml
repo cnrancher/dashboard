@@ -9,4 +9,4 @@ runs:
 
     - name: Run linters
       shell: bash
-      run: yarn lint
+      run: npx yarn lint
