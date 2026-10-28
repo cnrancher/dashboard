@@ -71,11 +71,11 @@ export default {
     };
   },
 
-  created() {
-    if (this.src) {
-      this.setColor();
-    }
-  },
+  // created() {
+  //   if (this.src) {
+  //     this.setColor();
+  //   }
+  // },
 
   computed: {
     ...mapGetters({
@@ -152,13 +152,11 @@ export default {
 </script>
 
 <template>
-  <img
+  <span
     v-if="src"
-    :src="src"
-    class="svg-icon"
-    :class="className"
-    :alt="imgAlt"
-  >
+    class="svg-icon icon-mask"
+    :style="{'mask-image': `url(${src})`}"
+  />
   <i
     v-else-if="icon"
     class="icon group-icon"
@@ -171,6 +169,18 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+  .svg-icon {
+    height: 1.2em;
+    width: 1.2em;
+  }
+  .icon-mask {
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    mask-position: center;
+    background-color: currentColor;
+    display: inline-block;
+    vertical-align: middle;
+  }
   img.svg-icon {
     filter: v-bind(mainFilter);
   }
