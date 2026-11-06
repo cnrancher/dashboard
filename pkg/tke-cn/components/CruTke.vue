@@ -644,7 +644,6 @@ function fixConfig(config) {
     internetMaxBandwidthOut: internetAccessible.InternetMaxBandwidthOut,
     tkeCredentialSecret:     config.tkeCredentialSecret,
     securityGroup:           clusterEndpoint.securityGroup,
-    osName:                  clusterBasicSettings.clusterOs,
     clusterType:             clusterBasicSettings.clusterType,
     name:                    clusterBasicSettings.clusterName,
     description:             clusterBasicSettings.clusterDescription,
@@ -994,6 +993,54 @@ async function handleRegionChange(value) {
   }
 }
 
+const CLUSTER_VERSION_RANGE = ['1.34', '1.35', '1.36'];
+
+function toVersionOption(version) {
+  const enabled = CLUSTER_VERSION_RANGE.some((item) => String(version).startsWith(`${ item }`));
+
+  return {
+    label:          version,
+    value:          version,
+    rancherEnabled: enabled,
+  };
+}
+
+function includeVersionOption(list, version) {
+  if (!version || list.some((item) => item.value === version)) {
+    return list;
+  }
+
+  return [toVersionOption(version), ...list];
+}
+
+function currentTkeClusterId() {
+  return tkeConfig.value.clusterId || nodePools.value.find((pool) => pool.clusterId)?.clusterId || '';
+}
+
+async function fetchRunningClusterVersion(cloudCredentialId) {
+  const clusterId = currentTkeClusterId();
+  const regionId = tkeConfig.value.region;
+
+  if (!clusterId || !regionId) {
+    return '';
+  }
+
+  try {
+    const res = await queryFromTencent({
+      resource:       'clusters',
+      cloudCredentialId,
+      store,
+      externalParams: { regionId },
+    });
+    const clusters = res?.Response?.Clusters || [];
+    const matched = clusters.find((item) => item.ClusterId === clusterId);
+
+    return matched?.ClusterVersion || '';
+  } catch {
+    return '';
+  }
+}
+
 async function fetchClusterVersion(cloudCredentialId) {
   state.value.clusterVersionLoading = true;
   try {
@@ -1003,18 +1050,7 @@ async function fetchClusterVersion(cloudCredentialId) {
       store,
       externalParams: { regionId: tkeConfig.value.region },
     });
-    const versionRange = ['1.34', '1.35', '1.36'];
-    const versions = res?.Response?.VersionInstanceSet?.map((item) => {
-      const enabled = versionRange.find((v) => {
-        return item.Version.startsWith(`${ v }`);
-      });
-
-      return {
-        label:          item.Version,
-        value:          item.Version,
-        rancherEnabled: !!enabled
-      };
-    });
+    const versions = (res?.Response?.VersionInstanceSet || []).map((item) => toVersionOption(item.Version));
 
     if (isNewOrUnprovisioned.value) {
       if (!tkeConfig.value.clusterVersion) {
@@ -1032,13 +1068,20 @@ async function fetchClusterVersion(cloudCredentialId) {
       return;
     }
 
-    const cur = tkeConfig.value.clusterVersion;
-    const filtered = cur ? versions.filter((v) => cmpSemver(v.value, cur) >= 0) : versions;
+    const saved = tkeConfig.value.clusterVersion;
+    const running = await fetchRunningClusterVersion(cloudCredentialId);
+    const upgradeNotApplied = !!(running && saved && cmpSemver(running, saved) < 0);
+    const floor = upgradeNotApplied ? running : saved;
+    let filtered = floor ? versions.filter((item) => cmpSemver(item.value, floor) >= 0) : versions;
 
+    filtered = includeVersionOption(filtered, running);
+    filtered = includeVersionOption(filtered, saved);
     options.value.versionOptions = filtered;
-    const hasUpgrade = cur ? filtered.some((v) => cmpSemver(v.value, cur) > 0) : false;
 
-    state.value.upgradeTip = hasUpgrade ? intl.value('tkeCn.clusterVersion.upgradeTip', { current: cur }) : intl.value('tkeCn.clusterVersion.latestTip', { current: cur });
+    const current = running || saved;
+    const hasUpgrade = current ? filtered.some((item) => cmpSemver(item.value, current) > 0) : false;
+
+    state.value.upgradeTip = hasUpgrade ? intl.value('tkeCn.clusterVersion.upgradeTip', { current }) : intl.value('tkeCn.clusterVersion.latestTip', { current });
   } catch (err) {
     state.value.errors = [];
     options.value.versionOptions = [];
