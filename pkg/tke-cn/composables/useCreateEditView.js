@@ -267,7 +267,6 @@ export function useCreateEditView(props, context) {
     const clusterBasicSettings = {
       clusterDescription: config.description ? config.description : normanCluster.value.description,
       clusterName:        config.name ? config.name : normanCluster.value.name,
-      clusterOs:          config.osName,
       clusterType:        config.clusterType,
       clusterVersion:     config.clusterVersion,
       vpcId:              config.vpcId,
