@@ -644,7 +644,6 @@ function fixConfig(config) {
     internetMaxBandwidthOut: internetAccessible.InternetMaxBandwidthOut,
     tkeCredentialSecret:     config.tkeCredentialSecret,
     securityGroup:           clusterEndpoint.securityGroup,
-    osName:                  clusterBasicSettings.clusterOs,
     clusterType:             clusterBasicSettings.clusterType,
     name:                    clusterBasicSettings.clusterName,
     description:             clusterBasicSettings.clusterDescription,

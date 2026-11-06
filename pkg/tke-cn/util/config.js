@@ -29,7 +29,6 @@ const DEFAULTTKECONFIG = {
   domain:                  null,
   securityGroup:           null,
   instanceType:            null,
-  osName:                  'tlinux3.1x86_64',
   bandwidthType:           'TRAFFIC_POSTPAID_BY_HOUR',
   bandwidth:               10,
   keyId:                   null,
